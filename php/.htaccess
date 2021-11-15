@@ -1,0 +1,6 @@
+Header set Cross-Origin-Opener-Policy "same-origin"
+Header set Cross-Origin-Embedder-Policy "require-corp"
+
+DirectoryIndex Index.php Index.html
+
+AddType  application/wasm    wasm

@@ -1,0 +1,156 @@
+html, body  {   background-color: lightblue;    display: inline;    margin: 0px;    font-family: "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;    }
+#seite      {   background-color: silver;       display: flex;  flex-direction: column; box-sizing: border-box;                                             }
+
+header 	    {   height: 5vh;    background-color: Gold; text-align:center;  vertical-align:middle;  }
+footer      {   height: 5vh;    background-color: Gold; text-align:center;  vertical-align:middle;  width: 100%;   position:absolute;  bottom: 0;  }
+header p    {   font-weight: 800;   }
+#sx_Mitte    {   display: flex;  }
+
+#sx_Themenliste 		{	width: 15%;	    height:90vh;    background-color: BurlyWood;            display: flex;  flex-direction: column; }
+#sx_Aufgabenliste 		{	width: 35%;	    height:90vh;	background-color: LemonChiffon;         display: flex;  flex-direction: column; }
+#s_PartieSpielen		{	width: 50%;	    height:90vh;	background-color: FloralWhite;          display: flex;  flex-direction: column; }
+#s_AufgabenSpielen 	    {	width: 50%;	    height:90vh;	background-color: Wheat;                display: flex;  flex-direction: column; }
+#s_NeueAufgabe			{	width: 50%;	    height:90vh;	background-color: Wheat;                display: flex;  flex-direction: column; }
+#s_EngineDialog         { 	width: 50%;	    height:90vh;	background-color: rgb(179, 245, 244);   display: flex;  flex-direction: column; }
+#s_Willkommen           {   width: 50%;	    height:90vh;                                              display: flex;  flex-direction: column; }
+#s_Trainerinfo          {   width: 50%;	    height:90vh;                                              display: flex;  flex-direction: column; }
+#s_Spielerinfo          {   width: 50%;	    height:90vh;                                              display: flex;  flex-direction: column; }
+#s_lichess              {   width: 50%;	    height:90vh;                                              display: flex;  flex-direction: column; }
+
+#a_Aufgabe_KonfUndMeta,
+#a_usedcommands, 
+.LogKonfig              {	width:50%;  float:left;     }
+#a_Aufgabenliste        {	width:100%;  display: flex; margin-bottom: 3vh; }
+#a_Sonderfunktionen     {   height:10vh;                }
+/*#a_BrettUndImport       {	width:100%;                 }*/
+#a_Spielkonfiguration   {   width: 40%; float: left;    }
+#a_ImportAufgabe        {   display:flex;   height:60%; }
+#a_Welcome              {   height:100%;    display: flex;  flex-direction: column; justify-content: center;    align-items: center;    }
+#a_Kommandos            {   display: flex;  flex-direction: column; }
+
+.Brett  {   display: flex;  justify-content: space-around;}
+
+#Spielerinfo_div    {   margin: 5vh;    }
+#Trainerinfo_div    {   margin: 5vh;    }
+
+/*
+pre {   font-size: 12px;    margin: 0px;    }
+pre .specialchar {
+    display:inline-block;
+    width: 21px;  /+ Find the right value +/
+}
+*/
+ul {    margin-block-start: 0.3em;    margin-block-end: 0.3em;  list-style-type: none;  }
+
+/* für die Treeview (von w3schools übernommen) */
+#ul_Themenliste {	margin-bottom: 2vh;	padding: 0;	} /* Remove margins and padding from the parent ul */
+.caret {	cursor: pointer;	user-select: none; /* Prevent text selection */	 } /* Style the caret/arrow */
+.caret::before {	content: "\25B6";		color: black;		display: inline-block;	margin-right: 6px;	}	/* Create the caret/arrow with a unicode, and style it */
+.caret-down::before {	transform: rotate(90deg);	} /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.nested {	display: none;	}  /* Hide the nested list */
+.active {	  display: block;	}  /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+
+#debugLogKonfiguration                  {    margin-top: 3vh;    width: 80%;    }
+#usedcommands                           {   width: 80%; margin:1vw; display: flex;  flex-direction: column; }
+#Kommandostart, #Regexstart             {   width: 60%; float:left; }
+#Kommandopool, #div_Kommandoarchiv      {	width:50%;	height:300px;   overflow-y:scroll;	}
+#ImportAreaText	                        {	width:90%;	height:40%;    /*display: flex;*/	}
+#ImportAreaButtons, #fileareabuttons    {   margin:2vh;                 }
+/*#f_Aufgabedaten                     {   width: 50%;   display:flex;   }*/
+
+file-input     {   display: none}
+
+li label {  float: left;		width: 20%;	}
+li input[type="text"]	{	width:75%;	}
+#lichesskapitel {	width:90%;	}
+
+.halfspace  {   width:50%;  }
+
+.notation   {   height:40vh;    overflow-y:scroll;  }
+
+#NotationstabelleAufgabe                   {   width:20%;  padding:0px 1vw; }
+#NotationstabelleAufgabe td                {   padding:0px 1vw;             }
+#NotationstabelleAufgabe td:nth-child(2)   {   background-color:white;    }
+#NotationstabelleAufgabe td:nth-child(3)   {   background-color:Gainsboro ;     }
+
+.zugmarkercolumn    {   display: flex;  flex-direction: column; justify-content: space-between;}
+.zugmarker          {   margin-top: 1vh;    margin-bottom: 1vh;}
+/*#ImportTriggerTag                         {   height:400px;   width:40%;   overflow-y:scroll;  } */
+#logliste                           {   height:90%;   overflow-y:auto;  overflow-x: auto;  }
+/*#DebugMessagelog                    {   height:600px;   width:100%;   overflow-y:scroll;  font-family: monospace;   } */
+#ImportTriggerTag p, #SpieleImportTriggerTag p, #div_Kommandoarchiv p  {   margin: 0px;                          }
+/*#DebugMessagelog pre              {   margin: 0px  } */
+
+/*#a_Aufgabedaten {	width:100%; 	}*/
+#Brett_ImportAufgabe, #Brett_SpieleAufgabe  {	display:flex;   }
+
+span { font-weight: 600; }
+
+#ModaleFenster {    visibility: hidden; width:50%; float: left;} 
+.imgfigur   {   width:20%; float: left;  margin-right: 2vw; margin-top: 1vh;    } /* ist nur für das Damensymbol im neuesThema-Fenster*/
+.imgkapitel {   width: 80%; } /* Beispiel lichess Kapitelimport */
+
+.ui-selecting   {   background: aqua;                         } 
+.ui-selected    {   background: yellow;     color: green;   } 
+
+#AufgabenlisteText  {   width:60%;}
+#AufgabelisteButtons  {   
+    width:40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#Aufgabenliste_div  {   margin: 2vh;    }
+
+#ul_Aufgabenliste {  
+    list-style-type: none;  
+    margin-bottom: 2vh;  
+    padding: 0;  
+    width: 100%;
+    height:35vh;  
+    overflow-y:scroll;
+} 
+#ul_Aufgabenliste li {  
+    margin: 3px;  
+    padding: 3px;  
+    font-size: 1em;  
+    /*height: 18px;*/  
+} 
+#ul_importaufgaben {  
+    /*list-style-type: none;  
+    margin-bottom: 2vh;  
+    padding: 0;*/  
+    width: 90%;
+    height:10vh;  
+    overflow-y:scroll;
+} 
+.hiddendialog { display: none; width:1%;   float: left;}
+
+.shift1vw   {  margin-left:1vw; }
+
+.LogEin         {  margin:0px; font-size:1.2em;    font-weight: 400;   }
+.LogAus         {  margin:0px;                                          }
+.LogAusMini     {  font-size:0.8em; }
+.LogAusMiddle   {  font-size:1.0em; }
+.LogAusMaxi     {  font-size:1.4em; }
+
+.vanishMe   {   visibility: hidden;     }
+.appearMe   {   visibility: visible;    }
+.CenterMe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ImportantKomfortButton  {   width:20vw !important;  margin:1vw !important; }
+.KomfortButton  {   width:10vw;  margin:1vw; }
+.ImportButton   {   width:10vw;  margin-left:1vw;   /*margin-right:1vw;*/   margin-bottom: 0.5vh;}
+
+#ImportAufgabedetails  {   padding-inline-start: 0.2vw; width: 100%;    }
+
+.WelcomeButton  {   margin:5vh; }
+
+
+

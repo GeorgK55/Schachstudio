@@ -1,0 +1,9 @@
+Header set Cross-Origin-Opener-Policy "same-origin"
+Header set Cross-Origin-Embedder-Policy "require-corp"
+
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://www.Schach-in-Oberlauter.de/$1 [R,L]
+
+DirectoryIndex Index.php Index.html
+
+AddType  application/wasm    wasm

@@ -1,0 +1,18 @@
+/*Die Figuren im Schachbrett (aus ASCII-Chess kopiert) */
+pre 				{	font-size: 32px;																	}
+pre .specialchar 	{	display:inline-block;	width: 18px;  /* Find the right value */					} 
+
+.chessboard      { width: 800px; height: 800px; margin: 10px; border: 2px solid #333; border-spacing: 0px; }
+
+.chessboardGeorg { width: 60vh;  height: 60vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
+.Brett_Koordinaten { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
+.Brett_s           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; vertical-align:middle; font-weight: 900; background-color: rgb(224, 133, 67);    }
+.Brett_w           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; vertical-align:middle; font-weight: 900; background-color: #fff;                 }
+
+
+.chessboardGeorgImport   { width: 40vh;  height: 40vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
+.Brett_KoordinatenImport { float: left; width: 4vh; height: 4vh; text-align:center; font-size:1.0em; vertical-align:middle; }
+.Brett_sImport           { float: left; width: 4vh; height: 4vh; text-align:center; font-size:2.0em; vertical-align:middle; background-color: SaddleBrown; display: table-cell; }
+.Brett_wImport           { float: left; width: 4vh; height: 4vh; text-align:center; font-size:2.0em; vertical-align:middle; background-color: #fff;        display: table-cell; }
+
+
