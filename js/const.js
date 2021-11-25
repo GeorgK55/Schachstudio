@@ -10,22 +10,31 @@ const AC_CHALLENGE_RATING		= "SolveChallengeRating";
 const AC_CHALLENGE_VARIATIONS	= "SolveChallengeVariations";
 const AC_ENGINEDIALOG			= "EngineDialog";
 
-const AS_EXPECTPOSSIBLEMOVES 	= "ExpectPossibleMoves";
-const AS_EXPECTMOVEFINISHED		= "ExpectMoveFinished";
-const AS_FINISHPOSSIBLEMOVES	= "FinishPossibleMoves";
+// ActionSteps für AC_GAMEIMPORT
+const AS_IDENTIYUNIQUEMOVE 	= "ExpectPossibleMoves";
+const AS_INTERPRETELOCATEDMOVE		= "ExpectMoveFinished";
+const AS_FINISHPOSSIBLEMOVESIDENTIFICATION	= "FinishPossibleMoves";
 
+// ActionSteps für AC_CHALLENGE_PLAY
 const AS_CHECKCHALLENGEMOVE				= "CheckMove";
 const AS_CHECKCHALLENGEMOVEFINISHED		= "CheckMoveFinished";
 const AS_GETCHALLENGEFEN				= "GetFEN";
 const AS_DRAWCHALLENGEENGINEMOVE		= "GetEngineMove";
 const AS_FINISHCHALLENGEENGINEMOVE		= "FinishEngineMove";
 
+
+// ActionSteps für AC_CHALLENGE_RATING
 const AS_PREPAREMOVE			= "PrepareMove";
 const AS_PREPAREMOVEFINISHED	= "PrepareMoveFinished";
 const AS_SIMULATEPLAYERMOVE		= "SimulatePlayerMove";
 const AS_FINISHPLAYERMOVE		= "FinishPlayerMove";
 const AS_DRAWRATINGENGINEMOVE	= "DrawRatingEngineMove";
 const AS_FINISHRATINGENGINEMOVE	= "FINISHRatingEngineMove";
+
+// ActionSteps für AC_CHALLENGE_VARIATIONS
+const AS_CV_VERIFYPLAYERMOVE			= "CV_VerifyMove";
+const AS_CV_VERIFYPLAYERMOVEFINISHED	= "CV_VerifyMoveFinished";
+const AS_CV_DRAWVARIATIONSMOVE			= "CV_DrawVariationsMove";
 
 const WEISSAMZUG		= "weiß";
 const SCHWARZAMZUG		= "schwarz";
@@ -80,3 +89,6 @@ const r_Rochaden = new RegExp("^(O-O-O)|(O-O)");
 const r_Zugnummer = new RegExp("^\\d{1,2}\\.{1}$");
 
 const r_bestmove = new RegExp("bestmove (?<movevon>[abcdefgh]{1}[12345678]{1})(?<movenach>[abcdefgh]{1}[12345678]{1})(?<umwandlung>[QqRrBbNn]{0,1})");
+
+const DefaultMove_w = "...";
+const DefaultMove_b = "&nbsp;";

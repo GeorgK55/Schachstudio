@@ -479,7 +479,10 @@ function firePlayerMove() {
             $("#TriggerTag").trigger("validateMove", [ T_Zuege.ZugStockfish /* + T_Zuege.ZugUmwandlung */ ]);
             break;
         case AC_CHALLENGE_VARIATIONS:
-            GlobalActionStep = "noch nicht definiert";
+            GlobalActionStep = AS_CV_VERIFYPLAYERMOVE;
+            $("#TriggerTag").trigger("UciNewGame");
+            $("#TriggerTag").trigger("SetFenPosition", [ T_Zuege.FEN ]);
+            $("#TriggerTag").trigger("validateMove", [ T_Zuege.ZugStockfish /* + T_Zuege.ZugUmwandlung */ ]);
             break;
         default:
             GlobalActionStep = AS_PREPAREMOVE;

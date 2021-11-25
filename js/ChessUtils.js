@@ -1,4 +1,9 @@
-// Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
+function StellungAufbauenTest(div_Brett, FEN, ZugmarkerPräfix) {
+}    
+
+
+
+    // Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
 function StellungAufbauen(div_Brett, FEN, ZugmarkerPräfix) {
 
     var FEN_rows = FEN.split("/"); // Jede Zeile wird getrennt übertragen
@@ -136,7 +141,7 @@ function SchreibeZug(Tabellenname) {
     console.log('SchreibeZug für: ' + T_Zuege.ZugFarbe);
     console.log(JSON.stringify(T_Zuege));
 
-    if(Tabellenname == 'NotationstabelleAufgabe') {
+    if(Tabellenname == 'NotationstabelleAufgabe' || Tabellenname == 'NotationslisteImport') {
 
         console.log($("#" + Tabellenname + " td:not([data-fen])").length);
 
@@ -161,13 +166,7 @@ function SchreibeZug(Tabellenname) {
             }
 
         }
-    }
-    if(Tabellenname == 'NotationslisteImport') {
-
-        var newitem = '<li>' + T_Zuege.ZugNummer + '</li>';
-		$(newitem).appendTo('#' + Tabellenname); 
-
-    }   
+    } 
 }
 
 function jumpToPosition() {

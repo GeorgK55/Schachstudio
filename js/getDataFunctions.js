@@ -152,7 +152,8 @@ function getChallenge(ID) {
 			type: "GET"
 			}).done(function(responseData) {
 
-				ChallengeMoves = jQuery.parseJSON(responseData); 
+				ChallengeMoves = jQuery.parseJSON(responseData);
+				console.log(ChallengeMoves); 
 		});
 	
 	});
@@ -227,7 +228,7 @@ function DatenBereitstellen_Lichess() {
 function AufgabeImportieren() {
 
 	GlobalMovesData.Moves 				= [];
-	GlobalMovesData.idx					= 0;
+	GlobalMovesData.MoveIdx				= 0;
 	GlobalMovesData.ZugId				= '';
 	GlobalMovesData.ZugNummer			= 1;
 	GlobalMovesData.ZugLevel			= 0,
@@ -239,7 +240,21 @@ function AufgabeImportieren() {
 	Zugliste = [];
 
     // NotationstabelleAufgabe initiieren
-	$('#NotationslisteImport').empty().append('<ul></ul>').jstree();
+	//$('#NotationslisteImport').empty().append('<ul></ul>').jstree();
+	$('#TreeNotationslisteImport').empty()
+								  .append('<ul></ul>')
+								  .jstree({'core' : { 
+												'check_callback': 	true,
+												'themes': 			{ 'icons': false }
+	}});
+    $('#TreeNotationslisteImport').jstree().create_node('#', {
+		"id": "Import_0",
+		"text": "ooo"
+	  }, "last", function() {
+		//alert("startnode created");
+	});
+	GlobalMovesData.ImportParentNodeId	=  "Import_0";
+	addNotationlineFlag	= true;
 
 	//scanMetaData(document.getElementById("ImportAreaText").innerHTML);	
 	scanMetaData(GlobalImportedPGN[GlobalImportedPGNIndex]);		
@@ -251,6 +266,7 @@ function AufgabeImportieren() {
 	
 	GlobalActionContext 	= AC_GAMEIMPORT;
 
+	GlobalMovesData.FEN_VariantenStack.push( { FEN: GlobalMovesData.FEN, PreFEN: GlobalMovesData.PreFEN, ParentNode: "Import_0" } );
 	validateSingleMove();
 }
 
@@ -329,9 +345,9 @@ function prepareMoveValidation(Importtext) {
 
 		var ZugnummerKorrigiert 	= KlammernZuKorrigiert.replace(r_Zugnummern, "$1" + " " + "$2");
 
-		// Alle Einzelteile in eigenen Arrayelementen. die werden in das globale Objekt eingetragen
+		// Alle Einzelteile in eigene Arrayelementen. die werden in das globale Objekt eingetragen
 		GlobalMovesData.Moves		= ZugnummerKorrigiert.match(/[^ ]+/g);
-		GlobalMovesData.idx			= 0; 
+		GlobalMovesData.MoveIdx		= 0; 
 	}
 
 }
@@ -361,126 +377,143 @@ function validateSingleMove() {
 	T_Zuege.Hinweistext		= '';
 	T_Zuege.Hinweispfeil	= '';
 	
-	GlobalActionStep = AS_EXPECTPOSSIBLEMOVES;
+	GlobalActionStep = AS_IDENTIYUNIQUEMOVE;
 
 	// In dieser Schleife wird nach Zügen, Zugnummern und Klammern (=Varianten) differenziert
+	// Die Schleife endet, wenn EIN echter Zug gefunden wurde oder wenn alle Daten betrachtet wurden
+	// Die Zeiger auf die aktuelle Stelle in den Daten sind global
+	// Der Anstoß für die nächste Iteration kommt aus dem Messagelistener
 	do {
 
-		var m_BauerKurzeNotation	= r_BauerKurzeNotation.exec(GlobalMovesData.Moves[GlobalMovesData.idx]);
-		var m_FigurKurzeNotation	= r_FigurKurzeNotation.exec(GlobalMovesData.Moves[GlobalMovesData.idx]);
-		var m_Rochaden				= r_Rochaden.exec(GlobalMovesData.Moves[GlobalMovesData.idx]);
-		var m_Zugnummer				= r_Zugnummer.exec(GlobalMovesData.Moves[GlobalMovesData.idx]);
+		var m_BauerKurzeNotation	= r_BauerKurzeNotation.exec(GlobalMovesData.Moves[GlobalMovesData.MoveIdx]);
+		var m_FigurKurzeNotation	= r_FigurKurzeNotation.exec(GlobalMovesData.Moves[GlobalMovesData.MoveIdx]);
+		var m_Rochaden				= r_Rochaden.exec(GlobalMovesData.Moves[GlobalMovesData.MoveIdx]);
+		var m_Zugnummer				= r_Zugnummer.exec(GlobalMovesData.Moves[GlobalMovesData.MoveIdx]);
 
 		if(m_BauerKurzeNotation != null || m_FigurKurzeNotation != null || m_Rochaden != null) {				
 
 			// Das gilt immer, egal was für ein Zug
-			T_Zuege.ZugId		= GlobalMovesData.ZugId;
+			T_Zuege.ZugId		= GlobalMovesData.MoveIdx;
 			T_Zuege.ZugNummer	= GlobalMovesData.ZugNummer;
 			T_Zuege.ZugLevel	= GlobalMovesData.ZugLevel;
 			T_Zuege.ZugFarbe	= GlobalMovesData.ZugFarbe;
-			T_Zuege.PreFEN		= T_Zuege.FEN;
 			T_Zuege.FEN			= GlobalMovesData.FEN;
 
 			if(m_BauerKurzeNotation != null) {
 
-				T_Zuege.ZugFigur 		= "";
 				T_Zuege.ZugOriginal		= m_BauerKurzeNotation[0];
 				T_Zuege.ZugKurz			= m_BauerKurzeNotation[0];
 				T_Zuege.ZugNach			= m_BauerKurzeNotation.groups.targetfile + m_BauerKurzeNotation.groups.targetrank;
 				T_Zuege.ZugAktion 		= m_BauerKurzeNotation.groups.capture.length > 0 ? SCHLÄGT : ZIEHT;
 				T_Zuege.ZugUmwandlung	= m_BauerKurzeNotation.groups.umwandlung;
-				T_Zuege.ZugZeichen  	= m_BauerKurzeNotation.groups.schachodermatt;
-									
-				T_Zuege.Hinweistext = getKommentar(1); // Kommentare gehören immer zu Zügen. 
+				T_Zuege.ZugZeichen  	= m_BauerKurzeNotation.groups.schachodermatt;									
+				T_Zuege.Hinweistext 	= getKommentar(1); // Kommentare gehören immer zu Zügen. 
 			
 				// Jetzt werden die Kandidaten bestimmt und die Engine für alle Kandidaten befragt
 				// Die Auswertung geschieht im Messagelistener.
-				getStartFeld(m_BauerKurzeNotation);
+				executeMove(m_BauerKurzeNotation);
 
 			} else if (m_FigurKurzeNotation != null) {
 
-				T_Zuege.ZugFigur 	= m_FigurKurzeNotation.groups.figur;
-				T_Zuege.ZugOriginal	= m_FigurKurzeNotation[0];
-				T_Zuege.ZugKurz		= m_FigurKurzeNotation[0];
-				T_Zuege.ZugNach		= m_FigurKurzeNotation.groups.targetfile + m_FigurKurzeNotation.groups.targetrank;
-				T_Zuege.ZugAktion 	= m_FigurKurzeNotation.groups.capture.length > 0 ? SCHLÄGT : ZIEHT;
-				T_Zuege.ZugZeichen  = m_FigurKurzeNotation.groups.schachodermatt;
-									
-				T_Zuege.Hinweistext = getKommentar(1); // Kommentare gehören immer zu Zügen. 
+				T_Zuege.ZugFigur 		= m_FigurKurzeNotation.groups.figur;
+				T_Zuege.ZugOriginal		= m_FigurKurzeNotation[0];
+				T_Zuege.ZugKurz			= m_FigurKurzeNotation[0];
+				T_Zuege.ZugNach			= m_FigurKurzeNotation.groups.targetfile + m_FigurKurzeNotation.groups.targetrank;
+				T_Zuege.ZugAktion 		= m_FigurKurzeNotation.groups.capture.length > 0 ? SCHLÄGT : ZIEHT;
+				T_Zuege.ZugZeichen  	= m_FigurKurzeNotation.groups.schachodermatt;									
+				T_Zuege.Hinweistext 	= getKommentar(1); // Kommentare gehören immer zu Zügen. 
 				
 				// Jetzt werden die Kandidaten bestimmt und die Engine für alle Kandidaten befragt
 				// Die Auswertung geschieht im Messagelistener.
-				getStartFeld(m_FigurKurzeNotation);
+				executeMove(m_FigurKurzeNotation);
 
 			} else if (m_Rochaden != null) {
 
 				T_Zuege.ZugFigur 		= "";
 				T_Zuege.ZugOriginal		= m_Rochaden[0].replace(/O/g, '0');
 				T_Zuege.ZugKurz			= m_Rochaden[0].replace(/O/g, '0');
-				//T_Zuege.ZugVon 			= ""; // Wird in getRochadeFelder eingetragen
-				// T_Zuege.ZugNach			= ; // Wird in getRochadeFelder eingetragen
+				//T_Zuege.ZugVon 			= ""; // Wird in executeRochade eingetragen
+				// T_Zuege.ZugNach			= ; // Wird in executeRochade eingetragen
 				T_Zuege.ZugAktion 		= "";
 				T_Zuege.ZugUmwandlung	= "";
 				T_Zuege.ZugZeichen  	= "";
-									
-				T_Zuege.Hinweistext = getKommentar(1); // Kommentare gehören immer zu Zügen. 
+				T_Zuege.ZugId			= GlobalMovesData.MoveIdx;
+				T_Zuege.Hinweistext 	= getKommentar(1); // Kommentare gehören immer zu Zügen. 
 
-				getRochadeFelder(m_Rochaden);
+				executeRochade(m_Rochaden);
 			}
+			//StellungAufbauen("Brett_ImportAufgabe", T_Zuege.FEN, 'zugmarkerimport');
+			//PossibleGlobalMovesData.ImportParentNodeId = 'Import_' + GlobalMovesData.MoveIdx.toString();
+			GlobalMovesData.ZugId = GlobalMovesData.MoveIdx;
 			
 		} else if (m_Zugnummer != null) {
 			
-			GlobalMovesData.ZugNummer = parseInt(GlobalMovesData.Moves[GlobalMovesData.idx]);
+			GlobalMovesData.ZugNummer = parseInt(GlobalMovesData.Moves[GlobalMovesData.MoveIdx]);
+		
+		// Dann folgt eine Variante.
+		// Es muss:
+		// - der Level inkrementiert werden
+		// - der Übergang im Stack abgelegt werden
+		// - die Situation auf dem Brett auf den Vorgängerzug zurückgesetzt werden, da ja der aktuelle Zug durch die Variante ersetzt wird
+		// - der Zug vor der Variante als Parentnode ausgewählt werden	
+		} else if (GlobalMovesData.Moves[GlobalMovesData.MoveIdx].indexOf("(") == 0) {
 			
-		} else if (GlobalMovesData.Moves[GlobalMovesData.idx].indexOf("(") == 0) {
-			
+				console.log("( an index " + GlobalMovesData.MoveIdx + " mit " + JSON.stringify(GlobalMovesData.FEN_VariantenStack));
+
 				GlobalMovesData.ZugLevel++;
-				GlobalMovesData.FEN_VariantenStack.push( { FEN: GlobalMovesData.FEN, PreFEN: GlobalMovesData.PreFEN } );
-				GlobalMovesData.FEN = GlobalMovesData.PreFEN; // Damit bekommt der nächste Zug = erster in der Variante die FEN, die zum aktuellen Zug geführt hat
+				GlobalMovesData.FEN_VariantenStack.push( { FEN: GlobalMovesData.FEN, PreFEN: GlobalMovesData.PreFEN, ParentNode: GlobalMovesData.ImportParentNodeId } );
+				GlobalMovesData.FEN 		= GlobalMovesData.PreFEN; // Damit bekommt der nächste Zug = erster in der Variante die FEN, die zum aktuellen Zug geführt hat
+				GlobalMovesData.ZugFarbe 	= GlobalMovesData.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
 
-				console.log("( an index " + GlobalMovesData.idx);
-				console.log(JSON.stringify(GlobalMovesData.FEN_VariantenStack));
-
-				GlobalMovesData.ZugFarbe = GlobalMovesData.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
 				StellungAufbauen("Brett_ImportAufgabe", GlobalMovesData.FEN, 'zugmarkerimport');
-				
-		} else if (GlobalMovesData.Moves[GlobalMovesData.idx].indexOf(")") == 0) {
+
+				//GlobalMovesData.ImportParentNodeId = 'Import_' + GlobalMovesData.MoveIdx.toString();
+				GlobalMovesData.ImportParentNodeId = GlobalMovesData.CurrentImportNodeId;
+				addNotationlineFlag = true;
+
+		// Dann ist eine Variante beendet 
+		// Es muss:
+		// - der Level dekrementiert werden
+		// - der Übergang in diese Variante aus dem Stack geholt werden
+		// - die Situation auf dem Brett hinter den letzten Zug vor der Variante gesetzt werden.
+		} else if (GlobalMovesData.Moves[GlobalMovesData.MoveIdx].indexOf(")") == 0) {
 			
-				console.log(") an index " + GlobalMovesData.idx);
-				console.log(JSON.stringify(GlobalMovesData.FEN_VariantenStack));
+				console.log(") an index " + GlobalMovesData.MoveIdx + " mit " + JSON.stringify(GlobalMovesData.FEN_VariantenStack));
 
 				GlobalMovesData.ZugLevel--;
-				GlobalFEN_VariantenAktuell = GlobalMovesData.FEN_VariantenStack.pop();
-				GlobalMovesData.PreFEN = GlobalFEN_VariantenAktuell.PreFEN;
-				GlobalMovesData.FEN = GlobalFEN_VariantenAktuell.FEN;
+				GlobalFEN_VariantenAktuell  = [];
+				GlobalFEN_VariantenAktuell 	= GlobalMovesData.FEN_VariantenStack.pop();
+				GlobalMovesData.PreFEN 		= GlobalFEN_VariantenAktuell.PreFEN;
+				GlobalMovesData.FEN 		= GlobalFEN_VariantenAktuell.FEN;
+				GlobalMovesData.ZugFarbe 	= GlobalMovesData.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
 
-				GlobalMovesData.ZugFarbe = GlobalMovesData.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
 				StellungAufbauen("Brett_ImportAufgabe", GlobalMovesData.FEN, 'zugmarkerimport');
+
+				GlobalMovesData.ImportParentNodeId = GlobalFEN_VariantenAktuell.ParentNode;
+				addNotationlineFlag = true;
 				
 			// Dann muss es sich um einen Kommentar vor dem ersten Zug handeln. Der wird jetzt einfach mal in die Aufgabe übernommen. Noch verbessern.
-			} else if (GlobalMovesData.Moves[GlobalMovesData.idx].indexOf("{") == 0) {
-				
-				T_Aufgabe.Langtext = getKommentar(0);
+		} else if (GlobalMovesData.Moves[GlobalMovesData.MoveIdx].indexOf("{") == 0) {
+			
+			T_Aufgabe.Langtext = getKommentar(0);
 
-			} else if (GlobalMovesData.Moves[GlobalMovesData.idx] == "..." == 0) {
+		} else if (GlobalMovesData.Moves[GlobalMovesData.MoveIdx].indexOf("...") == 0) {
 			// Wird das so gebraucht?
+			//GlobalMovesData.ZugFarbe 	= GlobalMovesData.ZugFarbe == WEISSAMZUG ? SCHWARZAMZUG : WEISSAMZUG;
 		} else {
 			//alert();
 		}
-		GlobalMovesData.idx++;
+		GlobalMovesData.MoveIdx++;
 
-	} while (m_BauerKurzeNotation == null && m_FigurKurzeNotation == null && m_Rochaden == null && GlobalMovesData.idx < GlobalMovesData.Moves.length);
+	} while (m_BauerKurzeNotation == null && m_FigurKurzeNotation == null && m_Rochaden == null && GlobalMovesData.MoveIdx < GlobalMovesData.Moves.length);
 }
 
-function zeigeImportdaten() {
-	
-	alert(document.getElementById("ImportAreaText").innerHTML);
-	
-}
-
-// Aus den Zugdaten wird bestimmt, welche Figur gezogen ist.
+// Aus den Zugdaten und den Figuren auf dem Brett wird bestimmt, welche Figur gezogen ist.
+// In der kurzen Notation werden ja nur die Zielfelder genannt. Stockfish braucht Züge aber zwingend in der Form filerankfilerank
+// Es werden ALLE Figuren/Bauern der Farbe auf dem Brett gesucht und Stockfish zur Prüfung übergeben.
+// Das Ergebnis sollte immer eineutig sein.
 // Figuren sind in html mit diesem Muster enthalten: <span id="X_'+file+rank+'"></span> wobei X den Buchstaben der FEN entspricht
-function getStartFeld(Zugdaten) {
+function executeMove(Zugdaten) { // Zugdaten ist der match des regulären Ausdrucks
 
 	var KandidatenID;
 	var Kandidaten;
@@ -488,14 +521,14 @@ function getStartFeld(Zugdaten) {
 
 	if(Zugdaten.groups.figur == null) {
 		// Bauernzug. Entscheidung weiss oder schwarz nur über die aktuelle ZugFarbe möglich
-		KandidatenID = T_Zuege.ZugFarbe == WEISSAMZUG ? 'P_' + Zugdaten.groups.mitfile : 'p_' + Zugdaten.groups.mitfile;
-		Kandidaten = $('[id^=' + KandidatenID + ']');
+		KandidatenID = T_Zuege.FEN.includes("w") ? 'P_' + Zugdaten.groups.mitfile : 'p_' + Zugdaten.groups.mitfile;
+		Kandidaten = $('[id^=' + KandidatenID + ']'); // Kandidaten sind ALLE Bauern der aktuellen Farbe
 	} else {
 		// Figurenzug. Der Name wird in der kurzen Notation immer gross geschrieben. Die Namen in den ID entsprecchen FEN, also gross/klein für weiss/schwarz
-		KandidatenID = T_Zuege.ZugFarbe == WEISSAMZUG ? (Zugdaten.groups.figur).toUpperCase()  + "_" + Zugdaten.groups.mitfile : (Zugdaten.groups.figur + "_" + Zugdaten.groups.mitfile).toLowerCase();
+		KandidatenID = T_Zuege.FEN.includes("w") ? (Zugdaten.groups.figur).toUpperCase()  + "_" + Zugdaten.groups.mitfile : (Zugdaten.groups.figur + "_" + Zugdaten.groups.mitfile).toLowerCase();
 		//  + Zugdaten.groups.mitfile + Zugdaten.groups.mitrank
 		Kandidaten = $('[id^=' + KandidatenID + ']');
-		if(Zugdaten.groups.mitrank != "") Kandidaten = $('[id^=' + KandidatenID + ']').add('[id$=' + Zugdaten.groups.mitrank + ']');
+		if(Zugdaten.groups.mitrank != "") Kandidaten = $('[id^=' + KandidatenID + ']').add('[id$=' + Zugdaten.groups.mitrank + ']'); // wegen Eindeutgkeit
 		//Kandidaten = $('[id^=' + KandidatenID + ']').add('[id$=' + Zugdaten.groups.mitrank + ']');
 	}
 
@@ -510,9 +543,9 @@ function getStartFeld(Zugdaten) {
 }
 
 // Die Situation kann eindeutig identifiziert werden. Diese ist zu prüfen.
-function getRochadeFelder(Zugdaten) {
+function executeRochade(Zugdaten) {
 
-	if(T_Zuege.ZugFarbe == WEISSAMZUG) {
+	if(T_Zuege.FEN.includes("w")) {
 		T_Zuege.ZugVon 	= "e1";
 		T_Zuege.ZugNach 	= Zugdaten.indexOf('0-0-0') == 0 ? "c1" : "g1"; 
 	} else {
@@ -526,12 +559,12 @@ function getRochadeFelder(Zugdaten) {
 
 function getKommentar(Versatz) {
 	var Kommentar = "";
-	if(GlobalMovesData.idx < GlobalMovesData.Moves.length && GlobalMovesData.Moves[GlobalMovesData.idx + Versatz].indexOf('{') == 0) {
+	if(GlobalMovesData.MoveIdx < GlobalMovesData.Moves.length && GlobalMovesData.Moves[GlobalMovesData.MoveIdx + Versatz].indexOf('{') == 0) {
 		var fertig = false;
 		do {
-			Kommentar += GlobalMovesData.Moves[GlobalMovesData.idx + 1] // also ohne {
-			GlobalMovesData.idx++;
-			if(GlobalMovesData.Moves[GlobalMovesData.idx].indexOf('}') == 0) fertig = true; 
+			Kommentar += GlobalMovesData.Moves[GlobalMovesData.MoveIdx + 1] // also ohne {
+			GlobalMovesData.MoveIdx++;
+			if(GlobalMovesData.Moves[GlobalMovesData.MoveIdx].indexOf('}') == 0) fertig = true; 
 		} while (!fertig)
 		//T_Zuege.Hinweistext = Kommentar;
 	}

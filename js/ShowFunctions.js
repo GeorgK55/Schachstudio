@@ -33,8 +33,7 @@ function showChallengegeorg(ChallengeID) {
     $('#s_AufgabenSpielen').show();
 
     if($._data($("#TriggerTag")[0], "events") != undefined) {
-        //stockFish.postMessage('quit');
-        sf.postMessage('quit');
+        stockFish.postMessage('quit');
     }
 
     TheIndexGeorgFunction();

@@ -13,12 +13,13 @@ function TheIndexGeorgFunction() {
 		sf.addMessageListener((line) => {
 
 			// Immer:
-			console.log('====== ' + GlobalActionContext + ' mit ' + line.data);
+			console.log('==== ' + GlobalActionContext + ' mit ' + line);
 
 			// Pro GlobalActionContext:
-			// GlobalActionStep ist hier nicht nötig und GlobalActionContext wird nicht geändert. 
-			// Also werden alle Antworten werden hier einfach erkannt und rausgeschrtieben.
+
 			if(GlobalActionContext == AC_ENGINEDIALOG) {
+				// GlobalActionStep ist hier nicht nötig und GlobalActionContext wird nicht geändert. 
+				// Also werden alle Antworten werden hier einfach erkannt und rausgeschrieben.
 				$('<p class="LogAus LogAusMiddle">' + line + '</p>').appendTo('#logliste');
 			}
 			
@@ -26,55 +27,106 @@ function TheIndexGeorgFunction() {
 
 				// In getDataFunctions wird die Kandidatenauswahl für die Bestimmung des Ausgangsfeldes eines Zugs angestoßen
 				// Das Auswahlfeld eines Zuges wird für die Kommunikation mit der Engine zwingend benötigt
-				
-				if(GlobalActionStep == AS_EXPECTPOSSIBLEMOVES) {
+				// Nur für den einzig möglichen Zug wird 'bestmove' zurückgegeben
+
+				if(GlobalActionStep == AS_IDENTIYUNIQUEMOVE) {
 					
 					// Es gibt nur diese eine relevante Zeile.  Auswerten und Umschalten in den nächsten Schritt.
 					if (line.indexOf('bestmove') >= 0 && line.match(T_Zuege.ZugNach)) {
 						
 						T_Zuege.ZugVon 			= line.slice(9, 11); // gilt für Bauern- und für Figurenzüge
 						T_Zuege.ZugStockfish 	= T_Zuege.ZugVon + T_Zuege.ZugNach;
-						T_Zuege.ZugLang 		= T_Zuege.ZugFigur + T_Zuege.ZugVon + T_Zuege.ZugAktion + T_Zuege.ZugNach + T_Zuege.ZugZeichen;					
-						
+						T_Zuege.ZugLang 		= T_Zuege.ZugFigur + T_Zuege.ZugVon + T_Zuege.ZugAktion + T_Zuege.ZugNach + T_Zuege.ZugZeichen;											
 						console.log('=== T_Zuege.ZugStockfish: '  + T_Zuege.ZugStockfish );
 						$('<p>=== T_Zuege.ZugStockfish: '  + T_Zuege.ZugStockfish + '</p>').appendTo('#ImportTriggerTag');
 						
-						GlobalActionStep = AS_FINISHPOSSIBLEMOVES;
+						GlobalActionStep = AS_FINISHPOSSIBLEMOVESIDENTIFICATION;
 						postit('isready'); // Das ist das Signal für den nächsten Step
 					}
 				}
 				
-				if(GlobalActionStep == AS_FINISHPOSSIBLEMOVES) {
+				if(GlobalActionStep == AS_FINISHPOSSIBLEMOVESIDENTIFICATION) {
 					
 					// Nur readyok ist relevant. Jetzt kann der Zug ausgeführt werden.
+					// Der Zug wird ausgeführt, damit die neue FEN geliefert werden kann.
 					if(line.indexOf('readyok') >= 0)  {
 						
-							GlobalActionStep = AS_EXPECTMOVEFINISHED;
+							GlobalActionStep = AS_INTERPRETELOCATEDMOVE;
 							postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugStockfish + T_Zuege.ZugUmwandlung);
 							postit('d');
 							postit('isready');
 					}
 				}
 				
-				if(GlobalActionStep == AS_EXPECTMOVEFINISHED) {
+				if(GlobalActionStep == AS_INTERPRETELOCATEDMOVE) {
 					
 					if(line.indexOf('Fen') >= 0) {
 
+						// Damit wird die aktuelle Situation und der Zug selbst festgehalten
 						let ZuglisteZug = Object.assign({}, T_Zuege);
 						Zugliste.push(ZuglisteZug);
 						
-						GlobalMovesData.PreFEN = T_Zuege.FEN;					
-						T_Zuege.FEN = line.substr(5);
-						T_Zuege.ZugFarbe = line.indexOf('w') > 0 ? WEISSAMZUG : SCHWARZAMZUG;
-						GlobalMovesData.FEN = line.substr(5);
-						GlobalMovesData.ZugFarbe = GlobalMovesData.ZugFarbe == WEISSAMZUG ? SCHWARZAMZUG : WEISSAMZUG;
-												
-						ZieheZug('Brett_ImportAufgabe_', 'zugmarkerimport');
-						SchreibeZug('NotationslisteImport');
+						// Einfügen der Struktur einer neuen Zeile
+						if (/*line.substr(5).includes("w")*/ T_Zuege.ZugFarbe == WEISSAMZUG || addNotationlineFlag) {
 
-						console.log('GlobalMovesData.FEN: ' + GlobalMovesData.FEN);
-						console.log('GlobalMovesData.idx: ' + GlobalMovesData.idx);
+							GlobalMovesData.CurrentImportNodeId = 'Import_' + GlobalMovesData.ZugId.toString();
 
+							// Der Zug wird in die Notationsliste eingetragen
+							$('#TreeNotationslisteImport').jstree().create_node('#' + GlobalMovesData.ImportParentNodeId, {
+								"id": GlobalMovesData.CurrentImportNodeId,
+								"text": "<div><span class='movenumber'>" + GlobalMovesData.ZugNummer + "</span>"
+										+ "<span class='movewhite' id='"
+										+ GlobalMovesData.CurrentImportNodeId + "w'>" + DefaultMove_w 
+										+ "</span><span class='moveblack' id='"
+										+ GlobalMovesData.CurrentImportNodeId + "b'" + DefaultMove_b
+										+ "</span></div>"
+						  	}, "last", function() {
+							//alert("startnode created");
+							});
+							CurrentMove_w = DefaultMove_w;
+							CurrentMove_b = DefaultMove_b;
+						}
+						addNotationlineFlag = false;
+						$('#TreeNotationslisteImport').jstree().open_all();
+
+						if (/*line.substr(5).includes("w")*/ T_Zuege.ZugFarbe == WEISSAMZUG) { 
+							CurrentMove_w = T_Zuege.ZugKurz;
+						} else {
+							CurrentMove_b = T_Zuege.ZugKurz;
+						}
+						Zugnummer = "<span class='movenumber'>" + GlobalMovesData.ZugNummer + "</span>";
+						NewNodeText_w = "<span class='movewhite' id='" + GlobalMovesData.CurrentImportNodeId + "w'>" + CurrentMove_w + "</span>";
+						NewNodeText_b = "<span class='moveblack' id='" + GlobalMovesData.CurrentImportNodeId + "b'>" + CurrentMove_b + "</span>";
+
+						sel = $('#TreeNotationslisteImport').jstree().get_node(GlobalMovesData.CurrentImportNodeId);
+						$('#TreeNotationslisteImport').jstree().edit(sel, "<div>" + Zugnummer + NewNodeText_w + NewNodeText_b + "</div>");
+
+						// Den Zug in die Zeile der Notationsliste eintragen
+						//if (line.substr(5).includes("w")) {
+						//	//$('#' + GlobalMovesData.CurrentImportNodeId + 'w').text(T_Zuege.ZugKurz);
+						//} else {
+						//	sel = $('#TreeNotationslisteImport').jstree().get_node(GlobalMovesData.CurrentImportNodeId);
+						//	$('#TreeNotationslisteImport').jstree().edit(sel, T_Zuege.ZugKurz);
+						//	//$('#' + GlobalMovesData.CurrentImportNodeId + 'b').text(T_Zuege.ZugKurz);
+						//}
+						////$('#TreeNotationslisteImport').jstree().refresh(true);
+
+						// http://jsfiddle.net/ba75Y/2/
+						// https://preview.keenthemes.com/craft/documentation/general/jstree/customicons.html
+						// https://jsfiddle.net/m24fvh39/1/
+
+						// Jetzt wird die neue Situation in das Objekt mit den Daten zum Analysevergleich eingetragen. T_Zuege nicht notwendig, wird neu initialisiert
+						GlobalMovesData.PreFEN 		= T_Zuege.FEN;					
+						GlobalMovesData.FEN 		= line.substr(5);
+						GlobalMovesData.ZugFarbe 	= GlobalMovesData.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
+						// Entfällt! T_Zuege wird sowieso neu initialisiert
+						//T_Zuege.FEN 				= line.substr(5);
+						//T_Zuege.ZugFarbe 			= line.indexOf('w') > 0 ? WEISSAMZUG : SCHWARZAMZUG;
+						
+						// Der Zug wird auf dem Brett ausgeführt, damit in validateSingleMove die richtige aktuelle Situation zur Verfügung steht
+						ZieheZug('Brett_ImportAufgabe_', 'zugmarkerimport'); // Hier, weil die Zugdaten zum Ziehen benötigt werden
+
+						// Die weitere Analyse wird außerhalb des Listeners durchgeführt
 						validateSingleMove();
 					}					
 				}
@@ -240,6 +292,8 @@ function TheIndexGeorgFunction() {
 					{
 						$('<p class="LogAus LogAusMini">' + compressline(line) + '</p>').appendTo('#logliste');
 
+						// Sammeln der Zugergebnisse
+
 						var m_scorecp 	= (/(score cp )(?<scorecp>[-]{0,1}\d*)/g).exec(line);
 						var m_wdl 		= (/(wdl) (?<wdl_w>\d*) (?<wdl_d>\d*) (?<wdl_l>\d*)/g).exec(line);
 
@@ -254,7 +308,7 @@ function TheIndexGeorgFunction() {
 
 						var m_EnginesBest = (r_bestmove).exec(line); // Hier ist der Zug ja nicht bekannt, deshalb kein match auf den Zug
 
-						if (m_EnginesBest != null) { 
+						if (m_EnginesBest != null) { // Dann hat die Engine diesen Zug abschließend untersucht 
 
 							console.log(PlayerScores.join() + '\n' + EngineScores.join() + '\n' + m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung);
 							console.log(JSON.stringify(T_Zuege));
@@ -269,17 +323,17 @@ function TheIndexGeorgFunction() {
 							var wdlDiff 		= lastEnginewdl - lastPlayerwdl; 
 							var BetterEngineMoveFlag = wdlDiff > wdlDifference ? true : false;
 
-							var Spielerzug_vergleich = T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung.toLowerCase();
+							var RatingSpielerzug_vergleich = T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung.toLowerCase();
 							var Enginezug_vergleich  = m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung;
 
 							console.log('maxEngineScore: ' + maxEngineScore + ' CentiPawnsMoveDifference: ' + CentiPawnsMoveDifference + ' maxPlayerScore: ' + maxPlayerScore);
 							console.log('maxEnginewdl: ' + lastEnginewdl + ' wdlDifference: ' + wdlDifference + ' maxPlayerwdl: ' + lastPlayerwdl);
-							console.log('Spielerzug_vergleich: ' + Spielerzug_vergleich + 'Enginezug_vergleich: ' + Enginezug_vergleich);
+							console.log('RatingSpielerzug_vergleich: ' + RatingSpielerzug_vergleich + 'Enginezug_vergleich: ' + Enginezug_vergleich);
 
 							var DecisionText = 'maxEnginewdl: ' + lastEnginewdl + ' wdlDifference: ' + wdlDifference + ' maxPlayerwdl: ' + lastPlayerwdl;
 							$('<p class="LogAus LogAusMiddle">' + DecisionText + '</p>').appendTo('#logliste');
 
-							if(Spielerzug_vergleich != Enginezug_vergleich && BetterEngineMoveFlag) {
+							if(RatingSpielerzug_vergleich != Enginezug_vergleich && BetterEngineMoveFlag) {
 
 								ZugdifferenzDialog = $( "#dialog_Zugdifferenz" ).dialog({
 									title: "Zugdifferenz",
@@ -287,7 +341,7 @@ function TheIndexGeorgFunction() {
 									width: 600,
 									modal: true,
 									open: function () {
-										$('#Spielerzug').html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz'));
+										$('#RatingSpielerzug').html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz'));
 										$('#Zugvorschlag').empty();
 										$('#Zugbewertung').empty();
 									},
@@ -421,6 +475,108 @@ function TheIndexGeorgFunction() {
 							postit('isready');
 						} else {
 							$('<p class="LogAus LogAusMini">' + compressline(line) + '</p>').appendTo('#logliste');
+						}
+						break;
+					}
+				}
+			}
+
+			if(GlobalActionContext == AC_CHALLENGE_VARIATIONS) {
+
+				//console.log(ChallengeMoves); 
+
+				switch (GlobalActionStep)
+				{
+					case AS_CV_VERIFYPLAYERMOVE:
+						{
+							$('<p class="LogAus LogAusMini">' + compressline(line) + '</p>').appendTo('#logliste');
+
+							var m_depth 	= (/(depth )(?<depth>\d*)/g).exec(line);		// wird noch nicht genutzt
+							var m_seldepth 	= (/(seldepth )(?<seldepth>\d*)/g).exec(line);	// wird noch nicht genutzt
+							var m_scorecp 	= (/(score cp )(?<scorecp>[-]{0,1}\d*)/g).exec(line);		
+							var m_wdl 		= (/(wdl) (?<wdl_w>\d*) (?<wdl_d>\d*) (?<wdl_l>\d*)/g).exec(line);
+
+							if(m_scorecp != null) {
+								PlayerScores.push(m_scorecp.groups.scorecp);
+							}
+							if(m_wdl != null) {
+								if(m_wdl.length == 5) { // dann wurden alle Gruppen erkannt
+									Playerwdl.push( { wdl_w: m_wdl.groups.wdl_w, wdl_d: m_wdl.groups.wdl_d, wdl_l: m_wdl.groups.wdl_l } );
+								}
+							}
+
+							// bestmove mit dem Spielerzug kommt nur und genau dann, wenn der Zug gültig ist.
+							// wenn bestmove nicht kommt, ist hier schluss. Ist das so schon richtig und fertig?
+							if (line.indexOf('bestmove') >= 0 && line.match(T_Zuege.ZugNach)) {
+			
+								GlobalActionStep = AS_CV_VERIFYPLAYERMOVEFINISHED;
+								postit('isready');
+							}				
+							break;
+					}
+					case AS_CV_VERIFYPLAYERMOVEFINISHED:
+					{
+						$('<p class="LogAus LogAusMiddle">' + compressline(line) + '</p>').appendTo('#logliste');
+
+						// wenn nie ein readyok kommt,ist hier Schluss. Richtig und fertig?
+						if(line.indexOf('readyok') == 0) {
+							if (getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz') != ChallengeMoves[0].ZugKurz) {
+								EnginezugDialog = $( "#dialog_Variationszug" ).dialog({
+									title: "Falscher Zug",
+									height: 400,
+									width: 600,
+									modal: true,
+									open: function () {
+										$('#VariationsSpielerzug').html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz'));
+										$('#VariationsZugvorschlag').html(ChallengeMoves[0].ZugKurz);
+										$('#Zugbewertung').empty();
+									},
+									buttons: {
+										Ok: function() {
+											$(this).dialog('close');
+										}
+									}
+								});
+							} else {
+
+								ZieheZug('Brett_SpieleAufgabe_', "zugmarkeraufgabe");
+								SchreibeZug('NotationstabelleAufgabe');
+
+								postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
+
+								GlobalActionStep = AS_CV_DRAWVARIATIONSMOVE;
+
+								//postit('setoption name clear hash'); // Mai 2021 kommentiert
+								//postit('go depth ' + Suchtiefe);
+							}
+						}
+						break;
+					}
+					case AS_CV_DRAWVARIATIONSMOVE:
+					{
+
+						$('<p class="LogAus LogAusMini">' + compressline(line) + '</p>').appendTo('#logliste');
+
+						// Sammeln der Zugergebnisse
+
+						var m_scorecp 	= (/(score cp )(?<scorecp>[-]{0,1}\d*)/g).exec(line);
+						var m_wdl 		= (/(wdl) (?<wdl_w>\d*) (?<wdl_d>\d*) (?<wdl_l>\d*)/g).exec(line);
+
+						if(m_scorecp != null) {
+							EngineScores.push(m_scorecp.groups.scorecp);
+						}
+						if(m_wdl != null) {
+							if(m_wdl.length == 5) { // dann wurden alle Gruppen erkannt
+								Enginewdl.push( { wdl_w: m_wdl.groups.wdl_w, wdl_d: m_wdl.groups.wdl_d, wdl_l: m_wdl.groups.wdl_l } );
+							}
+						}
+
+						var m_EnginesBest = (r_bestmove).exec(line); // Hier ist der Zug ja nicht bekannt, deshalb kein match auf den Zug
+						if (m_EnginesBest != null) { // Dann hat die Engine diesen Zug abschließend untersucht 
+
+							console.log(PlayerScores.join() + '\n' + EngineScores.join() + '\n' + m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung);
+							console.log(JSON.stringify(T_Zuege));
+
 						}
 						break;
 					}

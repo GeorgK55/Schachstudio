@@ -123,7 +123,7 @@ function AufgabeEntfernen(id) {
 function AufgabeSpeichernErfolg(responseData) {   
   
   NeueAufgabeID = parseInt((/\d+ erfolgreich neu angelegt/g).exec(responseData));
-  //alert(NeuerAufgabenID);
+  //alert(NeueAufgabeID);
 
   $('#cb_Aufgabeauswahl').prop( "checked", true );
   getChallenges(ALLEAUFGABENANZEIGEN);

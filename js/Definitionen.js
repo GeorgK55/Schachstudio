@@ -1,15 +1,17 @@
 
 // Alle für die Analyse der importierten aktuellen Daten notwendigen Merkposten
 GlobalMovesData = {
-	Moves: 				[],
-	idx: 				0,
-	ZugId:				'',
-	ZugNummer:			1,
-	ZugLevel:			0,
-	ZugFarbe:			"",
-	PreFEN:				"",
-	FEN:				"",
-	FEN_VariantenStack:	[]
+	Moves: 					[],
+	MoveIdx: 				0,
+	ZugId:					'',// wegen des asynchronen Verhaltens getDataFunctions und messagelistener
+	ZugNummer:				1,
+	ZugLevel:				0,
+	ZugFarbe:				"",
+	PreFEN:					"",
+	FEN:					"",
+	ImportParentNodeId:		"",
+	CurrentImportNodeId:	"",
+	FEN_VariantenStack:		[]
 };
 
 GlobalFEN_VariantenAktuell = {
@@ -75,11 +77,12 @@ FENFileFactor = {a:1, b:2, c:3, d:4, e:5, f:6, g:7, h:8, 1:7, 2:6, 3:5, 4:4, 5:3
 PlayerScores = [];
 EngineScores = [];
 
-wdlDifference				= 200; 	// wird in Promille gerechnet
+wdlDifference				= 100; 	// wird in Promille gerechnet
 CentiPawnsMoveDifference 	= 60;
-Suchtiefe 					= 20;
+Suchtiefe 					= 10;
 MultiPV 					= 1;
 
 GlobalImportedPGN 		= [];
 GlobalImportedPGNIndex 	= 0;
+
 
