@@ -71,36 +71,36 @@ function StellungAufbauen(div_Brett, FEN, ZugmarkerPräfix) {
 
 //span verschieben, dabei Umwandlungen berücksichtigen und Rochaden separat behandeln
 // Für Rochaden gibt es kein Flag, also den Zug direkt als Zeichenkette abfragen
-function ZieheZug(BoardPräfix, ZugmarkerPräfix) {
-    //console.log('ZieheZug: ' + BoardPräfix + ' ' + T_Zuege.ZugVon + T_Zuege.ZugNach);
-    console.log(JSON.stringify(T_Zuege));
-    if(T_Zuege.ZugKurz.indexOf('0-0') == -1) {
+function ZieheZug(objZug, BoardPräfix, ZugmarkerPräfix) {
+    //console.log('ZieheZug: ' + BoardPräfix + ' ' + objZug.ZugVon + objZug.ZugNach);
+    //console.log(JSON.stringify(objZug));
+    if(objZug.ZugKurz.indexOf('0-0') == -1) {
         var Figur;
         var Figurname;
-        if(T_Zuege.ZugUmwandlung != "") {
-            console.log('In ZieheZug ungleich "": T_Zuege.ZugUmwandlung = ' + T_Zuege.ZugUmwandlung);
-            Figur 		= eval('FIGUREN.' + T_Zuege.ZugUmwandlung); // Figurzeichen der umgewandelten Figur
-            Figurname 	= T_Zuege.ZugUmwandlung;
-        } else if(T_Zuege.ZugFigur.toUpperCase() == 'P' && (T_Zuege.ZugNach.slice(-1) == '1' || T_Zuege.ZugNach.slice(-1) == '8')) {
-            console.log('In ZieheZug toUpperCase "": T_Zuege.ZugNach.slice(-1) = ' + T_Zuege.ZugNach.slice(-1));
-            if(T_Zuege.ZugFarbe == WEISSAMZUG) {
+        if(objZug.ZugUmwandlung != "") {
+            console.log('In objZug ungleich "": objZug.ZugUmwandlung = ' + objZug.ZugUmwandlung);
+            Figur 		= eval('FIGUREN.' + objZug.ZugUmwandlung); // Figurzeichen der umgewandelten Figur
+            Figurname 	= objZug.ZugUmwandlung;
+        } else if(objZug.ZugFigur.toUpperCase() == 'P' && (objZug.ZugNach.slice(-1) == '1' || objZug.ZugNach.slice(-1) == '8')) {
+            console.log('In ZieheZug toUpperCase "": objZug.ZugNach.slice(-1) = ' + objZug.ZugNach.slice(-1));
+            if(objZug.ZugFarbe == WEISSAMZUG) {
                 Figur                   = FIGUREN.Q;
                 Figurname               = 'Q';
-                T_Zuege.ZugUmwandlung   = 'Q';
+                objZug.ZugUmwandlung   = 'Q';
              } else {
                 Figur                   = FIGUREN.q;
                 Figurname               = 'q';
-                T_Zuege.ZugUmwandlung   = 'q';
+                objZug.ZugUmwandlung   = 'q';
            }
         } else {
-            Figur 		= $('#' + BoardPräfix + T_Zuege.ZugVon).html().substr(0, 1); // Figurzeichen retten
-            Figurname 	= $('#' + BoardPräfix + T_Zuege.ZugVon + ' > span')[0].id.substr(0, 1); // Gilt so für Bauern und Figuren
+            Figur 		= $('#' + BoardPräfix + objZug.ZugVon).html().substr(0, 1); // Figurzeichen retten
+            Figurname 	= $('#' + BoardPräfix + objZug.ZugVon + ' > span')[0].id.substr(0, 1); // Gilt so für Bauern und Figuren
         }
-        $('#' + BoardPräfix + T_Zuege.ZugVon).html(''); // Entfernt sowohl das Figurzeichen als auch das span
-        $('#' + BoardPräfix + T_Zuege.ZugNach).html(Figur).append('<span id="' + Figurname + '_' + T_Zuege.ZugNach + '"></span>');
+        $('#' + BoardPräfix + objZug.ZugVon).html(''); // Entfernt sowohl das Figurzeichen als auch das span
+        $('#' + BoardPräfix + objZug.ZugNach).html(Figur).append('<span id="' + Figurname + '_' + objZug.ZugNach + '"></span>');
     } else {
-        if(T_Zuege.ZugFarbe == WEISSAMZUG) {
-            if (T_Zuege.ZugOriginal.indexOf('0-0-0') == 0) {
+        if(objZug.ZugFarbe == WEISSAMZUG) {
+            if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
                 $('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'a1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'c1').html(FIGUREN.K).append('<span id="K_c1"></span>');
@@ -112,7 +112,7 @@ function ZieheZug(BoardPräfix, ZugmarkerPräfix) {
                 $('#' + BoardPräfix + 'f1').html(FIGUREN.R).append('<span id="R_f1"></span>');
             }
         } else {
-            if (T_Zuege.ZugOriginal.indexOf('0-0-0') == 0) {
+            if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
                 $('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'a8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'c8').html(FIGUREN.k).append('<span id="k_c8"></span>');
@@ -126,15 +126,16 @@ function ZieheZug(BoardPräfix, ZugmarkerPräfix) {
         }
     }
 
-    if(T_Zuege.ZugFarbe == WEISSAMZUG) {
-        $('[id^=' + ZugmarkerPräfix + 'weiss]').show();
-        $('[id^=' + ZugmarkerPräfix + 'schwarz]').hide();
-    } else {
+    if(objZug.ZugFarbe == WEISSAMZUG) {
         $('[id^=' + ZugmarkerPräfix + 'weiss]').hide();
         $('[id^=' + ZugmarkerPräfix + 'schwarz]').show();
+    } else {
+        $('[id^=' + ZugmarkerPräfix + 'weiss]').show();
+        $('[id^=' + ZugmarkerPräfix + 'schwarz]').hide();
     }
 }
 
+// Deprecated. Noch in ChallengePlay enthalten weil der Teil noch nicht auf jsTree umgestgellt ist
 // Das Zeichen für matt kommt in einem eigenen Aufruf (die Engine stellt das matt erst bei der Suche nach dem nächsten Zug fest)
 function SchreibeZug(Tabellenname) {
 
@@ -151,8 +152,8 @@ function SchreibeZug(Tabellenname) {
                 $('<span>' + MATT + '</span>').appendTo($('#' + Tabellenname + ' td:nth-last-child(2)').last());
                 console.log('matt mit: ');
             } else {
-                addNewNotationLine(Tabellenname, GlobalMovesData.ZugNummer);
-                //$('#' + Tabellenname).append('<tr><td data-fen="' + GlobalMovesData.ZugNummer + '"></td></td><td data-fen="' + T_Zuege.FEN + '" onclick="jumpToPosition();">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td onclick="jumpToPosition();"></td></tr>');
+                addNewNotationLine(Tabellenname, ImportDaten.ZugNummer);
+                //$('#' + Tabellenname).append('<tr><td data-fen="' + ImportDaten.ZugNummer + '"></td></td><td data-fen="' + T_Zuege.FEN + '" onclick="jumpToPosition();">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td onclick="jumpToPosition();"></td></tr>');
                 // Wenn mal per Klick eine gespielte Stellung angesprungen werden soll
                 // Ist hier nur der Anfang und nur für weiß. Die Rekonstruktion ist noch nicht vollständig
                 //var tdstring = '<tr><td data-fen="' + T_Zuege.FEN + '" onclick="StellungAufbauen(\'Brett_SpieleAufgabe\', \'' + T_Zuege.FEN + '\');">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td></td></tr>'

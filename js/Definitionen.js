@@ -1,33 +1,51 @@
 
 // Alle für die Analyse der importierten aktuellen Daten notwendigen Merkposten
-GlobalMovesData = {
-	Moves: 					[],
-	MoveIdx: 				0,
-	ZugId:					'',// wegen des asynchronen Verhaltens getDataFunctions und messagelistener
-	ZugNummer:				1,
+ImportDaten = {
+	PGN: 					[],
+	ZugNummer:				1,	// aus dem PGN-String
 	ZugLevel:				0,
 	ZugFarbe:				"",
-	PreFEN:					"",
-	FEN:					"",
-	ImportParentNodeId:		"",
-	CurrentImportNodeId:	"",
-	FEN_VariantenStack:		[]
+	PreFEN:					"",	// Die FEN, die zu diesem Zug geführt hat
+	FEN:					"",	// Die FEN, mit der dieser Zug ausgeführt wird
+	PGN_Index: 				0,  // integer, der Zähler in der do while
+	Zug_Index:				0,  // integer, wegen des asynchronen Verhaltens getDataFunctions und messagelistener
+	PreNodeId:				"",	// der letzte Knotenname im html-Tree 
+	CurNodeId:				"",	// der aktuelle Knotenname im html-Tree 
+	CurMoveId:				"", // mit stringpräfix, wird im listener eingetragen
+	VariantenStack:			[]	// Inhalt siehe ImportVarianten
 };
 
-GlobalFEN_VariantenAktuell = {
-	PreFEN: "",
-	FEN: 	""
+// Alle für das Nachspielen von Varianten notwendigen Merkposten
+SituationsDaten = {
+	CurNodeId:			"",
+	PreNodeId:			"N_0",
+	CurMoveId:			"M_0",
+	ZugNummer:			"",
+	Text_w:				DefaultMove_w,
+	Text_b:				DefaultMove_b,
+	SituationsStack:	[]
+};
+
+ImportVarianten = {
+	PreFEN: 	"",
+	FEN: 		"",
+	StartNode:	"",
+	StartMove:	""
 };
 // Die Aufgabe selbst. Entspricht der Datenbanktabelle T_Aufgabe
 T_Aufgabe = {
-	Kurztext: 		"",
-	Langtext: 		"",
-	Quelle:			"",	
-	Quelledetail:	"",
-	Scope:			"",
-	Skill: 		 	"",
-	AmZug:			"",
-	FEN:			""
+	Kurztext: 			"",
+	Langtext: 			"",
+	Quelle:				"",	
+	Quelledetail:		"",
+	ImportQuelle:		"",
+	AmZug:				"",
+	FEN:				"",
+	Scope:				"",
+	Skill: 		 		"",
+	lichess_studie:		"",
+	lichess_kapitel:	"",
+	PGN:				""
 };
 
 Zugliste = []; // Die gesammelten Züge (T_Zuege), die dann per json im ajax-call verschickt werden.
@@ -37,11 +55,13 @@ Zugliste = []; // Die gesammelten Züge (T_Zuege), die dann per json im ajax-cal
 // Entspricht der Datenbanktabelle T_Zuege
 T_Zuege = {
 	AufgabeID:					0,	// Wird erst vor dem Speichern per ajax ergänzt
-	FEN:						'',	// Wird für jeden neuen Zug von GlobalMovesData geholt 
-	ZugId:						'',	// Level_ZugNummer_ZugNach 
-	ZugNummer:					1,	// Wird für jeden neuen Zug von GlobalMovesData geholt 
-	ZugLevel:					0,	// Wird für jeden neuen Zug von GlobalMovesData geholt 
-	ZugFarbe:					'',	// Wird für jeden neuen Zug von GlobalMovesData geholt 
+	FEN:						'',	// Wird für jeden neuen Zug von ImportDaten geholt 
+	CurMoveIndex:				0,
+	CurMoveId:					"",
+	PreMoveId:					"",
+	ZugNummer:					1,	// Wird für jeden neuen Zug von ImportDaten geholt 
+	ZugLevel:					0,	// Wird für jeden neuen Zug von ImportDaten geholt 
+	ZugFarbe:					'',	// Wird für jeden neuen Zug von ImportDaten geholt 
 	ZugOriginal:				'',	// Der Zug direkt aus der Notation
 	ZugFigur:					'',	// '' für Bauern und sonst den Figurbuchstaben aus der Notation
 	ZugVon: /*Listener*/		'',	// Reihe (rank) und Spalte (file) des Ausgangsfeldes eines Zugs

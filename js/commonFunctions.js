@@ -443,18 +443,28 @@ function startMouseUp() {
     console.log('firePlayerMove2');
 }
 
-function firePlayerMove() {
+function firePlayerMove() { 
 
     T_Zuege.ZugAktion       = ""; // später
     T_Zuege.ZugZeichen      = ""; // später oder nie
-    T_Zuege.ZugKurz         = FIGURNOTATION[T_Zuege.ZugFigur] + T_Zuege.ZugNach;
-     // Hier fehlt noch ein Dialog für den gewünschten Figurenname
-     if(T_Zuege.ZugFigur.toUpperCase() == 'P' && (T_Zuege.ZugNach.slice(-1) == '1' || T_Zuege.ZugNach.slice(-1) == '8')) {
+
+    // Hier fehlt noch ein Dialog für den gewünschten Figurenname. Als Einfachlösung: immer in eine Dame umwandeln
+    if(T_Zuege.ZugFigur.toUpperCase() == 'P' && (T_Zuege.ZugNach.slice(-1) == '1' || T_Zuege.ZugNach.slice(-1) == '8')) {
         T_Zuege.ZugUmwandlung   = T_Zuege.ZugFarbe == WEISSAMZUG ? 'Q' : 'q';
-   } else {
+    } else {
         T_Zuege.ZugUmwandlung   = "";
     }
-    T_Zuege.ZugStockfish    = T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung; 
+
+    // Rochaden kodieren
+    if(T_Zuege.ZugFigur.toUpperCase() == 'K' && (T_Zuege.ZugVon.substr(0, 1) == 'e' && T_Zuege.ZugNach.substr(0, 1) == 'g')) {
+        T_Zuege.ZugKurz = '0-0';
+    } else if(T_Zuege.ZugFigur.toUpperCase() == 'K' && (T_Zuege.ZugVon.substr(0, 1) == 'e' && T_Zuege.ZugNach.substr(01, 1) == 'c')) {
+        T_Zuege.ZugKurz = '0-0-0';
+    } else {
+        T_Zuege.ZugKurz = FIGURNOTATION[T_Zuege.ZugFigur] + T_Zuege.ZugNach;
+    }
+
+    T_Zuege.ZugStockfish = T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung.toLowerCase(); 
 
     T_Zuege_undo = Object.assign({}, T_Zuege);
     
@@ -462,11 +472,7 @@ function firePlayerMove() {
     EngineScores    = [];
     Playerwdl       = [];
     Enginewdl       = [];
-
-
-   console.log(JSON.stringify(T_Zuege));
-
-    switch (GlobalActionContext) {
+   switch (GlobalActionContext) {
         case AC_CHALLENGE_PLAY:
             GlobalActionStep = AS_CHECKCHALLENGEMOVE;
             $("#TriggerTag").trigger("SetFenPosition", [ T_Zuege.FEN ] );
@@ -478,11 +484,9 @@ function firePlayerMove() {
             $("#TriggerTag").trigger("SetFenPosition", [ T_Zuege.FEN ]);
             $("#TriggerTag").trigger("validateMove", [ T_Zuege.ZugStockfish /* + T_Zuege.ZugUmwandlung */ ]);
             break;
-        case AC_CHALLENGE_VARIATIONS:
-            GlobalActionStep = AS_CV_VERIFYPLAYERMOVE;
-            $("#TriggerTag").trigger("UciNewGame");
-            $("#TriggerTag").trigger("SetFenPosition", [ T_Zuege.FEN ]);
-            $("#TriggerTag").trigger("validateMove", [ T_Zuege.ZugStockfish /* + T_Zuege.ZugUmwandlung */ ]);
+        case AC_CHALLENGE_Varianten:
+
+            PlayChallengeVarianten();
             break;
         default:
             GlobalActionStep = AS_PREPAREMOVE;

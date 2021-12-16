@@ -66,7 +66,7 @@ if($DesiredFunction == 'AufgabeundZug') { // wird nicht benutzt. Aufgabe und Zü
 
   $AufgabeID = $_GET['AufgabeID'];
 
-  $sqlcmd_AufgabeundZug = $pdo->prepare("SELECT * FROM V_Aufgaben_Zuege where AufgabeID = " . $AufgabeID . " order by Kurztext");
+  $sqlcmd_AufgabeundZug = $pdo->prepare("SELECT * FROM V_AufgabenZuege where AufgabeID = " . $AufgabeID . " order by Kurztext");
   $sqlcmd_AufgabeundZug->execute();
 
   $result = $sqlcmd_AufgabeundZug->fetchAll(PDO::FETCH_ASSOC);

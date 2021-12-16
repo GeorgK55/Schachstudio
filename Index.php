@@ -33,8 +33,10 @@
 	<script type="text/javascript" language="javascript" src="js/AppUtils.js"></script>
 	<script type="text/javascript" language="javascript" src="js/ChessUtils.js"></script>
 	<script type="text/javascript" language="javascript" src="js/ShowFunctions.js"></script>
+	<script type="text/javascript" language="javascript" src="js/importDataFunctions.js"></script>
 	<script type="text/javascript" language="javascript" src="js/getDataFunctions.js"></script>
 	<script type="text/javascript" language="javascript" src="js/putDataFunctions.js"></script>
+	<script type="text/javascript" language="javascript" src="js/ChallengeVarianten.js"></script>	
 	<script type="text/javascript" language="javascript" src="js/rest.js"></script>
 	<script type="text/javascript" language="javascript" src="js/stockfish.js"></script>
 	<script type="text/javascript" language="javascript" src="js/sf_messagelistener_functions.js"></script>
@@ -116,8 +118,8 @@
 					<fieldset>
 						<legend>Bitte auswählen</legend>
 						<input type="radio" id="r_Spiel" 		name="Spielinteraktion" onclick="setSpielinteraktion('AC_CHALLENGE_PLAY');" 		value="Spiel">				<label for="r_Spiel">Spiel ohne Hinweise</label><br>
-						<input type="radio" id="r_Hinweise" 	name="Spielinteraktion" onclick="setSpielinteraktion('AC_CHALLENGE_RATING');" 		value="Hinweise" checked>	<label for="r_Hinweise">Mit Bewertungshinweisen</label><br>
-						<input type="radio" id="r_Varianten" 	name="Spielinteraktion" onclick="setSpielinteraktion('AC_CHALLENGE_VARIATIONS');" 	value="Varianten">			<label for="r_Varianten">Mit Varianten</label><br>
+						<input type="radio" id="r_Hinweise" 	name="Spielinteraktion" onclick="setSpielinteraktion('AC_CHALLENGE_RATING');" 		value="Hinweise">	<label for="r_Hinweise">Mit Bewertungshinweisen</label><br>
+						<input type="radio" id="r_Varianten" 	name="Spielinteraktion" onclick="setSpielinteraktion('AC_CHALLENGE_Varianten');" 	value="Varianten" checked>			<label for="r_Varianten">Mit Varianten</label><br>
 					</fieldset>
 				</article>
 				<article id="a_LogKonfigurationSpielen" class="LogKonfig">
@@ -241,8 +243,11 @@
 						<span class="zugmarker" id="zugmarkeraufgabeschwarz">&#11035;</span>
 					</div>
 				</div>
-				<div id="div_NotationAufgabe" class="notation">
+				<!-- <div id="div_NotationAufgabe" class="notation">
 					<table id="NotationstabelleAufgabe"></table>
+				</div> -->
+				<div id="div_TreeNotationPlayChallenge" class="flexnotation">
+					<div id="TreeNotationslistePlayChallenge"></div>
 				</div>
 			</article>
 			<article id="SpielButtons">
@@ -414,7 +419,6 @@
 				<div id="div_TreeNotationImport" class="flexnotation">
 					<div id="TreeNotationslisteImport"></div>
 				</div>
-				</div>
 			</article>
 		</section>
 		<section id="s_EngineDialog">
@@ -493,9 +497,9 @@
 				<p>Es gibt einen stärkeren Zug als <span id="RatingSpielerzug"></span></p>
 				<p id="Zugalternative"><span id="Zugvorschlag"></span>&nbsp;<span id="Zugbewertung"></span></p>
 			</div>
-			<div id="dialog_Variationszug" 		class="hiddendialog">
-				<p>Es gibt einen stärkeren Zug als <span id="VariationsSpielerzug"></span></p>
-				<p id="EngineZugalternative"><span id="VariationsZugvorschlag"></span></p>
+			<div id="dialog_Variantenzug" 		class="hiddendialog">
+				<p>Es gibt einen stärkeren Zug als <span id="VariantenSpielerzug"></span></p>
+				<p id="EngineZugalternative"><span id="VariantenZugvorschlag"></span></p>
 			</div>
 			<div id="dialog_LichessImport" 		class="hiddendialog">
 				<p>Bitte die Kennung der Studie und des Kapitels eintragen (siehe Beispiel)</p>

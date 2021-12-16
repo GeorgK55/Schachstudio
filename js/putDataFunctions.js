@@ -25,7 +25,8 @@ function AufgabeSpeichern() {
                     Scope:          $('#ScopeImport').val(),
                     Skill:          $('#SkillImport').val(),
                     studie:         lichess_studie,
-                    kapitel:        lichess_kapitel
+                    kapitel:        lichess_kapitel,
+                    pgn:            T_Aufgabe.PGN
                   },  
       success:    AufgabeSpeichernErfolg
     })

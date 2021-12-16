@@ -7,11 +7,11 @@ const FEN_PARTIEANFANG = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0
 const AC_GAMEIMPORT				= "GameImport";
 const AC_CHALLENGE_PLAY			= "SolveChallengePlay";
 const AC_CHALLENGE_RATING		= "SolveChallengeRating";
-const AC_CHALLENGE_VARIATIONS	= "SolveChallengeVariations";
+const AC_CHALLENGE_Varianten	= "SolveChallengeVarianten";
 const AC_ENGINEDIALOG			= "EngineDialog";
 
 // ActionSteps für AC_GAMEIMPORT
-const AS_IDENTIYUNIQUEMOVE 	= "ExpectPossibleMoves";
+const AS_IDENTIFYUNIQUEMOVE 	= "ExpectPossibleMoves";
 const AS_INTERPRETELOCATEDMOVE		= "ExpectMoveFinished";
 const AS_FINISHPOSSIBLEMOVESIDENTIFICATION	= "FinishPossibleMoves";
 
@@ -31,10 +31,10 @@ const AS_FINISHPLAYERMOVE		= "FinishPlayerMove";
 const AS_DRAWRATINGENGINEMOVE	= "DrawRatingEngineMove";
 const AS_FINISHRATINGENGINEMOVE	= "FINISHRatingEngineMove";
 
-// ActionSteps für AC_CHALLENGE_VARIATIONS
-const AS_CV_VERIFYPLAYERMOVE			= "CV_VerifyMove";
-const AS_CV_VERIFYPLAYERMOVEFINISHED	= "CV_VerifyMoveFinished";
-const AS_CV_DRAWVARIATIONSMOVE			= "CV_DrawVariationsMove";
+// ActionSteps für AC_CHALLENGE_Varianten
+const AS_CV_VERIFYMOVE			= "CV_VerifyMove";
+const AS_CV_VERIFYMOVEFINISHED	= "CV_VerifyMoveFinished";
+const AS_CV_DRAWVariantenMOVE	= "CV_DrawVariantenMove";
 
 const WEISSAMZUG		= "weiß";
 const SCHWARZAMZUG		= "schwarz";
@@ -92,3 +92,7 @@ const r_bestmove = new RegExp("bestmove (?<movevon>[abcdefgh]{1}[12345678]{1})(?
 
 const DefaultMove_w = "...";
 const DefaultMove_b = "&nbsp;";
+const NodePräfix 	= "N_";
+const MovePräfix 	= "M_";
+const WhitePostfix 	= "_w";
+const BlackPostfix 	= "_b";

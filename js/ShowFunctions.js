@@ -36,6 +36,7 @@ function showChallengegeorg(ChallengeID) {
         stockFish.postMessage('quit');
     }
 
+    // hier, obwohl nicht in allen Spielinteraktionen nötig
     TheIndexGeorgFunction();
     //TheIndexExperimentFunction();
 		
@@ -57,10 +58,43 @@ function showChallengegeorg(ChallengeID) {
             GlobalActionContext = AC_CHALLENGE_RATING;
             break;
         case "Varianten":
-            GlobalActionContext = AC_CHALLENGE_VARIATIONS;
+            GlobalActionContext = AC_CHALLENGE_Varianten;
+            // NotationstabelleAufgabe initiieren
+	        $('#TreeNotationslistePlayChallenge').empty()
+                                          .append('<ul></ul>')
+                                          .jstree({ 'plugins': [ "themes" ],
+                                                        'core' : { 
+                                                        'check_callback':   true,
+                                                        'open_parents':     true,
+                                                        'load_open':        true,
+                                                        'themes':           { 'icons': false }
+            }});
+            $('#TreeNotationslistePlayChallenge').jstree().create_node('#', {
+                "id": SituationsDaten.PreNodeId,
+                "text": "o"
+            }, "last", function() {
+                //alert("startnode created");
+            });
+
             break;
         default:
-            GlobalActionContext = AC_CHALLENGE_VARIATIONS;
+
+        // NotationstabelleAufgabe initiieren
+	        $('#TreeNotationslistePlayChallenge').empty()
+                                          .append('<ul></ul>')
+                                          .jstree({'core': { 
+                                                                'check_callback':   true,
+                                                                'open_parents':     true,
+                                                                'load_open':        true,
+                                                                'themes': 			{ 'icons': false }
+            }});
+            $('#TreeNotationslistePlayChallenge').jstree().create_node('#', {
+                "id": SituationsDaten.PreNodeId,
+                "text": "o"
+            }, "last", function() {
+                //alert("startnode created");
+            });
+
             break;                                
     }
 
@@ -84,7 +118,7 @@ function showChallengegeorg(ChallengeID) {
 
             MoveMouseDown = false;
 
-            console.log('event.target.id' + event.target.id);
+            console.log('mouseup event.target.id: ' + event.target.id);
 
             T_Zuege.ZugNach = event.target.id.substr(event.target.id.length - 2, 2);
 

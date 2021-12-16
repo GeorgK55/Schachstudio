@@ -31,9 +31,10 @@ if($DesiredFunction == 'AufgabeSpeichern') {
   $Skill        = $_POST['Skill'];
   $studie       = $_POST['studie'];
   $kapitel      = $_POST['kapitel'];
+  $pgn          = $_POST['pgn'];
 
-  $sqlcmd_Aufgabe = $pdo->prepare("INSERT INTO T_Aufgaben (Kurztext, Langtext, Quelle, Quelledetail, ImportQuelle, Ab, AmZug, FEN, Scope, Skill, lichess_studie, lichess_kapitel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
-  if($sqlcmd_Aufgabe->execute(array($Kurztext, $Langtext, $Quelle, $Quelledetail, $ImportQuelle, $Ab, $AmZug, $FEN, $Scope, $Skill, $studie, $kapitel))) {
+  $sqlcmd_Aufgabe = $pdo->prepare("INSERT INTO T_Aufgaben (Kurztext, Langtext, Quelle, Quelledetail, ImportQuelle, Ab, AmZug, FEN, Scope, Skill, lichess_studie, lichess_kapitel, PGN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+  if($sqlcmd_Aufgabe->execute(array($Kurztext, $Langtext, $Quelle, $Quelledetail, $ImportQuelle, $Ab, $AmZug, $FEN, $Scope, $Skill, $studie, $kapitel, $pgn))) {
  
     $neue_id = $pdo->lastInsertId();
     echo "Neue Aufgabe mit id $neue_id erfolgreich neu angelegt";
@@ -88,7 +89,9 @@ if($DesiredFunction == 'Zugliste') {
   $sqlcmd_Zugliste = $pdo->prepare("INSERT INTO T_Zuege (" . 
         "AufgabeID," .
         "FEN," .
-        "ZugId," .
+        "CurMoveIndex," .
+        "CurMoveId," .
+        "PreMoveId," .
         "ZugNummer," .
         "ZugLevel," .
         "ZugFarbe," .
@@ -103,7 +106,7 @@ if($DesiredFunction == 'Zugliste') {
         "ZugUmwandlung," .
         "ZugZeichen," .
         "Hinweistext," .
-        "Hinweispfeil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        "Hinweispfeil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
  
   $ImportCounter = 0;
 
@@ -112,7 +115,9 @@ if($DesiredFunction == 'Zugliste') {
     if($sqlcmd_Zugliste->execute(array(
       $_POST['AufgabenID'],
       $Zugliste[$i]['FEN'],
-      $Zugliste[$i]['ZugId'],
+      $Zugliste[$i]['CurMoveIndex'],
+      $Zugliste[$i]['CurMoveId'],
+      $Zugliste[$i]['PreMoveId'],
       $Zugliste[$i]['ZugNummer'],
       $Zugliste[$i]['ZugLevel'],
       $Zugliste[$i]['ZugFarbe'],

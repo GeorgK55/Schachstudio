@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
-	GlobalActionContext = AC_CHALLENGE_RATING;
+	GlobalActionContext = AC_CHALLENGE_Varianten;
+	//GlobalActionContext = AC_CHALLENGE_RATING;
 	//GlobalActionContext = AC_CHALLENGE_PLAY
 	GlobalActionStep  	= ""; 
 
