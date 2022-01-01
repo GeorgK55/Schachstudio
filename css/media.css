@@ -1,0 +1,27 @@
+@media screen and (min-width: 1000px) {
+
+    #btn_NeueAufgabe:after      {    content: 'Neue Aufgabe';                   }
+    #btn_VerbindeAufgabe:after  {    content: 'Aufgabe mit Thema kombinieren'   }
+    #btn_TrenneAufgabe:after    {    content: 'Aufgabe und Thema trennen'       }
+    #btn_EntferneAufgabe:after  {    content: 'Aufgabe entfernen'               }
+
+}
+@media screen and (max-width: 1000px) {
+
+    #sx_Themensection   {   width: 40%;     }   
+    #sx_Aufgabensection {	width: 60%;     }
+    #sx_Aktionensection {   width: 100%;    }
+}
+@media screen and (max-width: 600px) {
+
+    #sx_Themensection   {   width: 100%;    }   
+    #sx_Aufgabensection {	width: 100%;    }
+    #sx_Aktionensection {   width: 100%;    }
+
+    h1 {    font-size: 1.3em;}
+
+    #btn_NeueAufgabe:after      {    content: 'Neu';            }
+    #btn_VerbindeAufgabe:after  {    content: 'Kombinieren';    }
+    #btn_TrenneAufgabe:after    {    content: 'Trennen'         }
+    #btn_EntferneAufgabe:after  {    content: 'Entfernen'       }
+}

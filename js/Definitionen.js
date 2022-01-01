@@ -23,6 +23,8 @@ SituationsDaten = {
 	ZugNummer:			"",
 	Text_w:				DefaultMove_w,
 	Text_b:				DefaultMove_b,
+	FEN_w:				"",
+	FEN_b:				"",
 	SituationsStack:	[]
 };
 
@@ -105,4 +107,14 @@ MultiPV 					= 1;
 GlobalImportedPGN 		= [];
 GlobalImportedPGNIndex 	= 0;
 
-
+TouchDaten = { 
+	id: 		"",
+	clientX: 	"",
+	clientY: 	"",
+	pageX: 		"",
+	pageY: 		"",
+	screenX: 	"",
+	screenY: 	"",
+	radiusX: 	"",
+	radiusY: 	"",
+}

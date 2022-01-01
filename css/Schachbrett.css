@@ -5,9 +5,13 @@ pre .specialchar 	{	display:inline-block;	width: 18px;  /* Find the right value 
 .chessboard      { width: 800px; height: 800px; margin: 10px; border: 2px solid #333; border-spacing: 0px; }
 
 .chessboardGeorg { width: 60vh;  height: 60vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
+.chessboardMini { width: 16vh;  height: 16vh;  margin: 1px; border: 1px solid #333; border-spacing: 0px; position: absolute; }
 .Brett_Koordinaten { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
-.Brett_s           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; vertical-align:middle; font-weight: 900; background-color: rgb(224, 133, 67);    }
-.Brett_w           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; vertical-align:middle; font-weight: 900; background-color: #fff;                 }
+.cB_K { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
+.Brett_s           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; vertical-align:middle; font-weight: 300; background-color: rgb(224, 179, 67);    } 
+.cB_s           { float: left; width: 2vh; height: 2vh; text-align:center; font-size:1.3em; vertical-align:middle; font-weight: 300; background-color: rgb(224, 179, 67);    } 
+.Brett_w           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; /*vertical-align:middle;*/ font-weight: 300; background-color: #fff;                 }
+.cB_w           { float: left; width: 2vh; height: 2vh; text-align:center; font-size:1.3em; vertical-align:middle; font-weight: 300; background-color: #fff;                 }
 
 
 .chessboardGeorgImport   { width: 40vh;  height: 40vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
@@ -15,4 +19,10 @@ pre .specialchar 	{	display:inline-block;	width: 18px;  /* Find the right value 
 .Brett_sImport           { float: left; width: 4vh; height: 4vh; text-align:center; font-size:2.0em; vertical-align:middle; background-color: SaddleBrown; display: table-cell; }
 .Brett_wImport           { float: left; width: 4vh; height: 4vh; text-align:center; font-size:2.0em; vertical-align:middle; background-color: #fff;        display: table-cell; }
 
+.xbtooltip {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+}
 
+.inner {  vertical-align: middle; }

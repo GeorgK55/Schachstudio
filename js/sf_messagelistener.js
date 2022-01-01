@@ -2,9 +2,9 @@ function TheOriginalIndexFunction() {
   
   var
       stockFish = null,
-      stateElem = document.getElementById("Chess State"),
-      inputElem = document.getElementById("Chess Input"),
-      hoverElem = document.getElementById("Chess Hover"),
+      stateElem = document.getElementById("ChessState"),
+      inputElem = document.getElementById("ChessInput"),
+      hoverElem = document.getElementById("ChessHover"),
       gameMoves = "position startpos moves ",
       tentativeGameMoves = gameMoves,
       lastFen = "",

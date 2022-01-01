@@ -98,6 +98,7 @@ function scanMetaData(Importtext) {
 
 	// Maskieren, da sonst die Fehlermeldung "groups für null" kommt
 	var m_Kurztext = (/(\[Event \")(?<event>.*)(?<![\"\]])/g).exec(Importtext);
+	// safari: (?![\[Event "])(.*)(?![^\"\]])
 	if (m_Kurztext == null) {
 		T_Aufgabe.Kurztext = "Fehlt";
 		$('#KurztextImport').val("Fehlt");

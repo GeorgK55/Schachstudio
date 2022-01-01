@@ -17,7 +17,7 @@ function getThemes() {
 			AddTreeviewSubItems(Themes, item, 'ul_Themenliste');
 		});
 
-		$(function () { $('#div_Themenliste').on('changed.jstree', function (e, data) {
+		$(function () { $('#ThemenlisteTree').on('changed.jstree', function (e, data) {
 
 			var i, r = [];
 			

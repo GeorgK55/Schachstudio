@@ -1,4 +1,15 @@
 $(document).ready(function(){
+	
+	(function () {
+		var zähler = 0;
+		document.getElementById("btn_Trainer")
+				.addEventListener("click", function() {
+				   zähler++;
+				   alert("Das war Klick Nr. " + zähler);
+				});
+	}());
+
+	$('.developerfeatures').addClass('vanishMe');
 
 	GlobalActionContext = AC_CHALLENGE_Varianten;
 	//GlobalActionContext = AC_CHALLENGE_RATING;
@@ -11,7 +22,7 @@ $(document).ready(function(){
 	GlobalEnginelogActive = false;
 
 	$( "[id^='s_']" ).hide();
-	$('#s_Willkommen').show();
+	$('#s_Willkommen').show(); //  s_lichess
 
 	getThemes();
 	$('#cb_Aufgabeauswahl').prop( "checked", true );
@@ -23,9 +34,6 @@ $(document).ready(function(){
 		$('#Kommandostart').val($( "select option:selected" )[0].value + ' ');		
 	});
 
-	//TheIndexGeorgFunction();
-	//TheIndexExperimentFunction();
-	//
 });
 
 
@@ -59,5 +67,29 @@ function countdouble() {
 	console.log('b');
 	console.log('c');
 	console.log('d');
+}
+
+function ZeigeTouchDaten() { 
+	console.dir(touchstart);
+	console.table(touchstart);
+	console.log(JSON.stringify(touchstart));
+
+	TouchdatenArray = [];
+	$.each(touchstart, function(k, v) {
+		console.log(v);
+		TouchdatenArray.push( {
+			id: 		v.target.id,
+			clientX:	v.clientX.toFixed(2),
+			clientY:	v.clientY.toFixed(2),
+			pageX:		v.pageX.toFixed(2),
+			pageY:		v.pageY.toFixed(2),
+			screenX:	v.screenX.toFixed(2),
+			screenY:	v.screenY.toFixed(2),
+			radiusX:	v.radiusX.toFixed(2),
+			radiusY:	v.radiusY.toFixed(2),
+		});
+	});
+	console.table(TouchdatenArray);
+	console.log('xxxxxxxxxxxxx');
 }
 

@@ -48,7 +48,7 @@ function showChallengegeorg(ChallengeID) {
     $( "#cb_EngineAus" ).prop( "checked", true );
     
     // NotationstabelleAufgabe initiieren
-    $('#NotationstabelleAufgabe').empty().append('<tr><th data-fen="unbenutzt"></th><th data-fen="unbenutzt">weiß</th><th data-fen="unbenutzt">schwarz</th></tr>');
+    //$('#NotationstabelleAufgabe').empty().append('<tr><th data-fen="unbenutzt"></th><th data-fen="unbenutzt">weiß</th><th data-fen="unbenutzt">schwarz</th></tr>');
 
     switch ($('input[name="Spielinteraktion"]:checked').val()) {
         case "Spiel":
@@ -60,14 +60,16 @@ function showChallengegeorg(ChallengeID) {
         case "Varianten":
             GlobalActionContext = AC_CHALLENGE_Varianten;
             // NotationstabelleAufgabe initiieren
-	        $('#TreeNotationslistePlayChallenge').empty()
-                                          .append('<ul></ul>')
-                                          .jstree({ 'plugins': [ "themes" ],
-                                                        'core' : { 
-                                                        'check_callback':   true,
-                                                        'open_parents':     true,
-                                                        'load_open':        true,
-                                                        'themes':           { 'icons': false }
+            $('#div_TreeNotationPlayChallenge').empty()
+	            .append('<div id="TreeNotationslistePlayChallenge"></div>')
+                .append('<ul></ul>');
+
+            $('#TreeNotationslistePlayChallenge').jstree({ 'plugins': [ "themes" ],
+                            'core' : { 
+                            'check_callback':   true,
+                            'open_parents':     true,
+                            'load_open':        true,
+                            'themes':           { 'icons': false }
             }});
             $('#TreeNotationslistePlayChallenge').jstree().create_node('#', {
                 "id": SituationsDaten.PreNodeId,
@@ -98,29 +100,27 @@ function showChallengegeorg(ChallengeID) {
             break;                                
     }
 
-
     $('[id^=Brett_SpieleAufgabe_]')
-    .mousedown(function() {
+    .mousedown(function(evx) {
 
         if(event.target.children.length > 0) { // nur dann steht eine Figur auf dem Feld
 
-            T_Zuege.ZugVon      = event.target.id.substr(event.target.id.length - 2, 2);
-            //T_Zuege.ZugFarbe    = $(event.target).hasClass('Brett_w') ? WEISSAMZUG : SCHWARZAMZUG; // ??? das ist einfach falsch
-            T_Zuege.ZugFigur    = event.target.lastChild.id.substr(0, 1);
+            T_Zuege.ZugVon      = evx.target.id.substr(evx.target.id.length - 2, 2);
+            T_Zuege.ZugFigur    = evx.target.lastChild.id.substr(0, 1);
 
             MoveMouseDown = true;
-            event.preventDefault();
+            evx.preventDefault();
         }
     })
-    .mouseup(function() {
+    .mouseup(function(evx) {
 
         if(MoveMouseDown) {
 
-            MoveMouseDown = false;
+            console.log('mouseup event.target.id: ' + evx.target.id);
 
-            console.log('mouseup event.target.id: ' + event.target.id);
-
-            T_Zuege.ZugNach = event.target.id.substr(event.target.id.length - 2, 2);
+            MoveMouseDown   = false;
+            T_Zuege.ZugNach = evx.target.id.substr(evx.target.id.length - 2, 2);
+            evx.preventDefault();
 
             firePlayerMove();
         }
@@ -128,9 +128,84 @@ function showChallengegeorg(ChallengeID) {
     });
 
     MoveMouseDown   = false;
-    MoveMouseUp     = false;
-	
-    getChallenge(ChallengeID);
+
+    $('[id^=Brett_SpieleAufgabe_]')
+    .on('touchstart',function(evx) {
+        console.log('touchstart' + evx.originalEvent.srcElement);
+
+        T_Zuege.ZugVon      = evx.originalEvent.srcElement.firstElementChild.id.substr(2, 2);
+        T_Zuege.ZugFigur    = evx.originalEvent.srcElement.firstElementChild.id.substr(0, 1);
+
+        MoveMouseDown = true;
+        evx.preventDefault();
+    })
+    .on('touchmove',function(evx) {
+        //console.log(evx.changedTouches[0]);
+        //console.log(evx.targetTouches.length);
+        //console.log(evx.changedTouches.length);
+        evx.preventDefault();
+    })
+    .on('touchend',function(evx) {
+        console.log('touchend  ' + evx.originalEvent.srcElement);
+        console.log('x und y  ' + evx.changedTouches[0].pageX + ' ' + evx.changedTouches[0].pageY);
+
+        var endTarget = document.elementFromPoint(
+            evx.changedTouches[0].pageX,
+            evx.changedTouches[0].pageY - window.scrollY
+        ).id.slice(-2);
+      
+        T_Zuege.ZugNach = endTarget;
+        evx.preventDefault();
+
+        firePlayerMove();
+    })
+    ;
+
+    var a8 = document.getElementById('Brett_SpieleAufgabe_a8').getBoundingClientRect();
+    //var h8 = document.getElementById('Brett_SpieleAufgabe_h8').getBoundingClientRect();
+
+    var filebase = a8.left;
+    var rankbase = a8.top;
+    var fieldsize = a8.height; // Es müssen Quadrate sein
+    filebounds = [];
+    rankbounds = [];
+    for (i = 0; i < 8; i++) {
+        filebounds.push(filebase + fieldsize * i);
+        rankbounds.push(rankbase + fieldsize * i);
+    }
+
+    Felder = [];
+    var dummy = $('[id^=Brett_SpieleAufgabe_]').each(function(idx, elem) {
+        var i = 0;
+        Felder.push(elem.getBoundingClientRect());
+        //document.getElementById(elem.id).addEventListener("touchstart", touchstartfunction);
+        //document.getElementById(elem.id).addEventListener("touchmove", touchmovefunction);
+        //document.getElementById(elem.id).addEventListener("touchend", touchendfunction);
+
+    });
+    //
+    var k = 0;
+
+    function touchstartfunction(evx) {
+        var j = 0; 
+    }
+    function touchmovefunction(evx) {
+        var j = 0; 
+    }
+    function touchendfunction(evx) {
+         var endTarget = document.elementFromPoint(
+            evx.changedTouches[0].pageX,
+            evx.changedTouches[0].pageY
+        );
+
+        var dummy = evx.target.getBoundingClientRect();
+        var dummy2 = evx.changedTouches[0];
+
+       var j = 0; 
+    }
+	//$('#ThemaId').addEventListener('touchstart',jumpToPosition);
+
+    getChallenge(ChallengeID); 
 
 }
 
@@ -194,7 +269,7 @@ function showSpielerinfo() {
 
 function showTrainerinfo() {
 
-    $( "[id^='s_']" ).hide();
-    $('#s_Trainerinfo').show();
+    //$( "[id^='s_']" ).hide();
+    //$('#s_Trainerinfo').show();
 
 }

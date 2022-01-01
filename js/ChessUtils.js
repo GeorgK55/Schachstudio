@@ -1,9 +1,134 @@
-function StellungAufbauenTest(div_Brett, FEN, ZugmarkerPräfix) {
-}    
+// Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
+function ErzeugeTooltip(Situation, BrettArray, TooltipId, Farbe) {
 
+    var FEN_rows;
+    if (Farbe == WEISSAMZUG) {
+        FEN_rows = Situation.FEN_w.split(" ")[0].split("/");
+        //console.log(Situation.FEN_w);
+        //console.log(FEN_rows);
+    } else {
+        FEN_rows = Situation.FEN_b.split(" ")[0].split("/");
+        //console.log(Situation.FEN_b);
+        //console.log(FEN_rows);
+    }
 
+    var i, k;
+    var Brett_idx = 0;
+    var returnstring = '';
 
-    // Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
+    for (i = 0; i < 8; i++) {
+        var FEN_row = FEN_rows[i]; // Zeile extrahieren
+        FileCounter = 0; // Zeigt auf die aktuelle Stelle in der Reihe
+        var j; // die Stellen in der FEN-Zeile
+        for (j = 0; j < FEN_row.length; j++) {
+            // Bei einer Zahl in der FEN-Zeile einfach hochzählen (das sind Felder ohne Figuren)
+            if($.isNumeric(FEN_row[j])) {
+                FileCounter = parseInt(FEN_row[j]);
+                for (k = 0; k < FileCounter; k++) {
+                    returnstring += BrettArray[Brett_idx];
+                    //console.log('Brett_idx: ' + Brett_idx + ' k:' + k);
+                    Brett_idx++;
+                }                
+            } else {
+                //console.log('Brett_idx: ' + Brett_idx + ' i:' + i + ' j: ' + j);
+                switch (FEN_row[j])
+                {
+                    case 'P': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.P + '<'); break; }
+                    case 'p':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.p + '<'); break; }
+                    case 'K': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.K + '<'); break; }
+                     case 'k':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.k + '<'); break; }
+                    case 'Q': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.Q + '<'); break; }
+                     case 'q':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.q + '<'); break; }
+                    case 'R': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.R + '<'); break; }
+                     case 'r':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.r + '<'); break; }
+                    case 'N': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.N + '<'); break; }
+                     case 'n':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.n + '<'); break; }
+                    case 'B': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.B + '<'); break; }
+                     case 'b':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.b + '<'); break; }
+                 }
+                 Brett_idx++;
+            }
+        } 
+    } 
+    $('#tooltips').append( "<div class='chessboardMini' id='" + TooltipId + "'>"+ returnstring + "</div>");
+}
+
+// Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
+function MiniStellungAufbauen(BrettArray, FEN) {
+
+    var FEN_rows = FEN.split("/"); // Jede Zeile wird getrennt übertragen
+    var files = ("abcdefgh").split(''); // das wird dann Teil des jquery-Identifikators. Für die Zahlen ist das ja nicht nötig
+
+    var i, k;
+    var Brett_idx = 0;
+    var returnstring = '';
+
+    for (i = 0; i < 8; i++) {
+        var FEN_row = FEN_rows[i]; // Zeile extrahieren
+        FileCounter = 0; // Zeigt auf die aktuelle Stelle in der Reihe
+        var j; // die Stellen in der FEN-Zeile
+        for (j = 0; j < FEN_row.length; j++) {
+            // Bei einer Zahl in der FEN-Zeile einfach hochzählen (das sind Felder ohne Figuren)
+            if($.isNumeric(FEN_row[j])) {
+                FileCounter += parseInt(FEN_row[j]);
+                for (k = 0; k < FileCounter; k++) {
+                    returnstring += BrettArray[Brett_idx];
+                }                
+            } else {
+
+                // Zusammenbauen des Feldnamens
+                var rank = 8 - i; // FEN beginnt bei der achten Reihe
+                var file = files[FileCounter];
+                var Feldname = '_' + file + rank;
+
+                // das Figursymbol in das div (=Feld) eintragen und dann gleich noch das span einfügen
+                switch (FEN_row[j])
+                {
+                    case 'P': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.P + '<'); break; }
+                    case 'p':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.p + '<'); break; }
+                    case 'K': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.K + '<'); break; }
+                     case 'k':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.k + '<'); break; }
+                    case 'Q': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.Q + '<'); break; }
+                     case 'q':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.q + '<'); break; }
+                    case 'R': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.R + '<'); break; }
+                     case 'r':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.r + '<'); break; }
+                    case 'N': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.N + '<'); break; }
+                     case 'n':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.n + '<'); break; }
+                    case 'B': 
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.B + '<'); break; }
+                     case 'b':
+                        { returnstring += BrettArray[Brett_idx].replace('><', '>' + FIGUREN.b + '<'); break; }
+                 }
+                FileCounter++;
+            }
+        } 
+    } 
+    return returnstring;
+}
+
+// Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
 function StellungAufbauen(div_Brett, FEN, ZugmarkerPräfix) {
 
     var FEN_rows = FEN.split("/"); // Jede Zeile wird getrennt übertragen
@@ -31,8 +156,12 @@ function StellungAufbauen(div_Brett, FEN, ZugmarkerPräfix) {
                 switch (FEN_row[j])
                 {
                     case 'P': 
+                    // So soll es einmal aussehen
+                    //{ $('#' + Feldname).html('<span class="inner" id="P_'+file+rank+'">' + FIGUREN.P + '</span>'); break; }
                     { $('#' + Feldname).html(FIGUREN.P).append('<span id="P_'+file+rank+'"></span>'); break; }
                     case 'p':
+                    // So soll es einmal aussehen
+                    //{ $('#' + Feldname).html('<span class="inner" id="p_'+file+rank+'">' + FIGUREN.p + '</span>'); break; }
                     { $('#' + Feldname).html(FIGUREN.p).append('<span id="p_'+file+rank+'"></span>'); break; }
                     case 'K': 
                     { $('#' + Feldname).html(FIGUREN.K).append('<span id="K_'+file+rank+'"></span>'); break; }
@@ -170,10 +299,37 @@ function SchreibeZug(Tabellenname) {
     } 
 }
 
-function jumpToPosition() {
-    var ii = 0;
+function jumpToPosition(FEN) {
+window.open("",'x','width=200,height=200,toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=no,resizable=0');
+}
 
-    alert(event.target.getAttribute('data-fen'));
+function xjumpToPosition(FEN) {
+    var ii = 0;
+    //alert(FEN);
+
+    MiniPosition = $( "#dialog_Miniboard" ).dialog({
+        title: "Falscher Zug",
+        height: 200,
+        width: 200,
+        modal: false,
+        open: function () {
+            //alert('dialog_Miniboard open');
+        }
+        /*,
+        buttons: {
+            Ok: function() {
+                $(this).dialog('close');
+            }
+        }*/
+    });
+
+    //alert(event.target.getAttribute('data-fen'));
+}  
+
+function showPosition(FEN) {
+
+    $('#' + event.srcElement.id).append('<span id="mini_' + event.srcElement.id + '">CH</span>');
+
 }  
 
 function addNewNotationLine(Tabellenname, Zugnummer, Level) {

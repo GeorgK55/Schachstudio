@@ -1,3 +1,8 @@
+function IAmTouched(evx) {
+    alert('IAmTouched');
+    console.log(event);
+    //alert(evx.targetTouches); 
+}
 
 // Als Funktion implementiert. Eventlistener waren nicht möglich, weil jquery die Tags nicht selektiert hat
 // Grundlage ist ein Beispiel für Treeviews bei w3schools
@@ -9,12 +14,12 @@ function toggle_ul(itemID) {
 
 function NeuesThema() {
     
-    if($('#div_Themenliste').jstree().get_selected(true).length == 0) {
+    if($('#ThemenlisteTree').jstree().get_selected(true).length == 0) {
         alert("Bitte vorher ein Thema auswählen");
         return;
     }
     else {
-        Knoten = $('#div_Themenliste').jstree().get_selected(true)[0].id.split('_');
+        Knoten = $('#ThemenlisteTree').jstree().get_selected(true)[0].id.split('_');
     }
     
     NeuesThemaDialog = $( "#dialog_neuesthema" ).dialog({
@@ -56,7 +61,7 @@ function VerbindeAufgabe() {
         return;
     }
 
-    Themaknoten = $('#div_Themenliste').jstree().get_selected(true)[0].id.split('_');
+    Themaknoten = $('#ThemenlisteTree').jstree().get_selected(true)[0].id.split('_');
     Aufgabetext = $( "#ul_Aufgabenliste li.ui-selected" )[0].innerText;
 
     AufgabeVerbindenDialog = $( "#dialog_AufgabeVerbinden" ).dialog({
@@ -95,7 +100,7 @@ function TrenneAufgabe() {
         alert('Bitte vorher sowohl Thema als auch Aufgabe auswählen');
     }
 
-    Themaknoten = $('#div_Themenliste').jstree().get_selected(true)[0].id.split('_');
+    Themaknoten = $('#ThemenlisteTree').jstree().get_selected(true)[0].id.split('_');
     Aufgabetext = $( "#ul_Aufgabenliste li.ui-selected" )[0].innerText;
 
     AufgabeTrennenDialog = $( "#dialog_AufgabeTrennen" ).dialog({
@@ -123,14 +128,14 @@ function TrenneAufgabe() {
 
 function EntferneThema() {
 
-    if($('#div_Themenliste').jstree().get_selected(true).length == 0) { 
+    if($('#ThemenlisteTree').jstree().get_selected(true).length == 0) { 
         alert("Bitte vorher ein Thema auswählen");
         return;
-    } else if(!$('#div_Themenliste').jstree().is_leaf($('#div_Themenliste').jstree().get_selected(true)[0])) { // Man beachte das Ausrufezeichen
+    } else if(!$('#ThemenlisteTree').jstree().is_leaf($('#ThemenlisteTree').jstree().get_selected(true)[0])) { // Man beachte das Ausrufezeichen
         alert('Zur Zeit dürfen nur Themen ohne untergeordnete Themen entfernt werden');
     }
     else {
-        Knoten = $('#div_Themenliste').jstree().get_selected(true)[0].id.split('_');
+        Knoten = $('#ThemenlisteTree').jstree().get_selected(true)[0].id.split('_');
     }
 
     ThemaEntfernenDialog = $( "#dialog_themaentfernen" ).dialog({
@@ -224,7 +229,7 @@ function toggleEnginelog(CheckboxID) {
             height: 800,
             width: 1000,
             modal: false,
-            position: { my: "left top", at: "left top", of: "#div_Themenliste" },
+            position: { my: "left top", at: "left top", of: "#ThemenlisteTree" },
             open: function() {  console.log('open Enginelog');  },
             close: function( event, ui ) {
                 console.log('close in close');
@@ -420,8 +425,8 @@ function Aufgabeauswahl() {
         GlobalThemaId = ALLEAUFGABENANZEIGEN; 
         $('#btn_Aufgabeauswahl').html("Aufgaben nur zu einem Thema anzeigen")
     } else {
-        if($('#div_Themenliste').jstree().get_selected(true).length > 0) {
-            GlobalThemaId = $('#div_Themenliste').jstree().get_selected(true)[0].li_attr["data-themaid"]
+        if($('#ThemenlisteTree').jstree().get_selected(true).length > 0) {
+            GlobalThemaId = $('#ThemenlisteTree').jstree().get_selected(true)[0].li_attr["data-themaid"]
         } else {
             GlobalThemaId = THEMA0AUFGABENANZEIGEN;
         }
