@@ -42,6 +42,9 @@ const ZIEHT				= "-";
 const SCHLÄGT			= "x";
 const MATT				= "#";
 
+const SPIELER = "spieler";
+const AUFGABE = "aufgabe";
+
 const ALLEAUFGABENANZEIGEN 	= -1;
 const THEMA0AUFGABENANZEIGEN = 0;
 
@@ -54,6 +57,8 @@ const r_Punkte 				= new RegExp("(\\d{1,2})(\\.{3})", "g");
 // Hinter öffnende und vor schließende Klammern ein Blank einfügen damit die Klammern sicher ein eigenes Splitelement werden.
 const r_KlammernAuf 			= new RegExp("([\\[\\{\\(])", "g");
 const r_KlammernZu  			= new RegExp("([\\]\\}\\)])", "g");
+// Aufeindanderfolgende Klammern zusätzlich trennen
+const r_KlammernZuAuf 			= new RegExp("([\\)])([\\(])", "g");
 
 // Je nach Exporteinstellungen kann es sein, dass die weißen Züge direkt hinter den Zugnummern stehen, Trennen.
 const r_Zugnummern 			= new RegExp("(\\d{1,2}\\.{1})([abcdefgh]{1}|[KDTSL]{1})|(\\d{1,2}\\.{1})(0{1})", "g");
@@ -90,6 +95,7 @@ const r_Zugnummer = new RegExp("^\\d{1,2}\\.{1}$");
 
 const r_bestmove = new RegExp("bestmove (?<movevon>[abcdefgh]{1}[12345678]{1})(?<movenach>[abcdefgh]{1}[12345678]{1})(?<umwandlung>[QqRrBbNn]{0,1})");
 
+const DefaultFEN	= "&nbsp;";
 const DefaultMove_w = "...";
 const DefaultMove_b = "&nbsp;";
 const NodePräfix 	= "N_";

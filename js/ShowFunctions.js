@@ -8,6 +8,14 @@ function showNeueAufgabe() {
     $( "[id^='s_']" ).hide();
     $('#s_NeueAufgabe').show();
 
+    $('#ul_importaufgaben').empty();
+    $('#ImportAreaText').empty();
+
+    BrettLeeren('Brett_ImportAufgabe');
+
+    $('#ScrollWrapperImport').empty()
+        .append('<div id="TreeNotationslisteImport"></div>');
+
     console.clear();
     $('#logliste').empty();
 
@@ -46,9 +54,28 @@ function showChallengegeorg(ChallengeID) {
     $( "#cb_Enginelog" ).prop( "checked", false );
     $( "#cb_EngineEin" ).prop( "checked", true );
     $( "#cb_EngineAus" ).prop( "checked", true );
-    
+
+    Stellungsdaten.init();
+
+    $('#ScrollWrapperPlay').empty()
+    .append('<div id="TreeNotationslistePlayChallenge"></div>');
+
     // NotationstabelleAufgabe initiieren
-    //$('#NotationstabelleAufgabe').empty().append('<tr><th data-fen="unbenutzt"></th><th data-fen="unbenutzt">weiß</th><th data-fen="unbenutzt">schwarz</th></tr>');
+    $('#TreeNotationslistePlayChallenge').empty()
+        .append('<ul></ul>')
+        .jstree({   'plugins':  [ "themes" ],
+                    'core' :    { 
+                                    'check_callback':   true,
+                                    'open_parents':     true,
+                                    'load_open':        true,
+                                    'themes':           { 'icons': false }
+    }});
+    $('#TreeNotationslistePlayChallenge').jstree().create_node('#', {
+        "id": Stellungsdaten.PreNodeId,
+        "text": "o"
+    }, "last", function() {
+        //alert("PreNodeId created");
+    });
 
     switch ($('input[name="Spielinteraktion"]:checked').val()) {
         case "Spiel":
@@ -59,58 +86,26 @@ function showChallengegeorg(ChallengeID) {
             break;
         case "Varianten":
             GlobalActionContext = AC_CHALLENGE_Varianten;
-            // NotationstabelleAufgabe initiieren
-            $('#div_TreeNotationPlayChallenge').empty()
-	            .append('<div id="TreeNotationslistePlayChallenge"></div>')
-                .append('<ul></ul>');
-
-            $('#TreeNotationslistePlayChallenge').jstree({ 'plugins': [ "themes" ],
-                            'core' : { 
-                            'check_callback':   true,
-                            'open_parents':     true,
-                            'load_open':        true,
-                            'themes':           { 'icons': false }
-            }});
-            $('#TreeNotationslistePlayChallenge').jstree().create_node('#', {
-                "id": SituationsDaten.PreNodeId,
-                "text": "o"
-            }, "last", function() {
-                //alert("startnode created");
-            });
-
+            addNotationlineFlag = true;
             break;
         default:
-
-        // NotationstabelleAufgabe initiieren
-	        $('#TreeNotationslistePlayChallenge').empty()
-                                          .append('<ul></ul>')
-                                          .jstree({'core': { 
-                                                                'check_callback':   true,
-                                                                'open_parents':     true,
-                                                                'load_open':        true,
-                                                                'themes': 			{ 'icons': false }
-            }});
-            $('#TreeNotationslistePlayChallenge').jstree().create_node('#', {
-                "id": SituationsDaten.PreNodeId,
-                "text": "o"
-            }, "last", function() {
-                //alert("startnode created");
-            });
-
+            GlobalActionContext = AC_CHALLENGE_Varianten;
+            addNotationlineFlag = true;
             break;                                
     }
+
 
     $('[id^=Brett_SpieleAufgabe_]')
     .mousedown(function(evx) {
 
-        if(event.target.children.length > 0) { // nur dann steht eine Figur auf dem Feld
+        if(evx.target.innerText != "") { // nur dann steht eine Figur auf dem Feld
 
-            T_Zuege.ZugVon      = evx.target.id.substr(evx.target.id.length - 2, 2);
-            T_Zuege.ZugFigur    = evx.target.lastChild.id.substr(0, 1);
+            T_Zuege.ZugVon      = evx.target.id.slice(-2);
+            T_Zuege.ZugFigur    = evx.target.id.slice(0, 1);
 
             MoveMouseDown = true;
-            evx.preventDefault();
         }
+        evx.preventDefault();
     })
     .mouseup(function(evx) {
 
@@ -119,7 +114,7 @@ function showChallengegeorg(ChallengeID) {
             console.log('mouseup event.target.id: ' + evx.target.id);
 
             MoveMouseDown   = false;
-            T_Zuege.ZugNach = evx.target.id.substr(evx.target.id.length - 2, 2);
+            T_Zuege.ZugNach = evx.target.id.slice(-2);
             evx.preventDefault();
 
             firePlayerMove();
@@ -133,8 +128,8 @@ function showChallengegeorg(ChallengeID) {
     .on('touchstart',function(evx) {
         console.log('touchstart' + evx.originalEvent.srcElement);
 
-        T_Zuege.ZugVon      = evx.originalEvent.srcElement.firstElementChild.id.substr(2, 2);
-        T_Zuege.ZugFigur    = evx.originalEvent.srcElement.firstElementChild.id.substr(0, 1);
+        T_Zuege.ZugVon      = evx.target.id.slice(-2);
+        T_Zuege.ZugFigur    = evx.target.id.slice(0, 1);
 
         MoveMouseDown = true;
         evx.preventDefault();

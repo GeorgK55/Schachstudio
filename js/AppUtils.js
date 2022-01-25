@@ -18,3 +18,22 @@ function ConfigureEngine(context) {
 	postit('ucinewgame');
 	postit('isready');
 }
+
+function showFirstAid() {
+
+	var Hilfekandidaten = $.grep(ChallengeMoves, function(PMI, i) { 
+		return PMI['PreMoveId'] == Stellungsdaten.CurMoveId;
+	});
+
+	$.each(Hilfekandidaten, function(i, HK) {
+		//$('span[id$=' + HK.ZugVon + ']')[0].classList.remove("erstehilfe");
+		//$('span[id$=' + HK.ZugVon + ']')[0].classList.add('erstehilfe'); // Achtung: nach span darf kein Leerzeichen kommen
+		//console.log('showFirstAid');
+		//$('span[id$=' + HK.ZugVon + ']').animate({opacity: 0.1}, 100, function() {console.log('XXXXX');});
+		//$('span[id$=' + HK.ZugVon + ']').fadeTo( "fast", 0.2 ).fadeTo( "slow", 1.0 ).fadeTo( "fast", 0.2 ).fadeTo( "slow", 1.0 );
+		$('span[id$=' + HK.ZugVon + ']').removeClass('erstehilfe');
+		$('span[id$=' + HK.ZugVon + ']').width();
+		$('span[id$=' + HK.ZugVon + ']').addClass('erstehilfe'); // Achtung: nach span darf kein Leerzeichen kommen
+
+	});	
+}

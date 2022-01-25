@@ -1,14 +1,18 @@
 html, body  {   background-color: lightblue;    display: inline;    margin: 0px;    font-family: "Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;    }
 #seite      {   background-color: silver;       display: flex;  flex-direction: column; box-sizing: border-box;                                             }
 
-header 	    {   height: 5vh;    background-color: Gold; text-align:center;  vertical-align:middle;  }
-footer      {   height: 5vh;    background-color: Gold; text-align:center;  vertical-align:middle;  width: 100%;   position:absolute;  bottom: 0;  }
-header p    {   font-weight: 800;   }
-#sx_Mitte   {   display: flex;  flex-wrap: wrap;   }
+header 	    {   display:none;                       background-color: Gold; text-align:center;  vertical-align:middle;  }
+footer      {   display:none;       height: 5vh;    background-color: Gold; text-align:center;  vertical-align:middle;  width: 100%;   position:absolute;  bottom: 0;  }
+#sx_Mitte   {   display: flex;      flex-wrap: wrap;   }
+
+.ShowSmall  {   display:none;  }
+.ShowMedium {   display:none;   }
+.ShowLarge  {   display:none;   }
+
 
 #sx_Themensection 		{	width: 15%;	    height:90vh;    background-color: BurlyWood;            display: flex;  flex-direction: column; }
-#sx_Aufgabensection 		{	width: 35%;	    height:90vh;	background-color: LemonChiffon;         display: flex;  flex-direction: column; }
-#sx_Aktionensection     		{	width: 50%;	    height:90vh;	    }
+#sx_Aufgabensection 	{	width: 35%;	    height:90vh;	background-color: LemonChiffon;         display: flex;  flex-direction: column; }
+#sx_Aktionensection     {	width: 50%;	    height:90vh;	    }
 #s_PartieSpielen		{	width: 100%;    height:90vh;	background-color: FloralWhite;          display: flex;  flex-direction: column; }
 #s_AufgabenSpielen 	    {	width: 100%;    height:90vh;	background-color: Wheat;                display: flex;  flex-direction: column; }
 #s_NeueAufgabe			{	width: 100%;    height:90vh;	background-color: Wheat;                display: flex;  flex-direction: column; }
@@ -18,6 +22,8 @@ header p    {   font-weight: 800;   }
 #s_Spielerinfo          {   width: 100%;    height:90vh;                                              display: flex;  flex-direction: column; }
 #s_lichess              {   width: 100%;    height:90vh;                                              display: flex;  flex-direction: column; }
 
+#AufgabeUndKonfiguration    { margin: 1vh 1vw;  }
+
 #a_Aufgabe_KonfUndMeta,
 #a_usedcommands, 
 .LogKonfig              {	width:50%;  float:left;     }
@@ -25,31 +31,25 @@ header p    {   font-weight: 800;   }
 #a_Sonderfunktionen     {   height:10vh;                }
 /*#a_BrettUndImport       {	width:100%;                 }*/
 #a_Spielkonfiguration   {   width: 40%; float: left;    }
-#a_ImportAufgabe        {   display:flex;   height:60%; }
+#a_ImportAufgabe        {   display:flex;   height:50%; }
 #a_Welcome              {   height:100%;    display: flex;  flex-direction: column; justify-content: center;    align-items: center;    }
 #a_Kommandos            {   display: flex;  flex-direction: column; }
 
 #ThemenlisteButtons, #AufgabelisteButtons   { display: flex;  flex-direction: column; justify-content: center;  }
 
-.Brett  {   display: flex;  justify-content: space-around;}
+.ImportBrett    {   margin: 1vh 1vw;  height:40%; display: flex;  justify-content: space-around;}
+.AufgabeBrettUndZug   {   margin: 1vh 1vw;              display: flex;  justify-content: space-around;  align-items: center;    }
 
 #Spielerinfo_div    {   margin: 5vh;    }
 #Trainerinfo_div    {   margin: 5vh;    }
 
-/*
-pre {   font-size: 12px;    margin: 0px;    }
-pre .specialchar {
-    display:inline-block;
-    width: 21px;  /+ Find the right value +/
-}
-*/
 ul {    margin-block-start: 0.3em;    margin-block-end: 0.3em;  list-style-type: none;  }
 
 #debugLogKonfiguration                  {    margin-top: 3vh;    width: 80%;    }
 #usedcommands                           {   width: 80%; margin:1vw; display: flex;  flex-direction: column; }
 #Kommandostart, #Regexstart             {   width: 60%; float:left; }
 #Kommandopool, #div_Kommandoarchiv      {	width:50%;	height:300px;   overflow-y:scroll;	}
-#ImportAreaText	                        {	width:90%;	height:40%;    /*display: flex;*/	}
+#ImportAreaText	                        {	width:90%;	height:50%;    /*display: flex;*/	}
 #ImportAreaButtons, #fileareabuttons    {   margin:2vh;                 }
 /*#f_Aufgabedaten                     {   width: 50%;   display:flex;   }*/
 
@@ -66,14 +66,12 @@ li input[type="text"]	{	width:70%;	}
                     width: 20vw;  
                 }
 .flexnotation   {   height:100%;     
-                    overflow-y:scroll;  
                     width: 20vw;  
                     display: flex; 
                     flex-flow: row wrap;
-                    flex-direction: row;
+                    flex-direction: column;
                     flex-wrap: wrap;   
                 }
-/*.jstree-themeicon { display:none !important; } ging doch über themes zu lösen */ 
 
 .movewhite {   width: 4vw;  display: inline-block;  padding-left: 0.5vw;  background-color:white;  }
 .moveblack {   width: 4vw;  display: inline-block;  padding-left: 0.5vw;  background-color:Gainsboro;  }
@@ -94,8 +92,8 @@ li input[type="text"]	{	width:70%;	}
 
 /*#a_Aufgabedaten {	width:100%; 	}*/
 #Brett_ImportAufgabe, #Brett_SpieleAufgabe, #dialog_Miniboard  {	display:flex;   }
-
-span { font-weight: 600; }
+.SpieleAufgabe  {   display: flex;  flex-direction: column;   }
+#BrettUndMarker {   display: flex;  }   
 
 #ModaleFenster {    visibility: hidden; width:50%; float: left;} 
 .imgfigur   {   width:20%; float: left;  margin-right: 2vw; margin-top: 1vh;    } /* ist nur für das Damensymbol im neuesThema-Fenster*/
@@ -151,6 +149,7 @@ span { font-weight: 600; }
 .appearMe   {   visibility: visible;    }
 .CenterMe {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
 }

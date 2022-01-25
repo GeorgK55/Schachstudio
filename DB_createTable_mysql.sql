@@ -16,6 +16,7 @@ ALTER TABLE T_Aufgaben AUTO_INCREMENT=0;
 --delete from T_Themen;
 --ALTER TABLE T_Zuege AUTO_INCREMENT=0;
 
+--SELECT `AufgabeID`,`PreMoveId`,`CurMoveIndex`,`CurMoveId`,`FEN`,`ZugLevel`,`ZugNummer`,`ZugFarbe`,`ZugKurz`,`ZugStockfish` FROM `V_AufgabenZuegeWichtig` WHERE `AufgabeID` = 5
 
 CREATE TABLE T_Zuege (
     Id                 INT          NOT NULL AUTO_INCREMENT,
@@ -24,6 +25,7 @@ CREATE TABLE T_Zuege (
     CurMoveId          varchar(16)  DEFAULT 'M_0' NULL,
     PreMoveId          varchar(16)  DEFAULT 'M_0' NULL,
     FEN                varchar(128) DEFAULT NULL,
+    NAG                varchar(16)  DEFAULT NULL,
     ZugNummer          INT          DEFAULT 0 NULL,
     ZugLevel           INT          DEFAULT 0 NULL,
     ZugFarbe           varchar(8)   DEFAULT NULL,
@@ -114,6 +116,34 @@ CREATE VIEW V_AufgabenZuege
 			  T_Zuege.CurMoveId, 
 			  T_Zuege.PreMoveId, 
 			  T_Zuege.FEN, 
+			  T_Zuege.NAG, 
+			  T_Zuege.ZugNummer, 
+			  T_Zuege.ZugLevel, 
+			  T_Zuege.ZugFarbe, 
+			  T_Zuege.ZugOriginal,
+			  T_Zuege.ZugFigur,
+			  T_Zuege.ZugVon,
+			  T_Zuege.ZugNach,
+			  T_Zuege.ZugKurz,
+			  T_Zuege.ZugLang,
+			  T_Zuege.ZugStockfish,
+			  T_Zuege.ZugAktion,
+			  T_Zuege.ZugZeichen,
+			  T_Zuege.ZugUmwandlung,
+			  T_Zuege.Hinweistext, 
+			  T_Zuege.Hinweispfeil 
+FROM   T_Aufgaben INNER JOIN
+           T_Zuege ON T_Aufgaben.Id = T_Zuege.AufgabeID;
+DROP VIEW IF EXISTS V_AufgabenZuegeWichtig;  
+CREATE VIEW V_AufgabenZuegeWichtig
+	AS SELECT T_Aufgaben.Kurztext, 
+			  T_Aufgaben.FEN as FEN_Aufgabe, 
+			  T_Aufgaben.AmZug, 
+			  T_Zuege.AufgabeID, 
+			  T_Zuege.CurMoveIndex, 
+			  T_Zuege.CurMoveId, 
+			  T_Zuege.PreMoveId, 
+			  T_Zuege.FEN, 
 			  T_Zuege.ZugNummer, 
 			  T_Zuege.ZugLevel, 
 			  T_Zuege.ZugFarbe, 
@@ -155,6 +185,7 @@ SELECT Id,
     ZugOriginal as Original, 
     ZugFarbe as Farbe, 
     FEN, 
+    NAG, 
     ZugFigur as Figur, 
     ZugVon as Von, 
     ZugNach as Nach, 

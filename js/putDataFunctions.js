@@ -126,12 +126,12 @@ function AufgabeSpeichernErfolg(responseData) {
   NeueAufgabeID = parseInt((/\d+ erfolgreich neu angelegt/g).exec(responseData));
   //alert(NeueAufgabeID);
 
-  $('#cb_Aufgabeauswahl').prop( "checked", true );
   getChallenges(ALLEAUFGABENANZEIGEN);
 
   if(NeueAufgabeID > 0) {
 
     var i = 0;
+    console.table(Zugliste);
     console.log(JSON.stringify(Zugliste));
 
     $.ajax({
@@ -151,9 +151,8 @@ function AufgabeSpeichernErfolg(responseData) {
 };
 function AufgabeEntfernenErfolg(responseData) {   
   
-  // Die korrekte Behalung der Fehlersituationen kommt noch!!!
+  // Die korrekte Behand‚lung der Fehlersituationen kommt noch!!!
 
-  $('#cb_Aufgabeauswahl').prop( "checked", true );
   getChallenges(ALLEAUFGABENANZEIGEN);
   
 };
@@ -178,7 +177,7 @@ function ThemaUndAufgabeErfolg(responseData) {
 
   //var Zuganzahl = parseInt((/\d+ Züge erfolgreich neu kombiniert./g).exec(responseData));
 
-  alert("Thema und Aufgabe wurden verbunden");
+  alert("Thema und Aufgabe erledigt");
 
 }
 

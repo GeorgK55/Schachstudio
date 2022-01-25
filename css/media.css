@@ -1,27 +1,69 @@
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1px) {
+
+    #sx_Themensection   {   width: 100%;    }   
+    #sx_Aufgabensection {	width: 100%;    }
+    #sx_Aktionensection {   width: 100%;    }
+
+    h1          {   font-size: 1.3em;   margin-bottom: 0px; } 
+    header p    {   font-weight: 800;   margin-top: 10px;   margin-bottom:5px;   }
+
+    .KomfortButton {    padding: 5px 0px;   }
+
+    .ShowSmall  {   display:block;  }
+    
+    #btn_NeueAufgabe:after      {    content: 'Neu';            }
+    #btn_VerbindeAufgabe:after  {    content: 'Kombinieren';    }
+    #btn_TrenneAufgabe:after    {    content: 'Trennen'         }
+    #btn_EntferneAufgabe:after  {    content: 'Entfernen'       }
+
+    .chessboardGeorg    { width: 60vh;  height: 60vh;  margin: 2px; border: 2px solid #333; border-spacing: 0px; }
+    .Brett_Koordinaten  { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.0em; vertical-align:middle; }
+    .Brett_w, .Brett_s  { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.0em; vertical-align:middle; font-weight: 300;    }
+    .inner              { vertical-align: middle; } /* nur als Merkposten */
+
+    /*.zugmarkercolumn    {   display: none;  }*/
+    .flexnotation       {   width: 40vw;    }
+}
+
+@media screen and (min-width: 768px) {
+
+    header      {   display: block; }
+    header p    {   font-weight: 800;   margin-top: 0px;   margin-bottom: 10px;   }
+
+    .ShowMedium {   display:block;   }
+
+    #sx_Themensection   {   width: 40%; }   
+    #sx_Aufgabensection {	width: 60%; }
+    #sx_Aktionensection {   width: 100%;    }
+
+    #btn_NeueAufgabe:after      {    content: 'Neu';            }
+    #btn_VerbindeAufgabe:after  {    content: 'Kombinieren';    }
+    #btn_TrenneAufgabe:after    {    content: 'Trennen'         }
+    #btn_EntferneAufgabe:after  {    content: 'Entfernen'       }
+
+    .chessboardGeorg { width: 60vh;  height: 60vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
+    .Brett_Koordinaten  { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
+    .Brett_w, .Brett_s  { float: left; width: 6vh; height: 6vh; text-align:center; font-size:2.0em; vertical-align:middle; font-weight: 300;    }
+}
+
+
+@media screen and (min-width: 1200px) {
+
+    header, footer {    display: block; height: 5vh;    }
+
+    .ShowLarge  {   display:block;   }
+
+    #sx_Themensection   {   width: 15%; }   
+    #sx_Aufgabensection {	width: 30%; }
+    #sx_Aktionensection {   width: 55%; }
 
     #btn_NeueAufgabe:after      {    content: 'Neue Aufgabe';                   }
     #btn_VerbindeAufgabe:after  {    content: 'Aufgabe mit Thema kombinieren'   }
     #btn_TrenneAufgabe:after    {    content: 'Aufgabe und Thema trennen'       }
     #btn_EntferneAufgabe:after  {    content: 'Aufgabe entfernen'               }
 
+    .chessboardGeorg { width: 60vh;  height: 60vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
+    .Brett_Koordinaten  { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
+    .Brett_w, .Brett_s  { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; vertical-align:middle; font-weight: 300;    }
 }
-@media screen and (max-width: 1000px) {
 
-    #sx_Themensection   {   width: 40%;     }   
-    #sx_Aufgabensection {	width: 60%;     }
-    #sx_Aktionensection {   width: 100%;    }
-}
-@media screen and (max-width: 600px) {
-
-    #sx_Themensection   {   width: 100%;    }   
-    #sx_Aufgabensection {	width: 100%;    }
-    #sx_Aktionensection {   width: 100%;    }
-
-    h1 {    font-size: 1.3em;}
-
-    #btn_NeueAufgabe:after      {    content: 'Neu';            }
-    #btn_VerbindeAufgabe:after  {    content: 'Kombinieren';    }
-    #btn_TrenneAufgabe:after    {    content: 'Trennen'         }
-    #btn_EntferneAufgabe:after  {    content: 'Entfernen'       }
-}

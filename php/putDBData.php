@@ -89,6 +89,7 @@ if($DesiredFunction == 'Zugliste') {
   $sqlcmd_Zugliste = $pdo->prepare("INSERT INTO T_Zuege (" . 
         "AufgabeID," .
         "FEN," .
+        "NAG," .
         "CurMoveIndex," .
         "CurMoveId," .
         "PreMoveId," .
@@ -106,7 +107,7 @@ if($DesiredFunction == 'Zugliste') {
         "ZugUmwandlung," .
         "ZugZeichen," .
         "Hinweistext," .
-        "Hinweispfeil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        "Hinweispfeil) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
  
   $ImportCounter = 0;
 
@@ -115,6 +116,7 @@ if($DesiredFunction == 'Zugliste') {
     if($sqlcmd_Zugliste->execute(array(
       $_POST['AufgabenID'],
       $Zugliste[$i]['FEN'],
+      $Zugliste[$i]['NAG'],
       $Zugliste[$i]['CurMoveIndex'],
       $Zugliste[$i]['CurMoveId'],
       $Zugliste[$i]['PreMoveId'],

@@ -1,23 +1,25 @@
 /*Die Figuren im Schachbrett (aus ASCII-Chess kopiert) */
-pre 				{	font-size: 32px;																	}
-pre .specialchar 	{	display:inline-block;	width: 18px;  /* Find the right value */					} 
+pre 				{	font-size: 32px;                        }
+pre .specialchar 	{	display:inline-block;	width: 18px;    } 
+
+.Brett_w, .Brett_wImport    { background-color: #fff;               } 
+.Brett_s, .Brett_sImport    { background-color: rgb(224, 179, 67);  }
 
 .chessboard      { width: 800px; height: 800px; margin: 10px; border: 2px solid #333; border-spacing: 0px; }
 
-.chessboardGeorg { width: 60vh;  height: 60vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
 .chessboardMini { width: 16vh;  height: 16vh;  margin: 1px; border: 1px solid #333; border-spacing: 0px; position: absolute; }
-.Brett_Koordinaten { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
-.cB_K { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
-.Brett_s           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; vertical-align:middle; font-weight: 300; background-color: rgb(224, 179, 67);    } 
-.cB_s           { float: left; width: 2vh; height: 2vh; text-align:center; font-size:1.3em; vertical-align:middle; font-weight: 300; background-color: rgb(224, 179, 67);    } 
-.Brett_w           { float: left; width: 6vh; height: 6vh; text-align:center; font-size:3.0em; /*vertical-align:middle;*/ font-weight: 300; background-color: #fff;                 }
-.cB_w           { float: left; width: 2vh; height: 2vh; text-align:center; font-size:1.3em; vertical-align:middle; font-weight: 300; background-color: #fff;                 }
+.cB_K               { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em; vertical-align:middle; }
 
+.cB_w, .cB_s        { float: left; width: 2vh; height: 2vh; text-align:center; font-size:1.0em; vertical-align:middle; font-weight: 300; }
+.cB_w               { background-color: #fff;               } 
+.cB_s               { background-color: rgb(224, 179, 67);  } 
 
-.chessboardGeorgImport   { width: 40vh;  height: 40vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
-.Brett_KoordinatenImport { float: left; width: 4vh; height: 4vh; text-align:center; font-size:1.0em; vertical-align:middle; }
-.Brett_sImport           { float: left; width: 4vh; height: 4vh; text-align:center; font-size:2.0em; vertical-align:middle; background-color: SaddleBrown; display: table-cell; }
-.Brett_wImport           { float: left; width: 4vh; height: 4vh; text-align:center; font-size:2.0em; vertical-align:middle; background-color: #fff;        display: table-cell; }
+.chessboardGeorgImport   { width: 30vh;  height: 30vh;  margin: 10px; border: 2px solid #333; border-spacing: 0px; }
+.Brett_KoordinatenImport { float: left; width: 3vh; height: 3vh; text-align:center; font-size:1.0em; vertical-align:middle; }
+.Brett_sImport           { float: left; width: 3vh; height: 3vh; text-align:center; font-size:1.5em; vertical-align:middle; display: table-cell; }
+.Brett_wImport           { float: left; width: 3vh; height: 3vh; text-align:center; font-size:1.5em; vertical-align:middle; display: table-cell; }
+
+.variantezeiger {   font-weight: 900;   text-align: center; }
 
 .xbtooltip {
     display: none;
@@ -25,4 +27,26 @@ pre .specialchar 	{	display:inline-block;	width: 18px;  /* Find the right value 
     background-color: #fff;
 }
 
-.inner {  vertical-align: middle; }
+.ScrollMe   {   height:80%; overflow-y:auto; }
+
+#TreeNotationslistePlayChallenge a  { white-space:normal !important; height: auto; padding:1px 2px; } 
+#TreeNotationslisteImport a         { white-space:normal !important; height: auto; padding:1px 2px; } 
+
+.Comment_w {  background-color:white;       }
+.Comment_b {  background-color:Gainsboro;   }
+
+.erstehilfe {   animation: ZeigeErsteHilfe 1s ease 0s 2 normal forwards;   }
+.ohnehilfe  {   animation: none;  }
+
+@keyframes ZeigeErsteHilfe {
+    0%,
+    50%,
+    100% {
+      opacity: 1;
+    }
+  
+    25%,
+    75% {
+      opacity: 0;
+    }
+  }

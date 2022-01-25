@@ -280,17 +280,27 @@ function onFileLoaded (e) {
 }
 
 function onFileLoadedend (e) { 
-
     
     document.getElementById("ImportAreaText").innerHTML = e.target.result;
-    ImportText = e.target.result;
 
-    GlobalImportedPGN = e.target.result.split("\n\n\n");
+    prepareImportedData();
+}
+function prepareImportedData() {
+
+    $('#ul_importaufgaben').empty();
+    $('#ScrollWrapperImport').empty().append('<div id="TreeNotationslisteImport"></div>');
+    BrettLeeren('Brett_ImportAufgabe');
+
+    GlobalImportedPGN = document.getElementById("ImportAreaText").innerHTML.split("\n\n\n");
+
+    console.log(document.getElementById("ImportAreaText").innerHTML);
 
     for(i = 0; i < GlobalImportedPGN.length; i++) {
         var aufgabetext = (/(\[Event \")(?<event>.*)(?<![\"\]])/g).exec(GlobalImportedPGN[i]);
-        var newitem = '<li id="importedpgn_' + i + '">' + aufgabetext[2] + '</li>';
-        $(newitem).appendTo('#ul_importaufgaben'); 
+        if(aufgabetext != null) {
+            var newitem = '<li id="importedpgn_' + i + '">' + aufgabetext.groups.event + '</li>';
+            $(newitem).appendTo('#ul_importaufgaben'); 
+        }
     }
 
     $( "#ul_importaufgaben" ).selectable({
@@ -299,6 +309,11 @@ function onFileLoadedend (e) {
             GlobalImportedPGNIndex = ui.selected.id.split("_")[1];
             scanMetaData(GlobalImportedPGN[GlobalImportedPGNIndex]);	
             StellungAufbauen("Brett_ImportAufgabe", T_Aufgabe.FEN, 'zugmarkerimport');
+
+            $('#ScrollWrapperImport').empty()
+            .append('<div id="TreeNotationslisteImport"></div>');
+    
+            document.getElementById("ImportAreaText").innerHTML = GlobalImportedPGN[GlobalImportedPGNIndex];
         }
     });
 }
@@ -491,11 +506,16 @@ function firePlayerMove() {
             break;
         case AC_CHALLENGE_Varianten:
 
-            PlayChallengeVarianten();
+            PlayChallengeGeorg();
+            //PlayChallengeVarianten();
             break;
         default:
             GlobalActionStep = AS_PREPAREMOVE;
             break;                                
     }    
 
+}
+
+function showChallengeTip(text) {
+$('#ChallengeTips').empty().append('<p>' + text + '</p>');
 }

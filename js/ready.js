@@ -9,7 +9,7 @@ $(document).ready(function(){
 				});
 	}());
 
-	$('.developerfeatures').addClass('vanishMe');
+	//$('.developerfeatures').addClass('vanishMe');
 
 	GlobalActionContext = AC_CHALLENGE_Varianten;
 	//GlobalActionContext = AC_CHALLENGE_RATING;
@@ -25,7 +25,6 @@ $(document).ready(function(){
 	$('#s_Willkommen').show(); //  s_lichess
 
 	getThemes();
-	$('#cb_Aufgabeauswahl').prop( "checked", true );
 	getChallenges(GlobalThemaId);
 
 	$( "button" ).button();

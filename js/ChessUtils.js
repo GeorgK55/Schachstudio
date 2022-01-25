@@ -4,12 +4,8 @@ function ErzeugeTooltip(Situation, BrettArray, TooltipId, Farbe) {
     var FEN_rows;
     if (Farbe == WEISSAMZUG) {
         FEN_rows = Situation.FEN_w.split(" ")[0].split("/");
-        //console.log(Situation.FEN_w);
-        //console.log(FEN_rows);
     } else {
         FEN_rows = Situation.FEN_b.split(" ")[0].split("/");
-        //console.log(Situation.FEN_b);
-        //console.log(FEN_rows);
     }
 
     var i, k;
@@ -156,33 +152,29 @@ function StellungAufbauen(div_Brett, FEN, ZugmarkerPräfix) {
                 switch (FEN_row[j])
                 {
                     case 'P': 
-                    // So soll es einmal aussehen
-                    //{ $('#' + Feldname).html('<span class="inner" id="P_'+file+rank+'">' + FIGUREN.P + '</span>'); break; }
-                    { $('#' + Feldname).html(FIGUREN.P).append('<span id="P_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="P_'+file+rank+'">' + FIGUREN.P + '</span>'); break; }
                     case 'p':
-                    // So soll es einmal aussehen
-                    //{ $('#' + Feldname).html('<span class="inner" id="p_'+file+rank+'">' + FIGUREN.p + '</span>'); break; }
-                    { $('#' + Feldname).html(FIGUREN.p).append('<span id="p_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="p_'+file+rank+'">' + FIGUREN.p + '</span>'); break; }
                     case 'K': 
-                    { $('#' + Feldname).html(FIGUREN.K).append('<span id="K_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="K_'+file+rank+'">' + FIGUREN.K + '</span>'); break; }
                      case 'k':
-                    { $('#' + Feldname).html(FIGUREN.k).append('<span id="k_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="k_'+file+rank+'">' + FIGUREN.k + '</span>'); break; }
                     case 'Q': 
-                    { $('#' + Feldname).html(FIGUREN.Q).append('<span id="Q_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="Q_'+file+rank+'">' + FIGUREN.Q + '</span>'); break; }
                      case 'q':
-                    { $('#' + Feldname).html(FIGUREN.q).append('<span id="q_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="q_'+file+rank+'">' + FIGUREN.q + '</span>'); break; }
                     case 'R': 
-                    { $('#' + Feldname).html(FIGUREN.R).append('<span id="R_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="R_'+file+rank+'">' + FIGUREN.R + '</span>'); break; }
                      case 'r':
-                    { $('#' + Feldname).html(FIGUREN.r).append('<span id="r_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="r_'+file+rank+'">' + FIGUREN.r + '</span>'); break; }
                     case 'N': 
-                    { $('#' + Feldname).html(FIGUREN.N).append('<span id="N_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="N_'+file+rank+'">' + FIGUREN.N + '</span>'); break; }
                      case 'n':
-                    { $('#' + Feldname).html(FIGUREN.n).append('<span id="n_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="n_'+file+rank+'">' + FIGUREN.n + '</span>'); break; }
                     case 'B': 
-                    { $('#' + Feldname).html(FIGUREN.B).append('<span id="B_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="B_'+file+rank+'">' + FIGUREN.B + '</span>'); break; }
                      case 'b':
-                    { $('#' + Feldname).html(FIGUREN.b).append('<span id="b_'+file+rank+'"></span>'); break; }
+                        { $('#' + Feldname).html('<span id="b_'+file+rank+'">' + FIGUREN.b + '</span>'); break; }
                 }
                 FileCounter++;
             }
@@ -201,56 +193,58 @@ function StellungAufbauen(div_Brett, FEN, ZugmarkerPräfix) {
 //span verschieben, dabei Umwandlungen berücksichtigen und Rochaden separat behandeln
 // Für Rochaden gibt es kein Flag, also den Zug direkt als Zeichenkette abfragen
 function ZieheZug(objZug, BoardPräfix, ZugmarkerPräfix) {
-    //console.log('ZieheZug: ' + BoardPräfix + ' ' + objZug.ZugVon + objZug.ZugNach);
-    //console.log(JSON.stringify(objZug));
+
+    // Erkennt beide Rochaden, die werden im else behandelt
     if(objZug.ZugKurz.indexOf('0-0') == -1) {
-        var Figur;
-        var Figurname;
+
+        var Figursymbol, Figurname;
+
         if(objZug.ZugUmwandlung != "") {
             console.log('In objZug ungleich "": objZug.ZugUmwandlung = ' + objZug.ZugUmwandlung);
-            Figur 		= eval('FIGUREN.' + objZug.ZugUmwandlung); // Figurzeichen der umgewandelten Figur
+            FigursymbolIndex = objZug.ZugFarbe == WEISSAMZUG ? objZug.ZugUmwandlung : objZug.ZugUmwandlung.toLowerCase();
+            Figursymbol = eval('FIGUREN.' + FigursymbolIndex);
             Figurname 	= objZug.ZugUmwandlung;
         } else if(objZug.ZugFigur.toUpperCase() == 'P' && (objZug.ZugNach.slice(-1) == '1' || objZug.ZugNach.slice(-1) == '8')) {
             console.log('In ZieheZug toUpperCase "": objZug.ZugNach.slice(-1) = ' + objZug.ZugNach.slice(-1));
             if(objZug.ZugFarbe == WEISSAMZUG) {
-                Figur                   = FIGUREN.Q;
+                Figursymbol             = FIGUREN.Q;
                 Figurname               = 'Q';
-                objZug.ZugUmwandlung   = 'Q';
+                objZug.ZugUmwandlung    = 'Q';
              } else {
-                Figur                   = FIGUREN.q;
+                Figursymbol             = FIGUREN.q;
                 Figurname               = 'q';
-                objZug.ZugUmwandlung   = 'q';
+                objZug.ZugUmwandlung    = 'q';
            }
         } else {
-            Figur 		= $('#' + BoardPräfix + objZug.ZugVon).html().substr(0, 1); // Figurzeichen retten
-            Figurname 	= $('#' + BoardPräfix + objZug.ZugVon + ' > span')[0].id.substr(0, 1); // Gilt so für Bauern und Figuren
+            Figursymbol = $('#' + BoardPräfix + objZug.ZugVon + ' :first-child').text(); // Figurzeichen retten
+            Figurname 	= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(0, 1); // Gilt so für Bauern und Figuren            
         }
-        $('#' + BoardPräfix + objZug.ZugVon).html(''); // Entfernt sowohl das Figurzeichen als auch das span
-        $('#' + BoardPräfix + objZug.ZugNach).html(Figur).append('<span id="' + Figurname + '_' + objZug.ZugNach + '"></span>');
+        $('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
+        $('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
     } else {
         if(objZug.ZugFarbe == WEISSAMZUG) {
             if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
                 $('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'a1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-                $('#' + BoardPräfix + 'c1').html(FIGUREN.K).append('<span id="K_c1"></span>');
-                $('#' + BoardPräfix + 'd1').html(FIGUREN.R).append('<span id="R_d1"></span>');
+                $('#' + BoardPräfix + 'c1').append('<span id="K_c1">' + FIGUREN.K + '</span>');
+                $('#' + BoardPräfix + 'd1').append('<span id="R_d1">' + FIGUREN.R + '</span>');
             } else {
                 $('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'h1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-                $('#' + BoardPräfix + 'g1').html(FIGUREN.K).append('<span id="K_g1"></span>');
-                $('#' + BoardPräfix + 'f1').html(FIGUREN.R).append('<span id="R_f1"></span>');
+                $('#' + BoardPräfix + 'g1').append('<span id="K_g1">' + FIGUREN.K + '</span>');
+                $('#' + BoardPräfix + 'f1').append('<span id="R_f1">' + FIGUREN.R + '</span>');
             }
         } else {
             if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
                 $('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'a8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-                $('#' + BoardPräfix + 'c8').html(FIGUREN.k).append('<span id="k_c8"></span>');
-                $('#' + BoardPräfix + 'd8').html(FIGUREN.r).append('<span id="r_d8"></span>');
+                $('#' + BoardPräfix + 'c8').append('<span id="k_c8">' + FIGUREN.k + '</span>');
+                $('#' + BoardPräfix + 'd8').append('<span id="r_d8">' + FIGUREN.r + '</span>');
             } else {
                 $('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
                 $('#' + BoardPräfix + 'h8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-                $('#' + BoardPräfix + 'g8').html(FIGUREN.k).append('<span id="k_g8"></span>');
-                $('#' + BoardPräfix + 'f8').html(FIGUREN.r).append('<span id="r_f8"></span>');
+                $('#' + BoardPräfix + 'g8').append('<span id="k_g8">' + FIGUREN.k + '</span>');
+                $('#' + BoardPräfix + 'f8').append('<span id="r_f8">' + FIGUREN.r + '</span>');
             }
         }
     }
@@ -264,7 +258,6 @@ function ZieheZug(objZug, BoardPräfix, ZugmarkerPräfix) {
     }
 }
 
-// Deprecated. Noch in ChallengePlay enthalten weil der Teil noch nicht auf jsTree umgestgellt ist
 // Das Zeichen für matt kommt in einem eigenen Aufruf (die Engine stellt das matt erst bei der Suche nach dem nächsten Zug fest)
 function SchreibeZug(Tabellenname) {
 
@@ -281,8 +274,8 @@ function SchreibeZug(Tabellenname) {
                 $('<span>' + MATT + '</span>').appendTo($('#' + Tabellenname + ' td:nth-last-child(2)').last());
                 console.log('matt mit: ');
             } else {
-                addNewNotationLine(Tabellenname, ImportDaten.ZugNummer);
-                //$('#' + Tabellenname).append('<tr><td data-fen="' + ImportDaten.ZugNummer + '"></td></td><td data-fen="' + T_Zuege.FEN + '" onclick="jumpToPosition();">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td onclick="jumpToPosition();"></td></tr>');
+                addNewNotationLine(Tabellenname, Importdaten.ZugNummer);
+                //$('#' + Tabellenname).append('<tr><td data-fen="' + Importdaten.ZugNummer + '"></td></td><td data-fen="' + T_Zuege.FEN + '" onclick="jumpToPosition();">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td onclick="jumpToPosition();"></td></tr>');
                 // Wenn mal per Klick eine gespielte Stellung angesprungen werden soll
                 // Ist hier nur der Anfang und nur für weiß. Die Rekonstruktion ist noch nicht vollständig
                 //var tdstring = '<tr><td data-fen="' + T_Zuege.FEN + '" onclick="StellungAufbauen(\'Brett_SpieleAufgabe\', \'' + T_Zuege.FEN + '\');">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td></td></tr>'
@@ -299,13 +292,18 @@ function SchreibeZug(Tabellenname) {
     } 
 }
 
+function BrettLeeren(div_Brett) {
+
+    $('[id^=' + div_Brett + '_]').html('');
+    
+}
+
 function jumpToPosition(FEN) {
 window.open("",'x','width=200,height=200,toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=no,resizable=0');
 }
 
 function xjumpToPosition(FEN) {
     var ii = 0;
-    //alert(FEN);
 
     MiniPosition = $( "#dialog_Miniboard" ).dialog({
         title: "Falscher Zug",
@@ -323,13 +321,6 @@ function xjumpToPosition(FEN) {
         }*/
     });
 
-    //alert(event.target.getAttribute('data-fen'));
-}  
-
-function showPosition(FEN) {
-
-    $('#' + event.srcElement.id).append('<span id="mini_' + event.srcElement.id + '">CH</span>');
-
 }  
 
 function addNewNotationLine(Tabellenname, Zugnummer, Level) {
@@ -337,3 +328,23 @@ function addNewNotationLine(Tabellenname, Zugnummer, Level) {
     $('#' + Tabellenname).append('<tr><td data-fen="' + Zugnummer + '"></td></td><td data-fen="' + T_Zuege.FEN + '" onclick="jumpToPosition();">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td onclick="jumpToPosition();"></td></tr>');
 
 }  
+
+function TransferZugdaten(Stellung, Zug) {
+
+    Stellung.ZugNummer  = Zug.ZugNummer;
+    Stellung.CurMoveId  = Zug.CurMoveId;
+    Stellung.FEN        = Zug.FEN;
+
+    if (Zug.ZugFarbe == WEISSAMZUG) { 
+        Stellung.Text_w = Zug.ZugKurz;
+        Stellung.FEN_w  = Zug.FEN;
+        Stellung.Text_b = DefaultMove_b;
+        Stellung.FEN_b  = DefaultFEN;
+    } else {
+        Stellung.Text_b = Zug.ZugKurz;
+        Stellung.FEN_b  = Zug.FEN;
+        Stellung.Text_w = DefaultMove_w;
+        Stellung.FEN_w  = DefaultFEN;
+    }
+
+}

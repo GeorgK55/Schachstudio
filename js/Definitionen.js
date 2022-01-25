@@ -1,39 +1,81 @@
 
 // Alle für die Analyse der importierten aktuellen Daten notwendigen Merkposten
-ImportDaten = {
-	PGN: 					[],
-	ZugNummer:				1,	// aus dem PGN-String
-	ZugLevel:				0,
-	ZugFarbe:				"",
-	PreFEN:					"",	// Die FEN, die zu diesem Zug geführt hat
-	FEN:					"",	// Die FEN, mit der dieser Zug ausgeführt wird
-	PGN_Index: 				0,  // integer, der Zähler in der do while
-	Zug_Index:				0,  // integer, wegen des asynchronen Verhaltens getDataFunctions und messagelistener
-	PreNodeId:				"",	// der letzte Knotenname im html-Tree 
-	CurNodeId:				"",	// der aktuelle Knotenname im html-Tree 
-	CurMoveId:				"", // mit stringpräfix, wird im listener eingetragen
-	VariantenStack:			[]	// Inhalt siehe ImportVarianten
+Importdaten = {
+	PGN: 				[], // Alle Teile der Datei, an Leerzeichen aufgeteilt 
+	PGN_Index: 			0,  // integer, der Zähler in der do while
+	ZugNummer:			1,	// aus dem PGN-String
+	ZugLevel:			0,
+	ZugFarbe:			"",
+	PreFEN:				"",	// Die FEN, die zu diesem Zug geführt hat
+	FEN:				"",	// Die FEN, nachdem dieser Zug ausgeführt wurde
+	FEN_w:				"",
+	FEN_b:				"",
+	PreNodeId:			"",	// der Vorgängerknotenname im html-Tree, kann parent oder sibling sein
+	CurNodeId:			"",	// der aktuelle Knotenname im html-Tree 
+	PreMoveId:			"", // Id des Vorgängerzugs, kann gleiche Ebene oder kleinere Ebene sein
+	CurMoveId:			"", // Movepräfix + PGN_Index; sind also nicht aufsteigend komplett
+	Text_w:				DefaultMove_w,
+	Text_b:				DefaultMove_b,
+	StellungsStack:		[]
 };
+Importdaten.init = function () {
+	this.PGN = 				[];
+	this.PGN_Index = 		0;  // integer; der Zähler in der do while
+	this.ZugNummer =		1;	// aus dem PGN-String
+	this.ZugLevel =			0;
+	this.ZugFarbe =			"";
+	this.PreFEN =			"";	// Die FEN; die zu diesem Zug geführt hat
+	this.FEN =				"";	// Die FEN; mit der dieser Zug ausgeführt wird
+	this.FEN_w =			"";
+	this.FEN_b =			"";
+	this.PreNodeId =		NodePräfix + '0';	// der letzte Knotenname im html-Tree 
+	this.CurNodeId =		NodePräfix + '0';	// der aktuelle Knotenname im html-Tree 
+	this.PreMoveId =		MovePräfix + '0';
+	this.CurMoveId =		MovePräfix + '0'; // mit stringpräfix; wird im listener eingetragen
+	this.Text_w =			DefaultMove_w;
+	this.Text_b =			DefaultMove_b;
+	this.StellungsStack =	[]
+}
 
 // Alle für das Nachspielen von Varianten notwendigen Merkposten
-SituationsDaten = {
+Stellungsdaten = {
+	ZugNummer:			1,
+	ZugLevel:			0,
+	ZugFarbe:			"",
 	CurNodeId:			"",
-	PreNodeId:			"N_0",
-	CurMoveId:			"M_0",
-	ZugNummer:			"",
+	PreNodeId:			NodePräfix + '0',
+	CurMoveId:			MovePräfix + '0',
 	Text_w:				DefaultMove_w,
 	Text_b:				DefaultMove_b,
 	FEN_w:				"",
 	FEN_b:				"",
-	SituationsStack:	[]
+	StellungsStack:		[]
+};
+Stellungsdaten.init = function() {
+	this.ZugNummer =		1;
+	this.ZugLevel =			0;
+	this.ZugFarbe = 		"";
+	this.CurNodeId =		"";
+	this.PreNodeId =		NodePräfix + '0';
+	this.CurMoveId =		MovePräfix + '0';
+	this.Text_w =			DefaultMove_w;
+	this.Text_b =			DefaultMove_b;
+	this.FEN_w =			"";
+	this.FEN_b =			"";
+	this.StellungsStack =	[]
+}
+ 
+StellungsStack = {
+	PreFEN: 		"",
+	FEN: 			"",
+	PreNode:		"",
+	CurNode:		"",
+	PreMove:		"",
+	CurMove:		"",
+	MoveIndex:		0,
+	ChildMoveIndex:	0
 };
 
-ImportVarianten = {
-	PreFEN: 	"",
-	FEN: 		"",
-	StartNode:	"",
-	StartMove:	""
-};
 // Die Aufgabe selbst. Entspricht der Datenbanktabelle T_Aufgabe
 T_Aufgabe = {
 	Kurztext: 			"",
@@ -49,6 +91,20 @@ T_Aufgabe = {
 	lichess_kapitel:	"",
 	PGN:				""
 };
+T_Aufgabe.init = function () {
+	this.Kurztext = 		"";
+	this.Langtext = 		"";
+	this.Quelle =			"";	
+	this.Quelledetail =		"";
+	this.ImportQuelle =		"";
+	this.AmZug =			"";
+	this.FEN =				"";
+	this.Scope =			"";
+	this.Skill = 		 	"";
+	this.lichess_studie =	"";
+	this.lichess_kapitel =	"";
+	this.PGN =				""
+}
 
 Zugliste = []; // Die gesammelten Züge (T_Zuege), die dann per json im ajax-call verschickt werden.
 
@@ -57,13 +113,13 @@ Zugliste = []; // Die gesammelten Züge (T_Zuege), die dann per json im ajax-cal
 // Entspricht der Datenbanktabelle T_Zuege
 T_Zuege = {
 	AufgabeID:					0,	// Wird erst vor dem Speichern per ajax ergänzt
-	FEN:						'',	// Wird für jeden neuen Zug von ImportDaten geholt 
+	FEN:						'',	// Wird für jeden neuen Zug von Importdaten geholt 
 	CurMoveIndex:				0,
-	CurMoveId:					"",
-	PreMoveId:					"",
-	ZugNummer:					1,	// Wird für jeden neuen Zug von ImportDaten geholt 
-	ZugLevel:					0,	// Wird für jeden neuen Zug von ImportDaten geholt 
-	ZugFarbe:					'',	// Wird für jeden neuen Zug von ImportDaten geholt 
+	CurMoveId:					MovePräfix + '0',
+	PreMoveId:					MovePräfix + '0',
+	ZugNummer:					1,	// Wird für jeden neuen Zug von Importdaten geholt 
+	ZugLevel:					0,	// Wird für jeden neuen Zug von Importdaten geholt 
+	ZugFarbe:					'',	// Wird für jeden neuen Zug von Importdaten geholt 
 	ZugOriginal:				'',	// Der Zug direkt aus der Notation
 	ZugFigur:					'',	// '' für Bauern und sonst den Figurbuchstaben aus der Notation
 	ZugVon: /*Listener*/		'',	// Reihe (rank) und Spalte (file) des Ausgangsfeldes eines Zugs
@@ -74,9 +130,33 @@ T_Zuege = {
 	ZugAktion:					'',	// Zieht (-) oder schlägt (x)
 	ZugUmwandlung:				'',	// Der Buchstabe der neuen Figur in FEN-Terminologie
 	ZugZeichen:					'',	// Schach (+) oder matt (#)
+	NAG:						'',	// Numeric Annotation Glyphs. Siehe Liste im WEB
 	Hinweistext:				'',	// Beliebiger Text
 	Hinweispfeil:				'',	// Pfeilkodierung gemäß scid
 };
+T_Zuege.init = function() {
+	this.AufgabeID =					0;	// Wird erst vor dem Speichern per ajax ergänzt
+	this.FEN =							'';	// Wird für jeden neuen Zug von Importdaten geholt 
+	this.CurMoveIndex =					0;
+	this.CurMoveId =					MovePräfix + '0';
+	this.PreMoveId =					MovePräfix + '0';
+	this.ZugNummer =					1;	// Wird für jeden neuen Zug von Importdaten geholt 
+	this.ZugLevel =						0;	// Wird für jeden neuen Zug von Importdaten geholt 
+	this.ZugFarbe =						'';	// Wird für jeden neuen Zug von Importdaten geholt 
+	this.ZugOriginal =					'';	// Der Zug direkt aus der Notation
+	this.ZugFigur =						'';	// '' für Bauern und sonst den Figurbuchstaben aus der Notation
+	this.ZugVon = /*Listener*/			'';	// Reihe (rank) und Spalte (file) des Ausgangsfeldes eines Zugs
+	this.ZugNach =						'';	// Reihe (rank) und Spalte (file) des Zielfeldes eines Zugs
+	this.ZugKurz =						'';	// Der Zug in echter kurzer Notation
+	this.ZugLang =						'';	// Der Zug in echter langer Notation
+	this.ZugStockfish = /*Listener*/	'';	// Der Zug in stockfish-Syntax als filerankfilerank und ohne Figurkennung
+	this.ZugAktion =					'';	// Zieht (-) oder schlägt (x)
+	this.ZugUmwandlung =				'';	// Der Buchstabe der neuen Figur in FEN-Terminologie
+	this.ZugZeichen =					'';	// Schach (+) oder matt (#)
+	this.NAG =							'';	// Numeric Annotation Glyphs. Siehe Liste im WEB
+	this.Hinweistext =					'';	// Beliebiger Text
+	this.Hinweispfeil =					'';	// Pfeilkodierung gemäß scid}
+}
 
 FIGUREN = {
 	K: "&#9812;",

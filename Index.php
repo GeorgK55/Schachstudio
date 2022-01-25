@@ -17,6 +17,7 @@
 
 	<link rel="stylesheet"	href="css/jquery-ui.css">
 	<link rel="stylesheet"	href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+	<link rel="stylesheet"	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<script src="js/jquery-3.5.1.js"></script>
 	<script src = "js/jquery-ui.js"></script>
@@ -34,10 +35,11 @@
 	<script src="js/AppUtils.js"></script>
 	<script src="js/ChessUtils.js"></script>
 	<script src="js/ShowFunctions.js"></script>
+	<script src="js/NotationFunctions.js"></script>
 	<script src="js/importDataFunctions.js"></script>
 	<script src="js/getDataFunctions.js"></script>
 	<script src="js/putDataFunctions.js"></script>
-	<script src="js/ChallengeVarianten.js"></script>	
+	<script src="js/ChallengeGeorg.js"></script>	
 	<script src="js/rest.js"></script>
 	<script src="js/stockfish.js"></script>
 	<script src="js/xbtooltip.js"></script>
@@ -54,7 +56,7 @@
 
 <body>
 <div id="seite">
-	<header class="CenterMe">
+	<header>
 		<h1>Georgs Schachstudio</h1>
 		<div class="hiddendialog">
 			<div id="Nodetext"></div>
@@ -64,53 +66,47 @@
 	<section id="sx_Mitte">
 		<section id="sx_Themensection">
 			<header class="CenterMe"><p>Themenauswahl</p></header>
-			<article id="a_Themenliste">
+			<div id="a_Themenliste">
 				<div id="ThemenlisteTree">
 					<ul id="ul_Themenliste">
 					</ul>
-				</div>
-				<div>
-					<button id="btn_touchtestbutton1">touchtestbutton1</button>
 				</div>
 				<div id="ThemenlisteButtons">
 					<button id="btn_NeuesThema" 	type="button" onclick="NeuesThema()"	class="KomfortButton">Neues Thema</button>
 					<button id="btn_ThemaEntfernen" type="button" onclick="EntferneThema()"	class="KomfortButton">Thema entfernen</button>
 				</div>
-				<div>
-					<button id="btn_touchtestbutton2">touchtestbutton2</button>
-				</div>
-			</article>
+			</div>
 		</section>
 		<section id="sx_Aufgabensection">
 			<header class="CenterMe"><p>Stellungen dazu</p></header>
-			<article id="a_Aufgabenliste">
+			<div id="a_Aufgabenliste">
 				<div id="AufgabenlisteTree">
 					<ul id="ul_Aufgabenliste"></ul>
 					<button id="btn_Aufgabeauswahl" type="button" onclick="Aufgabeauswahl()" class="vanishMe KomfortButton">Alle Aufgaben anzeigen</button>
 				</div>
 				<div id="AufgabelisteButtons">
-					<button id="btn_NeueAufgabe" 		type="button" onclick="showNeueAufgabe()" 		class="KomfortButton"></button>
+					<button id="btn_NeueAufgabe" 		type="button" onclick="showNeueAufgabe()" 	class="KomfortButton"></button>
 					<button id="btn_VerbindeAufgabe"	type="button" onclick="VerbindeAufgabe()" 	class="KomfortButton"></button>
 					<button id="btn_TrenneAufgabe" 		type="button" onclick="TrenneAufgabe()" 	class="KomfortButton"></button>
 					<button id="btn_EntferneAufgabe" 	type="button" onclick="EntferneAufgabe()" 	class="KomfortButton"></button>
 				</div>
-			</article>
-			<article id="a_Aufgabedetails">
+			</div>
+			<div id="a_Aufgabedetails">
 				<fieldset id="f_Aufgabedetails">
 					<legend>Details der Aufgabe</legend>
 					<ul>
-						<li><label for="KurztextSpiel">Kurztext</label>			<input type="text" 	name="Kurztext" 	id = "KurztextSpiel" 		disabled>	</li>
-						<li><label for="LangtextSpiel">Langtext</label>			<input type="text" 	name="Langtext" 	id = "LangtextSpiel" 		disabled>	</li>
-						<li><label for="QuelleSpiel">Quelle</label>				<input type="text" 	name="Quelle" 		id = "QuelleSpiel" 			disabled>	</li>
-						<li><label for="QuelledetailSpiel">Quelledetail</label>	<input type="text" 	name="Quelledetail" id = "QuelledetailSpiel" 	disabled>	</li>
-						<li><label for="ScopeSpiel">Scope</label>				<input type="text" 	name="Scope" 		id = "ScopeSpiel" 			disabled>	</li>
-						<li><label for="AmZugSpiel">Am Zug</label>				<input type="text"	name="AmZug" 		id = "AmZugSpiel" 			disabled>	</li>
-						<li><label for="SkillSpiel">Skill</label>				<input type="text"	name="SkillSpiel" 	id = "SkillSpiel" 			disabled>	</li>
-						<li><label for="FENSpiel">FEN</label>					<input type="text"	name="FENSpiel" 	id = "FENSpiel"				disabled>	</li>
-						<li><label for="ImportquelleSpiel">Importquelle</label>	<input type="text"	name="Importquelle" id = "ImportquelleSpiel"	disabled>	</li>
+						<li><label for="KurztextSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Kurztext</label>			<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Kurztext" 	id = "KurztextSpiel" 		disabled>	</li>
+						<li><label for="LangtextSpiel"		class="ShowLarge"						>Langtext</label>			<input type="text" class="ShowLarge"						name="Langtext" 	id = "LangtextSpiel" 		disabled>	</li>
+						<li><label for="QuelleSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Quelle</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Quelle" 		id = "QuelleSpiel" 			disabled>	</li>
+						<li><label for="QuelledetailSpiel"	class="ShowLarge"						>Quelledetail</label>		<input type="text" class="ShowLarge"						name="Quelledetail" id = "QuelledetailSpiel" 	disabled>	</li>
+						<li><label for="ScopeSpiel"			class="ShowLarge"						>Scope</label>				<input type="text" class="ShowLarge"						name="Scope" 		id = "ScopeSpiel" 			disabled>	</li>
+						<li><label for="AmZugSpiel"			class="ShowSmall ShowMedium ShowLarge"	>Am Zug</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="AmZug" 		id = "AmZugSpiel" 			disabled>	</li>
+						<li><label for="SkillSpiel"			class="ShowLarge"						>Skill</label>				<input type="text" class="ShowLarge"						name="SkillSpiel" 	id = "SkillSpiel" 			disabled>	</li>
+						<li><label for="FENSpiel"			class="ShowLarge"						>FEN</label>				<input type="text" class="ShowLarge"						name="FENSpiel" 	id = "FENSpiel"				disabled>	</li>
+						<li><label for="ImportquelleSpiel"	class="ShowLarge"						>Importquelle</label>		<input type="text" class="ShowLarge"						name="Importquelle" id = "ImportquelleSpiel"	disabled>	</li>
 					</ul>
 				</fieldset>
-			</article>
+			</div>
 			<article id="a_Sonderfunktionen" class='developerfeatures'>
 				<!-- <span id="asynccount">000</span>
 				<button id="btn_async" type="button" onclick="countdouble()">async Verhalten testen</button> -->
@@ -128,8 +124,8 @@
 			</section>
 			<section id="s_AufgabenSpielen">
 				<header class="CenterMe"><p>Spielen</p></header>
-				<div>
-					<article id="a_Aufgabe_KonfUndMeta">
+				<div id="AufgabeUndKonfiguration">
+					<article id="a_Aufgabe_KonfUndMeta" class="ShowMedium ShowLarge">
 						<fieldset>
 							<legend>Bitte auswählen</legend>
 							<input type="radio" id="r_Spiel" 		name="Spielinteraktion" onclick="setSpielinteraktion('AC_CHALLENGE_PLAY');" 		value="Spiel">				<label for="r_Spiel">Spiel ohne Hinweise</label><br>
@@ -137,7 +133,7 @@
 							<input type="radio" id="r_Varianten" 	name="Spielinteraktion" onclick="setSpielinteraktion('AC_CHALLENGE_Varianten');" 	value="Varianten" checked>			<label for="r_Varianten">Mit Varianten</label><br>
 						</fieldset>
 					</article>
-					<article id="a_LogKonfigurationSpielen" class="LogKonfig">
+					<article id="a_LogKonfigurationSpielen" class="LogKonfig ShowMedium ShowLarge">
 						<fieldset>
 							<legend>Protokollierung</legend>
 							<input type="checkbox" id="cb_Enginelog" name="Enginelog" value="Enginelog_on" onclick="toggleEnginelog('cb_Enginelog');">
@@ -149,126 +145,129 @@
 							</fieldset>
 					</article>
 				</div>
-				<article id="a_BrettUndZug" class="Brett">
-					<div id="Brett_SpieleAufgabe">
-						<div class="chessboardGeorg">
-							<div class="Brett_Koordinaten"> </div>
-							<div class="Brett_Koordinaten">a</div>
-							<div class="Brett_Koordinaten">b</div>
-							<div class="Brett_Koordinaten">c</div>
-							<div class="Brett_Koordinaten">d</div>
-							<div class="Brett_Koordinaten">e</div>
-							<div class="Brett_Koordinaten">f</div>
-							<div class="Brett_Koordinaten">g</div>
-							<div class="Brett_Koordinaten">h</div>
-							<div class="Brett_Koordinaten"> </div>
-							<div class="Brett_Koordinaten">8</div>
-							<div id="Brett_SpieleAufgabe_a8" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_b8" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_c8" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_d8" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_e8" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_f8" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_g8" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_h8" class="Brett_s"></div>
-							<div class="Brett_Koordinaten">8</div>
-							<div class="Brett_Koordinaten">7</div>
-							<div id="Brett_SpieleAufgabe_a7" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_b7" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_c7" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_d7" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_e7" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_f7" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_g7" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_h7" class="Brett_w"></div>
-							<div class="Brett_Koordinaten">7</div>
-							<div class="Brett_Koordinaten">6</div>
-							<div id="Brett_SpieleAufgabe_a6" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_b6" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_c6" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_d6" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_e6" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_f6" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_g6" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_h6" class="Brett_s"></div>
-							<div class="Brett_Koordinaten">6</div>
-							<div class="Brett_Koordinaten">5</div>
-							<div id="Brett_SpieleAufgabe_a5" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_b5" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_c5" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_d5" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_e5" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_f5" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_g5" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_h5" class="Brett_w"></div>
-							<div class="Brett_Koordinaten">5</div>
-							<div class="Brett_Koordinaten">4</div>
-							<div id="Brett_SpieleAufgabe_a4" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_b4" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_c4" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_d4" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_e4" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_f4" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_g4" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_h4" class="Brett_s"></div>
-							<div class="Brett_Koordinaten">4</div>
-							<div class="Brett_Koordinaten">3</div>
-							<div id="Brett_SpieleAufgabe_a3" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_b3" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_c3" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_d3" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_e3" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_f3" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_g3" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_h3" class="Brett_w"></div>
-							<div class="Brett_Koordinaten">3</div>
-							<div class="Brett_Koordinaten">2</div>
-							<div id="Brett_SpieleAufgabe_a2" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_b2" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_c2" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_d2" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_e2" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_f2" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_g2" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_h2" class="Brett_s"></div>
-							<div class="Brett_Koordinaten">2</div>
-							<div class="Brett_Koordinaten">1</div>
-							<div id="Brett_SpieleAufgabe_a1" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_b1" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_c1" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_d1" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_e1" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_f1" class="Brett_w"></div>
-							<div id="Brett_SpieleAufgabe_g1" class="Brett_s"></div>
-							<div id="Brett_SpieleAufgabe_h1" class="Brett_w"></div>
-							<div class="Brett_Koordinaten">1</div>
-							<div class="Brett_Koordinaten"> </div>
-							<div class="Brett_Koordinaten">a</div>
-							<div class="Brett_Koordinaten">b</div>
-							<div class="Brett_Koordinaten">c</div>
-							<div class="Brett_Koordinaten">d</div>
-							<div class="Brett_Koordinaten">e</div>
-							<div class="Brett_Koordinaten">f</div>
-							<div class="Brett_Koordinaten">g</div>
-							<div class="Brett_Koordinaten">h</div>
-							<div class="Brett_Koordinaten"> </div>
+				<article id="a_BrettUndZug" class="AufgabeBrettUndZug">
+					<div id="Brett_SpieleAufgabe" class="SpieleAufgabe">
+						<div id="BrettUndMarker">
+							<div class="chessboardGeorg">
+								<div class="Brett_Koordinaten"> </div>
+								<div class="Brett_Koordinaten">a</div>
+								<div class="Brett_Koordinaten">b</div>
+								<div class="Brett_Koordinaten">c</div>
+								<div class="Brett_Koordinaten">d</div>
+								<div class="Brett_Koordinaten">e</div>
+								<div class="Brett_Koordinaten">f</div>
+								<div class="Brett_Koordinaten">g</div>
+								<div class="Brett_Koordinaten">h</div>
+								<div class="Brett_Koordinaten"> </div>
+								<div class="Brett_Koordinaten">8</div>
+								<div id="Brett_SpieleAufgabe_a8" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_b8" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_c8" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_d8" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_e8" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_f8" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_g8" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_h8" class="Brett_s"></div>
+								<div class="Brett_Koordinaten">8</div>
+								<div class="Brett_Koordinaten">7</div>
+								<div id="Brett_SpieleAufgabe_a7" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_b7" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_c7" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_d7" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_e7" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_f7" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_g7" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_h7" class="Brett_w"></div>
+								<div class="Brett_Koordinaten">7</div>
+								<div class="Brett_Koordinaten">6</div>
+								<div id="Brett_SpieleAufgabe_a6" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_b6" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_c6" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_d6" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_e6" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_f6" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_g6" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_h6" class="Brett_s"></div>
+								<div class="Brett_Koordinaten">6</div>
+								<div class="Brett_Koordinaten">5</div>
+								<div id="Brett_SpieleAufgabe_a5" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_b5" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_c5" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_d5" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_e5" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_f5" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_g5" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_h5" class="Brett_w"></div>
+								<div class="Brett_Koordinaten">5</div>
+								<div class="Brett_Koordinaten">4</div>
+								<div id="Brett_SpieleAufgabe_a4" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_b4" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_c4" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_d4" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_e4" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_f4" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_g4" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_h4" class="Brett_s"></div>
+								<div class="Brett_Koordinaten">4</div>
+								<div class="Brett_Koordinaten">3</div>
+								<div id="Brett_SpieleAufgabe_a3" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_b3" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_c3" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_d3" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_e3" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_f3" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_g3" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_h3" class="Brett_w"></div>
+								<div class="Brett_Koordinaten">3</div>
+								<div class="Brett_Koordinaten">2</div>
+								<div id="Brett_SpieleAufgabe_a2" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_b2" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_c2" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_d2" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_e2" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_f2" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_g2" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_h2" class="Brett_s"></div>
+								<div class="Brett_Koordinaten">2</div>
+								<div class="Brett_Koordinaten">1</div>
+								<div id="Brett_SpieleAufgabe_a1" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_b1" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_c1" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_d1" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_e1" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_f1" class="Brett_w"></div>
+								<div id="Brett_SpieleAufgabe_g1" class="Brett_s"></div>
+								<div id="Brett_SpieleAufgabe_h1" class="Brett_w"></div>
+								<div class="Brett_Koordinaten">1</div>
+								<div class="Brett_Koordinaten"> </div>
+								<div class="Brett_Koordinaten">a</div>
+								<div class="Brett_Koordinaten">b</div>
+								<div class="Brett_Koordinaten">c</div>
+								<div class="Brett_Koordinaten">d</div>
+								<div class="Brett_Koordinaten">e</div>
+								<div class="Brett_Koordinaten">f</div>
+								<div class="Brett_Koordinaten">g</div>
+								<div class="Brett_Koordinaten">h</div>
+								<div class="Brett_Koordinaten"> </div>
+							</div>
+							<div id="zugmarkeraufgabe" class="zugmarkercolumn">
+								<span class="zugmarker" id="zugmarkeraufgabeweiss">&#11036;</span>
+								<span class="zugmarker" id="zugmarkeraufgabeschwarz">&#11035;</span>
+							</div>
 						</div>
-						<div id="zugmarkeraufgabe" class="zugmarkercolumn">
-							<span class="zugmarker" id="zugmarkeraufgabeweiss">&#11036;</span>
-							<span class="zugmarker" id="zugmarkeraufgabeschwarz">&#11035;</span>
+						<div id="ChallengeMoves" class='developerfeatures'>
+							<p>vor und zurück</p>
+							<label for="Mausersatz">Mausersatz (debugger erkennt die Maus nicht):</label><input type="text" id = "Mausersatz">
+							<button onclick="startMouseUp()">Mouse up starten</button>
 						</div>
 					</div>
-					<!-- <div id="div_NotationAufgabe" class="notation">
-						<table id="NotationstabelleAufgabe"></table>
-					</div> -->
 					<div id="div_TreeNotationPlayChallenge" class="flexnotation">
-						<div id="TreeNotationslistePlayChallenge"></div>
+						<div id="ChessTips"><i style="font-size:24px;color:blue" class="fa" onclick="showFirstAid()">&#xf059;</i></div>
+						<div id="ScrollWrapperPlay" class="ScrollMe"> 
+							<div id="TreeNotationslistePlayChallenge"></div>
+						</div>						
+						<div id="ChallengeTips"></div>						
 					</div>
-				</article>
-				<article id="SpielButtons" class='developerfeatures'>
-					<p>vor und zurück</p>
-					<label for="Mausersatz">Mausersatz (debugger erkennt die Maus nicht):</label><input type="text" id = "Mausersatz">
-					<button onclick="startMouseUp()">Mouse up starten</button>
 				</article>
 			</section>
 			<section id="s_lichess">
@@ -283,15 +282,10 @@
 				<article id="a_ImportAufgabe">
 					<div id="filearea" class="halfspace">
 						<div id="fileareabuttons">
-							<button type="button" onclick="DatenBereitstellen_Zwischenablage()"	class="ImportButton">Zwischenablage<br>kopieren</button>
-							<button type="button" onclick="DatenBereitstellen_Datei()"			class="ImportButton">Dateiinhalt<br>kopieren</button>
+							<button type="button" onclick="DatenBereitstellen_Zwischenablage()"	class="ImportButton">Aus Zwischenablage<br>übernehmen</button>
+							<button type="button" onclick="DatenBereitstellen_Datei()"			class="ImportButton">Aus Datei<br>übernehmen</button>
 							<!-- <button type="button" onclick="DatenBereitstellen_Lichess()"		class="ImportButton">Kapitel aus lichess<br>kopieren</button> -->
 						</div>
-						<label for="ImportAreaText">Erkannter Text:</label> 
-						<textarea id="ImportAreaText"></textarea>
-						<ul id="ul_importaufgaben"></ul>
-					</div>
-					<div id=challengearea class="halfspace">
 						<fieldset id="f_Aufgabedaten">
 							<legend>Alle Daten der Aufgabe</legend>
 							<ul id="ImportAufgabedetails">
@@ -306,24 +300,14 @@
 								<li><label for="SkillImport">Skill</label>				<input type="text"	name="SkillImport" 	id = "SkillImport">				</li>
 							</ul>
 						</fieldset>
-						<article id="a_LogKonfigurationAufgabe" class="LogKonfig">
-							<fieldset>
-								<legend>Protokollierung</legend>
-								<input type="checkbox" id="cb_EnginelogImport" name="Enginelog" value="Enginelog_on" onclick="toggleEnginelog('cb_EnginelogImport');">
-								<label for="cb_EnginelogImport">Enginekommunikation</label><br>
-								<input type="checkbox" id="cb_EngineImportEin" name="EngineEin" value="EngineEin" checked class="shift1vw" onclick="toggleEnginelogEin();">
-								<label for="cb_EngineImportEin">zur Engine</label><br>
-								<input type="checkbox" id="cb_EngineImportAus" name="EngineAus" value="EngineAus" checked class="shift1vw" onclick="toggleEnginelogAus();">
-								<label for="cb_EngineImportAus">von der Engine</label>
-								</fieldset>
-						</article>
-							<div id="ImportAreaButtons">
-							<button type="button" onclick="AufgabeImportieren()"				class="ImportButton">Aufgabe<br>prüfen</button>
-							<button type="button" onclick="AufgabeSpeichern()"					class="ImportButton">Aufgabe<br>speichern</button>
-						</div>
+					</div>
+					<div id=challengearea class="halfspace">
+						<ul id="ul_importaufgaben"></ul>
+						<label for="ImportAreaText">Erkannter Text:</label> 
+						<textarea id="ImportAreaText"></textarea>
 					</div>
 				</article>
-				<article id="a_BrettUndImport" class="Brett">
+				<article id="a_BrettUndImport" class="ImportBrett">
 					<div id="Brett_ImportAufgabe">
 						<div class="chessboardGeorgImport">
 							<div class="Brett_KoordinatenImport"> </div>
@@ -428,12 +412,27 @@
 							<div class="Brett_KoordinatenImport"> </div>
 						</div>
 					</div>
-					<div id='zugmarkerimport' class="zugmarkercolumn">
-						<span class="zugmarker" id="zugmarkerimportweiss">&#11036;</span>
-						<span class="zugmarker" id="zugmarkerimportschwarz">&#11035;</span>
-					</div>
 					<div id="div_TreeNotationImport" class="flexnotation">
-						<div id="TreeNotationslisteImport"></div>
+						<div id="ScrollWrapperImport" class="ScrollMe">
+							<!-- <div id="TreeNotationslisteImport"></div> -->
+						</div>
+					</div>
+					<div>
+						<div id="ImportAreaButtons">
+							<button type="button" onclick="AufgabeImportieren()"				class="ImportButton">Aufgabe<br>prüfen</button>
+							<button type="button" onclick="AufgabeSpeichern()"					class="ImportButton">Aufgabe<br>speichern</button>
+						</div>
+						<article id="a_LogKonfigurationAufgabe" class="LogKonfig">
+							<fieldset>
+								<legend>Protokollierung</legend>
+								<input type="checkbox" id="cb_EnginelogImport" name="Enginelog" value="Enginelog_on" onclick="toggleEnginelog('cb_EnginelogImport');">
+								<label for="cb_EnginelogImport">Enginekommunikation</label><br>
+								<input type="checkbox" id="cb_EngineImportEin" name="EngineEin" value="EngineEin" checked class="shift1vw" onclick="toggleEnginelogEin();">
+								<label for="cb_EngineImportEin">zur Engine</label><br>
+								<input type="checkbox" id="cb_EngineImportAus" name="EngineAus" value="EngineAus" checked class="shift1vw" onclick="toggleEnginelogAus();">
+								<label for="cb_EngineImportAus">von der Engine</label>
+								</fieldset>
+						</article>
 					</div>
 				</article>
 			</section>
@@ -485,11 +484,8 @@
 			<section id="s_Willkommen">
 				<header class="CenterMe"><p>Willkommen</p></header>
 				<article id="a_Welcome">
-					<button id="btn_touchtestbutton3">touchtestbutton3</button>
 					<button id="btn_Spieler" type="button" class="WelcomeButton" onclick="showSpielerinfo()">Als Spieler weiter</button>
 					<button id="btn_Trainer" type="button" class="WelcomeButton" onclick="showTrainerinfo()">Als Trainer weiter</button>
-					<button id="btn_touchtestbutton4">touchtestbutton4</button>
-					<button id="btn_touchtestbuttonfinish" onclick="ZeigeTouchDaten()">touchtestbuttonfinish</button>
 				</article>
 			</section>
 			<section id="s_Spielerinfo">
@@ -517,9 +513,25 @@
 				<p>Es gibt einen stärkeren Zug als <span id="RatingSpielerzug"></span></p>
 				<p id="Zugalternative"><span id="Zugvorschlag"></span>&nbsp;<span id="Zugbewertung"></span></p>
 			</div>
-			<div id="dialog_Variantenzug" 		class="hiddendialog">
-				<p>Es gibt einen stärkeren Zug als <span id="VariantenSpielerzug"></span></p>
+			<div id="dialog_BessererZug" 		class="hiddendialog">
+				<p>Entweder gibt es gibt einen stärkeren Zug als <span id="VariantenSpielerzug"></span> oder der Zug ist nicht erlaubt</p>
 				<p id="EngineZugalternative"><span id="VariantenZugvorschlag"></span></p>
+			</div>
+			<div id="dialog_ChallengeVarianteStart" 		class="hiddendialog"> 
+				<p>Lass uns zuerst über eine Variante nachdenken.<br>
+				Ich ziehe <b><span id="ChallengeVarianteStartZug"></span></b>.<br>Wie würdest du jetzt weiterspielen?</p>
+			</div>
+			<div id="dialog_ChallengeVarianteEnde" 		class="hiddendialog">
+				<p>Damit ist die Variante für <b><span id="ChallengeVarianteEndeZug"></span></b> beendet.<br>
+				Ich ziehe jetzt <b><span id="ChallengeWeiterZug"></span></b>.</p>
+			</div>
+			<div id="dialog_PlayerVarianteStart" 		class="hiddendialog"> 
+				<p>Lass uns zuerst über eine Variante nachdenken.<br>
+				Ich ziehe <b><span id="PlayerVarianteStartZug"></span></b>.<br>Wie würdest du jetzt weiterspielen?</p>
+			</div>
+			<div id="dialog_PlayerVarianteEnde" 		class="hiddendialog">
+				<p>Damit ist die Variante für <b><span id="PlayerVarianteEndeZug"></span></b> beendet.<br>
+				Ich ziehe jetzt <b><span id="PlayerWeiterZug"></span></b>.</p>
 			</div>
 			<div id="dialog_LichessImport" 		class="hiddendialog">
 				<p>Bitte die Kennung der Studie und des Kapitels eintragen (siehe Beispiel)</p>

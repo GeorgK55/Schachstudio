@@ -29,7 +29,6 @@ function getThemes() {
 			GlobalAufgabeId = 0; // entfernt eine eventuelle Markierung in der Aufgabenliste
 			$('#s_AufgabenSpielen').hide(); // entfernt ein eventuell angezeigtes Brett zur Aufgabe
 
-			//getChallenges($('#cb_Aufgabeauswahl').prop( "checked" ) ? ALLEAUFGABENANZEIGEN : GlobalThemaId);
 			$('#btn_Aufgabeauswahl').removeClass('vanishMe').addClass('appearMe');
 			getChallenges($('#btn_Aufgabeauswahl').html() == "Alle Aufgaben anzeigen" ? GlobalThemaId : ALLEAUFGABENANZEIGEN);
 	
@@ -153,7 +152,7 @@ function getChallenge(ID) {
 			}).done(function(responseData) {
 
 				ChallengeMoves = jQuery.parseJSON(responseData);
-				console.log(ChallengeMoves); 
+				console.table(ChallengeMoves); 
 		});
 	
 	});

@@ -26,21 +26,21 @@ function TheIndexGeorgFunction() {
 
 				// In getDataFunctions wird die Kandidatenauswahl für die Bestimmung des Ausgangsfeldes eines Zugs angestoßen
 				// Das Auswahlfeld eines Zuges wird für die Kommunikation mit der Engine zwingend benötigt
-				// Nur für den einzig möglichen Zug wird 'bestmove' zurückgegeben
+				// Es wird für alle Kandidaten angefragt. Nur für den einzig möglichen Zug wird 'bestmove' zurückgegeben
 
 				if(GlobalActionStep == AS_IDENTIFYUNIQUEMOVE) {
 					
-					// Es gibt nur diese eine relevante Zeile. Auswerten und Umschalten in den nächsten Schritt.
+					// Es gibt nur diese eine relevante Zeile. 
+					// Diese Zeile identifiziert den einzig möglichen Zug.
+					// Übernehmen und Umschalten in den nächsten Schritt.
 					if (line.indexOf('bestmove') >= 0 && line.match(T_Zuege.ZugNach)) {
 						
 						T_Zuege.ZugVon 			= line.slice(9, 11); // gilt für Bauern- und für Figurenzüge
-						T_Zuege.ZugStockfish 	= T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung.toLowerCase();
-						// Rochaden und nur sind in ZugLang schon eingetragen
+						T_Zuege.ZugStockfish 	= line.slice(9).split(" ")[0]; // einschl. Umwandlung
+						// Rochaden und nur Rochaden sind in ZugLang schon eingetragen. Soll wegen der Sonderschreibcweise auch so bleiben
 						if(T_Zuege.ZugLang == '') {
 							T_Zuege.ZugLang = T_Zuege.ZugFigur + T_Zuege.ZugVon + T_Zuege.ZugAktion + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung + T_Zuege.ZugZeichen;
 						}					
-						console.log('=== T_Zuege.ZugStockfish: '  + T_Zuege.ZugStockfish );
-						//$('<p>=== T_Zuege.ZugStockfish: '  + T_Zuege.ZugStockfish + '</p>').appendTo('#ImportTriggerTag');
 						
 						GlobalActionStep = AS_FINISHPOSSIBLEMOVESIDENTIFICATION;
 						postit('isready'); // Das ist das Signal für den nächsten Step
@@ -54,7 +54,7 @@ function TheIndexGeorgFunction() {
 					if(line.indexOf('readyok') >= 0)  {
 						
 							GlobalActionStep = AS_INTERPRETELOCATEDMOVE;
-							postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugStockfish + T_Zuege.ZugUmwandlung.toLowerCase());
+							postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugStockfish);
 							postit('d');
 							postit('isready');
 					}
@@ -62,59 +62,45 @@ function TheIndexGeorgFunction() {
 				
 				if(GlobalActionStep == AS_INTERPRETELOCATEDMOVE) {
 					
-					// Hier ist nur die Zeile mit FEN relevant
+					// Hier ist nur die Zeile mit FEN relevant. 
+					// Der in der Engine ausgeführte Zug wird jetzt 
+					// - auf dem Brett gezogen 
+					// - in der Liste notiert.
+					// - in der Zugliste gespeichert
+					// Abschließend werden die Zugdaten für den nächsten Zug verschoben und der nächste Zug wird ausgelöst
+
 					if(line.indexOf('Fen') >= 0) {
 
-						// Einfügen der Struktur einer neuen Zeile, wenn notwendig
+						// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu ChallengeGeorg)
+						TransferZugdaten(Importdaten, T_Zuege)
+						
+						// Den Zug auf dem Brett ausführen
+						ZieheZug(T_Zuege, 'Brett_ImportAufgabe_', 'zugmarkerimport'); // Hier, weil die Zugdaten zum Ziehen benötigt werden
+
+						// Den Zug in die Notation eintragen, wenn notwendig eine neue Zeile generieren
 						if (T_Zuege.ZugFarbe == WEISSAMZUG || addNotationlineFlag) {
 
-							ImportDaten.CurNodeId = NodePräfix + T_Zuege.CurMoveIndex;
-							ImportDaten.CurMoveId = T_Zuege.CurMoveId;			
+							Importdaten.CurNodeId = NodePräfix + T_Zuege.CurMoveIndex;
+							Importdaten.CurMoveId = T_Zuege.CurMoveId;			
 
-							// Das html-Gerüst für den Zug wird in die html-Notationsliste eingetragen
-							// Die Zugdaten werden später nachgetragen, da ja in einer Zeile sowohl weiß als auch schwarz enthalten sein soll
-							$('#TreeNotationslisteImport').jstree().create_node(ImportDaten.PreNodeId, {
-								"id": ImportDaten.CurNodeId,
-								"text": "<div><span class='movenumber'>" + ImportDaten.ZugNummer + "</span>"
-										+ "<span class='movewhite' id='"
-										+ ImportDaten.CurMoveId + WhitePostfix + "'>" + DefaultMove_w 
-										+ "</span><span class='moveblack' id='"
-										+ ImportDaten.CurMoveId + BlackPostfix + "'>" + DefaultMove_b
-										+ "</span></div>"
-						  	}, "last", function() {
-							//alert("startnode created");
-							});
-							Move_w = DefaultMove_w;
-							Move_b = DefaultMove_b;
-						}
-						addNotationlineFlag = false;
-						$('#TreeNotationslisteImport').jstree().open_all();
+							NewTreeNode('TreeNotationslisteImport', Importdaten, T_Zuege, false);
 
-						// Nachtragen der eigentlichen Zugdaten. In CurrentMove_X steht der eventuell schon vom letzten Zug bekannte Teil
-						if (T_Zuege.ZugFarbe == WEISSAMZUG) { 
-							Move_w = T_Zuege.ZugKurz;
+							addNotationlineFlag = false;
 						} else {
-							Move_b = T_Zuege.ZugKurz;
+							UpdateTreeNode('TreeNotationslisteImport', 'move', Importdaten, T_Zuege, false);
 						}
-						SituationsDaten.ZugNummer = "<span class='movenumber'>" + ImportDaten.ZugNummer + "</span>";
-						SituationsDaten.Text_w = "<span class='movewhite' id='" + ImportDaten.CurMoveId + "_w'>" + Move_w + "</span>";
-						SituationsDaten.Text_b = "<span class='moveblack' id='" + ImportDaten.CurMoveId + "_b'>" + Move_b + "</span>";
-
-						sel = $('#TreeNotationslisteImport').jstree().get_node(ImportDaten.CurNodeId);
-						$('#TreeNotationslisteImport').jstree().rename_node(sel, "<div>" + SituationsDaten.ZugNummer + SituationsDaten.Text_w + SituationsDaten.Text_b + "</div>");
 
 						// Damit wird die aktuelle Situation und der Zug selbst für den insert in die Datenbank festgehalten
 						let ZuglisteZug = Object.assign({}, T_Zuege);
 						Zugliste.push(ZuglisteZug);
-						
-						// Jetzt wird die neue Situation in das Objekt mit den Daten zum Analysevergleich eingetragen. T_Zuege nicht notwendig, wird neu initialisiert
-						ImportDaten.PreFEN		= T_Zuege.FEN;					
-						ImportDaten.FEN			= line.substr(5);
-						ImportDaten.ZugFarbe	= ImportDaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
-						ImportDaten.CurMoveId	= T_Zuege.CurMoveId;			
 
-						// Der Zug wird auf dem Brett ausgeführt, damit in validateSingleMove die richtige aktuelle Situation zur Verfügung steht
-						ZieheZug(T_Zuege, 'Brett_ImportAufgabe_', 'zugmarkerimport'); // Hier, weil die Zugdaten zum Ziehen benötigt werden
+						// Jetzt wird die neue Situation in das Objekt mit den Daten zur Überprüfung des Import eingetragen. T_Zuege nicht notwendig, wird neu initialisiert
+						
+						Importdaten.PreFEN		= T_Zuege.FEN;					
+						Importdaten.FEN			= line.substr(5);
+						Importdaten.ZugFarbe	= Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
+						Importdaten.CurMoveId	= T_Zuege.CurMoveId;			
+						Importdaten.PreMoveId	= T_Zuege.PreMoveId;			
 
 						// Die weitere Analyse wird außerhalb des Listeners durchgeführt
 						validateSingleMove();
@@ -499,7 +485,7 @@ function TheIndexGeorgFunction() {
 
 							//if (getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz') != CCM.ZugKurz) {
 							if (T_Zuege.ZugStockfish != CCM.ZugStockfish) {
-								EnginezugDialog = $( "#dialog_Variantenzug" ).dialog({
+								EnginezugDialog = $( "#dialog_BessererZug" ).dialog({
 									title: "Falscher Zug",
 									height: 400,
 									width: 600,
