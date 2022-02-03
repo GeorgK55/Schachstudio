@@ -12,7 +12,7 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
     } else {
         Id_Postfix          = 's';
         Classname_Comment   = 'Comment_b';
-        addNotationlineFlag = true; 
+        Situation.CreateNewNode = true; 
     }
 
     Id_Tooltip          = Situation.CurMoveId.replace('M_', 'T_') + '_' + Id_Postfix;
@@ -112,16 +112,16 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
     var NeuKommentar       = Zug.Hinweistext != "" ? '<div class="' + Classname_Comment + '">' + Zug.Hinweistext + '</div>' : "";
 
     if (Mode == 'sign') {
-        // In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
+        // Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
         if (Zug.ZugFarbe == WEISSAMZUG) {
-            htmlNodeText_w  = NodeElements[2].outerHTML;
-            htmlNodeText_b  = "<span class='moveblack variantezeiger' id='" 
-                            + Zug.CurMoveId + BlackPostfix 
-                            + "'>" + VarianteZeiger + "</span>";
-         } else {
             htmlNodeText_b  = NodeElements[3].outerHTML;
             htmlNodeText_w  = "<span class='movewhite variantezeiger' id='" 
                             + Zug.CurMoveId + WhitePostfix 
+                            + "'>" + VarianteZeiger + "</span>";
+         } else {
+            htmlNodeText_w  = NodeElements[2].outerHTML;
+            htmlNodeText_b  = "<span class='moveblack variantezeiger' id='" 
+                            + Zug.CurMoveId + BlackPostfix 
                             + "'>" + VarianteZeiger + "</span>";
         }
     } else if (Mode == 'move') {
@@ -157,9 +157,9 @@ function NotiereZug(TreeContainer, objZug) {
 
     // Wenn eine neue Zeile in der Notationsliste nötig ist, wird diese hier mit den Stellungsdaten generiert
     // Sonst wird die Notationszeile aktualisiert
-    if (objZug.ZugFarbe == WEISSAMZUG || addNotationlineFlag) {
+    if (objZug.ZugFarbe == WEISSAMZUG || Stellungsdaten.CreateNewNode) {
         NewTreeNode(TreeContainer, 'move', Stellungsdaten, objZug, true);
-        addNotationlineFlag = false;
+        Stellungsdaten.CreateNewNode = false;
     } else {
         UpdateTreeNode(TreeContainer, 'move', Stellungsdaten, objZug, true);
     }

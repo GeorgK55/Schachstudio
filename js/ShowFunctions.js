@@ -86,11 +86,11 @@ function showChallengegeorg(ChallengeID) {
             break;
         case "Varianten":
             GlobalActionContext = AC_CHALLENGE_Varianten;
-            addNotationlineFlag = true;
+            Stellungsdaten.CreateNewNode = true;
             break;
         default:
             GlobalActionContext = AC_CHALLENGE_Varianten;
-            addNotationlineFlag = true;
+            Stellungsdaten.CreateNewNode = true;
             break;                                
     }
 

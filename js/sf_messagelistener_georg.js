@@ -78,14 +78,14 @@ function TheIndexGeorgFunction() {
 						ZieheZug(T_Zuege, 'Brett_ImportAufgabe_', 'zugmarkerimport'); // Hier, weil die Zugdaten zum Ziehen benötigt werden
 
 						// Den Zug in die Notation eintragen, wenn notwendig eine neue Zeile generieren
-						if (T_Zuege.ZugFarbe == WEISSAMZUG || addNotationlineFlag) {
+						if (T_Zuege.ZugFarbe == WEISSAMZUG || Importdaten.CreateNewNode) {
 
 							Importdaten.CurNodeId = NodePräfix + T_Zuege.CurMoveIndex;
 							Importdaten.CurMoveId = T_Zuege.CurMoveId;			
 
-							NewTreeNode('TreeNotationslisteImport', Importdaten, T_Zuege, false);
+							NewTreeNode('TreeNotationslisteImport', 'move', Importdaten, T_Zuege, false);
 
-							addNotationlineFlag = false;
+							Importdaten.CreateNewNode = false;
 						} else {
 							UpdateTreeNode('TreeNotationslisteImport', 'move', Importdaten, T_Zuege, false);
 						}

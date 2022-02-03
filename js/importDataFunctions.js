@@ -62,7 +62,7 @@ function AufgabeImportieren() {
 	  	}, "last", function() { /*alert("PreNodeId created"); */
 	});
 
-	addNotationlineFlag		= true;
+	Importdaten.CreateNewNode = true;
 
 	scanMetaData(GlobalImportedPGN[GlobalImportedPGNIndex]); // eine (oder die einzige) Partie aus einer Datei		
 	
@@ -72,7 +72,7 @@ function AufgabeImportieren() {
 	
 	GlobalActionContext 	= AC_GAMEIMPORT;
 
-	Importdaten.StellungsStack.push( { 	FEN:		Importdaten.FEN, 
+	Importdaten.ZugStack.push( { 	FEN:		Importdaten.FEN, 
 										PreFEN:		Importdaten.PreFEN, 
 										PreNode:	Importdaten.PreNodeId,
 										CurNode: 	Importdaten.CurNodeId,
@@ -273,9 +273,9 @@ function validateSingleMove() {
 		// - der Zug vor der Variante als CurMove ausgewählt werden	
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("(") == 0) {
 			
-				console.log("( an index " + Importdaten.PGN_Index + " mit " + JSON.stringify(Importdaten.StellungsStack));
+				console.log("( an index " + Importdaten.PGN_Index + " mit " + JSON.stringify(Importdaten.ZugStack));
 
-				Importdaten.StellungsStack.push( { 	FEN: 		Importdaten.FEN, 
+				Importdaten.ZugStack.push( { 	FEN: 		Importdaten.FEN, 
 													PreFEN: 	Importdaten.PreFEN, 
 													PreNode: 	Importdaten.PreNodeId,
 													CurNode: 	Importdaten.CurNodeId,
@@ -292,7 +292,7 @@ function validateSingleMove() {
 				Importdaten.CurMoveId 	= Importdaten.PreMoveId;
 				T_Zuege.CurMoveId 		= Importdaten.PreMoveId; // Der aktuelle Zug soll nicht wirken
 
-				addNotationlineFlag		= true;
+				Importdaten.CreateNewNode = true;
 
 				StellungAufbauen("Brett_ImportAufgabe", Importdaten.FEN, 'zugmarkerimport');
 
@@ -303,19 +303,19 @@ function validateSingleMove() {
 		// - die Situation auf dem Brett hinter den letzten Zug vor der Variante gesetzt werden.
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf(")") == 0) {
 			
-				console.log(") an index " + Importdaten.PGN_Index + " mit " + JSON.stringify(Importdaten.StellungsStack));
+				console.log(") an index " + Importdaten.PGN_Index + " mit " + JSON.stringify(Importdaten.ZugStack));
 
 				Importdaten.ZugLevel--;
-				StellungsStack  = [];
-				StellungsStack 	= Importdaten.StellungsStack.pop();
-				Importdaten.PreFEN 		= StellungsStack.PreFEN;
-				Importdaten.FEN 		= StellungsStack.FEN;
+				ZugStack  = [];
+				ZugStack 	= Importdaten.ZugStack.pop();
+				Importdaten.PreFEN 		= ZugStack.PreFEN;
+				Importdaten.FEN 		= ZugStack.FEN;
 				Importdaten.ZugFarbe 	= Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
-				Importdaten.PreNodeId 	= StellungsStack.PreNode;
-				Importdaten.CurNodeId 	= StellungsStack.CurNode;
-				Importdaten.CurMoveId 	= StellungsStack.CurMove;
-				Importdaten.PreMoveId 	= StellungsStack.PreMove;
-				T_Zuege.CurMoveId 		= StellungsStack.CurMove; // Wird beim Erkennen des nächsten Zugs nach PreMoveid geschoben
+				Importdaten.PreNodeId 	= ZugStack.PreNode;
+				Importdaten.CurNodeId 	= ZugStack.CurNode;
+				Importdaten.CurMoveId 	= ZugStack.CurMove;
+				Importdaten.PreMoveId 	= ZugStack.PreMove;
+				T_Zuege.CurMoveId 		= ZugStack.CurMove; // Wird beim Erkennen des nächsten Zugs nach PreMoveid geschoben
 				if (T_Zuege.ZugFarbe == WEISSAMZUG) {
 					Importdaten.FEN_w = T_Aufgabe.FEN;
 					Importdaten.FEN_b = "";
@@ -324,7 +324,7 @@ function validateSingleMove() {
 					Importdaten.FEN_b = T_Aufgabe.FEN;
 				}
 			
-				addNotationlineFlag = true;
+				Importdaten.CreateNewNode = true;
 				
 				StellungAufbauen("Brett_ImportAufgabe", Importdaten.FEN, 'zugmarkerimport');
 

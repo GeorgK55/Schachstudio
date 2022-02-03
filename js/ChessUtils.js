@@ -332,6 +332,9 @@ function addNewNotationLine(Tabellenname, Zugnummer, Level) {
 function TransferZugdaten(Stellung, Zug) {
 
     Stellung.ZugNummer  = Zug.ZugNummer;
+    Stellung.ZugLevel   = Zug.ZugLevel;
+    Stellung.ZugFarbe   = Zug.ZugFarbe;
+    Stellung.PreMoveId  = Zug.PreMoveId;
     Stellung.CurMoveId  = Zug.CurMoveId;
     Stellung.FEN        = Zug.FEN;
 

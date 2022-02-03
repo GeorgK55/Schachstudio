@@ -59,7 +59,7 @@ CREATE TABLE T_Aufgaben (
     Skill           varchar(15)   DEFAULT NULL,
     lichess_studie  varchar(15)   DEFAULT NULL,
     lichess_kapitel varchar(15)   DEFAULT NULL,
-    PGN             varchar(4096) DEFAULT NULL,
+    PGN             varchar(8192) DEFAULT NULL,
     PRIMARY KEY (Id)
 );
 

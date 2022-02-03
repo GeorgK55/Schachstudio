@@ -30,12 +30,14 @@
 
 	<script src="js/ready.js"></script>
 	<script src="js/const.js"></script>
+	<script src="js/Benutzertexte.js"></script>
 	<script src="js/Definitionen.js"></script>
 	<script src="js/commonFunctions.js"></script>
 	<script src="js/AppUtils.js"></script>
 	<script src="js/ChessUtils.js"></script>
 	<script src="js/ShowFunctions.js"></script>
 	<script src="js/NotationFunctions.js"></script>
+	<script src="js/DialogFunctions.js"></script>
 	<script src="js/importDataFunctions.js"></script>
 	<script src="js/getDataFunctions.js"></script>
 	<script src="js/putDataFunctions.js"></script>
@@ -104,6 +106,7 @@
 						<li><label for="SkillSpiel"			class="ShowLarge"						>Skill</label>				<input type="text" class="ShowLarge"						name="SkillSpiel" 	id = "SkillSpiel" 			disabled>	</li>
 						<li><label for="FENSpiel"			class="ShowLarge"						>FEN</label>				<input type="text" class="ShowLarge"						name="FENSpiel" 	id = "FENSpiel"				disabled>	</li>
 						<li><label for="ImportquelleSpiel"	class="ShowLarge"						>Importquelle</label>		<input type="text" class="ShowLarge"						name="Importquelle" id = "ImportquelleSpiel"	disabled>	</li>
+						<li><label for="ImportAreaText"												>PGN:</label>				<textarea id="ImportAreaText"></textarea></li>
 					</ul>
 				</fieldset>
 			</div>
@@ -123,7 +126,7 @@
 				</article>
 			</section>
 			<section id="s_AufgabenSpielen">
-				<header class="CenterMe"><p>Spielen</p></header>
+				<header id="h_AufgabenSpielen" class="CenterMe"><p>Spielen</p></header>
 				<div id="AufgabeUndKonfiguration">
 					<article id="a_Aufgabe_KonfUndMeta" class="ShowMedium ShowLarge">
 						<fieldset>
@@ -509,6 +512,7 @@
 			<div id="dialog_AufgabeVerbinden" 	class="hiddendialog">&nbsp;</div>
 			<div id="dialog_AufgabeTrennen" 	class="hiddendialog">&nbsp;</div>
 			<div id="dialog_AufgabeEntfernen" 	class="hiddendialog">&nbsp;</div>
+			<div id="dialog_StopScriptTest" 	class="hiddendialog">&nbsp;</div>
 			<div id="dialog_Zugdifferenz" 		class="hiddendialog">
 				<p>Es gibt einen stärkeren Zug als <span id="RatingSpielerzug"></span></p>
 				<p id="Zugalternative"><span id="Zugvorschlag"></span>&nbsp;<span id="Zugbewertung"></span></p>
@@ -518,20 +522,22 @@
 				<p id="EngineZugalternative"><span id="VariantenZugvorschlag"></span></p>
 			</div>
 			<div id="dialog_ChallengeVarianteStart" 		class="hiddendialog"> 
-				<p>Lass uns zuerst über eine Variante nachdenken.<br>
-				Ich ziehe <b><span id="ChallengeVarianteStartZug"></span></b>.<br>Wie würdest du jetzt weiterspielen?</p>
+				<p id="ChallengeVarianteStartText"></p> 
 			</div>
 			<div id="dialog_ChallengeVarianteEnde" 		class="hiddendialog">
-				<p>Damit ist die Variante für <b><span id="ChallengeVarianteEndeZug"></span></b> beendet.<br>
-				Ich ziehe jetzt <b><span id="ChallengeWeiterZug"></span></b>.</p>
+				<p id="ChallengeVarianteEndeText"></p> 
+				<!-- <p>Damit ist die Variante für <b><span id="ChallengeVarianteEndeZug"></span></b> beendet.<br>
+				Ich ziehe jetzt <b><span id="ChallengeWeiterZug"></span></b>.</p> -->
 			</div>
-			<div id="dialog_PlayerVarianteStart" 		class="hiddendialog"> 
-				<p>Lass uns zuerst über eine Variante nachdenken.<br>
-				Ich ziehe <b><span id="PlayerVarianteStartZug"></span></b>.<br>Wie würdest du jetzt weiterspielen?</p>
+			<div id="dialog_PlayerVarianteStart" 		class="hiddendialog">
+				<p id="PlayerVarianteStartText"></p> 
+				<!-- <p>Lass uns zuerst über eine Variante nachdenken.<br>
+				Ich ziehe <b><span id="PlayerVarianteStartZug"></span></b>.<br>Wie würdest du jetzt weiterspielen?</p> -->
 			</div>
 			<div id="dialog_PlayerVarianteEnde" 		class="hiddendialog">
-				<p>Damit ist die Variante für <b><span id="PlayerVarianteEndeZug"></span></b> beendet.<br>
-				Ich ziehe jetzt <b><span id="PlayerWeiterZug"></span></b>.</p>
+				<p id="PlayerVarianteEndeText"></p> 
+				<!-- <p>Damit ist die Variante für <b><span id="PlayerVarianteEndeZug"></span></b> beendet.<br>
+				Ich ziehe jetzt <b><span id="PlayerWeiterZug"></span></b>.</p> -->
 			</div>
 			<div id="dialog_LichessImport" 		class="hiddendialog">
 				<p>Bitte die Kennung der Studie und des Kapitels eintragen (siehe Beispiel)</p>

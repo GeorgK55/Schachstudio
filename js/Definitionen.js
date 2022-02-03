@@ -6,17 +6,18 @@ Importdaten = {
 	ZugNummer:			1,	// aus dem PGN-String
 	ZugLevel:			0,
 	ZugFarbe:			"",
-	PreFEN:				"",	// Die FEN, die zu diesem Zug geführt hat
-	FEN:				"",	// Die FEN, nachdem dieser Zug ausgeführt wurde
-	FEN_w:				"",
-	FEN_b:				"",
+	CreateNewNode:		true,
 	PreNodeId:			"",	// der Vorgängerknotenname im html-Tree, kann parent oder sibling sein
 	CurNodeId:			"",	// der aktuelle Knotenname im html-Tree 
 	PreMoveId:			"", // Id des Vorgängerzugs, kann gleiche Ebene oder kleinere Ebene sein
 	CurMoveId:			"", // Movepräfix + PGN_Index; sind also nicht aufsteigend komplett
+	PreFEN:				"",	// Die FEN, die zu diesem Zug geführt hat
+	FEN:				"",	// Die FEN, nachdem dieser Zug ausgeführt wurde
+	FEN_w:				"",
+	FEN_b:				"",
 	Text_w:				DefaultMove_w,
 	Text_b:				DefaultMove_b,
-	StellungsStack:		[]
+	ZugStack:			[]
 };
 Importdaten.init = function () {
 	this.PGN = 				[];
@@ -24,17 +25,18 @@ Importdaten.init = function () {
 	this.ZugNummer =		1;	// aus dem PGN-String
 	this.ZugLevel =			0;
 	this.ZugFarbe =			"";
+	this.CreateNewNode = 	true;
+	this.PreNodeId =		NodePräfix + '0'; // der letzte Knotenname im html-Tree 
+	this.CurNodeId =		NodePräfix + '0'; // der aktuelle Knotenname im html-Tree 
+	this.PreMoveId =		MovePräfix + '0';
+	this.CurMoveId =		MovePräfix + '0';
 	this.PreFEN =			"";	// Die FEN; die zu diesem Zug geführt hat
 	this.FEN =				"";	// Die FEN; mit der dieser Zug ausgeführt wird
 	this.FEN_w =			"";
 	this.FEN_b =			"";
-	this.PreNodeId =		NodePräfix + '0';	// der letzte Knotenname im html-Tree 
-	this.CurNodeId =		NodePräfix + '0';	// der aktuelle Knotenname im html-Tree 
-	this.PreMoveId =		MovePräfix + '0';
-	this.CurMoveId =		MovePräfix + '0'; // mit stringpräfix; wird im listener eingetragen
 	this.Text_w =			DefaultMove_w;
 	this.Text_b =			DefaultMove_b;
-	this.StellungsStack =	[]
+	this.ZugStack =			[]
 }
 
 // Alle für das Nachspielen von Varianten notwendigen Merkposten
@@ -42,38 +44,46 @@ Stellungsdaten = {
 	ZugNummer:			1,
 	ZugLevel:			0,
 	ZugFarbe:			"",
-	CurNodeId:			"",
+	CreateNewNode:		true,
+	CurNodeId:			NodePräfix + '0',
 	PreNodeId:			NodePräfix + '0',
 	CurMoveId:			MovePräfix + '0',
-	Text_w:				DefaultMove_w,
-	Text_b:				DefaultMove_b,
+	PreMoveId:			MovePräfix + '0',
+	PreFEN:				"",	// Die FEN, die zu diesem Zug geführt hat
+	FEN:				"",	// Die FEN, nachdem dieser Zug ausgeführt wurde
 	FEN_w:				"",
 	FEN_b:				"",
-	StellungsStack:		[]
+	Text_w:				DefaultMove_w,
+	Text_b:				DefaultMove_b,
+	ZugStack:			[]
 };
 Stellungsdaten.init = function() {
 	this.ZugNummer =		1;
 	this.ZugLevel =			0;
 	this.ZugFarbe = 		"";
-	this.CurNodeId =		"";
+	this.CreateNewNode = 	true;
+	this.CurNodeId =		NodePräfix + '0';
 	this.PreNodeId =		NodePräfix + '0';
 	this.CurMoveId =		MovePräfix + '0';
-	this.Text_w =			DefaultMove_w;
-	this.Text_b =			DefaultMove_b;
+	this.PreMoveId =		MovePräfix + '0';
+	this.PreFEN =			"";	// Die FEN; die zu diesem Zug geführt hat
+	this.FEN =				"";	// Die FEN; mit der dieser Zug ausgeführt wird
 	this.FEN_w =			"";
 	this.FEN_b =			"";
-	this.StellungsStack =	[]
+	this.Text_w =			DefaultMove_w;
+	this.Text_b =			DefaultMove_b;
+	this.ZugStack =			[]
 }
  
-StellungsStack = {
-	PreFEN: 		"",
-	FEN: 			"",
-	PreNode:		"",
-	CurNode:		"",
-	PreMove:		"",
-	CurMove:		"",
-	MoveIndex:		0,
-	ChildMoveIndex:	0
+ZugStack = {
+	PreFEN:		"",
+	FEN:		"",
+	PreNode:	"",
+	CurNode:	"",
+	PreMove:	"",
+	CurMove:	"",
+	//MoveIndex:0,
+	ChildMove:	""
 };
 
 // Die Aufgabe selbst. Entspricht der Datenbanktabelle T_Aufgabe
