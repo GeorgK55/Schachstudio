@@ -4,6 +4,7 @@ Importdaten = {
 	PGN: 				[], // Alle Teile der Datei, an Leerzeichen aufgeteilt 
 	PGN_Index: 			0,  // integer, der Zähler in der do while
 	ZugNummer:			1,	// aus dem PGN-String
+	ZugNummerFarbe:		"main",
 	ZugLevel:			0,
 	ZugFarbe:			"",
 	CreateNewNode:		true,
@@ -23,6 +24,7 @@ Importdaten.init = function () {
 	this.PGN = 				[];
 	this.PGN_Index = 		0;  // integer; der Zähler in der do while
 	this.ZugNummer =		1;	// aus dem PGN-String
+	this.ZugNummerFarbe =	"main",
 	this.ZugLevel =			0;
 	this.ZugFarbe =			"";
 	this.CreateNewNode = 	true;
@@ -42,6 +44,7 @@ Importdaten.init = function () {
 // Alle für das Nachspielen von Varianten notwendigen Merkposten
 Stellungsdaten = {
 	ZugNummer:			1,
+	ZugNummerFarbe:		"main",
 	ZugLevel:			0,
 	ZugFarbe:			"",
 	CreateNewNode:		true,
@@ -59,6 +62,7 @@ Stellungsdaten = {
 };
 Stellungsdaten.init = function() {
 	this.ZugNummer =		1;
+	this.ZugNummerFarbe =	"main",
 	this.ZugLevel =			0;
 	this.ZugFarbe = 		"";
 	this.CreateNewNode = 	true;
@@ -78,13 +82,16 @@ Stellungsdaten.init = function() {
 ZugStack = {
 	PreFEN:		"",
 	FEN:		"",
+	Farbe:		"",
 	PreNode:	"",
 	CurNode:	"",
 	PreMove:	"",
 	CurMove:	"",
-	//MoveIndex:0,
+	MoveLevel:	0,
 	ChildMove:	""
 };
+
+VariationsLevelCounter = [ 0, 0, 0, 0, 0, 0, 0, 0]; // Für Hintergrundfarben der Zugnummern
 
 // Die Aufgabe selbst. Entspricht der Datenbanktabelle T_Aufgabe
 T_Aufgabe = {

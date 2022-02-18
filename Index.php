@@ -41,7 +41,9 @@
 	<script src="js/importDataFunctions.js"></script>
 	<script src="js/getDataFunctions.js"></script>
 	<script src="js/putDataFunctions.js"></script>
-	<script src="js/ChallengeGeorg.js"></script>	
+	<script src="js/approachGeorg.js"></script>	
+	<script src="js/approachGeorg_EngineUtils.js"></script>	
+	<script src="js/approachGeorg_PlayerUtils.js"></script>	
 	<script src="js/rest.js"></script>
 	<script src="js/stockfish.js"></script>
 	<script src="js/xbtooltip.js"></script>
@@ -78,6 +80,13 @@
 					<button id="btn_ThemaEntfernen" type="button" onclick="EntferneThema()"	class="KomfortButton">Thema entfernen</button>
 				</div>
 			</div>
+			<article id="a_Sonderfunktionen" class='developerfeatures'>
+				<!-- <span id="asynccount">000</span>
+				<button id="btn_async" type="button" onclick="countdouble()">async Verhalten testen</button> -->
+				<button onclick="showPartieSpielen()"		class="EntwicklerButton">Partie spielen</button>
+				<button onclick="showEnginedialog()"	class="EntwicklerButton">Enginedialog</button>
+				<!-- <button onclick="testrest()" 		class="EntwicklerButton">Test Rest</button> -->
+			</article>
 		</section>
 		<section id="sx_Aufgabensection">
 			<header class="CenterMe"><p>Stellungen dazu</p></header>
@@ -97,26 +106,19 @@
 				<fieldset id="f_Aufgabedetails">
 					<legend>Details der Aufgabe</legend>
 					<ul>
-						<li><label for="KurztextSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Kurztext</label>			<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Kurztext" 	id = "KurztextSpiel" 		disabled>	</li>
-						<li><label for="LangtextSpiel"		class="ShowLarge"						>Langtext</label>			<input type="text" class="ShowLarge"						name="Langtext" 	id = "LangtextSpiel" 		disabled>	</li>
-						<li><label for="QuelleSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Quelle</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Quelle" 		id = "QuelleSpiel" 			disabled>	</li>
-						<li><label for="QuelledetailSpiel"	class="ShowLarge"						>Quelledetail</label>		<input type="text" class="ShowLarge"						name="Quelledetail" id = "QuelledetailSpiel" 	disabled>	</li>
-						<li><label for="ScopeSpiel"			class="ShowLarge"						>Scope</label>				<input type="text" class="ShowLarge"						name="Scope" 		id = "ScopeSpiel" 			disabled>	</li>
-						<li><label for="AmZugSpiel"			class="ShowSmall ShowMedium ShowLarge"	>Am Zug</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="AmZug" 		id = "AmZugSpiel" 			disabled>	</li>
-						<li><label for="SkillSpiel"			class="ShowLarge"						>Skill</label>				<input type="text" class="ShowLarge"						name="SkillSpiel" 	id = "SkillSpiel" 			disabled>	</li>
-						<li><label for="FENSpiel"			class="ShowLarge"						>FEN</label>				<input type="text" class="ShowLarge"						name="FENSpiel" 	id = "FENSpiel"				disabled>	</li>
-						<li><label for="ImportquelleSpiel"	class="ShowLarge"						>Importquelle</label>		<input type="text" class="ShowLarge"						name="Importquelle" id = "ImportquelleSpiel"	disabled>	</li>
-						<li><label for="ImportAreaText"												>PGN:</label>				<textarea id="ImportAreaText"></textarea></li>
+						<li><label for="KurztextSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Kurztext</label>			<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Kurztext" 	id = "KurztextSpiel" 		disabled>				</li>
+						<li><label for="LangtextSpiel"		class="ShowLarge"						>Langtext</label>			<input type="text" class="ShowLarge"						name="Langtext" 	id = "LangtextSpiel" 		disabled>				</li>
+						<li><label for="QuelleSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Quelle</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Quelle" 		id = "QuelleSpiel" 			disabled>				</li>
+						<li><label for="QuelledetailSpiel"	class="ShowLarge"						>Quelledetail</label>		<input type="text" class="ShowLarge"						name="Quelledetail" id = "QuelledetailSpiel" 	disabled>				</li>
+						<li><label for="ScopeSpiel"			class="ShowLarge"						>Scope</label>				<input type="text" class="ShowLarge"						name="Scope" 		id = "ScopeSpiel" 			disabled>				</li>
+						<li><label for="AmZugSpiel"			class="ShowSmall ShowMedium ShowLarge"	>Am Zug</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="AmZug" 		id = "AmZugSpiel" 			disabled>				</li>
+						<li><label for="SkillSpiel"			class="ShowLarge"						>Skill</label>				<input type="text" class="ShowLarge"						name="SkillSpiel" 	id = "SkillSpiel" 			disabled>				</li>
+						<li><label for="FENSpiel"			class="ShowLarge"						>FEN</label>				<input type="text" class="ShowLarge"						name="FENSpiel" 	id = "FENSpiel"				disabled>				</li>
+						<li><label for="ImportquelleSpiel"	class="ShowLarge"						>Importquelle</label>		<input type="text" class="ShowLarge"						name="Importquelle" id = "ImportquelleSpiel"	disabled>				</li>
+						<li><label for="PGNTextSpiel"												>PGN:</label>				<textarea													name="PGNText"		id = "PGNTextSpiel"			disabled>	</textarea>	</li>
 					</ul>
 				</fieldset>
 			</div>
-			<article id="a_Sonderfunktionen" class='developerfeatures'>
-				<!-- <span id="asynccount">000</span>
-				<button id="btn_async" type="button" onclick="countdouble()">async Verhalten testen</button> -->
-				<button onclick="showPartieSpielen()"		class="EntwicklerButton">Partie spielen</button>
-				<button onclick="showEnginedialog()"	class="EntwicklerButton">Enginedialog</button>
-				<!-- <button onclick="testrest()" 		class="EntwicklerButton">Test Rest</button> -->
-			</article>
 		</section>
 		<section id="sx_Aktionensection">
 			<section id="s_PartieSpielen">
@@ -288,6 +290,9 @@
 							<button type="button" onclick="DatenBereitstellen_Zwischenablage()"	class="ImportButton">Aus Zwischenablage<br>übernehmen</button>
 							<button type="button" onclick="DatenBereitstellen_Datei()"			class="ImportButton">Aus Datei<br>übernehmen</button>
 							<!-- <button type="button" onclick="DatenBereitstellen_Lichess()"		class="ImportButton">Kapitel aus lichess<br>kopieren</button> -->
+						</div>
+						<div id="filename">
+							<p id="filenametext"></p>
 						</div>
 						<fieldset id="f_Aufgabedaten">
 							<legend>Alle Daten der Aufgabe</legend>
@@ -524,20 +529,29 @@
 			<div id="dialog_ChallengeVarianteStart" 		class="hiddendialog"> 
 				<p id="ChallengeVarianteStartText"></p> 
 			</div>
+			<div id="dialog_ChallengeHauptzug" 		class="hiddendialog">
+				<p>Alle Varianten abgewählt. Weiter mit dem Hauptzug</p> 
+			</div>
+			<div id="dialog_ChallengeVarianteWechsel" 		class="hiddendialog"> 
+				<p id="ChallengeVarianteWechselText"></p> 
+			</div>
 			<div id="dialog_ChallengeVarianteEnde" 		class="hiddendialog">
 				<p id="ChallengeVarianteEndeText"></p> 
-				<!-- <p>Damit ist die Variante für <b><span id="ChallengeVarianteEndeZug"></span></b> beendet.<br>
-				Ich ziehe jetzt <b><span id="ChallengeWeiterZug"></span></b>.</p> -->
 			</div>
 			<div id="dialog_PlayerVarianteStart" 		class="hiddendialog">
 				<p id="PlayerVarianteStartText"></p> 
-				<!-- <p>Lass uns zuerst über eine Variante nachdenken.<br>
-				Ich ziehe <b><span id="PlayerVarianteStartZug"></span></b>.<br>Wie würdest du jetzt weiterspielen?</p> -->
+			</div>
+			<div id="dialog_PlayerHauptzug" 		class="hiddendialog">
+				<p>Alle Varianten abgewählt. Weiter mit dem Hauptzug</p> 
+			</div>
+			<div id="dialog_PlayerVarianteWechsel" 		class="hiddendialog">
+				<p id="PlayerVarianteStartWechsel"></p> 
 			</div>
 			<div id="dialog_PlayerVarianteEnde" 		class="hiddendialog">
 				<p id="PlayerVarianteEndeText"></p> 
-				<!-- <p>Damit ist die Variante für <b><span id="PlayerVarianteEndeZug"></span></b> beendet.<br>
-				Ich ziehe jetzt <b><span id="PlayerWeiterZug"></span></b>.</p> -->
+			</div>
+			<div id="dialog_PlayerVarianteEnde" 		class="hiddendialog">
+				<p id="PlayerVarianteEndeText"></p> 
 			</div>
 			<div id="dialog_LichessImport" 		class="hiddendialog">
 				<p>Bitte die Kennung der Studie und des Kapitels eintragen (siehe Beispiel)</p>

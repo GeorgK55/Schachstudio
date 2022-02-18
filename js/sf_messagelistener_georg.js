@@ -71,7 +71,7 @@ function TheIndexGeorgFunction() {
 
 					if(line.indexOf('Fen') >= 0) {
 
-						// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu ChallengeGeorg)
+						// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu approachGeorg)
 						TransferZugdaten(Importdaten, T_Zuege)
 						
 						// Den Zug auf dem Brett ausführen
@@ -119,7 +119,8 @@ function TheIndexGeorgFunction() {
 							$('<p class="LogAus LogAusMiddle">' + line + '</p>').appendTo('#logliste');
 
 							ZieheZug(T_Zuege, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-							SchreibeZug('NotationstabelleAufgabe');
+							//SchreibeZug('NotationstabelleAufgabe');
+							NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 
 							GlobalActionStep = AS_CHECKCHALLENGEMOVEFINISHED;
 							postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -178,7 +179,8 @@ function TheIndexGeorgFunction() {
 								T_Zuege.ZugUmwandlung	= m_EnginesBest.groups.umwandlung;
 		
 								ZieheZug(T_Zuege, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-								SchreibeZug('NotationstabelleAufgabe');
+								//SchreibeZug('NotationstabelleAufgabe');
+								NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 		
 								GlobalActionStep = AS_FINISHCHALLENGEENGINEMOVE;
 								postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -187,7 +189,8 @@ function TheIndexGeorgFunction() {
 							} else { // == (none) kommt mindestens (wahrscheinlich aber nur) bei matt
 								alert("Wann bin ich hier? Bei matt?");
 								T_Zuege.ZugZeichen = MATT;
-								SchreibeZug('NotationstabelleAufgabe');
+								//SchreibeZug('NotationstabelleAufgabe');
+								NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 								// ZieheZug fehlt noch
 							}
 						} else {
@@ -339,7 +342,8 @@ function TheIndexGeorgFunction() {
 													T_Zuege.ZugUmwandlung 	= m_EnginesBest.groups.umwandlung;
 
 													ZieheZug(T_Zuege, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-													SchreibeZug('NotationstabelleAufgabe');
+													//SchreibeZug('NotationstabelleAufgabe');
+													NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 								
 													GlobalActionStep = AS_FINISHPLAYERMOVE;
 													postit('position fen ' + T_Zuege.FEN + " moves " + m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung);
@@ -357,7 +361,8 @@ function TheIndexGeorgFunction() {
 												// T_Zuege ist ja schon versorgt
 
 												ZieheZug(T_Zuege, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-												SchreibeZug('NotationstabelleAufgabe');
+												//SchreibeZug('NotationstabelleAufgabe');
+												NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 							
 												GlobalActionStep = AS_FINISHPLAYERMOVE;
 												postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -382,7 +387,8 @@ function TheIndexGeorgFunction() {
 							} else {
 								// Spielerzug ist ausreichend gut
 								ZieheZug(T_Zuege, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-								SchreibeZug('NotationstabelleAufgabe');
+								//SchreibeZug('NotationstabelleAufgabe');
+								NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 			
 								GlobalActionStep = AS_FINISHPLAYERMOVE;
 								postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -423,7 +429,8 @@ function TheIndexGeorgFunction() {
 								T_Zuege.ZugFigur		= getMoveNotations(T_Zuege.FEN, m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach, 'FigurVon');
 
 								ZieheZug(T_Zuege, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-								SchreibeZug('NotationstabelleAufgabe');
+								//SchreibeZug('NotationstabelleAufgabe');
+								NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 
 								GlobalActionStep = AS_FINISHRATINGENGINEMOVE;
 								postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -432,7 +439,8 @@ function TheIndexGeorgFunction() {
 							} else { // == (none) kommt mindestens (wahrscheinlich aber nur) bei matt
 
 								T_Zuege.ZugZeichen = MATT;
-								SchreibeZug('NotationstabelleAufgabe');
+								//SchreibeZug('NotationstabelleAufgabe');
+								NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 							}
 						} else {
 							$('<p class="LogAus LogAusMini">' + compressline(line) + '</p>').appendTo('#logliste');
@@ -504,7 +512,8 @@ function TheIndexGeorgFunction() {
 							} else {
 
 								ZieheZug(T_Zuege, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-								SchreibeZug('NotationstabelleAufgabe');
+								//SchreibeZug('NotationstabelleAufgabe');
+								NotiereZug('TreeNotationslistePlayChallenge', T_Zuege);
 
 								postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
 

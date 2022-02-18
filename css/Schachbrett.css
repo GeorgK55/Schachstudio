@@ -27,7 +27,7 @@ pre .specialchar 	{	display:inline-block;	width: 18px;    }
     background-color: #fff;
 }
 
-.ScrollMe   {   height:80%; overflow-y:auto; }
+.ScrollMe   {   /*height:80%;*/ overflow-y:auto; }
 
 #TreeNotationslistePlayChallenge a  { white-space:normal !important; height: auto; padding:1px 2px; } 
 #TreeNotationslisteImport a         { white-space:normal !important; height: auto; padding:1px 2px; } 

@@ -112,7 +112,7 @@ function getChallenges(ThemaId) {
 				var AktuelleQuelleKlasse = $('#'+ui.selected.id).attr('data-lichess');
 				if(AktuelleQuelleKlasse == 'georg') {
 					//(ui.selected.id, AktuelleQuelleKlasse)
-					showChallengegeorg(ui.selected.id);
+					showapproachGeorg(ui.selected.id);
 				} else {
 					showChallengelichess(ui.selected.id, AktuelleQuelleKlasse)
 				}
@@ -140,6 +140,7 @@ function getChallenge(ID) {
 		$('#SkillSpielSpiel').val(Challenge[0].Skill);
 		$('#AmZugSpiel').val(Challenge[0].AmZug);
 		$('#FENSpiel').val(Challenge[0].FEN);
+		$('#PGNTextSpiel').val(Challenge[0].PGN.split("\n\n")[1]);
 
 		T_Zuege.FEN = Challenge[0].FEN; // das ist dann die jeweils aktuelle Situation
 		T_Zuege.ZugFarbe = Challenge[0].FEN.indexOf('w') > 0 ? WEISSAMZUG : SCHWARZAMZUG;

@@ -264,6 +264,8 @@ function handleFileSelect (e) {
     //reader.onload = onFileLoaded;
     reader.onloadend = onFileLoadedend;
     reader.readAsText(file);
+    $('#filenametext').html(file.name);
+
     var x = reader.result;
     var i = 0;
 }
@@ -430,7 +432,7 @@ function setSpielinteraktion(RadioValue) {
 
     GlobalActionContext = RadioValue;
 
-    showChallengegeorg(GlobalAufgabeId);
+    showapproachGeorg(GlobalAufgabeId);
 
 }
 
@@ -506,7 +508,7 @@ function firePlayerMove() {
             break;
         case AC_CHALLENGE_Varianten:
 
-            PlayChallengeGeorg();
+            PlayapproachGeorg();
             //PlayChallengeVarianten();
             break;
         default:
@@ -519,3 +521,7 @@ function firePlayerMove() {
 function showChallengeTip(text) {
 $('#ChallengeTips').empty().append('<p>' + text + '</p>');
 }
+
+function getFuncName() {
+    return getFuncName.caller.name
+ }

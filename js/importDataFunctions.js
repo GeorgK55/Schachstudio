@@ -73,12 +73,13 @@ function AufgabeImportieren() {
 	GlobalActionContext 	= AC_GAMEIMPORT;
 
 	Importdaten.ZugStack.push( { 	FEN:		Importdaten.FEN, 
-										PreFEN:		Importdaten.PreFEN, 
-										PreNode:	Importdaten.PreNodeId,
-										CurNode: 	Importdaten.CurNodeId,
-										PreMove:	Importdaten.PreMoveId,
-										CurMove:	Importdaten.CurMoveId
-								     } ); 
+									PreFEN:		Importdaten.PreFEN, 
+									PreNode:	Importdaten.PreNodeId,
+									CurNode: 	Importdaten.CurNodeId,
+									PreMove:	Importdaten.PreMoveId,
+									MoveLevel:  Importdaten.ZugLevel,
+									CurMove:	Importdaten.CurMoveId
+								} ); 
 
 	validateSingleMove();
 }

@@ -100,10 +100,14 @@ const DefaultMove_w = "...";
 const DefaultMove_b = "&nbsp;";
 const NodePräfix 	= "N_";
 const MovePräfix 	= "M_";
+const TooltipPräfix	= "T_";
 const WhitePostfix 	= "_w";
 const BlackPostfix 	= "_b";
 
 const VarianteZeiger = "&#9759;";
+
+const ANSWERVARIANTE = 'Variante';
+const ANSWERHAUPTZUG = 'Hauptzug';
 
 const MiniBoardArray = [
 "<div class='cB_w'></div>",

@@ -15,10 +15,11 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
         Situation.CreateNewNode = true; 
     }
 
-    Id_Tooltip          = Situation.CurMoveId.replace('M_', 'T_') + '_' + Id_Postfix;
-    Situation.CurNodeId = Situation.CurMoveId.replace('M_', 'N_')
+    Id_Tooltip          = Situation.CurMoveId.replace(MovePräfix, TooltipPräfix) + Id_Postfix;
+    Situation.CurNodeId = Situation.CurMoveId.replace(MovePräfix, NodePräfix);
 
-    htmlText_Zugnr  = "<span class='movenumber'>" + Situation.ZugNummer + "</span>";
+    var ZugNummerFarbe = Situation.ZugLevel == 0 ? 'main' : VariationsLevelCounter[Situation.ZugLevel] % 2 == 0 ? 'even' : 'odd';
+    htmlText_Zugnr  = "<span class='movenumber" + ZugNummerFarbe + "'>" + Situation.ZugNummer + "</span>";
 
     var htmlKommentar = "";
     if(Zug.Hinweistext != "") {
@@ -42,24 +43,24 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
         if(Zug.ZugFarbe == WEISSAMZUG) {
             htmlNodeText_w  = "<span class='movewhite' id='" + Situation.CurMoveId + WhitePostfix
                             + "' data-fen='" + Situation.FEN_w 
-                            + "' onclick='jumpToPosition(\"" + Stellungsdaten.FEN_w + "\");" 
-                            + "' onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});'>"
+                            + "' onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});"
+                            + "' onclick='jumpToPosition(\"" + Stellungsdaten.FEN_w + "\");'>" 
                             + Situation.Text_w + "</span>";
             htmlNodeText_b  = "<span class='moveblack' id='" + Situation.CurMoveId + BlackPostfix 
                             + "' data-fen='" 
-                            + "' onclick='jumpToPosition();" 
-                            + "' onmouseover='XBT(this, {id:\"\", x: -150});'>"
+                            //+ "' onmouseover='XBT(this, {id:\"\", x: -150});"
+                            + "' onclick='jumpToPosition();'>" 
                             + Situation.Text_b + "</span>";
         } else {
             htmlNodeText_w  = "<span class='movewhite' id='" + Situation.CurMoveId + WhitePostfix
                             + "' data-fen='"
-                            + "' onclick='jumpToPosition(\"\");" 
-                            + "' onmouseover='XBT(this, {id:\"\", x: -150});'>"
+                            //+ "' onmouseover='XBT(this, {id:\"\", x: -150});"
+                            + "' onclick='jumpToPosition(\"\");'>" 
                             + Situation.Text_w + "</span>";
             htmlNodeText_b  = "<span class='moveblack' id='" + Situation.CurMoveId + BlackPostfix 
                             + "' data-fen='" + Situation.FEN_b 
-                            + "' onclick='jumpToPosition(\"" + Stellungsdaten.FEN_b + "\");" 
-                            + "' onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});'>"
+                            + "' onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});"
+                            + "' onclick='jumpToPosition(\"" + Stellungsdaten.FEN_b + "\");'>" 
                             + Situation.Text_b + "</span>";
         }
     }
@@ -70,11 +71,8 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
         "id": Situation.CurNodeId,
         "text": "<div>" + htmlText_Zugnr + htmlNodeText_w + htmlNodeText_b + htmlKommentar + "</div>"
     }, "last", function() {
-        //$('#' + TreeContainer).jstree().open_all();
         $('#' + TreeContainer).jstree().open_node(Situation.PreNodeId);  
     });
-    // .close_node(Situation.PreNodeId)
-    /////////// hier weiter mit Test then(Id => { })  usw
 }
 
 // Ein Knoten kann nur einen Text enthalten. Also den Knoten holen,

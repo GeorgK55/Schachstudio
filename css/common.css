@@ -5,10 +5,11 @@ header 	    {   display:none;                       background-color: Gold; text
 footer      {   display:none;       height: 5vh;    background-color: Gold; text-align:center;  vertical-align:middle;  width: 100%;   position:absolute;  bottom: 0;  }
 #sx_Mitte   {   display: flex;      flex-wrap: wrap;   }
 
-.ShowSmall  {   display:none;  }
+.ShowSmall  {   display:none;   }
 .ShowMedium {   display:none;   }
 .ShowLarge  {   display:none;   }
 
+#PGNTextSpiel   {   width:70%;  height:10vh; }
 
 #sx_Themensection 		{	width: 15%;	    height:90vh;    background-color: BurlyWood;            display: flex;  flex-direction: column; }
 #sx_Aufgabensection 	{	width: 35%;	    height:90vh;	background-color: LemonChiffon;         display: flex;  flex-direction: column; }
@@ -27,7 +28,7 @@ footer      {   display:none;       height: 5vh;    background-color: Gold; text
 #a_Aufgabe_KonfUndMeta,
 #a_usedcommands, 
 .LogKonfig              {	width:50%;  float:left;     }
-#a_Aufgabenliste        {	width:100%;  display: flex; margin-bottom: 3vh; }
+#a_Aufgabenliste        {	width:100%;  display: flex; margin-bottom: 3vh; height:50%; }
 #a_Sonderfunktionen     {   height:10vh;                }
 /*#a_BrettUndImport       {	width:100%;                 }*/
 #a_Spielkonfiguration   {   width: 40%; float: left;    }
@@ -75,7 +76,9 @@ li input[type="text"]	{	width:70%;	}
 
 .movewhite {   width: 4vw;  display: inline-block;  padding-left: 0.5vw;  background-color:white;  }
 .moveblack {   width: 4vw;  display: inline-block;  padding-left: 0.5vw;  background-color:Gainsboro;  }
-.movenumber {   width: 1vw;  display: inline-block;  padding-left: 0.5vw;  background-color:yellowgreen;  }
+.movenumbermain {   width: 1vw;  display: inline-block;  padding-left: 0.5vw;  background-color:yellowgreen;  } 
+.movenumbereven {   width: 1vw;  display: inline-block;  padding-left: 0.5vw;  background-color:SpringGreen;  }
+.movenumberodd {   width: 1vw;  display: inline-block;  padding-left: 0.5vw;  background-color:PaleGreen;  }
 
 #NotationstabelleAufgabe                   {   width:20%;  padding:0px 1vw; }
 #NotationstabelleAufgabe td                {   padding:0px 1vw;             }
@@ -101,6 +104,8 @@ li input[type="text"]	{	width:70%;	}
 
 .ui-selecting   {   background: aqua;                         } 
 .ui-selected    {   background: yellow;     color: green;   } 
+
+#a_Themenliste  {   height:80vh;    }
 
 #AufgabenlisteTree  {   width:60%;}
 #AufgabelisteButtons  {   
@@ -135,7 +140,7 @@ li input[type="text"]	{	width:70%;	}
     height:10vh;  
     overflow-y:scroll;
 } 
-.hiddendialog { display: none; width:1%;   float: left;}
+.hiddendialog { display: none; }
 
 .shift1vw   {  margin-left:1vw; }
 

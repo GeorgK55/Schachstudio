@@ -10,7 +10,8 @@ function showNeueAufgabe() {
 
     $('#ul_importaufgaben').empty();
     $('#ImportAreaText').empty();
-
+    $('#filenametext').empty();
+     
     BrettLeeren('Brett_ImportAufgabe');
 
     $('#ScrollWrapperImport').empty()
@@ -35,7 +36,7 @@ $("#iframeframe").empty().append("<iframe width=600 height=371 src='https://lich
 
 }
 
-function showChallengegeorg(ChallengeID) {
+function showapproachGeorg(ChallengeID) {
 
     $( "[id^='s_']" ).hide();
     $('#s_AufgabenSpielen').show();
