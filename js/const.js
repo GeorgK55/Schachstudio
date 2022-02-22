@@ -81,12 +81,7 @@ const r_FigurKurzeNotation =	 new RegExp("^(?<figur>[KDTSLQRNB]{1})"						+
 												"(?<umwandlung0>[=]{0,1})"					+
 												"(?<umwandlung>[DTSLQRNBdtslqrnb]{0,1})"	+
 												"(?<schachodermatt>[+#]{0,1})");
-
-//const r_Ei0 = new RegExp("^(?<depth> depth \\d)|^(?<seldepth>seldepth \\d)", "g");
-//const r_Engineinfo = new RegExp("^(?<depth> depth \\d)" + 
-//								"|^(?<seldepth>seldepth \\d)" + 
-//								"|^(?<score>score cp \\d)", "g");
-												
+											
 // Die Darstellungen der Rochaden
 const r_Rochaden = new RegExp("^(O-O-O)|(O-O)");
 

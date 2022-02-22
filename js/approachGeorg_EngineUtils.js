@@ -3,63 +3,63 @@
 // Schreibt zuerst den Hauptzug (OmittedMove) und dann alle Variantenzüge (V_Zuege) in den Stack
 // Dann wird ein Startangebot an den Spieler erstellt
 // Als Ergebnis des Startangebots kommt lediglich die CurMoveId des vom Gegner (=Challenge) auszuführenden Zugs zurück
-function offerChallengeVariationsStart(V_Zuege, OmittedMove) {
+function offerEngineVariationsStart(V_Zuege, OmittedMove) {
 
     console.log('Beginn in ' + getFuncName());
-    var OfferChallengeVariationsStartAnswer = $.Deferred();
+    var offerEngineVariationsStartAnswer = $.Deferred();
 
-    ChallengeMovesToStack(V_Zuege, OmittedMove);
+    EngineMovesToStack(V_Zuege, OmittedMove);
 
     processSingleChallengeStartOfferAnswer = new $.Deferred(); // Hier, da die Funktion sich rekursiv aufruft
 
     // Der übergangene Zug wird mitgegeben, damit dessen Daten angezeigt werden können.
     // Die Auswahl der angebotenen Züge passiert in der Funktion
-    processSingleChallengeStartOffer(OmittedMove.ZugKurz).then( function(decision) {
+    processSingleChallengeStartOffer(Zugtext(OmittedMove.ZugKurz)).then( function(decision) {
         console.log('processSingleChallengeStartOffer decision: ', decision);
 
         // Es gab die Entscheidung für eine Variante. Der gewählte Variantenzug ist Teil des Rückgabestrings decision
-        OfferChallengeVariationsStartAnswer.resolve(decision);
-        return OfferChallengeVariationsStartAnswer.promise();
+        offerEngineVariationsStartAnswer.resolve(decision);
+        return offerEngineVariationsStartAnswer.promise();
 
     }, function(decision) { // Alle Varianten ignoriert
         console.log('processSingleChallengeStartOffer decision: ' + decision);
 
-        OfferChallengeVariationsStartAnswer.reject(decision);
-        return OfferChallengeVariationsStartAnswer.promise();
+        offerEngineVariationsStartAnswer.reject(decision);
+        return offerEngineVariationsStartAnswer.promise();
 
     });
 
-    return OfferChallengeVariationsStartAnswer.promise();
+    return offerEngineVariationsStartAnswer.promise();
 }
 
-function offerChallengeVariationsEnde() {
+function offerEngineVariationsEnde() {
 
     console.log('Beginn in ' + getFuncName());
-    var OfferChallengeVariationsEndeAnswer = $.Deferred();
+    var offerEngineVariationsEndeAnswer = $.Deferred();
 
     var EndMove = $.grep(ChallengeMoves, function(EM, i) { return EM['CurMoveId'] == Stellungsdaten.CurMoveId; })[0];   // soll konstant im Dialog angezeigt werden
 
-    processSingleChallengeEndeOfferAnswer = new $.Deferred();
+    processSingleEngineEndeOfferAnswer = new $.Deferred();
 
-    processSingleChallengeEndeOffer(EndMove).then( function(decision) {
-        console.log('processSingleChallengeEndeOffer decision: ', decision);
+    processSingleEngineEndeOffer(EndMove).then( function(decision) {
+        console.log('processSingleEngineEndeOffer decision: ', decision);
 
-        OfferChallengeVariationsEndeAnswer.resolve(decision);
-        return OfferChallengeVariationsEndeAnswer.promise();
+        offerEngineVariationsEndeAnswer.resolve(decision);
+        return offerEngineVariationsEndeAnswer.promise();
 
     }, function(decision) {
-        console.log('processSingleChallengeEndeOffer decision: ', decision);
+        console.log('processSingleEngineEndeOffer decision: ', decision);
 
-        OfferChallengeVariationsEndeAnswer.reject(decision);
-        return OfferChallengeVariationsEndeAnswer.promise();
+        offerEngineVariationsEndeAnswer.reject(decision);
+        return offerEngineVariationsEndeAnswer.promise();
 
     });
 
-    return OfferChallengeVariationsEndeAnswer.promise();
+    return offerEngineVariationsEndeAnswer.promise();
 }
 
 // Überträgt alle Kandidatenzüge in den Stack. Reihenfolge entsprechend PGN
-function ChallengeMovesToStack(Variantenzuege, Hauptzug) {
+function EngineMovesToStack(Variantenzuege, Hauptzug) {
 
     console.log('Beginn in ' + getFuncName());
     // Den übergangenen Zug in den Stack (ohne Kindzug!)
@@ -77,7 +77,7 @@ function ChallengeMovesToStack(Variantenzuege, Hauptzug) {
     });
     console.table(Stellungsdaten.ZugStack[Stellungsdaten.ZugStack.length-1]);
 
-    $.each(Variantenzuege, function(i, V) {
+    for (let i = Variantenzuege.length-1; i >= 0; i--) {
 
         // Die gleiche Situation jetzt mit dem Variantenzug in den Stack
         Stellungsdaten.ZugStack.push( { 
@@ -90,16 +90,15 @@ function ChallengeMovesToStack(Variantenzuege, Hauptzug) {
             CurMove:    Hauptzug.CurMoveId, 
             MoveIndex:  Hauptzug.CurMoveIndex,
             MoveLevel:  Hauptzug.ZugLevel,
-            ChildMove:  V.CurMoveId 
+            ChildMove:  Variantenzuege[i].CurMoveId 
         });
         console.table(Stellungsdaten.ZugStack[Stellungsdaten.ZugStack.length-1]);
-    });
-    
+    }  
     
 }
 
 // Zug vorbereiten (Notation und Stellungsdaten aktualisieren)
-function prepareChallengeMove(Zug) {
+function prepareEngineMove(Zug) {
 
     console.log('Beginn in ' + getFuncName());
     if (Stellungsdaten.ZugLevel < Zug.ZugLevel) { // Dann wurde eine Variante gewählt
@@ -117,7 +116,7 @@ function prepareChallengeMove(Zug) {
 }
 
 // Die eigenliche Ausführung auf dem Brett und in der Notation
-function processChallengeMove() {
+function processEngineMove() {
 
     console.log('Beginn in ' + getFuncName());
     // NextMove ist global
@@ -125,4 +124,3 @@ function processChallengeMove() {
     NotiereZug('TreeNotationslistePlayChallenge', NextMove);
 
 }
-

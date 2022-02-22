@@ -526,33 +526,14 @@
 				<p>Entweder gibt es gibt einen stärkeren Zug als <span id="VariantenSpielerzug"></span> oder der Zug ist nicht erlaubt</p>
 				<p id="EngineZugalternative"><span id="VariantenZugvorschlag"></span></p>
 			</div>
-			<div id="dialog_ChallengeVarianteStart" 		class="hiddendialog"> 
-				<p id="ChallengeVarianteStartText"></p> 
-			</div>
-			<div id="dialog_ChallengeHauptzug" 		class="hiddendialog">
-				<p>Alle Varianten abgewählt. Weiter mit dem Hauptzug</p> 
-			</div>
-			<div id="dialog_ChallengeVarianteWechsel" 		class="hiddendialog"> 
-				<p id="ChallengeVarianteWechselText"></p> 
-			</div>
-			<div id="dialog_ChallengeVarianteEnde" 		class="hiddendialog">
-				<p id="ChallengeVarianteEndeText"></p> 
-			</div>
-			<div id="dialog_PlayerVarianteStart" 		class="hiddendialog">
-				<p id="PlayerVarianteStartText"></p> 
-			</div>
-			<div id="dialog_PlayerHauptzug" 		class="hiddendialog">
-				<p>Alle Varianten abgewählt. Weiter mit dem Hauptzug</p> 
-			</div>
-			<div id="dialog_PlayerVarianteWechsel" 		class="hiddendialog">
-				<p id="PlayerVarianteStartWechsel"></p> 
-			</div>
-			<div id="dialog_PlayerVarianteEnde" 		class="hiddendialog">
-				<p id="PlayerVarianteEndeText"></p> 
-			</div>
-			<div id="dialog_PlayerVarianteEnde" 		class="hiddendialog">
-				<p id="PlayerVarianteEndeText"></p> 
-			</div>
+			<div id="dialog_ChallengeVarianteStart"		class="hiddendialog"><p id="ChallengeVarianteStartText"></p></div>
+			<div id="dialog_ChallengeVarianteWechsel"	class="hiddendialog"><p id="ChallengeVarianteWechselText"></p></div>
+			<div id="dialog_ChallengeHauptzug" 			class="hiddendialog"><p>Alle Varianten abgewählt. Weiter mit dem Hauptzug</p></div>
+			<div id="dialog_ChallengeVarianteEnde" 		class="hiddendialog"><p id="ChallengeVarianteEndeText"></p></div>
+			<div id="dialog_PlayerVarianteStart" 		class="hiddendialog"><p id="PlayerVarianteStartText"></p></div>
+			<div id="dialog_PlayerVarianteWechsel" 		class="hiddendialog"><p id="PlayerVarianteStartWechsel"></p></div>
+			<div id="dialog_PlayerHauptzug" 			class="hiddendialog"><p>Alle Varianten abgewählt. Weiter mit dem Hauptzug</p> </div>
+			<div id="dialog_PlayerVarianteEnde" 		class="hiddendialog"><p id="PlayerVarianteEndeText"></p></div>
 			<div id="dialog_LichessImport" 		class="hiddendialog">
 				<p>Bitte die Kennung der Studie und des Kapitels eintragen (siehe Beispiel)</p>
 				<p><img src="Bilder/lichesskapitel.png" alt="" class="imgkapitel"></p>

@@ -1,12 +1,7 @@
 // Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
-function ErzeugeTooltip(Situation, BrettArray, TooltipId, Farbe) {
+function ErzeugeTooltip(FEN, BrettArray, TooltipId) {
 
-    var FEN_rows;
-    if (Farbe == WEISSAMZUG) {
-        FEN_rows = Situation.FEN_w.split(" ")[0].split("/");
-    } else {
-        FEN_rows = Situation.FEN_b.split(" ")[0].split("/");
-    }
+    var FEN_rows = FEN.split(" ")[0].split("/");
 
     var i, k;
     var Brett_idx = 0;
@@ -258,40 +253,6 @@ function ZieheZug(objZug, BoardPräfix, ZugmarkerPräfix) {
     }
 }
 
-// Das Zeichen für matt kommt in einem eigenen Aufruf (die Engine stellt das matt erst bei der Suche nach dem nächsten Zug fest)
-function SchreibeZug(Tabellenname) {
-
-    console.log('SchreibeZug für: ' + T_Zuege.ZugFarbe);
-    console.log(JSON.stringify(T_Zuege));
-
-    if(Tabellenname == 'NotationstabelleAufgabe' || Tabellenname == 'NotationslisteImport') {
-
-        console.log($("#" + Tabellenname + " td:not([data-fen])").length);
-
-        if(T_Zuege.ZugFarbe == WEISSAMZUG) {
-
-            if(T_Zuege.ZugZeichen == MATT) {
-                $('<span>' + MATT + '</span>').appendTo($('#' + Tabellenname + ' td:nth-last-child(2)').last());
-                console.log('matt mit: ');
-            } else {
-                addNewNotationLine(Tabellenname, Importdaten.ZugNummer);
-                //$('#' + Tabellenname).append('<tr><td data-fen="' + Importdaten.ZugNummer + '"></td></td><td data-fen="' + T_Zuege.FEN + '" onclick="jumpToPosition();">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td onclick="jumpToPosition();"></td></tr>');
-                // Wenn mal per Klick eine gespielte Stellung angesprungen werden soll
-                // Ist hier nur der Anfang und nur für weiß. Die Rekonstruktion ist noch nicht vollständig
-                //var tdstring = '<tr><td data-fen="' + T_Zuege.FEN + '" onclick="StellungAufbauen(\'Brett_SpieleAufgabe\', \'' + T_Zuege.FEN + '\');">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td></td></tr>'
-                //$('#' + Tabellenname).append(tdstring); oder andersrum?
-            }
-         } else {
-            if(T_Zuege.ZugZeichen == MATT) { 
-                $('<span>' + MATT + '</span>').appendTo($('#' + Tabellenname + ' td:nth-last-child(3)').last());
-            } else {
-                $("#" + Tabellenname + " td:not([data-fen])").html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz")).attr("data-fen", T_Zuege.FEN);
-            }
-
-        }
-    } 
-}
-
 function BrettLeeren(div_Brett) {
 
     $('[id^=' + div_Brett + '_]').html('');
@@ -323,12 +284,6 @@ function xjumpToPosition(FEN) {
 
 }  
 
-function addNewNotationLine(Tabellenname, Zugnummer, Level) {
-
-    $('#' + Tabellenname).append('<tr><td data-fen="' + Zugnummer + '"></td></td><td data-fen="' + T_Zuege.FEN + '" onclick="jumpToPosition();">' + getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, "kurz") + '</td><td onclick="jumpToPosition();"></td></tr>');
-
-}  
-
 function TransferZugdaten(Stellung, Zug) {
 
     Stellung.ZugNummer  = Zug.ZugNummer;
@@ -339,15 +294,24 @@ function TransferZugdaten(Stellung, Zug) {
     Stellung.FEN        = Zug.FEN;
 
     if (Zug.ZugFarbe == WEISSAMZUG) { 
-        Stellung.Text_w = Zug.ZugKurz;
+        Stellung.Text_w = Zugtext(Zug.ZugKurz);
         Stellung.FEN_w  = Zug.FEN;
         Stellung.Text_b = DefaultMove_b;
         Stellung.FEN_b  = DefaultFEN;
     } else {
-        Stellung.Text_b = Zug.ZugKurz;
+        Stellung.Text_b = Zugtext(Zug.ZugKurz);
         Stellung.FEN_b  = Zug.FEN;
         Stellung.Text_w = DefaultMove_w;
         Stellung.FEN_w  = DefaultFEN;
     }
 
+}
+
+function Zugtext(zug) {
+
+    var  returntext = '';
+    for (var i = 0; i < zug.length; i++) { 
+        returntext += ZUGNOTATION[zug[i]];
+    }
+    return returntext;
 }

@@ -21,13 +21,13 @@ function inspectPlayerMove() {
 
         TransferZugdaten(Stellungsdaten, DrawnMove[0]);
         AcceptedPlayerMove = DrawnMove[0];
-        ValidatePlayerAnswer.resolve({ weiter: ANSWERHAUPTZUG, zug: DrawnMove[0].CurMoveId});
+        ValidatePlayerAnswer.resolve({ weiter: ANSWERHAUPTZUG, zug: DrawnMove[0]});
 
     } else {
 
         PlayerMovesToStack(PossibleMoves, MainMove[0], DrawnMove[0]);
 
-        offerPlayerVariationsStart(MainMove[0].ZugKurz).then( function(decision) 
+        offerPlayerVariationsStart(Zugtext(MainMove[0].ZugKurz)).then( function(decision) 
         {
             console.log('offerPlayerVariationsStart resolve decision: ', decision);
             AcceptedPlayerMove = $.grep(ChallengeMoves, function(CMI, i) { return CMI['CurMoveId'] == decision.zug; })[0];
@@ -76,6 +76,33 @@ function offerPlayerVariationsStart(Hauptzugkurz) {
     return OfferPlayerVariationsStartAnswer.promise();
 }
 
+function offerPlayerVariationsEnde() { 
+
+    console.log('Beginn in ' + getFuncName());
+    var offerPlayerVariationsEndeAnswer = $.Deferred();
+
+    var EndMove = $.grep(ChallengeMoves, function(EM, i) { return EM['CurMoveId'] == Stellungsdaten.CurMoveId; })[0];   // soll konstant im Dialog angezeigt werden
+
+    processSinglePlayerEndeOfferAnswer = new $.Deferred();
+
+    processSinglePlayerEndeOffer(EndMove).then( function(decision) {
+        console.log('processSinglePlayerEndeOffer decision: ', decision);
+
+        offerPlayerVariationsEndeAnswer.resolve(decision);
+        return offerPlayerVariationsEndeAnswer.promise();
+
+    }, function(decision) {
+        console.log('processSinglePlayerEndeOffer decision: ', decision);
+
+        offerPlayerVariationsEndeAnswer.reject(decision);
+        return offerPlayerVariationsEndeAnswer.promise();
+
+    });
+
+    return offerPlayerVariationsEndeAnswer.promise();
+
+}
+
 // Überträgt alle Kandidatenzüge in den Stack. Reihenfolge siehe Kommentare im Code
 function PlayerMovesToStack(Variantenzuege, Hauptzug, Spielerzug) {
 
@@ -100,10 +127,12 @@ function PlayerMovesToStack(Variantenzuege, Hauptzug, Spielerzug) {
     NextIdToPlay = Hauptzug.CurMoveId; // wird überschrieben, wenn der Spieler einen Variantenzug ausgeführt hatte
 
     // Jetzt alle Züge bis auf den eventuell ausgeführten in den Stack
-    $.each(Variantenzuege, function(i, V) {
-        if(V.ZugStockfish != Hauptzug.ZugStockfish) { // Der Hauptzug steht schon im Stack
-            if(V.ZugStockfish == Spielerzug.ZugStockfish) { // Der gespielte Zug soll noch nicht in den Stack
-                NextIdToPlay = V.CurMoveId;
+    //$.each(Variantenzuege, function(i, V) {
+    for (let i = Variantenzuege.length-1; i >= 0; i--) {
+
+            if(Variantenzuege[i].ZugStockfish != Hauptzug.ZugStockfish) { // Der Hauptzug steht schon im Stack
+            if(Variantenzuege[i].ZugStockfish == Spielerzug.ZugStockfish) { // Der gespielte Zug soll noch nicht in den Stack
+                NextIdToPlay = Variantenzuege[i].CurMoveId;
             } else {
                 // Die Situation VOR dem Variantenzug in den Stack
                 Stellungsdaten.ZugStack.push( { 
@@ -117,13 +146,15 @@ function PlayerMovesToStack(Variantenzuege, Hauptzug, Spielerzug) {
                     CurMove:    Hauptzug.CurMoveId, 
                     MoveIndex:  Hauptzug.CurMoveIndex,
                     MoveLevel:  Hauptzug.ZugLevel, 
-                    ChildMove:  V.CurMoveId 
+                    //ChildMove:  V.CurMoveId 
+                    ChildMove:  Variantenzuege[i].CurMoveId 
                 });
                 //console.table(Stellungsdaten.ZugStack[Stellungsdaten.ZugStack.length-1]);
                 //console.log(Stellungsdaten.ZugStack[Stellungsdaten.ZugStack.length-1].ChildMove);
             }
         }
-    });
+    }    
+    //});
 
     // Jetzt noch einen eventuell ausgeführten Variantenzug in den Stack, damit er zuerst angeboten wird
     if(NextIdToPlay != Hauptzug.CurMoveId) {
@@ -145,54 +176,3 @@ function PlayerMovesToStack(Variantenzuege, Hauptzug, Spielerzug) {
     }
       
 }
-
-// function PerformPlayerMove() {
-  
-//     // Der manuelle Zug ist also der erwartete Zug.
-//     // PossiblePlayerMove enthält alle Daten, um den Zug auf dem Brett auszuführen
-//     ZieheZug(AcceptedPlayerMove, 'Brett_SpieleAufgabe_', "zugmarkeraufgabe");
-
-//     // Wenn eine neue Zeile in der Notationsliste nötig ist, wird diese hier mit den Stellungsdaten generiert
-//     // Sonst wird die Notationszeile aktualisiert
-//     if (AcceptedPlayerMove.ZugFarbe == WEISSAMZUG || Stellungsdaten.CreateNewNode) {
-//         Stellungsdaten.CurNodeId = NodePräfix + AcceptedPlayerMove.CurMoveIndex; // Die Kennung für die Notationszeile in html wird hier festgelegt
-//         Stellungsdaten.CurMoveId = AcceptedPlayerMove.CurMoveId; // Die Kennungen für die Züge stehen schon so in der Datenbank	
-//         NewTreeNode('TreeNotationslistePlayChallenge', 'move', Stellungsdaten, AcceptedPlayerMove, true);
-//         Stellungsdaten.CreateNewNode = false;
-//     } else {
-//         UpdateTreeNode('TreeNotationslistePlayChallenge', 'move', Stellungsdaten, AcceptedPlayerMove, true);
-//     }
-//     return true;
-// }
-
-            // if (V.ZugFarbe == WEISSAMZUG) { 
-            //     Stellungsdaten.Text_w = V.ZugKurz;
-            //     Stellungsdaten.Text_b = DefaultMove_b;
-            //     Stellungsdaten.FEN_w  = V.FEN;
-            //     Stellungsdaten.FEN_b  = "&nbsp;";
-            // } else {
-            //     Stellungsdaten.Text_b = V.ZugKurz;
-            //     Stellungsdaten.Text_w = DefaultMove_w;
-            //     Stellungsdaten.FEN_b  = V.FEN;
-            //     Stellungsdaten.FEN_w  = "&nbsp;";
-            // }
-            
-            // ExecuteDialog_PlayerVariantestart(P_Zug, V).then( function(decision) { 
-            //     console.log('done decision: ' + decision)
-            //     AcceptedPlayerMove = V;
-            //     StellungAufbauen("Brett_SpieleAufgabe", V.FEN, 'zugmarkerimport');
-            //     Stellungsdaten.PreMoveId        = V.PreMoveId;
-            //     Stellungsdaten.CurMoveId        = V.CurMoveId;
-            //     Stellungsdaten.PreNodeId        = Stellungsdaten.CurNodeId;
-            //     Stellungsdaten.CreateNewNode    = true; 
-            //     OfferPlayerVariationsStartAnswer.resolve('erledigt'); 
-            // }, function(decision) {
-            //     console.log('fail decision: ' + decision)
-            //     AcceptedPlayerMove = H_Zug;
-            //     StellungAufbauen("Brett_SpieleAufgabe", H_Zug.FEN, 'zugmarkerimport');
-            //     Stellungsdaten.PreMoveId = H_Zug.PreMoveId;
-            //     Stellungsdaten.CurMoveId = H_Zug.CurMoveId;
-            //     Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
-            //     OfferPlayerVariationsStartAnswer.reject('erledigt'); 
-            // });
-

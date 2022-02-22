@@ -8,7 +8,7 @@ function processSinglePlayerStartOffer(HauptZugKurz) {
         NextMove = $.grep(ChallengeMoves, function(PMI, i) { return PMI['CurMoveId'] == LastStackElement.ChildMove; })[0];
 
         PlayerVariantestartDialog = $( "#dialog_PlayerVarianteStart" ).dialog({
-            title: "Variante zuerst ziehen",
+            title: "Spielervariante zuerst ziehen",
             modal: true,
             draggable: false,
             resizable: false,
@@ -18,7 +18,7 @@ function processSinglePlayerStartOffer(HauptZugKurz) {
             height: 240,
             width: 600,
             open: function () {
-                var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + NextMove.ZugKurz + '</b>');
+                var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + Zugtext(NextMove.ZugKurz) + '</b>');
                 $('#PlayerVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
             },
             buttons: [
@@ -57,7 +57,7 @@ function processSinglePlayerStartOffer(HauptZugKurz) {
             height: 200,
             width: 600,
             open: function () {
-                //var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + NextMove.ZugKurz + '</b>');
+                //var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + Zugtext(NextMove.ZugKurz) + '</b>');
                 //$('#PlayerVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
             },
             buttons: [
@@ -90,7 +90,7 @@ function processSingleChallengeStartOffer(HauptZugKurz) {
         NextMove = $.grep(ChallengeMoves, function(PMI, i) { return PMI['CurMoveId'] == LastStackElement.ChildMove; })[0];
 
         ChallengeVariantestartDialog = $( "#dialog_ChallengeVarianteStart" ).dialog({
-            title: "Variante zuerst spielen",
+            title: "Aufgabenvariante zuerst spielen",
             modal: true,
             draggable: false,
             resizable: false,
@@ -100,7 +100,7 @@ function processSingleChallengeStartOffer(HauptZugKurz) {
             height: 240,
             width: 600,
             open: function () {
-                var IndividualStart12 = Text_ChallengeVarianteStart12.replace('XXX', '<b>' + NextMove.ZugKurz + '</b>');
+                var IndividualStart12 = Text_ChallengeVarianteStart12.replace('XXX', '<b>' + Zugtext(NextMove.ZugKurz) + '</b>');
                 $('#ChallengeVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
             },
             buttons: [
@@ -138,7 +138,7 @@ function processSingleChallengeStartOffer(HauptZugKurz) {
             height: 200,
             width: 600,
             open: function () {
-                //var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + NextMove.ZugKurz + '</b>');
+                //var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + Zugtext(NextMove.ZugKurz) + '</b>');
                 //$('#PlayerVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
             },
             buttons: [
@@ -157,21 +157,113 @@ function processSingleChallengeStartOffer(HauptZugKurz) {
     return processSingleChallengeStartOfferAnswer.promise();
 }
 
-function processSinglePlayerEndeOffer(LetzterZug) {
-
-}
-
-// Bietet den jeweils letzten im Stack gespeicherten Zug im Dialog an
-// Angebotene Züge sind danach nicht mehr im Stack
-// Die Funktion gibt lediglich die vom Spieler gewählte ZugId zurück (ändert keine Daten)
-function processSingleChallengeEndeOffer(LetzterZug) {
+function processSinglePlayerEndeOffer(LetzterZug) { 
 
     console.log('Beginn in ' + getFuncName());
     var LastStackElement = Stellungsdaten.ZugStack.pop();
 
     if(LastStackElement.ChildMove != "") { // Nur dann wurde eine Variante aus dem Stack geholt
 
-        var IndividualWechsel11 = Text_ChallengeVarianteWechsel11.replace('XXX', '<b>' + LetzterZug.ZugKurz + '</b>');
+        var IndividualWechsel11 = Text_PlayerVarianteWechsel11.replace('XXX', '<b>' + Zugtext(LetzterZug.ZugKurz) + '</b>');
+        NextMove = $.grep(ChallengeMoves, function(PMI, i) { return PMI['CurMoveId'] == LastStackElement.ChildMove; })[0];
+
+        PlayerVarianteWechselDialog = $( "#dialog_PlayerVarianteWechsel" ).dialog({
+            title: "Spielervariante wechseln",
+            modal: true,
+            draggable: false,
+            resizable: false,
+            position: { my: "left top", at: "left top", of: "#h_AufgabenSpielen" },
+            show: 'blind',
+            hide: 'blind',
+            height: 240,
+            width: 600,
+            open: function () {
+                var IndividualWechsel12 = Text_PlayerVarianteWechsel12.replace('XXX', '<b>' + Zugtext(NextMove.ZugKurz) + '</b>');
+                $('#PlayerVarianteWechselText').html(IndividualWechsel11 + '<br>' + IndividualWechsel12);
+            },
+            buttons: [
+                {
+                    id:     'VarianteSpielenWechsel',
+                    text:   'Spielen',
+                    click:  function() {
+                            // Der Spieler hat sich für diese Variante entschieden
+                            VariationsLevelCounter[NextMove.ZugLevel]++;
+
+                            PlayerVarianteWechselDialog.dialog('close');
+                            processSinglePlayerEndeOfferAnswer.resolve({ weiter: ANSWERVARIANTE, zug: LastStackElement});
+                            }
+                }
+                ,
+                {
+                    id:     'VarianteAbbrechenWechsel',
+                    text:   'Ignorieren',
+                    click:  function() {
+                        PlayerVarianteWechselDialog.dialog('close');
+                                processSinglePlayerEndeOffer(LetzterZug);
+                            }
+                }
+            ]                
+        });
+
+    } else {
+
+        var IndividualEnde11 = Text_PlayerVarianteEnde11.replace('XXX', '<b>' + Zugtext(LetzterZug.ZugKurz) + '</b>');
+        EndeMove = $.grep(ChallengeMoves, function(PMI, i) { return PMI['CurMoveId'] == LastStackElement.CurMove; })[0];
+
+        PlayerVarianteEndeDialog = $( "#dialog_PlayerVarianteEnde" ).dialog({
+            title: "Spielervariante beenden",
+            modal: true,
+            draggable: false,
+            resizable: false,
+            position: { my: "left top", at: "left top", of: "#h_AufgabenSpielen" },
+            show: 'blind',
+            hide: 'blind',
+            height: 240,
+            width: 600,
+            open: function () {
+                var IndividualEnde12 = Text_PlayerVarianteEnde12.replace('XXX', '<b>' + Zugtext(EndeMove.ZugKurz) + '</b>');
+                $('#PlayerVarianteEndeText').html(IndividualEnde11 + '<br>' + IndividualEnde12);
+            },
+            buttons: [
+                {
+                    id:     'VarianteSpielenEnde',
+                    text:   'Spielen',
+                    click:  function() {
+                                // Der Spieler hat sich für diese Variante entschieden
+                                VariationsLevelCounter[EndeMove.ZugLevel]--;
+    
+                                PlayerVarianteEndeDialog.dialog('close');
+                                // resolve oder reject? Was ist richtiger?
+                                processSinglePlayerEndeOfferAnswer.reject({ weiter: ANSWERHAUPTZUG, zug: LastStackElement});
+                            }
+                }
+                // ,
+                // {
+                //     id:     'VarianteAbbrechen',
+                //     text:   'Ignorieren',
+                //     click:  function() {
+                //                 ChallengeVarianteWechselDialog.dialog('close');
+                //                 processSingleEndeOffer(LetzterZug);
+                //             }
+                // }
+            ]                
+        });
+
+    }
+    return processSinglePlayerEndeOfferAnswer.promise();
+}
+
+// Bietet den jeweils letzten im Stack gespeicherten Zug im Dialog an
+// Angebotene Züge sind danach nicht mehr im Stack
+// Die Funktion gibt lediglich die vom Spieler gewählte ZugId zurück (ändert keine Daten)
+function processSingleEngineEndeOffer(LetzterZug) {
+
+    console.log('Beginn in ' + getFuncName());
+    var LastStackElement = Stellungsdaten.ZugStack.pop();
+
+    if(LastStackElement.ChildMove != "") { // Nur dann wurde eine Variante aus dem Stack geholt
+
+        var IndividualWechsel11 = Text_ChallengeVarianteWechsel11.replace('XXX', '<b>' + Zugtext(LetzterZug.ZugKurz) + '</b>');
         NextMove = $.grep(ChallengeMoves, function(PMI, i) { return PMI['CurMoveId'] == LastStackElement.ChildMove; })[0];
 
         ChallengeVarianteWechselDialog = $( "#dialog_ChallengeVarianteWechsel" ).dialog({
@@ -185,7 +277,7 @@ function processSingleChallengeEndeOffer(LetzterZug) {
             height: 240,
             width: 600,
             open: function () {
-                var IndividualWechsel12 = Text_ChallengeVarianteWechsel12.replace('XXX', '<b>' + NextMove.ZugKurz + '</b>');
+                var IndividualWechsel12 = Text_ChallengeVarianteWechsel12.replace('XXX', '<b>' + Zugtext(NextMove.ZugKurz) + '</b>');
                 $('#ChallengeVarianteWechselText').html(IndividualWechsel11 + '<br>' + IndividualWechsel12);
             },
             buttons: [
@@ -195,8 +287,13 @@ function processSingleChallengeEndeOffer(LetzterZug) {
                     click:  function() {
                             // Der Spieler hat sich für diese Variante entschieden
                             VariationsLevelCounter[NextMove.ZugLevel]++;
+
+                            // TransferZugdaten(Stellungsdaten, NextMove);
+                            // UpdateTreeNode('TreeNotationslistePlayChallenge', 'move', Stellungsdaten, NextMove, true);
+                            // TransferZugdaten(Stellungsdaten, LetzterZug);
+
                             ChallengeVarianteWechselDialog.dialog('close');
-                            processSingleChallengeEndeOfferAnswer.resolve({ weiter: ANSWERVARIANTE, zug: LastStackElement});
+                            processSingleEngineEndeOfferAnswer.resolve({ weiter: ANSWERVARIANTE, zug: LastStackElement});
                             }
                 }
                 ,
@@ -205,7 +302,7 @@ function processSingleChallengeEndeOffer(LetzterZug) {
                     text:   'Ignorieren',
                     click:  function() {
                                 ChallengeVarianteWechselDialog.dialog('close');
-                                processSingleChallengeEndeOffer(LetzterZug);
+                                processSingleEngineEndeOffer(LetzterZug);
                             }
                 }
             ]                
@@ -213,8 +310,7 @@ function processSingleChallengeEndeOffer(LetzterZug) {
 
     } else {
 
-        var IndividualEnde11 = Text_ChallengeVarianteEnde11.replace('XXX', '<b>' + LetzterZug.ZugKurz + '</b>');
-
+        var IndividualEnde11 = Text_ChallengeVarianteEnde11.replace('XXX', '<b>' + Zugtext(LetzterZug.ZugKurz) + '</b>');
         EndeMove = $.grep(ChallengeMoves, function(PMI, i) { return PMI['CurMoveId'] == LastStackElement.CurMove; })[0];
 
         ChallengeVarianteEndeDialog = $( "#dialog_ChallengeVarianteEnde" ).dialog({
@@ -228,7 +324,7 @@ function processSingleChallengeEndeOffer(LetzterZug) {
             height: 240,
             width: 600,
             open: function () {
-                var IndividualEnde12 = Text_ChallengeVarianteEnde12.replace('XXX', '<b>' + EndeMove.ZugKurz + '</b>');
+                var IndividualEnde12 = Text_ChallengeVarianteEnde12.replace('XXX', '<b>' + Zugtext(EndeMove.ZugKurz) + '</b>');
                 $('#ChallengeVarianteEndeText').html(IndividualEnde11 + '<br>' + IndividualEnde12);
             },
             buttons: [
@@ -238,9 +334,16 @@ function processSingleChallengeEndeOffer(LetzterZug) {
                     click:  function() {
                                 // Der Spieler hat sich für diese Variante entschieden
                                 VariationsLevelCounter[EndeMove.ZugLevel]--;
+
+                                // TransferZugdaten(Stellungsdaten, EndeMove);
+                                // //var Update_Stellungsdaten = Object.assign({}, Stellungsdaten);
+                                // Stellungsdaten.CurNodeId = LastStackElement.CurNode;
+                                // UpdateTreeNode('TreeNotationslistePlayChallenge', 'move', Stellungsdaten, EndeMove, true);
+                                // TransferZugdaten(Stellungsdaten, LetzterZug);
+    
                                 ChallengeVarianteEndeDialog.dialog('close');
                                 // resolve oder reject? Was ist richtiger?
-                                processSingleChallengeEndeOfferAnswer.reject({ weiter: ANSWERHAUPTZUG, zug: LastStackElement});
+                                processSingleEngineEndeOfferAnswer.reject({ weiter: ANSWERHAUPTZUG, zug: LastStackElement});
                             }
                 }
                 // ,
@@ -249,181 +352,13 @@ function processSingleChallengeEndeOffer(LetzterZug) {
                 //     text:   'Ignorieren',
                 //     click:  function() {
                 //                 ChallengeVarianteWechselDialog.dialog('close');
-                //                 processSingleChallengeEndeOffer(LetzterZug);
+                //                 processSingleEndeOffer(LetzterZug);
                 //             }
                 // }
             ]                
         });
-
-        //processSingleChallengeEndeOfferAnswer.reject({ aktion: 'fertig', zug: LastStackElement.CurMove});
     }
 
 
-    return processSingleChallengeEndeOfferAnswer.promise();
+    return processSingleEngineEndeOfferAnswer.promise();
 }
-
-
-// function ExecuteDialog_PlayerVariantestart(P_Zug, Zug) {
-
-//     var PlayerStartAnswer = $.Deferred();
-
-//     PlayerVariantestartDialog = $( "#dialog_PlayerVarianteStart" ).dialog({
-//         title: "Varianten zuerst spielen",
-//         position: { my: "left top", at: "left top", of: "#h_AufgabenSpielen" },
-//         height: 240,
-//         width: 500,
-//         modal: true,
-//         open: function () {
-//             //$("#PlayerVarianteStartZug").html(V.ZugKurz);
-//             var IndividualStart11 = Text_PlayerVarianteStart11.replace('XXX', '<b>' + P_Zug.ZugKurz + '</b>');
-//             var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + Zug.ZugKurz + '</b>');
-//             $('#PlayerVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
-//         },
-//         buttons: [
-//             {
-//                 id:     'VarianteSpielen',
-//                 text:   'Spielen',
-//                 click:  function() {
-//                             $( "#PlayerVarianteStartZug" ).empty();
-//                             PlayerVariantestartDialog.dialog('close');
-//                             PlayerStartAnswer.resolve('spielen');
-//                         }
-//             }
-//             ,
-//             {
-//                 id:     'VarianteIgnorieren',
-//                 text:   'Ignorieren',
-//                 click:  function() { 
-//                             $( "#PlayerVarianteStartText" ).empty();
-//                             PlayerVariantestartDialog.dialog('close');
-//                             PlayerStartAnswer.reject('ignorieren');
-//                         }
-//             }
-//         ]
-//     });
-
-//     return PlayerStartAnswer.promise();
-// }
-
-// function ExecuteDialog_PlayerVarianteende() {
-
-//     var PlayerEndeAnswer = $.Deferred();
-
-//     PlayerVarianteendeDialog = $( "#dialog_PlayerVarianteEnde" ).dialog({
-//         title: "Varianten beenden",
-//         position: { my: "left top", at: "left top", of: "#h_AufgabenSpielen" },
-//         height: 240,
-//         width: 500,
-//         modal: true,
-//         open: function () {
-//             //$("#PlayerVarianteStartZug").html(V.ZugKurz);
-//             var IndividualStart11 = Text_PlayerVarianteStart11.replace('XXX', '<b>' + P_Zug.ZugKurz + '</b>');
-//             var IndividualStart12 = Text_PlayerVarianteStart12.replace('XXX', '<b>' + Zug.ZugKurz + '</b>');
-//             $('#PlayerVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
-//         },
-//         buttons: [
-//             {
-//                 id:     'VarianteSpielen',
-//                 text:   'Spielen',
-//                 click:  function() {
-//                             $( "#PlayerVarianteStartZug" ).empty();
-//                             PlayerVariantestartDialog.dialog('close');
-//                             PlayerStartAnswer.resolve('spielen');
-//                         }
-//             }
-//             ,
-//             {
-//                 id:     'VarianteIgnorieren',
-//                 text:   'Ignorieren',
-//                 click:  function() { 
-//                             $( "#PlayerVarianteStartText" ).empty();
-//                             PlayerVariantestartDialog.dialog('close');
-//                             PlayerStartAnswer.reject('ignorieren');
-//                         }
-//             }
-//         ]
-//     });
-
-//     return PlayerEndeAnswer.promise();
-
-// }
-
-
-// function ExecuteDialog_ChallengeVariantestart(C_Zug, Zug) {
-
-//     var ChallengeStartAnswer = new $.Deferred();
-
-//     ChallengeVariantestartDialog = $( "#dialog_ChallengeVarianteStart" ).dialog({
-//         title: "Variante zuerst spielen",
-//         position: { my: "left top", at: "left top", of: "#h_AufgabenSpielen" },
-//         height: 240,
-//         width: 600,
-//         modal: true,
-//         open: function () {
-//             var IndividualStart11 = Text_ChallengeVarianteStart11.replace('XXX', '<b>' + C_Zug.ZugKurz + '</b>');
-//             var IndividualStart12 = Text_ChallengeVarianteStart12.replace('XXX', '<b>' + Zug.ZugKurz + '</b>');
-//             $('#ChallengeVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
-//         },
-//         buttons: [
-//             {
-//                 id:     'VarianteSpielen',
-//                 text:   'Spielen',
-//                 click:  function() {
-//                             ChallengeVariantestartDialog.dialog('close');
-//                             ChallengeStartAnswer.resolve('spielen');
-//                         }
-//             }
-//             ,
-//             {
-//                 id:     'VarianteAbbrechen',
-//                 text:   'Ignorieren',
-//                 click:  function() {
-//                             ChallengeVariantestartDialog.dialog('close');
-//                             ChallengeStartAnswer.reject('ignorieren');
-//                         }
-//             }
-//         ]
-//     });
-//     return ChallengeStartAnswer.promise();
-// }
-// function ExecuteDialog_StopScriptTest(idx, Zug) {
-
-//     var StopScriptTestAnswer = new $.Deferred();
-
-//     StopScriptTestDialog = $( "#dialog_StopScriptTest" ).dialog({
-//         title: "Stop Srcipt Test",
-//         position: { my: "left top", at: "left top", of: "#h_AufgabenSpielen" },
-//         height: 240,
-//         width: 600,
-//         modal: true,
-//         open: function () {
-//             // var IndividualStart11 = Text_ChallengeVarianteStart11.replace('XXX', '<b>' + C_Zug.ZugKurz + '</b>');
-//             // var IndividualStart12 = Text_ChallengeVarianteStart12.replace('XXX', '<b>' + Zug.ZugKurz + '</b>');
-//             // $('#ChallengeVarianteStartText').html(IndividualStart11 + '<br>' + IndividualStart12);
-//         },
-//         buttons: [
-//             {
-//                 id:     'VarianteSpielen',
-//                 text:   'Spielen',
-//                 click:  function() {
-//                             $( "#dialog_StopScriptTest" ).empty();
-//                             StopScriptTestDialog.dialog('close');
-//                             StopScriptTestAnswer.resolve('spielen');
-//                         }
-//             }
-//             ,
-//             {
-//                 id:     'VarianteAbbrechen',
-//                 text:   'Ignorieren',
-//                 click:  function() {
-//                             $( "#dialog_StopScriptTest" ).empty();
-//                             StopScriptTestDialog.dialog('close');
-//                             StopScriptTestAnswer.reject('ignorieren');
-//                         }
-//             }
-//         ]
-//     });
-//     return StopScriptTestAnswer.promise();
-
-// }
-

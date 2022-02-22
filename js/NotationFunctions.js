@@ -65,7 +65,8 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
         }
     }
 
-    if(TooltipFlag) ErzeugeTooltip(Situation, MiniBoardArray, Id_Tooltip, Zug.ZugFarbe);
+    var TooltipFEN = Zug.ZugFarbe == WEISSAMZUG ? Situation.FEN_w : Situation.FEN_b;
+    if(TooltipFlag) ErzeugeTooltip(TooltipFEN, MiniBoardArray, Id_Tooltip);
 
     NewNodeId = $('#' + TreeContainer).jstree().create_node(Situation.PreNodeId, {
         "id": Situation.CurNodeId,
@@ -93,7 +94,8 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
     
     Id_Tooltip = Situation.CurMoveId.replace('M_', 'T_') + '_' + Id_Postfix;
 
-    if(TooltipFlag) ErzeugeTooltip(Situation, MiniBoardArray, Id_Tooltip, Zug.ZugFarbe);
+    var TooltipFEN = Zug.ZugFarbe == WEISSAMZUG ? Situation.FEN_w : Situation.FEN_b;
+    if(TooltipFlag) ErzeugeTooltip(TooltipFEN, MiniBoardArray, Id_Tooltip);
 
     // Den aktuellen Knoten holen, damit die schon ausgefüllten Teile übernommen werden können
     var changenode = $('#' + TreeContainer).jstree(true).get_node(Situation.CurNodeId); 
@@ -104,10 +106,7 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
     htmlText_Zugnr  = NodeElements[1].outerHTML;
 
     var SchonDaKommentar    = NodeElements.length == 5  ? NodeElements[4].outerHTML :  "";
-    //var NeuKommentar        = Zug.Hinweistext != ""     ? Zug.Hinweistext           : "";
-    //var Zeilentrenner       = SchonDaKommentar != "" && NeuKommentar != "" ? "</br>" : "";
-    //var htmlKommentar       = SchonDaKommentar != "" || NeuKommentar != "" ? '<div class="' + Classname_Comment + '">' + SchonDaKommentar + Zeilentrenner + NeuKommentar + '</div>' : "";
-    var NeuKommentar       = Zug.Hinweistext != "" ? '<div class="' + Classname_Comment + '">' + Zug.Hinweistext + '</div>' : "";
+    var NeuKommentar        = Zug.Hinweistext != "" ? '<div class="' + Classname_Comment + '">' + Zug.Hinweistext + '</div>' : "";
 
     if (Mode == 'sign') {
         // Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
@@ -144,10 +143,6 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag) {
 
     var changetext = "<div>" + htmlText_Zugnr + htmlNodeText_w + htmlNodeText_b + SchonDaKommentar + NeuKommentar + "</div>";
     $('#' + TreeContainer).jstree().rename_node(changenode, changetext);
-
-}
-
-function CloseTreeNode(TreeContainer, Situation) {
 
 }
 
