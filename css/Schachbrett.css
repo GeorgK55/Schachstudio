@@ -1,0 +1,62 @@
+
+.cb_tooltip   { width: 16vh;  height: 16vh; border: 1px solid #333; } /* 8 mal 2 units, keine Koordinaten */
+.cb_import    { width: 30vh;  height: 30vh; border: 2px solid #333; background-image:url("Melamine-wood-003.png"); } /* 10 mal 3 units, mit Koordinaten */
+.cb_challenge { width: 60vh;  height: 60vh; border: 2px solid #333; background-image:url("Melamine-wood-003.png");	} /* 10 mal 6 units, mit Koordinaten */
+
+/* tooltip hat keine Koordinaten .cB_K  { float: left; width: 6vh; height: 6vh; vertical-align:middle; text-align:center; font-size:1.3rem; line-height: 6vh;   } */
+.koord_challenge  { float: left; width: 6vh; height: 6vh; text-align:center; font-size:1.3em;  vertical-align:middle; line-height: 2.5; }
+.koord_import			{ float: left; width: 3vh; height: 3vh; text-align:center; font-size:1.0rem; vertical-align:middle; line-height: 2.0;	}
+
+.f_tooltip_w, .f_tooltip_s			{ float: left; width: 2vh; height: 2vh; text-align:center; font-size:1.0rem;   }
+.f_challenge_w, .f_challenge_s	{ float: left; width: 6vh; height: 6vh; text-align:center; font-size:var(--dynfontsize60); line-height: 1.3;	}
+.f_import_w, .f_import_s  			{ float: left; width: 3vh; height: 3vh; text-align:center; font-size:var(--dynfontsize30); line-height: 0.9;	}
+
+.f_import_w, .f_challenge_w, .f_tooltip_w  { background-image:url("Melamine-wood-001.png"); }
+.f_import_s, .f_challenge_s, .f_tooltip_s  { background-image:url("Melamine-wood-005.png"); }
+
+.variantezeiger {   font-weight: 900;   text-align: center; }
+
+.variantentextarea	{ background-color:var(--color_varianten);	}
+
+.variantemarker img			{	height: 3vh;	}
+.zugergebnismarker img	{	height: 3vh;	}
+
+.xbtooltip {
+	display: none;
+	position: absolute;
+}
+
+.ScrollMe   { overflow-y:auto; }
+
+#ChallengeTreeNotationId	a	{ white-space:normal !important; height: auto; padding:1px 2px; }
+#ImportTreeNotationId			a	{ white-space:normal !important; height: auto; padding:1px 2px; }
+
+.Comment_w {  background-color:white;       }
+.Comment_b {  background-color:Gainsboro;   }
+
+/*.varianten {   background-image: linear-gradient(rgb(0 0 0/2%) 0 0);   }*/
+.variantenclass {   opacity: 0.2;   }
+
+.erstehilfe {   animation: ZeigeErsteHilfe 1s ease 0s 2 normal forwards;   }
+.ohnehilfe  {   animation: none;  }
+
+@keyframes ZeigeErsteHilfe {
+    0%,
+    50%,
+    100% {
+      opacity: 1;
+    }
+
+    25%,
+    75% {
+      opacity: 0;
+    }
+  }
+
+	.currentmovemarker::after {	content: " \25C6";	}
+	.formermovemarker::after 	{	content: none;			}
+
+	.noClick {
+		pointer-events: none;
+		opacity: 0.4;
+	}

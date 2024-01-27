@@ -1,0 +1,799 @@
+* {
+    margin: 0;
+    padding: 0;
+    --dynfontsize20: clamp(0.8rem, 2vh, 2rem);
+    --dynfontsize30: clamp(0.8rem, 3vh, 4rem);
+    --dynfontsize60: clamp(  1rem, 6vh, 8rem);
+    font-family:	Arial, Helvetica, sans-serif;
+
+    --color_varianten: beige;
+    --color_chesswhite: white;
+    --color_chessblack: Gainsboro;
+    --color_commonbackground: BlanchedAlmond;
+    --color_importantbackground: Gold;
+    --color_movenumbermain: YellowGreen;
+    --color_movenumberodd: PaleGreen;
+    --color_movenumbereven: MediumSeaGreen;
+}
+
+/* wenn diese Angabe fehlt, wird der Bildschirm nach Drehen von portrait nach landscape schwarz */
+#seite::backdrop {
+    background-color: var(--color_commonbackground);
+}
+
+body {
+    overflow: hidden;
+    background-color: var(--color_commonbackground);
+}
+
+.inactiveanchor {
+    pointer-events: none;
+}
+
+.gc-seite {
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    grid-template-columns: 1fr;
+    grid-template-rows: clamp(40px, 5vh, 80px) 1fr clamp(20px, 5vh, 40px);
+}
+
+.gc-mitte {
+    display: grid;
+    overflow: hidden;
+    /* grid-template-columns: 10fr 15fr 30fr; */ /* Das ist das Original */
+    grid-template-columns: 5fr 10fr 30fr; /* Das gilt für debug */
+    grid-template-areas: "Themen Aufgaben Aktionen";
+}
+
+/* Ohne diese Angaben funktioniert das Scrollen nicht wie gewünscht: */
+/* Fehlt display: grid, scrollt der gesamte Aktionenbereich */
+/* Fehlt overflow: auto, gibt es gar keinen Scrollbalken */
+/* Noch unverstanden: wieso scrollt nur der div mit den Texten und nicht auch die Überschrift */
+
+.gc-mitte_themen {
+    grid-area: Themen;
+    display: grid;
+    overflow: auto;
+}
+
+.gc-mitte_aufgaben {
+    grid-area: Aufgaben;
+    display: grid;
+    overflow: auto;
+}
+
+.gc-mitte_aktionen {
+    grid-area: Aktionen;
+    display: grid;
+    overflow: auto;
+}
+
+.gc-themenstarter {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.gc-themenanzeige {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr min-content min-content;
+}
+
+.gc-aufgabenstarter {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.gc-aufgabenanzeige {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr min-content;
+}
+
+.gc-willkommen {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.gc-spielerinfo {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.gc-trainerinfo {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.gc-entwicklerinfo {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.gc-spielen {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content min-content 1fr;
+}
+
+.gc-import {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.gc-themenliste {
+    display: grid;
+    grid-template-rows: 10fr 2fr 1fr;
+    grid-row-gap: 2vh;
+    overflow: auto;
+    margin: 1vh 2vw;
+}
+
+.gc-aufgabendetails {
+    display: grid;
+    grid-template-rows: min-content min-content min-content min-content;
+    /* grid-template-rows: 1fr 5fr 1fr 1fr;
+	margin: 1vh 2vw; */
+    grid-row-gap: 1vh;
+}
+
+.gc-enginedialog {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
+.scrollme {
+    touch-action: initial;
+    overflow: auto;
+    height: 40vh;
+}
+
+.gc-usertypes {
+    display: grid;
+    grid-template-rows: min-content min-content min-content min-content min-content;
+    grid-row-gap: 2vh;
+    overflow: auto;
+    margin: 1vh 2vw;
+}
+
+.gc-interesse {
+    display: grid;
+    grid-template-columns: 10fr 20fr 10fr;
+    align-items: center;
+    justify-items: center;
+    padding: 1vh;
+}
+
+.gc-spieler {
+    display: grid;
+    grid-template-columns: 10fr 20fr 20fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    grid-template-areas: "Text V1 Weiter" "Text V2 Weiter" "Text V3 Weiter";
+    padding: 1vh;
+}
+
+.spielertext {
+    grid-area: Text;
+}
+
+.video_spielertext1 {
+    grid-area: V1;
+}
+
+.video_spielertext2 {
+    grid-area: V2;
+}
+
+.video_spielertext3 {
+    grid-area: V3;
+}
+
+.spielerweiter {
+    grid-area: Weiter;
+}
+
+.gc-trainer {
+    display: grid;
+    grid-template-columns: 10fr 20fr 20fr;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    grid-template-areas: "Text V1 Weiter" "Text V2 Weiter";
+    padding: 1vh;
+}
+
+.trainertext {
+    grid-area: Text;
+}
+
+.video_trainertext1 {
+    grid-area: V1;
+}
+
+.video_trainertext2 {
+    grid-area: V2;
+}
+
+.trainerweiter {
+    grid-area: Weiter;
+}
+
+.gc-entwickler {
+    display: grid;
+    grid-template-columns: 10fr 20fr 20fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: center;
+    grid-template-areas: "Text V1 Weiter";
+    padding: 1vh;
+}
+
+.gc-rolleninfo {
+    overflow: auto;
+    margin: 5vh 2vw;
+}
+
+.entwicklertext {
+    grid-area: Text;
+}
+
+.video_entwicklertext1 {
+    grid-area: V1;
+}
+
+.entwicklerweiter {
+    grid-area: Weiter;
+}
+
+.gc-aufruftip {
+    display: grid;
+    grid-template-columns: 5fr 20fr;
+    align-items: center;
+    justify-items: center;
+    padding: 1vh;
+}
+
+.importantbackgroundcolor {
+    background-color: var(--color_importantbackground);
+}
+
+.header {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.VeryImportantText {
+    font-size: var(--dynfontsize20);
+    font-weight: bold;
+    color: #874312;
+    text-align: center;
+    padding-top: 1vh;
+}
+
+.ImportantCenterText {
+    font-size: var(--dynfontsize20);
+    font-weight: bold;
+    color: #874312;
+    text-align: center;
+    padding: 0.5vh;
+}
+
+.ImportantLeftText {
+    font-size: var(--dynfontsize20);
+    font-weight: bold;
+    color: #874312;
+    margin-left: 5vw;
+    padding: 0.5vh;
+}
+
+.Startertext {
+    font-size: var(--dynfontsize20);
+    margin: 8vh 2vw;
+}
+
+.youtubelink {
+    height: 2vh;
+    vertical-align: middle;
+}
+
+.Willkommentipicon {
+    height: 5vh;
+    vertical-align: middle;
+}
+
+.padmeleft2vw {
+    padding-left: 2vw;
+}
+
+#Welcome button {
+    font-size: var(--dynfontsize20);
+}
+
+.KomfortButton {
+    width: 40%;
+    height: 6vh;
+    margin: 1vh auto;
+}
+
+.ImportButton {
+    width: 90%;
+    margin-left: 1vw;
+    /*margin-right:1vw;*/
+    margin-bottom: 0.5vh;
+}
+
+.usertypearea {
+    font-size: var(--dynfontsize20);
+    border-style: ridge;
+    background: rgb(255, 140, 0);
+    background: linear-gradient( 180deg, rgba(255, 140, 0, 1) 0%, rgba(245, 222, 179, 1) 50%, rgba(245, 222, 179, 1) 50%, rgba(255, 140, 0, 1) 100%);
+}
+
+#btn_Import::after {
+    content: "Aufgaben importieren";
+}
+
+#btn_VerbindeAufgabe::after {
+    content: "Aufgabe mit Thema kombinieren";
+}
+
+#btn_TrenneAufgabe::after {
+    content: "Aufgabe und Thema trennen";
+}
+
+#btn_EntferneAufgabe::after {
+    content: "Aufgabe entfernen";
+}
+
+#l_StellungOhne::after {
+    content: "Ohne Bewertungshinweise";
+}
+
+#l_StellungMit::after {
+    content: "Mit Bewertungshinweisen";
+}
+
+#l_AufgabeOhne::after {
+    content: "Ohne Variantenanalyse";
+}
+
+#l_AufgabeMit::after {
+    content: "Mit Variantenanalyse";
+}
+
+.interessetext::after {
+    content: "Für Interessierte";
+}
+
+.spielertext::after {
+    content: "Für Spieler";
+}
+
+.trainertext::after {
+    content: "Für Trainer";
+}
+
+.entwicklertext::after {
+    content: "Für Entwickler";
+}
+
+#btn_Spieler::after {
+    content: "Stellungen und Aufgaben auswählen und lösen";
+}
+
+#btn_Trainer::after {
+    content: "Aufgaben auswählen und lösen \a Themen und Aufgaben \a ergänzen und kombinieren";
+}
+
+#btn_Entwickler::after {
+    content: "Aufgaben und Themen verwalten und lösen \a Protokoll und eigene Kommandos mit der Engine stockfish";
+}
+
+.hiddendialog {
+    display: none;
+}
+
+.hideMe {
+    display: none;
+}
+
+#VisitorCounterSpan {
+    float: left;
+    margin-left: 5vw;
+    padding-top: 1vh;
+    font-size: var(--dynfontsize20);
+}
+
+.CopyRight {
+    float: right;
+    padding-right: 5vw;
+    padding-top: 1vh;
+    font-size: var(--dynfontsize20);
+}
+
+.dialogfigur {
+    width: 100%;
+}
+
+.dialogtext {
+    margin-left: 2vw;
+    font-size: var(--dynfontsize17);
+    font-weight: normal;
+    text-align: left;
+}
+
+.dialogvariable {
+    margin: 0vh 0.2vw;
+    font-weight: bold;
+}
+
+.dialoginput {
+    margin: 0vh 0.2vw;
+}
+
+.gc-neuesthema {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-themaentfernen {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-AufgabeVerbinden {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-AufgabeTrennen {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-AufgabeEntfernen {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
+
+.gc-Zugdifferenzxxx {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+
+/* grid-template-rows: min-content;	justify-items: center;	align-items: center;	}
+.gc-BessererZug								{	display:grid;	grid-template-columns: 1fr 4fr;	grid-template-rows: min-content;	justify-items: center;	align-items: center;	} */
+
+.gc-ChallengeVarianteStart {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-ChallengeVarianteWechsel {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-ChallengeHauptzug {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-ChallengeVarianteEnde {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-PlayerVarianteStart {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-PlayerVarianteWechsel {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-PlayerHauptzug {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.gc-PlayerVarianteEnde {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+
+/* .gc-LichessImport							{	display:grid;	grid-template-columns: 1fr 4fr;	grid-template-rows: min-content;	justify-items: center;	align-items: center;	} */
+
+.gc-DBErrorMessages {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: min-content;
+    justify-items: center;
+    align-items: center;
+}
+
+.movewhite {
+    width: 4vw;
+    display: inline-block;
+    padding-left: 0.5vw;
+    background-color: var(--color_chesswhite);
+}
+
+.moveblack {
+    width: 4vw;
+    display: inline-block;
+    padding-left: 0.5vw;
+    background-color: var(--color_chessblack);
+}
+
+.movenumber {
+    width: 1vw;
+    display: inline-block;
+    padding-left: 0.5vw;
+}
+
+.backgroundmain {	background-color: var(--color_movenumbermain);	}
+.backgroundeven {	background-color: var(--color_movenumbereven);	}
+.backgroundodd  {	background-color: var(--color_movenumberodd);	}
+
+#f_Aufgabedetails {
+    margin: 1vh 1vw;
+    padding-left: 2vw;
+}
+
+#BrettUndMarker {
+    margin: 1vh 1vw;
+}
+
+.gc-boardandnotation {
+    display: grid;
+    grid-template-columns: min-content 10fr;
+    grid-template-rows: min-content 1fr min-content min-content;
+    grid-template-areas: "challengevariantenarea schachtips" "challengeboard notation" "zugpfeile aufgabehinweise" "pgn aufgabehinweise";
+    margin: 1vh 1vw;
+}
+
+.gc-challengevarianten {
+	grid-area: challengevariantenarea;
+	display: grid;
+	grid-template-columns: 15fr 1fr 1fr 1fr 1fr;
+	align-items: center;
+	/* background-color:var(--color_varianten); */
+}
+
+.cb_challenge {
+    grid-area: challengeboard;
+}
+
+.challengezugmarker {
+    text-align: center;
+}
+
+.gc-challengechesstips {
+    grid-area: schachtips;
+		display: grid;
+		grid-template-columns: 1fr 10fr;
+		align-items: center;
+	}
+
+.challengetreenotationwrapper {
+    grid-area: notation;
+    height: 60vh;
+    overflow: auto;
+}
+
+.challengetips {
+    grid-area: aufgabehinweise;
+}
+
+.challengemoves {
+    grid-area: zugpfeile;
+}
+
+.gc-importarea {
+    display: grid;
+    grid-template-rows: min-content min-content min-content;
+    grid-template-columns: 30fr 20fr 20fr 20fr;
+    margin: 1vh 1vw;
+    grid-gap: 3vh;
+}
+
+.gc-enginekommandos {
+    display: grid;
+    /* grid-template-columns: 10fr 1fr 1fr; */
+    grid-template-rows: min-content min-content min-content min-content;
+    margin: 1vh 1vw;
+    grid-gap: 1vh;
+}
+
+.filearea {
+    grid-area: 1 / 1 / 2 / 3;
+}
+
+.ul_importaufgaben {
+    grid-area: 1 / 3 / 2 / 5;
+}
+
+.f_Aufgabedaten {
+    grid-area: 2 / 1 / 3 / 3;
+}
+
+.gc-importaufgabepgn {
+    grid-area: 2 / 3 / 2 / 5;
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    gap: 1vh;
+}
+
+.cb_import {
+    grid-area: 3 / 1 / 3 / 2;
+}
+
+.importtreenotationwrapper {
+    grid-area: 3 / 2 / 3 / 4;
+}
+
+.importbuttons {
+    grid-area: 3 / 4 / 3 / 5;
+}
+
+#ImportTreeNotationId {
+    height: 30vh;
+    overflow: auto;
+}
+
+#ImportAufgabedetails {
+    padding-inline-start: 0.2vw;
+    width: 100%;
+}
+
+#ul_importaufgaben {
+    height: 20vh;
+    overflow: auto;
+}
+
+/* fieldset {
+    padding: 1vh 1vw;
+} */
+
+fieldset ul {
+    list-style-type: none;
+}
+
+li label {
+    float: left;
+    width: 25%;
+}
+
+li input[type="text"] {
+    width: 70%;
+}
+
+#PGNTextSpiel {
+    width: 100%;
+    font-size: 1.5vh;
+}
+
+.ui-selecting {
+    background: aqua;
+}
+
+.ui-selected {
+    background: yellow;
+    color: green;
+}
+
+.PromotionButtonList {
+    text-align: center;
+}
+
+.PromotionButton {
+    width: auto;
+    margin: auto;
+    font-size: 4rem !important;
+    font-weight: bold;
+}
+
+
+/* Quelle: https://codepen.io/derekmorash/pen/XddZJY von https://webdeasy.de/en/top-css-buttons-en/ */
+
+.third {
+    border-color: #8a4402;
+    color: #fff;
+    box-shadow: 0 0 40px 40px #b86500 inset, 0 0 0 0 #f29704;
+    transition: all 150ms ease-in-out;
+}
+
+.third:hover {
+    box-shadow: 0 0 10px 0 #f7df04 inset, 0 0 10px 4px #fbff04;
+}
+
+.uebungenbutton {
+    /* background: #63B8EE; */
+    background: linear-gradient(to top, #d4d4d4, #8a8a8a);
+    border-radius: 19px;
+    border: 1px solid #3866a3;
+    padding: 5px 15px;
+    margin: 1vh;
+    font-family: "comic sans ms";
+    width: 80%;
+    /* font-size: 1.5em; */
+}
+
+.uebungenbutton:hover {
+    background: #0700cf;
+    background: linear-gradient(to top, #8a8a8a, #d4d4d4);
+}
+
+.aufruftiptitleclass {
+    padding: 1vh 1vw;
+    font-weight: bold;
+}
+
+.aufruftiptextclass {
+    padding: 1vh 1vw;
+}
+
+.aidmarker {
+    height: 3vh;
+}
+
+#logliste {
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: auto;
+}

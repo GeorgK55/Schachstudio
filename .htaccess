@@ -1,0 +1,10 @@
+Header set Cross-Origin-Opener-Policy "same-origin"
+Header set Cross-Origin-Embedder-Policy "require-corp"
+Header set Access-Control-Allow-Origin "https://lichess.org"
+
+RewriteCond %{SERVER_PORT} !^443$
+RewriteRule (.*) https://%{HTTP_HOST}/$1 [R=301,L]
+
+DirectoryIndex Index.php Index.html
+
+AddType  application/wasm    wasm

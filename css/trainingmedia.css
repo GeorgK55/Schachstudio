@@ -1,0 +1,80 @@
+@media screen and (orientation: landscape) and (max-width: 700px) {
+  body {
+    overflow-y: auto;
+  }
+
+  /* .gc-mitte {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-areas: "Themen" "Aufgaben" "Aktionen";
+  } */
+
+  .gc-mitte_themen {
+    grid-area: Themen;
+  }
+  .gc-mitte_aufgaben {
+    grid-area: Aufgaben;
+  }
+  .gc-mitte_aktionen {
+    grid-area: Aktionen;
+  }
+
+  .Startertext {
+    margin: 2vh 2vw;
+  }
+
+  #btn_Import::after {
+    content: "Importieren";
+  }
+  #btn_VerbindeAufgabe::after {
+    content: "Kombinieren";
+  }
+  #btn_TrenneAufgabe::after {
+    content: "Trennen";
+  }
+  #btn_EntferneAufgabe::after {
+    content: "Entfernen";
+  }
+
+  #l_StellungOhne::after {
+    content: "Ohne Hinweise";
+  }
+  #l_StellungMit::after {
+    content: "Mit Hinweisen";
+  }
+  #l_AufgabeOhne::after {
+    content: "Ohne Varianten";
+  }
+  #l_AufgabeMit::after {
+    content: "Mit Varianten";
+  }
+
+  .interessetext::after {
+    content: "Interessierte";
+  }
+
+  .spielertext::after {
+    content: "Spieler";
+  }
+  .trainertext::after {
+    content: "Trainer";
+  }
+  .entwicklertext::after {
+    content: "Entwickler";
+  }
+
+  #btn_Spieler::after {
+    content: "Aufgaben lösen";
+  }
+  #btn_Trainer::after {
+    content: "Themen und Aufgaben";
+  }
+  #btn_Entwickler::after {
+    content: "Protokoll und Enginekommandos";
+  }
+
+  .KomfortButton {
+    width: 80%;
+    margin: 1vh auto;
+  }
+}
