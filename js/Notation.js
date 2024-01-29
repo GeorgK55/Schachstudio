@@ -22,7 +22,8 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 	}
 
 	//let ZugNummerFarbe = Zug.ZugLevel == 0 ? 'main' : Situation.VarianteColor % 2 == 0 ? 'even' : 'odd';
-	htmlText_Zugnr = "<span class='movenumber " + getVarianteColorClass(Situation) + "'>" + Zug.ZugNummer + "</span>";
+	htmlText_Zugnr = "<span class='movenumber " + getVarianteLevelColorClass(Situation, Zug.CurMoveId
+		) + "'>" + Zug.ZugNummer + "</span>";
 
 	let htmlKommentar = "";
 	if (Zug.Hinweistext != "") {
@@ -178,7 +179,7 @@ function NotiereZug(TreeContainer, Stellung, objZug, movemode) {
 
 	// Wenn eine neue Zeile in der Notationsliste nötig ist, wird diese hier mit den Stellungsdaten generiert
 	// Sonst wird die Notationszeile aktualisiert
-	if (objZug.ZugFarbe == WEISSAMZUG || Stellung.CreateNewNode) {
+	if (objZug.MoveNode === null && (objZug.ZugFarbe == WEISSAMZUG || Stellung.CreateNewNode)) {
 		NewTreeNode(TreeContainer, movemode, Stellung, objZug, true, true);
 		Stellung.CreateNewNode = false;
 	} else {

@@ -46,7 +46,7 @@ function createInterrupt(Interrupt, evaluation, zugid) {
 	}
 
 	$('#VariantetextId').append('<span>' + Variantentexte[Interrupt] + '</span>');
-	$('#VariantetextId').removeClass().addClass(getVarianteColorClass(Stellungsdaten));
+	$('#VariantetextId').removeClass().addClass(getVarianteLevelColorClass(Stellungsdaten, zugid));
 
 	$('[id^=' + HTMLBRETTNAME_SPIELEN + ']').addClass('noClick');
 

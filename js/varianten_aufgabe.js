@@ -65,8 +65,6 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 
 			setMoveState(MC_challenge.mainmove.CurMoveId, MOVESTATE_VISIBLE);
 			setMoveNode(MC_challenge.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
-			Stellungsdaten.VarianteCounter++;
-
 
 			MoveContextToStack(MC_challenge, CHALLENGE);
 
@@ -76,6 +74,8 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			Stellungsdaten.CreateNewNode = true;6
 			Stellungsdaten.PreMoveId = MC_challenge.variantenmoves[0].CurMoveId;
 			Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
+			Stellungsdaten.VarianteCounter++;
+			Stellungsdaten.VarianteColor[MC_challenge.variantenmoves[0].ZugLevel]++;
 			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.variantenmoves[0], MOVEMODE_MOVE);
 			setMoveNode(MC_challenge.variantenmoves[0].CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
 			setMoveState(MC_challenge.variantenmoves[0].CurMoveId, MOVESTATE_MOVED);

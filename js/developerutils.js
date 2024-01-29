@@ -91,7 +91,7 @@ function showjstreeimportant(TreeContainer) {
 															//.replace('moveblack', 'mb')
 															.replace('variantezeiger', 'vz')
 															//.replace(/^<div>|<\/div>$| +onmouseover=['"]{0,1}.*;['"]{0,1}/g, '')
-															.replace(/^<div>|<\/div>$| +onmouseover=['"]{0,1}.*;['"]{0,1}| +class=['"][a-z ]*['"]/g, '')
+															.replace(/^<div>|<\/div>$| +onmouseover=['"]{0,1}.*\);['"]{0,1}| +class=['"][a-z ]*['"]/g, '')
 															.replace(/span/g, 's');
 		if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log(item.id + ' ' + item.parent + ' ' + shorttext);
 

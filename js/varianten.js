@@ -32,6 +32,9 @@ function spieleVarianten() {
 					} else {
 						finishChallenge('Gut gemacht');
 					}
+
+					Stellungsdaten.VarianteCounter++;
+
 					break;
 				case MOVEEVALUATION_NOPOSSIBLEMOVES:
 

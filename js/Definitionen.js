@@ -31,10 +31,11 @@ class CStellungsdaten  {
 		this.PreNodeId				=	NODEPRÄFIX + '0';
 		this.CurMoveId				=	MOVEPRÄFIX + '0';
 		this.PreMoveId				=	MOVEPRÄFIX + '0';
-		this.FEN							=	"";	// Die FEN; nachdem dieser Zug ausgeführt wurde
+		this.FEN							=	"";	// Die FEN; nachdem ein Zug ausgeführt wurde
 		this.Text_w						=	DEFAULTMOVE_W;
 		this.Text_b						=	DEFAULTMOVE_B;
 		this.VarianteCounter	=	0; // wird nur hochgezählt und für die Entscheidung Variantenfarbe genutzt
+		this.VarianteColor		= [0, 0, 0, 0, 0, 0, 0, 0]
 		this.ZugStack					=	[];
 		this.VarianteStack		=	[];
 	}

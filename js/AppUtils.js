@@ -189,6 +189,13 @@ function setMoveNode(MoveId, Nodeid) {
 
 }
 
+function getMoveLevel(MoveId) {
+
+	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
+	return ChallengeMoves[index].ZugLevel;
+
+}
+
 function isMoveUsed(MoveId) {
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
@@ -224,6 +231,19 @@ function getVarianteColorClass(situation) {
 	VariantetextFarbeClass =	'backgroundmain';
 	} else  {
 	VariantetextFarbeClass =	situation.VarianteCounter % 2 == 0 ? 'backgroundeven' : 'backgroundodd';
+	}
+
+	return VariantetextFarbeClass
+}
+
+function getVarianteLevelColorClass(situation, zugid) {
+
+	let VariantetextFarbeClass;
+
+	if(getMoveLevel(zugid) == 0) {
+	VariantetextFarbeClass =	'backgroundmain';
+	} else  {
+	VariantetextFarbeClass =	situation.VarianteColor[getMoveLevel(zugid)] % 2 == 0 ? 'backgroundeven' : 'backgroundodd';
 	}
 
 	return VariantetextFarbeClass
