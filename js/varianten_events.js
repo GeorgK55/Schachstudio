@@ -45,8 +45,10 @@ function createInterrupt(Interrupt, evaluation, zugid) {
 			break;
 	}
 
-	$('#VariantetextId').append('<span>' + Variantentexte[Interrupt] + '</span>');
-	$('#VariantetextId').removeClass().addClass(getVarianteLevelColorClass(Stellungsdaten, zugid));
+	$('#VariantetextId').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
+	$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, zugid));
+
+	if(Interrupt.endsWith('S')) addVariantePath(zugid)
 
 	$('[id^=' + HTMLBRETTNAME_SPIELEN + ']').addClass('noClick');
 
@@ -62,6 +64,8 @@ function createInterrupt(Interrupt, evaluation, zugid) {
 function handleInterruptClick(clickevent) {
 
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit evaluation: ' + clickevent.data.result + ', reason: ' + clickevent.data.reason + ' und zugid: ' + clickevent.data.moveid );
+
+	$("[id^='variantepath']").remove();
 
 	switch (clickevent.data.reason) {
 		case 'PMS':
@@ -200,7 +204,7 @@ function handleInterruptClick(clickevent) {
 	$('[id^=' + HTMLBRETTNAME_SPIELEN + ']').removeClass('noClick');
 }
 
-// Nur, damit dann was paasiert
+// Nur, damit dann was passiert
 function handleZugergebnisClick() {
 	alert('handleZugergebnisClick');
 }

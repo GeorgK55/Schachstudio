@@ -245,21 +245,17 @@
 					</div>
 					<div id="ChallengeboardandnotationId" class="gc-boardandnotation">
 						<div id="ChallengevariantenId" class="gc-challengevarianten">
-							<div id="VariantetextId" class="variantentextarea"></div>
+							<div id="VariantetextId" class="centertext"></div>
+							<!-- <div id="VariantetextId" class="variantentextarea"></div> -->
 							<!-- <div id="VariantemarkerId" class="variantemarker" onclick="handleVarianteClick()"></div> -->
 							<div id="VariantemarkerrejectId" class="variantemarker"></div>
 							<div id="VariantemarkerresolveId" class="variantemarker"></div>
 							<div id="ZugergebnismarkerId" class="zugergebnismarker" onclick="handleZugergebnisClick()"></div>
 							<div id="ChallengezugmarkerId" class="challengezugmarker">
-									<!-- <span class="zugmarker" id="zugmarkeraufgabeweiss">&#11036;</span>
-									<span class="zugmarker" id="zugmarkeraufgabeschwarz">&#11035;</span> -->
 							</div>
 						</div>
-						<div id="ChallengechessboardId" class="cb_challenge"></div>
-						<!-- <div id="ChallengezugmarkerId" class="challengezugmarker">
-									<span class="zugmarker" id="zugmarkeraufgabeweiss">&#11036;</span>
-									<span class="zugmarker" id="zugmarkeraufgabeschwarz">&#11035;</span>
-						</div> -->
+						<div id="ChallengechessboardId" class="cb_challenge">
+						</div> 
 						<div id="ChallengeChessTipsId" class="gc-challengechesstips">
 							<div id="aidicon"></div>
 							<div id="aidtext"></div>

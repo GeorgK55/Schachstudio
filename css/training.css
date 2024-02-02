@@ -586,9 +586,9 @@ body {
     padding-left: 0.5vw;
 }
 
-.backgroundmain {	background-color: var(--color_movenumbermain);	}
-.backgroundeven {	background-color: var(--color_movenumbereven);	}
-.backgroundodd  {	background-color: var(--color_movenumberodd);	}
+.variantemain {	background-color: var(--color_movenumbermain);  height:100% }
+.varianteeven {	background-color: var(--color_movenumbereven);  height:100% }
+.varianteodd  {	background-color: var(--color_movenumberodd);   height:100% }
 
 #f_Aufgabedetails {
     margin: 1vh 1vw;
@@ -792,8 +792,20 @@ li input[type="text"] {
     height: 3vh;
 }
 
+.height100 {
+    height:100%;
+}
+
 #logliste {
     height: 90%;
     overflow-y: auto;
     overflow-x: auto;
+}
+
+.centertext {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
 }

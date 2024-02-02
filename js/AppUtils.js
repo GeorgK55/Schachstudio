@@ -91,6 +91,7 @@ function addBoardFunctions(BoardId) {
 
 	addMouseBoardFunctions(BoardId);
 	addTouchBoardFunctions(BoardId);
+	addSVGBoardFunctions(); 
 
 }
 
@@ -166,6 +167,38 @@ function addTouchBoardFunctions(BoardIdPraefix) {
 
 }
 
+// Die beiden svg-Elemente in html an die richtige Stelle einbinden
+function addSVGBoardFunctions() {
+
+	// svg mit id und Klasse (wichtig: position ist absolute) versehen und auch wichtig als erstes Kind des chessboards einhängen
+	const svgbase = document.createElementNS('http://www.w3.org/2000/svg','svg');	
+  svgbase.setAttribute('id', 'variantensvg');
+	svgbase.setAttribute('class', 'svg_container');
+	document.getElementById('ChallengechessboardId').prepend(svgbase);
+
+	// Wiederkehrende Elemente in defs anlegen.defs bekommt nur einen id als Attribut
+	const svgdefstag = document.createElementNS('http://www.w3.org/2000/svg','defs');
+	svgdefstag.setAttribute('id', 'svgdefs');
+	document.getElementById('variantensvg').append(svgdefstag);
+
+	// In defs einen Marker (das ist nur ein Rahmen für das eigentliche Element) anlegen
+	const arrowmarker = document.createElementNS('http://www.w3.org/2000/svg','marker');
+	arrowmarker.setAttribute('id', 						'goalarrow');
+	arrowmarker.setAttribute('orient',				'auto');
+	arrowmarker.setAttribute('markerWidth',		'3');
+	arrowmarker.setAttribute('markerHeight',	'4');
+	arrowmarker.setAttribute('refX', 					'0.1');
+	arrowmarker.setAttribute('refY',					'2');
+	document.getElementById('variantensvg').append(arrowmarker);
+
+	// Das Element für den Marker
+	const svgmarkerpath = document.createElementNS('http://www.w3.org/2000/svg','path');
+	svgmarkerpath.setAttribute('id',	'goalarrowpath');
+	svgmarkerpath.setAttribute('d',		'M0,0 V4 L2,2 Z');
+	document.getElementById('goalarrow').append(svgmarkerpath);
+
+}
+	
 function getMoveState(MoveId) {
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
@@ -193,6 +226,13 @@ function getMoveLevel(MoveId) {
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	return ChallengeMoves[index].ZugLevel;
+
+}
+
+function getMoveStockfish(MoveId) {
+
+	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
+	return ChallengeMoves[index].ZugStockfish;
 
 }
 
@@ -228,9 +268,9 @@ function getVarianteColorClass(situation) {
 	let VariantetextFarbeClass;
 
 	if(situation.ZugLevel == 0) {
-	VariantetextFarbeClass =	'backgroundmain';
+	VariantetextFarbeClass =	'variantemain';
 	} else  {
-	VariantetextFarbeClass =	situation.VarianteCounter % 2 == 0 ? 'backgroundeven' : 'backgroundodd';
+	VariantetextFarbeClass =	situation.VarianteCounter % 2 == 0 ? 'varianteeven' : 'varianteodd';
 	}
 
 	return VariantetextFarbeClass
@@ -241,10 +281,62 @@ function getVarianteLevelColorClass(situation, zugid) {
 	let VariantetextFarbeClass;
 
 	if(getMoveLevel(zugid) == 0) {
-	VariantetextFarbeClass =	'backgroundmain';
+	VariantetextFarbeClass =	'variantemain';
 	} else  {
-	VariantetextFarbeClass =	situation.VarianteColor[getMoveLevel(zugid)] % 2 == 0 ? 'backgroundeven' : 'backgroundodd';
+	VariantetextFarbeClass =	situation.VarianteColor[getMoveLevel(zugid)] % 2 == 0 ? 'varianteeven' : 'varianteodd';
 	}
 
 	return VariantetextFarbeClass
+}
+
+// Beim Start einer Vaiante wird der erste Zug der Variante (der ja auch gezogen wird) mit einem Pfeil gekennzeichnet
+function addVariantePath(zugid) {
+
+	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
+	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
+	const currentFieldSize	= Math.round($( "#ChallengechessboardId" ).width() / 10);
+	const startmitte				= Math.round($( "#ChallengechessboardId" ).width() / 20);
+
+	const path1 = document.createElementNS('http://www.w3.org/2000/svg','path');
+
+	// In ZugStockfish stehen genau die beiden Feldnames des anzuzeigenden Zugs
+	const zugstockfish = getMoveStockfish(zugid);
+	let pathdataparts = zugstockfish.split('');
+
+	let colorname;
+	let startfile, startrank, stopfile, stoprank;
+
+	// Das Brett wird ja immer für die Sichtweise des Spielers gedreht
+	// Aus dem zugstockfish werden die exakten Längen in Pixel berechnet
+	if(Challenge.AmZug == WEISSAMZUG) {
+		startfile	= (FENFileFactor[pathdataparts[0]])			* currentFieldSize + startmitte;
+		startrank	= (8 - parseInt(pathdataparts[1]) + 1)	* currentFieldSize + startmitte;
+		stopfile	= (FENFileFactor[pathdataparts[2]])			* currentFieldSize + startmitte;
+		stoprank	= (8 - parseInt(pathdataparts[3]) + 1)	* currentFieldSize + startmitte;	
+	} else {
+		startfile	= (8 - FENFileFactor[pathdataparts[0]] + 1)	* currentFieldSize + startmitte;
+		startrank	= (parseInt(pathdataparts[1]) - 1 + 1)			* currentFieldSize + startmitte;
+		stopfile	= (8 - FENFileFactor[pathdataparts[2]] + 1)	* currentFieldSize + startmitte;
+		stoprank	= (parseInt(pathdataparts[3]) - 1 + 1)			* currentFieldSize + startmitte;
+	
+	}
+
+	if($( "#VariantetextId" ).hasClass( "variantemain" )) {
+		colorname = 'YellowGreen';
+	} else if($( "#VariantetextId" ).hasClass( "varianteodd" )) {
+		colorname = 'DodgerBlue';
+	} else if($( "#VariantetextId" ).hasClass( "varianteeven" )) {
+		colorname = 'MediumSeaGreen';
+	}
+
+	path1.setAttribute("id", "variantepath_" + zugid)
+	path1.setAttribute("d", "M " + startfile + "," + startrank + " L " + stopfile + "," + stoprank);
+	path1.setAttribute("stroke", colorname);
+	path1.setAttribute("stroke-width", 10);
+	path1.setAttribute("marker-end", "url(#goalarrow)");
+
+  document.getElementById("variantensvg").appendChild(path1); // ist damit ein sibling mit defs
+
+	document.getElementById("goalarrowpath").setAttribute('fill', colorname); // das ist ja der Pfad, der in den defs angelegt ist
+
 }
