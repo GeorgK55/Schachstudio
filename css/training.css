@@ -6,14 +6,13 @@
     --dynfontsize60: clamp(  1rem, 6vh, 8rem);
     font-family:	Arial, Helvetica, sans-serif;
 
-    --color_varianten: beige;
     --color_chesswhite: white;
     --color_chessblack: Gainsboro;
     --color_commonbackground: BlanchedAlmond;
     --color_importantbackground: Gold;
-    --color_movenumbermain: YellowGreen;
-    --color_movenumberodd: PaleGreen;
-    --color_movenumbereven: MediumSeaGreen;
+    --color_movenumbermain: #28a428;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 40% */
+    --color_movenumberodd: #5bd75b;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 60% */
+    --color_movenumbereven: #adebad;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 80% */
 }
 
 /* wenn diese Angabe fehlt, wird der Bildschirm nach Drehen von portrait nach landscape schwarz */
@@ -567,14 +566,14 @@ body {
 }
 
 .movewhite {
-    width: 4vw;
+    width: 6vw;
     display: inline-block;
     padding-left: 0.5vw;
     background-color: var(--color_chesswhite);
 }
 
 .moveblack {
-    width: 4vw;
+    width: 6vw;
     display: inline-block;
     padding-left: 0.5vw;
     background-color: var(--color_chessblack);
@@ -589,6 +588,10 @@ body {
 .variantemain {	background-color: var(--color_movenumbermain);  height:100% }
 .varianteeven {	background-color: var(--color_movenumbereven);  height:100% }
 .varianteodd  {	background-color: var(--color_movenumberodd);   height:100% }
+
+.svgcolormain {	stroke: var(--color_movenumbermain);	}
+.svgcoloreven {	stroke: var(--color_movenumbereven);	}
+.svgcolorodd  {	stroke: var(--color_movenumberodd);		}
 
 #f_Aufgabedetails {
     margin: 1vh 1vw;
@@ -612,7 +615,6 @@ body {
 	display: grid;
 	grid-template-columns: 15fr 1fr 1fr 1fr 1fr;
 	align-items: center;
-	/* background-color:var(--color_varianten); */
 }
 
 .cb_challenge {

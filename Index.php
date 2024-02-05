@@ -246,7 +246,6 @@
 					<div id="ChallengeboardandnotationId" class="gc-boardandnotation">
 						<div id="ChallengevariantenId" class="gc-challengevarianten">
 							<div id="VariantetextId" class="centertext"></div>
-							<!-- <div id="VariantetextId" class="variantentextarea"></div> -->
 							<!-- <div id="VariantemarkerId" class="variantemarker" onclick="handleVarianteClick()"></div> -->
 							<div id="VariantemarkerrejectId" class="variantemarker"></div>
 							<div id="VariantemarkerresolveId" class="variantemarker"></div>

@@ -57,13 +57,13 @@ const MOVEMODE_VARIANTE_MAINHIDDEN	= 'VarianteSignMainHidden';
 const MOVEMODE_VARIANTE_MAINVISIBLE	= 'VarianteSignMainvisible';
 const MOVEMODE_MATTSIGN							= 'MattSign';
 
-const MOVEEVALUATION_ERROR									= 'Situations- oder Datenfehler';
-const MOVEEVALUATION_UNKNOWNMOVE						= 'UnknownMove';
-const MOVEEVALUATION_NODESCENDENTS					= 'NoDescendents'; // ==> Aufgabeende oder Variantenende
-const MOVEEVALUATION_NOPOSSIBLEMOVES				= 'NoPossibleMoves'; // ==> das ist der "normale" Zustand
-const MOVEEVALUATION_MAINMOVEMIT						= 'MainMoveMit';
-const MOVEEVALUATION_MAINMOVEOHNE						= 'MainMoveOhne';
-const MOVEEVALUATION_VARIANTEMOVE						= 'VarianteMove';
+const MOVERESULT_ERROR						= 'Situations- oder Datenfehler';
+const MOVERESULT_UNKNOWNMOVE			= 'UnknownMove';
+const MOVERESULT_NODESCENDENTS		= 'NoDescendents'; // ==> Aufgabeende oder Variantenende
+const MOVERESULT_NOPOSSIBLEMOVES	= 'NoPossibleMoves'; // ==> das ist der "normale" Zustand
+const MOVERESULT_MAINMOVEMIT			= 'MainMoveMit';
+const MOVERESULT_MAINMOVEOHNE			= 'MainMoveOhne';
+const MOVERESULT_VARIANTEMOVE			= 'VarianteMove';
 
 const AIDMODE_INIT 		= 'init';
 const AIDMODE_FIRST 	= 'first';

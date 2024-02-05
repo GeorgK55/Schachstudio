@@ -359,4 +359,6 @@ function Zugtext(zugtext) {
 function finishChallenge(Endetext) {
 	showChallengeTip('Bravo. ' + Endetext, 'VeryImportantText');
 	removeMouseBoardFunctions(HTMLBRETTNAME_SPIELEN);
+	removeNotationMarker('ChallengeTreeNotationId');
+	$('#VariantetextId').removeClass().addClass('centertext');
 }

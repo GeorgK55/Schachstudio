@@ -90,7 +90,7 @@ CREATE TABLE T_Zuege (
     NAGNotation        varchar(32)  DEFAULT NULL,
     Hinweistext        varchar(512) DEFAULT NULL,
     Hinweispfeil       varchar(512) DEFAULT NULL,
-    MoveState          varchar(16)  DEFAULT 'ready' NOT NULL,
+    MoveState          varchar(16)  DEFAULT 'R' NOT NULL,
     MoveNode           varchar(16)  DEFAULT NULL,
     Ab                 DATETIME     DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY       (Id),

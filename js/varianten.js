@@ -12,7 +12,7 @@ function spieleVarianten() {
 	processPlayerMoveVarianten().then(function (PlayerMoveResolveResult) {
 
 		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) {
-			console.log('PlayerMoveVariantenResult.then mit evaluation: ' + PlayerMoveResolveResult.result + ', reason: ' + PlayerMoveResolveResult.reason + ' und moveid: ' + PlayerMoveResolveResult.moveid);
+			console.log('PlayerMoveVariantenResult.then mit result: ' + PlayerMoveResolveResult.result + ', reason: ' + PlayerMoveResolveResult.reason + ' und moveid: ' + PlayerMoveResolveResult.moveid);
 			showChallengeMovesShort();
 		}
 
@@ -21,10 +21,10 @@ function spieleVarianten() {
 		// Wenn der nächste Zug schon bekannt ist (im Stack) werden hier die Daten für FirePlayerMove erzeugt und dann die Funktion aufgerufen.
 		processChallengeMoveVarianten().catch(function(ChallengeMoveRejectResult) {
 
-			if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('processChallengeMoveVarianten().catch mit evaluation: ' + ChallengeMoveRejectResult.result + ', reason: ' + ChallengeMoveRejectResult.reason + ' und moveid: ' + ChallengeMoveRejectResult.moveid );
+			if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('processChallengeMoveVarianten().catch mit result: ' + ChallengeMoveRejectResult.result + ', reason: ' + ChallengeMoveRejectResult.reason + ' und moveid: ' + ChallengeMoveRejectResult.moveid );
 			
 			switch(ChallengeMoveRejectResult.result) {
-				case MOVEEVALUATION_NODESCENDENTS:
+				case MOVERESULT_NODESCENDENTS:
 
 					if(Stellungsdaten.VarianteStack.length > 0) {
 						let InterruptType = ChallengeMoveRejectResult.reason == Challenge.AmZug ? 'PVE' : 'CVE';
@@ -36,7 +36,7 @@ function spieleVarianten() {
 					Stellungsdaten.VarianteCounter++;
 
 					break;
-				case MOVEEVALUATION_NOPOSSIBLEMOVES:
+				case MOVERESULT_NOPOSSIBLEMOVES:
 
 					if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Es gibt noch Spielerzüge');
 
@@ -66,27 +66,27 @@ function determinePlayerMoveContext(amzug, startmoveid, startmovelevel, gezogen)
 				|| CM['MoveState'] == MOVESTATE_STACKED); });
 
 	if(DescendantMoves.length == 0) {
-		MoveContext.result = MOVEEVALUATION_NODESCENDENTS;
+		MoveContext.result = MOVERESULT_NODESCENDENTS;
 	} else {
 
 		// Kann der Spieler mindestens einen noch nicht gespielten Zug selber ziehen?
 		let PossibleMoves	= $.grep(DescendantMoves, function (PM) { return PM['ZugFarbe'] == amzug;	}); 	
 		if(PossibleMoves.length == 0) {
-			MoveContext.result = MOVEEVALUATION_NOPOSSIBLEMOVES; // Kann es das hier überhaupt geben???
-			alert('Player: ' + MOVEEVALUATION_NOPOSSIBLEMOVES + ' found');
+			MoveContext.result = MOVERESULT_NOPOSSIBLEMOVES; // Kann es das hier überhaupt geben???
+			alert('Player: ' + MOVERESULT_NOPOSSIBLEMOVES + ' found');
 		} else {
 
 			// Ist der gespielte Zug des Spielers überhaupt möglich?
 			let DrawnMove	= $.grep(PossibleMoves, function (PM, i) { return PM['ZugStockfish']	== gezogen; }); 
 			if (DrawnMove.length == 0) {
-				MoveContext.result = MOVEEVALUATION_UNKNOWNMOVE;
+				MoveContext.result = MOVERESULT_UNKNOWNMOVE;
 			} else {
 
 				// Der mögliche Zug mit der gleichen Ebene (es kann nur einen geben und der ist sicher noch nicht gespielt)
 				let MainMove	= $.grep(PossibleMoves,	function (PM, i) { return PM['ZugLevel']	== startmovelevel; });
 
 				if(MainMove.length == 0) {
-					MoveContext.result = MOVEEVALUATION_ERROR; // Dann ist die PGN korrupt
+					MoveContext.result = MOVERESULT_ERROR; // Dann ist die PGN korrupt
 				} else {
 
 					MoveContext.mainmove	= MainMove[0];
@@ -105,12 +105,12 @@ function determinePlayerMoveContext(amzug, startmoveid, startmovelevel, gezogen)
 					MoveContext.mainmovestatus		= MainMove[0].MoveState;
 					MoveContext.varmovescounter	= VarMoves.length;
 					if(MoveContext.drawnmoveindex >= 0) {
-						MoveContext.result	= MOVEEVALUATION_VARIANTEMOVE;
+						MoveContext.result	= MOVERESULT_VARIANTEMOVE;
 					} else {
 						if(VarMoves.length == 0)
-							MoveContext.result	= MOVEEVALUATION_MAINMOVEOHNE;
+							MoveContext.result	= MOVERESULT_MAINMOVEOHNE;
 						else
-							MoveContext.result	= MOVEEVALUATION_MAINMOVEMIT;
+							MoveContext.result	= MOVERESULT_MAINMOVEMIT;
 					}
 				}
 			}
@@ -132,19 +132,19 @@ function determineChallengeMoveContext(challengecolor, startmoveid, startmovelev
 				|| CM['MoveState'] == MOVESTATE_STACKED); });
 
 	if(DescendantMoves.length == 0) {
-		MoveContext.result = MOVEEVALUATION_NODESCENDENTS;
+		MoveContext.result = MOVERESULT_NODESCENDENTS;
 	} else {
 
 		let PossibleMoves	= $.grep(DescendantMoves, function (PM) { return PM['ZugFarbe'] != challengecolor;	}); 	
 		if(PossibleMoves.length == 0) {
-			MoveContext.result = MOVEEVALUATION_NOPOSSIBLEMOVES;
-			//alert('challenge: ' + MOVEEVALUATION_NOPOSSIBLEMOVES + ' found');
+			MoveContext.result = MOVERESULT_NOPOSSIBLEMOVES;
+			//alert('challenge: ' + MOVERESULT_NOPOSSIBLEMOVES + ' found');
 		} else {
 
 			let MainMove	= $.grep(PossibleMoves,	function (PM, i) { return PM['ZugLevel']	== startmovelevel; });
 
 			if(MainMove.length == 0) {
-				MoveContext.result = MOVEEVALUATION_ERROR; // Dann ist die PGN korrupt
+				MoveContext.result = MOVERESULT_ERROR; // Dann ist die PGN korrupt
 			} else {
 
 				MoveContext.mainmove	= MainMove[0];
@@ -161,7 +161,7 @@ function determineChallengeMoveContext(challengecolor, startmoveid, startmovelev
 					MoveContext.drawnmove				= VarMoves[0];
 					MoveContext.varmovescounter	= VarMoves.length;
 					MoveContext.drawnmoveindex	= 0;
-					MoveContext.result					= MOVEEVALUATION_VARIANTEMOVE;
+					MoveContext.result					= MOVERESULT_VARIANTEMOVE;
 
 				} else {
 					// Dann gibt es nur den Hauptzug
@@ -171,7 +171,7 @@ function determineChallengeMoveContext(challengecolor, startmoveid, startmovelev
 					MoveContext.mainmovestatus	= MainMove[0].MoveState;
 					MoveContext.varmovescounter	= 0;
 
-					MoveContext.result	= MOVEEVALUATION_MAINMOVEOHNE;
+					MoveContext.result	= MOVERESULT_MAINMOVEOHNE;
 				}
 			}
 		} 

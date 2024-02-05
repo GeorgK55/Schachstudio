@@ -6,11 +6,11 @@
 // - Event generieren
 // - Symbol und Text anzeigen
 // - Hintergrundfarbe für den Text festlegen
-function createInterrupt(Interrupt, evaluation, zugid) {
+function createInterrupt(Interrupt, result, zugid) {
 
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION))	console.log('Beginn in ' + getFuncName() + ' mit evaluation: ' + evaluation + ', reason: ' + Interrupt + ' und zugid: ' + zugid );
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION))	console.log('Beginn in ' + getFuncName() + ' mit result: ' + result + ', reason: ' + Interrupt + ' und zugid: ' + zugid );
 
-	$('#VariantemarkerresolveId').on("click",	{ result: evaluation, reason: Interrupt, moveid: zugid }, handleInterruptClick);
+	$('#VariantemarkerresolveId').on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
 	// $('#VariantemarkerrejectId').click(		{ reason: Interrupt, zug: zugid }, handleInterruptClick);
 
 	$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/questionmark.png'/>");
@@ -46,7 +46,7 @@ function createInterrupt(Interrupt, evaluation, zugid) {
 	}
 
 	$('#VariantetextId').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
-	$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, zugid));
+	$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, getMoveLevel(zugid)));
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
 
@@ -63,7 +63,7 @@ function createInterrupt(Interrupt, evaluation, zugid) {
 // - das Brett wieder für clicks freigeben
 function handleInterruptClick(clickevent) {
 
-	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit evaluation: ' + clickevent.data.result + ', reason: ' + clickevent.data.reason + ' und zugid: ' + clickevent.data.moveid );
+	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit result: ' + clickevent.data.result + ', reason: ' + clickevent.data.reason + ' und zugid: ' + clickevent.data.moveid );
 
 	$("[id^='variantepath']").remove();
 

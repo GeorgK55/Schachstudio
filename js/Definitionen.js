@@ -17,6 +17,7 @@ class CImportdaten {
 		this.Text_w						=	DEFAULTMOVE_W;
 		this.Text_b						=	DEFAULTMOVE_B;
 		this.VarianteCounter	=	0;
+		this.VarianteColor		= [0, 0, 0, 0, 0, 0, 0, 0]
 		this.ZugStack					=	[];
 	}
 };

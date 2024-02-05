@@ -187,7 +187,7 @@ function addSVGBoardFunctions() {
 	arrowmarker.setAttribute('orient',				'auto');
 	arrowmarker.setAttribute('markerWidth',		'3');
 	arrowmarker.setAttribute('markerHeight',	'4');
-	arrowmarker.setAttribute('refX', 					'0.1');
+	arrowmarker.setAttribute('refX', 					'2'); // verschiebt den Pfeil auf der Linie zurück oder vor
 	arrowmarker.setAttribute('refY',					'2');
 	document.getElementById('variantensvg').append(arrowmarker);
 
@@ -276,14 +276,14 @@ function getVarianteColorClass(situation) {
 	return VariantetextFarbeClass
 }
 
-function getVarianteLevelColorClass(situation, zugid) {
+function getVarianteLevelColorClass(situation, zuglevel) {
 
 	let VariantetextFarbeClass;
 
-	if(getMoveLevel(zugid) == 0) {
+	if(zuglevel == 0) {
 	VariantetextFarbeClass =	'variantemain';
 	} else  {
-	VariantetextFarbeClass =	situation.VarianteColor[getMoveLevel(zugid)] % 2 == 0 ? 'varianteeven' : 'varianteodd';
+	VariantetextFarbeClass =	situation.VarianteColor[zuglevel] % 2 == 0 ? 'varianteeven' : 'varianteodd';
 	}
 
 	return VariantetextFarbeClass
@@ -303,7 +303,6 @@ function addVariantePath(zugid) {
 	const zugstockfish = getMoveStockfish(zugid);
 	let pathdataparts = zugstockfish.split('');
 
-	let colorname;
 	let startfile, startrank, stopfile, stoprank;
 
 	// Das Brett wird ja immer für die Sichtweise des Spielers gedreht
@@ -321,22 +320,22 @@ function addVariantePath(zugid) {
 	
 	}
 
-	if($( "#VariantetextId" ).hasClass( "variantemain" )) {
-		colorname = 'YellowGreen';
-	} else if($( "#VariantetextId" ).hasClass( "varianteodd" )) {
-		colorname = 'DodgerBlue';
-	} else if($( "#VariantetextId" ).hasClass( "varianteeven" )) {
-		colorname = 'MediumSeaGreen';
-	}
-
 	path1.setAttribute("id", "variantepath_" + zugid)
 	path1.setAttribute("d", "M " + startfile + "," + startrank + " L " + stopfile + "," + stoprank);
-	path1.setAttribute("stroke", colorname);
 	path1.setAttribute("stroke-width", 10);
 	path1.setAttribute("marker-end", "url(#goalarrow)");
 
   document.getElementById("variantensvg").appendChild(path1); // ist damit ein sibling mit defs
 
-	document.getElementById("goalarrowpath").setAttribute('fill', colorname); // das ist ja der Pfad, der in den defs angelegt ist
+	if($( "#VariantetextId" ).hasClass( "variantemain" )) {
+		$("#variantepath_" + zugid).removeClass().addClass('svgcolormain');
+		$("#goalarrowpath").removeClass().addClass('svgcolormain');
+	} else if($( "#VariantetextId" ).hasClass( "varianteodd" )) {
+		$("#variantepath_" + zugid).removeClass().addClass('svgcolorodd');
+		$("#goalarrowpath").removeClass().addClass('svgcolorodd');
+	} else if($( "#VariantetextId" ).hasClass( "varianteeven" )) {
+		$("#variantepath_" + zugid).removeClass().addClass('svgcoloreven');
+		$("#goalarrowpath").removeClass().addClass('svgcoloreven');
+	}
 
 }

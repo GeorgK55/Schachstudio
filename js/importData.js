@@ -402,6 +402,7 @@ function validateSingleMove() {
 
 			Importdaten.VarianteCounter++;
 			Importdaten.ZugLevel++;
+			Importdaten.VarianteColor[Importdaten.ZugLevel]++;
 			Importdaten.FEN = Importdaten.PreFEN; // Damit bekommt der nächste Zug = erster in der Variante die FEN, die zum aktuellen Zug geführt hat
 			Importdaten.ZugFarbe = Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG; // Der aktuelle Zug bekommt die Farbe des wegen der Variante "zurückgenommenen" Zugs
 
@@ -425,6 +426,7 @@ function validateSingleMove() {
 
 			Importdaten.VarianteCounter++; // damit es in der Farbe VOR dieser Variante weitergeht
 			Importdaten.ZugLevel--;
+			Importdaten.VarianteColor[Importdaten.ZugLevel]++;
 			ZugStack							= [];
 			ZugStack							= Importdaten.ZugStack.pop();
 			Importdaten.PreFEN		= ZugStack.PreFEN;

@@ -21,9 +21,7 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 		tooltip = " onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});'";
 	}
 
-	//let ZugNummerFarbe = Zug.ZugLevel == 0 ? 'main' : Situation.VarianteColor % 2 == 0 ? 'even' : 'odd';
-	htmlText_Zugnr = "<span class='movenumber " + getVarianteLevelColorClass(Situation, Zug.CurMoveId
-		) + "'>" + Zug.ZugNummer + "</span>";
+	htmlText_Zugnr = "<span class='movenumber " + getVarianteLevelColorClass(Situation, Zug.ZugLevel) + "'>" + Zug.ZugNummer + "</span>";
 
 	let htmlKommentar = "";
 	if (Zug.Hinweistext != "") {

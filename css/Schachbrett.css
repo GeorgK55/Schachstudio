@@ -22,8 +22,6 @@
 
 .variantezeiger {   font-weight: 900;   text-align: center; }
 
-.variantentextarea	{ background-color:var(--color_varianten);	}
-
 .variantemarker img			{	height: 3vh;	}
 .zugergebnismarker img	{	height: 3vh;	}
 

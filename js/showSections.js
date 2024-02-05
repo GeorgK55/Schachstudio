@@ -203,6 +203,8 @@ function initializeSelectionEnvironment() {
 
 	showAid(AIDMODE_INIT);
 
+	$('#VariantetextId').removeClass().addClass('centertext');
+
 	resetmarker();
 }
 

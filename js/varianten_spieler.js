@@ -14,19 +14,19 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 	//showMoveContext(MC_player)
 
 	switch (MC_player.result) {
-		case MOVEEVALUATION_ERROR:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVEEVALUATION_ERROR + '" für: ' + T_Zuege.ZugStockfish);
-			PlayerMoveVariantenResult.reject({ result: MOVEEVALUATION_ERROR, reason: "", moveid: T_Zuege.CurMoveId});
+		case MOVERESULT_ERROR:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVERESULT_ERROR + '" für: ' + T_Zuege.ZugStockfish);
+			PlayerMoveVariantenResult.reject({ result: MOVERESULT_ERROR, reason: "", moveid: T_Zuege.CurMoveId});
 			break;
-		case MOVEEVALUATION_UNKNOWNMOVE:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVEEVALUATION_UNKNOWNMOVE + '" für: ', T_Zuege.ZugStockfish);
-			PlayerMoveVariantenResult.reject({ result: MOVEEVALUATION_UNKNOWNMOVE, reason: "", moveid: T_Zuege.CurMoveId});
+		case MOVERESULT_UNKNOWNMOVE:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVERESULT_UNKNOWNMOVE + '" für: ', T_Zuege.ZugStockfish);
+			PlayerMoveVariantenResult.reject({ result: MOVERESULT_UNKNOWNMOVE, reason: "", moveid: T_Zuege.CurMoveId});
 			break;
-		case MOVEEVALUATION_NODESCENDENTS:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVEEVALUATION_NODESCENDENTS + '" für: ', T_Zuege.ZugStockfish);
-			PlayerMoveVariantenResult.resolve({	evaluation: MOVEEVALUATION_NODESCENDENTS, reason: "", moveid: T_Zuege.CurMoveId	});
+		case MOVERESULT_NODESCENDENTS:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVERESULT_NODESCENDENTS + '" für: ', T_Zuege.ZugStockfish);
+			PlayerMoveVariantenResult.resolve({	result: MOVERESULT_NODESCENDENTS, reason: "", moveid: T_Zuege.CurMoveId	});
 			break;
-		case MOVEEVALUATION_MAINMOVEOHNE:
+		case MOVERESULT_MAINMOVEOHNE:
 
 			// Ziehen
 			TransferZugNachStellung(Stellungsdaten, MC_player.drawnmove);
@@ -35,6 +35,8 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			// Notieren, wenn es kein aus dem Stack geholter Zug ist
 			if(getMoveState(MC_player.drawnmove.CurMoveId) != MOVESTATE_STACKED) {
 				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.drawnmove, MOVEMODE_MOVE);
+			} else {
+				$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, MC_player.drawnmove.ZugLevel));
 			}
 
 			// Verwalten
@@ -49,11 +51,13 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			PlayerMoveVariantenResult.resolve({ result: MC_player.result, reason: "Ohne Interrupt", moveid: MC_player.drawnmove.CurMoveId });
 
 			break;
-		case MOVEEVALUATION_MAINMOVEMIT:
+		case MOVERESULT_VARIANTEMOVE:
+		case MOVERESULT_MAINMOVEMIT:
 
 			// Hauptzug zuerst: Diesen nur Notieren, Verwalten und in den Stack
 			TransferZugNachStellung(Stellungsdaten, MC_player.mainmove);
-			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.mainmove, MOVEMODE_VARIANTE_MAINVISIBLE); 
+			let movemode = MC_player.result == MOVERESULT_MAINMOVEMIT ? MOVEMODE_VARIANTE_MAINVISIBLE : MOVEMODE_VARIANTE_MAINHIDDEN;
+			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.mainmove, movemode); 
 
 			setMoveState(MC_player.mainmove.CurMoveId, MOVESTATE_VISIBLE);
 			setMoveNode(MC_player.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
@@ -72,15 +76,15 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			setMoveNode(MC_player.variantenmoves[0].CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
 			setMoveState(MC_player.variantenmoves[0].CurMoveId, MOVESTATE_MOVED);
 
-			createInterrupt('PMS', MC_player.result, MC_player.variantenmoves[0].CurMoveId);
+			let InterruptType =  MC_player.result == MOVERESULT_MAINMOVEMIT ? 'PMS' : 'PVS';
+			createInterrupt(InterruptType, MC_player.result, MC_player.variantenmoves[0].CurMoveId);
 
 			break;
-		case MOVEEVALUATION_VARIANTEMOVE:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MOVEEVALUATION_VARIANTEMOVE + ' erkannt');
+		case XYXYXY:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MOVERESULT_VARIANTEMOVE + ' erkannt');
 
 			// Hauptzug zuerst: Diesen nur Notieren, Verwalten und in den Stack
 			TransferZugNachStellung(Stellungsdaten, MC_player.mainmove);
-
 			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.mainmove, MOVEMODE_VARIANTE_MAINHIDDEN); 
 
 			setMoveState(MC_player.mainmove.CurMoveId, MOVESTATE_VISIBLE);
@@ -88,7 +92,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 
 			MoveContextToStack(MC_player, PLAYER);
 
-			createInterrupt('PVS', MC_player.evalution, MC_player.variantenmoves[0].CurMoveId);
+			createInterrupt('PVS', MC_player.result, MC_player.variantenmoves[0].CurMoveId);
 
 			break;
 		default:

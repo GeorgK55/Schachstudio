@@ -9,31 +9,32 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MC_challenge);
 
 	switch(MC_challenge.result) {
-		case MOVEEVALUATION_ERROR:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('reject wegen "' + MOVEEVALUATION_ERROR + '" für: ', T_Zuege);
-			ChallengeMoveVariantenResult.reject({ result: MOVEEVALUATION_ERROR, reason: "", moveid: Stellungsdaten.PreMoveId });
+		case MOVERESULT_ERROR:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('reject wegen "' + MOVERESULT_ERROR + '" für: ', T_Zuege);
+			ChallengeMoveVariantenResult.reject({ result: MOVERESULT_ERROR, reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;
-		case MOVEEVALUATION_UNKNOWNMOVE:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('reject wegen "' + MOVEEVALUATION_UNKNOWNMOVE + '" für: ', T_Zuege);
-			ChallengeMoveVariantenResult.reject({ result: MOVEEVALUATION_UNKNOWNMOVE, reason: "", moveid: Stellungsdaten.PreMoveId });
+		case MOVERESULT_UNKNOWNMOVE:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('reject wegen "' + MOVERESULT_UNKNOWNMOVE + '" für: ', T_Zuege);
+			ChallengeMoveVariantenResult.reject({ result: MOVERESULT_UNKNOWNMOVE, reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;
-		case MOVEEVALUATION_NODESCENDENTS:
+		case MOVERESULT_NODESCENDENTS:
 
 			showjstreeimportant('ChallengeTreeNotationId');
 
 			ChallengeMoveVariantenResult.reject({ result: MC_challenge.result, reason: Stellungsdaten.ZugFarbe, moveid: Stellungsdaten.PreMoveId });
 
 			break;
-		case MOVEEVALUATION_NOPOSSIBLEMOVES:
-			ChallengeMoveVariantenResult.reject({ result: MOVEEVALUATION_NOPOSSIBLEMOVES,  reason: "", moveid: Stellungsdaten.PreMoveId });
+		case MOVERESULT_NOPOSSIBLEMOVES:
+			ChallengeMoveVariantenResult.reject({ result: MOVERESULT_NOPOSSIBLEMOVES,  reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;
-		case MOVEEVALUATION_MAINMOVEOHNE:
+		case MOVERESULT_MAINMOVEOHNE:
 
 			// Ziehen
 			TransferZugNachStellung(Stellungsdaten, MC_challenge.mainmove);
 			ZieheZug(MC_challenge.mainmove, HTMLBRETTNAME_SPIELEN);
 
 			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.mainmove, MOVEMODE_MOVE);
+			// Hier noch die Farbanzeige in VariantetextId aktualisieren?
 
 			// Verwalten
 			Stellungsdaten.PreMoveId = MC_challenge.mainmove.CurMoveId;
@@ -45,11 +46,11 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
 
 			// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
-			ChallengeMoveVariantenResult.resolve({ result: MOVEEVALUATION_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.mainmove.CurMoveId });
+			ChallengeMoveVariantenResult.resolve({ result: MOVERESULT_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.mainmove.CurMoveId });
 
 			break;
-		case MOVEEVALUATION_VARIANTEMOVE:
-		case MOVEEVALUATION_MAINMOVEMIT:
+		case MOVERESULT_VARIANTEMOVE:
+		case MOVERESULT_MAINMOVEMIT:
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MC_challenge.result + ' erkannt');
 
 			// Hauptzug zuerst: Diesen nur Notieren, Verwalten und in den Stack
@@ -84,7 +85,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 
 		break;
 		default:
-			ChallengeMoveVariantenResult.reject({ result: 'Fehler: Moveevaluation Aufgabe nicht erlaubt', reason: "", moveid: Stellungsdaten.PreMoveId });
+			ChallengeMoveVariantenResult.reject({ result: 'Fehler: Moveresult Aufgabe nicht erlaubt', reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;
 	}
 
