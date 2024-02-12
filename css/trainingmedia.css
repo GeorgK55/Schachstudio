@@ -1,15 +1,14 @@
-@media screen and (orientation: landscape) and (max-width: 700px) {
+@media screen and (orientation: landscape) and (max-width: 1200px) {
+
   body {
     overflow-y: auto;
   }
 
-  /* .gc-mitte {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-areas: "Themen" "Aufgaben" "Aktionen";
-  } */
+  .gc-mitte {
+    grid-template-columns: 10fr 15fr 20fr;
+  }
 
-  .gc-mitte_themen {
+  /* .gc-mitte_themen {
     grid-area: Themen;
   }
   .gc-mitte_aufgaben {
@@ -17,12 +16,54 @@
   }
   .gc-mitte_aktionen {
     grid-area: Aktionen;
+  } */
+
+  .video_interessetext1::before {
+    content: "Schachstudio ?" ;
   }
+
+  .gc-spieler {
+    display: grid;
+    grid-template-columns: 10fr 40fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    grid-template-areas: "Text V1" "Text V2" "Text V3" "Text Weiter";
+    padding: 1vh;
+  }
+
+  .gc-trainer {
+    display: grid;
+    grid-template-columns: 10fr 40fr;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    grid-template-areas: "Text V1" "Text V2" "Text Weiter";
+    padding: 1vh;
+}
+
+.gc-entwickler {
+  display: grid;
+  grid-template-columns: 10fr 40fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+  grid-template-areas: "Text V1" "Text Weiter";
+  padding: 1vh;
+}
 
   .Startertext {
     margin: 2vh 2vw;
   }
 
+	#btn_ThemaNeu::after {
+		content: "Neu";
+	}
+	
+	#btn_ThemaEntfernen::after {
+		content: "Entfernen";
+	}
+	
   #btn_Import::after {
     content: "Importieren";
   }
@@ -36,6 +77,31 @@
     content: "Entfernen";
   }
 
+	#LoesungAuswahl {
+		display: flex;
+		justify-content:space-evenly;
+	}
+
+	#LoesungAuswahl fieldset {
+		width:45%;
+	}
+
+	.trainerfeatures button {
+		width: 40%;
+	}
+
+	#Filterauswahl {
+		display: none;
+	}
+
+	#legend_Stellung::after {
+		content: "Ausspielen";
+	}
+	#legend_Aufgabe::after {
+		content: "Lösen";
+	}
+	
+	
   #l_StellungOhne::after {
     content: "Ohne Hinweise";
   }

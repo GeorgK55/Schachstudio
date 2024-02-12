@@ -120,3 +120,15 @@ function logMe(level, theme) {
 	return result = level >= curLoglevel && $.inArray(theme, curLogthemes) >= 0 ? true : false;
 
 }
+
+function logVisitor(Role) {
+	let Orientation						= screen.orientation.type; /*screen.orientation.type*/ // safari kann das nicht
+	let myWidth								= window.innerWidth;
+	let myHeight							= window.innerHeight;
+	let devicePixelRatio			= window.devicePixelRatio;
+	let pixelDepth						= screen.pixelDepth;
+	let colorDepth						= screen.colorDepth;
+
+	console.log('orientation: ' + Orientation);
+
+}

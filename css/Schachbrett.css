@@ -39,25 +39,59 @@
 .Comment_b {  background-color:Gainsboro;   }
 
 .erstehilfe {   animation: ZeigeErsteHilfe 1s ease 0s 2 normal forwards;   }
-.ohnehilfe  {   animation: none;  }
 
 @keyframes ZeigeErsteHilfe {
-    0%,
-    50%,
-    100% {
-      opacity: 1;
-    }
-
-    25%,
-    75% {
-      opacity: 0;
-    }
-  }
-
-	.currentmovemarker::after {	content: " \25C6";	}
-	.formermovemarker::after 	{	content: none;			}
-
-	.noClick {
-		pointer-events: none;
-		opacity: 0.6;
+	0%,
+	50%,
+	100% {
+		opacity: 1;
 	}
+
+	25%,
+	75% {
+		opacity: 0;
+	}
+}
+
+.currentmovemarker::after {	content: " \25C6";	}
+.formermovemarker::after 	{	content: none;			}
+
+.noClick {
+	pointer-events: none;
+	opacity: 0.6;
+}
+
+/* transform oder animate funktionieren für inlineelemente nicht */
+div[id^="BrettSpielen"] span {
+	display:block;
+}
+/* .zuganimation {
+	animation: movepiece 5s;
+}
+
+@keyframes movepiece {
+
+	0% {
+		transform: translateX(0px) translateY(0px);
+	}
+
+	100% {
+		transform: translateX(-100px) translateY(-100px);
+	}
+
+} */
+
+	/*width: 50px;
+	height: 20px;
+	border-radius: 3px 10px 10px 3px;
+	background-color: hotpink;*/
+	
+.svgmoveme {
+	offset-path: path('');
+	animation: moveDiv 3s 3;
+	/* animation: 1s ; */
+}
+@keyframes moveDiv {
+	0% 		{	offset-distance: 0;	}
+	100%	{ offset-distance: 100%; }
+}

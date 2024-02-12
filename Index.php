@@ -89,8 +89,9 @@
 						<div id="ThemenlisteTree"></div>
 						<div class="trainerfeatures hideMe">
 							<div id="ThemenlisteButtons">
-								<button id="btn_ThemaNeu"				type="button" onclick="NeuesThema()"		class="uebungenbutton">Neues Thema</button>
-								<button id="btn_ThemaEntfernen" type="button" onclick="EntferneThema()"	class="uebungenbutton">Thema entfernen</button>
+								<button id="btn_ThemaNeu"				type="button" onclick="NeuesThema()"		class="uebungenbutton"></button>
+								<br>
+								<button id="btn_ThemaEntfernen" type="button" onclick="EntferneThema()"	class="uebungenbutton"></button>
 							</div>
 						</div>
 						<div class="developerfeatures hideMe">
@@ -112,12 +113,12 @@
 					<div class="gc-aufgabendetails">
 						<div id="LoesungAuswahl">
 							<fieldset>
-								<legend>Stellung ausspielen</legend>
+								<legend id="legend_Stellung"></legend>
 								<input type="radio" id="r_StellungOhne"	name="Spielinteraktion"	value="StellungOhne" onchange="manageSpielinteraktionSelection();">	<label id="l_StellungOhne" for="r_StellungOhne"></label><br>
 								<input type="radio" id="r_StellungMit"	name="Spielinteraktion"	value="StellungMit" onchange="manageSpielinteraktionSelection();">		<label id="l_StellungMit" for="r_StellungMit"></label><br>
 							</fieldset>
 							<fieldset>
-								<legend>Aufgabe lösen</legend>
+								<legend id="legend_Aufgabe"></legend>
 								<input type="radio" id="r_AufgabeOhne"	name="Spielinteraktion"	value="AufgabeOhne" 				onchange="manageSpielinteraktionSelection();">	<label id="l_AufgabeOhne" for="r_AufgabeOhne"></label><br>
 								<input type="radio" id="r_AufgabeMit"		name="Spielinteraktion"	value="AufgabeMit" checked 	onchange="manageSpielinteraktionSelection();">	<label id="l_AufgabeMit" for="r_AufgabeMit"></label><br>
 							</fieldset>
@@ -127,10 +128,14 @@
 						</div>
 						<div id="Aufgabenselektion">
 							<!-- button id="btn_Aufgabeauswahl" type="button" onclick="Aufgabeauswahl()" class="uebungenbutton">Alle Aufgaben anzeigen</><br -->
-							<input type="radio" id="r_ZeigeAlle" 			name="AufgabenFilterAlle"	value="Selektion" checked>													<label for="r_ZeigeAlle">Alle Aufgaben anzeigen</label><br>
-							<input type="radio" id="r_ZeigeAufgaben"	name="AufgabenFilterAlle"	value="Alle">																				<label for="r_ZeigeAufgaben">Aufgaben nur zur Themenauswahl anzeigen</label><br>
-							<input type="radio" id="r_ZeigeFilter"		name="AufgabenFilterAlle"	value="Filter"  class="entwicklerfeatures hideMe">	<label for="r_ZeigeFilter">Geplant: Aufgaben nur zum Filter anzeigen</label>
-							<button id="btn_Aufgabefilter" type="button" onclick="Aufgabeauswahl()" disabled>Aufgabenfilter</button>
+							<div id="ZeigeAuswahl">
+								<input type="radio" id="r_ZeigeAlle" 			name="AufgabenFilterAlle"	value="Selektion" checked>													<label for="r_ZeigeAlle">Alle Aufgaben anzeigen</label><br>
+								<input type="radio" id="r_ZeigeAufgaben"	name="AufgabenFilterAlle"	value="Alle">																				<label for="r_ZeigeAufgaben">Aufgaben nur zur Themenauswahl anzeigen</label>
+							</div>
+							<div id="Filterauswahl">
+									<input type="radio" id="r_ZeigeFilter"		name="AufgabenFilterAlle"	value="Filter"  class="entwicklerfeatures hideMe">	<label for="r_ZeigeFilter">Geplant: Aufgaben nur zum Filter anzeigen</label>
+								<button id="btn_Aufgabefilter" type="button" onclick="Aufgabeauswahl()" disabled>Aufgabenfilter</button>
+							</div>
 						</div>
 						<div id="AufgabelisteButtons">
 							<div class="trainerfeatures hideMe">
@@ -149,7 +154,7 @@
 					<div id="Welcome" class="gc-usertypes">
 						<div class="usertypearea gc-interesse">
 							<div class="padmeleft2vw interessetext"></div>
-							<a class="video_interessetext1" target="_blank" href="https://youtu.be/I6xg-D_4blM">Schachstudio was ist das<img src="Grafiken/Youtube_icon_66802.png" alt="" class="youtubelink"></a>
+							<a class="video_interessetext1" target="_blank" href="https://youtu.be/I6xg-D_4blM"><img src="Grafiken/Youtube_icon_66802.png" alt="" class="youtubelink"></a>
 						</div>
 						<div class="usertypearea gc-spieler">
 							<div class="spielertext leftmepad5vh"></div>

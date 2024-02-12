@@ -265,8 +265,17 @@ function ZieheZug(objZug, BoardPräfix) {
 			Figurname		= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(0, 1); // Gilt so für Bauern und Figuren
 		}
 
-		$('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
+		if(objZug.ZugFarbe != Challenge.AmZug) {
+			addMoveAnimationStyle("ChallengechessboardId", Figurname + '_' + objZug.ZugVon, Challenge.AmZug, objZug.ZugStockfish);
+			$('#' +  Figurname + '_' + objZug.ZugVon).addClass('svgmoveme');
+			$('#' +  Figurname + '_' + objZug.ZugVon).on("animationend", {	brett: BoardPräfix, figur: Figurname, von: objZug.ZugVon }, clearAnimation );
+		} else {
+			$('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
+			$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
+		}
+
 		$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
+
 		// En Passant. Funktioniert für weiss und für schwarz
 		if(Figurname.toUpperCase() == 'P' && objZug.ZugAktion == SCHLÄGT && $('#' + BoardPräfix + objZug.ZugNach).children().length == 0) {
 			$('#' + BoardPräfix + objZug.ZugNach.slice(0, 1) + objZug.ZugVon.slice(1) ).empty();

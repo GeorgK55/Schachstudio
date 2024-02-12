@@ -339,3 +339,66 @@ function addVariantePath(zugid) {
 	}
 
 }
+
+function computeMoveAnimationCorner(boardid, boarddirection, stockfishmove) {
+
+	const currentFieldSize	= Math.round($( "#" + boardid).width() / 10);
+	const startmitte				= Math.round($( "#" + boardid).width() / 20);
+
+	let AC = new CAnimationCorner;
+
+	let stockfishmoveparts = stockfishmove.split('');
+
+	AC.fieldsize		= currentFieldSize;
+	AC.fieldcenter	= startmitte;
+
+	if(boarddirection == WEISSAMZUG) {
+		// AC.startfile	= (FENFileFactor[stockfishmoveparts[0]])		* currentFieldSize + startmitte;
+		// AC.startrank	= (8 - parseInt(stockfishmoveparts[1]) + 1)	* currentFieldSize + startmitte;
+		// AC.stopfile	= (FENFileFactor[stockfishmoveparts[2]])		* currentFieldSize + startmitte;
+		// AC.stoprank	= (8 - parseInt(stockfishmoveparts[3]) + 1)	* currentFieldSize + startmitte;	
+		AC.startfile	= startmitte;
+		AC.startrank	= startmitte;
+		AC.stopfile	= (FENFileFactor[stockfishmoveparts[2]] - FENFileFactor[stockfishmoveparts[0]]) * currentFieldSize;
+		AC.stoprank	= (parseInt(stockfishmoveparts[3]) - parseInt(stockfishmoveparts[1])) * currentFieldSize * -1;
+	} else {
+		AC.startfile	= (8 - FENFileFactor[stockfishmoveparts[0]] + 1)	* currentFieldSize + startmitte;
+		AC.startrank	= (parseInt(stockfishmoveparts[1]) - 1 + 1)				* currentFieldSize + startmitte;
+		AC.stopfile	= (8 - FENFileFactor[stockfishmoveparts[2]] + 1)	* currentFieldSize + startmitte;
+		AC.stoprank	= (parseInt(stockfishmoveparts[3]) - 1 + 1)				* currentFieldSize + startmitte;
+	}
+	return AC;
+}
+
+function addMoveAnimationStyle(boardid, pieceid, boarddirection, stockfishmove) {
+
+	let AC = computeMoveAnimationCorner(boardid, boarddirection, stockfishmove);
+
+	// AC.stopfile = AC.startfile - AC.fieldsize;
+	// AC.stoprank = AC.startrank - AC.fieldsize;
+	// AC.startfile = 0;
+	// AC.startrank = 0;
+
+	let cssRulesList = document.styleSheets[5].cssRules;
+
+	let ruleindex = 0;
+	for (i=0; i<cssRulesList.length; i++) {
+		if(cssRulesList[i].selectorText == '.svgmoveme') {
+			document.styleSheets[5].deleteRule(i);
+			ruleindex = i;
+			break;
+		}  
+	}
+
+	let animationpath = "M " + AC.fieldcenter + "," + AC.fieldcenter + " l " + AC.stopfile + "," + AC.stoprank;
+	document.styleSheets[5].insertRule(".svgmoveme { offset-path: path('" + animationpath + "'); offset-rotate: 0deg; offset-anchor: center; animation: moveDiv 3s 1; }", ruleindex);
+
+}
+
+function clearAnimation(cleardata) {
+
+	$('#' +  cleardata.data.figur + '_' + cleardata.data.von).removeClass('svgmoveme');
+	$('#' + cleardata.data.brett + cleardata.data.von).empty();
+	//$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
+
+}

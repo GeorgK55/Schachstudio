@@ -33,6 +33,7 @@ body {
     display: grid;
     height: 100vh;
     width: 100vw;
+    max-width:2000px;
     grid-template-columns: 1fr;
     grid-template-rows: clamp(40px, 5vh, 80px) 1fr clamp(20px, 5vh, 40px);
 }
@@ -40,8 +41,7 @@ body {
 .gc-mitte {
     display: grid;
     overflow: hidden;
-    /* grid-template-columns: 10fr 15fr 30fr; */ /* Das ist das Original */
-    grid-template-columns: 5fr 10fr 30fr; /* Das gilt für debug */
+    grid-template-columns: 8fr 12fr 30fr;
     grid-template-areas: "Themen Aufgaben Aktionen";
 }
 
@@ -89,7 +89,7 @@ body {
 .gc-aufgabenanzeige {
     display: grid;
     overflow: hidden;
-    grid-template-rows: min-content 1fr min-content;
+    grid-template-rows: min-content 1fr;
 }
 
 .gc-willkommen {
@@ -171,6 +171,9 @@ body {
     justify-items: center;
     padding: 1vh;
 }
+.video_interessetext1::before {
+    content: "Schachstudio was ist das ";
+}
 
 .gc-spieler {
     display: grid;
@@ -189,7 +192,6 @@ body {
 .video_spielertext1 {
     grid-area: V1;
 }
-
 .video_spielertext2 {
     grid-area: V2;
 }
@@ -339,6 +341,14 @@ body {
     background: linear-gradient( 180deg, rgba(255, 140, 0, 1) 0%, rgba(245, 222, 179, 1) 50%, rgba(245, 222, 179, 1) 50%, rgba(255, 140, 0, 1) 100%);
 }
 
+#btn_ThemaNeu::after {
+	content: "Neues Thema";
+}
+
+#btn_ThemaEntfernen::after {
+	content: "Thema entfernen";
+}
+
 #btn_Import::after {
     content: "Aufgaben importieren";
 }
@@ -353,6 +363,13 @@ body {
 
 #btn_EntferneAufgabe::after {
     content: "Aufgabe entfernen";
+}
+
+#legend_Stellung::after {
+	content: "Stellung ausspielen";
+}
+#legend_Aufgabe::after {
+	content: "Aufgabe lösen";
 }
 
 #l_StellungOhne::after {

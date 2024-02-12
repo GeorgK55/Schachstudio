@@ -31,7 +31,9 @@ $(document).ready(function () {
 	DialogWidth			= Math.floor($(window).width() / 4);
 
 	GlobalFullscreenflag = false;
-	if (window.matchMedia("(orientation: portrait)").matches) FullscreenDialog();
+	if (window.matchMedia("(orientation: portrait)").matches) {
+		FullscreenDialog();
+	}
 
 	$("input[type=radio][name=AufgabenFilterAlle]").on("click", function () {
 		switch ($(this).val()) {
@@ -101,7 +103,7 @@ function openFullscreen() {
 		function (answer) {
 			//alert("then: " + answer);
 			DeterminedWidth = $(window).width();
-			DialogWidth = math.ceil($(window).width() / 4);
+			DialogWidth = Math.ceil($(window).width() / 4);
 		},
 		function (answer) {
 			//alert("else: " + answer);

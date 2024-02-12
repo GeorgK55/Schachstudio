@@ -183,3 +183,15 @@ class CMoveContext {
 		this.variantenmoves		= [];
 	}
 }
+
+class CAnimationCorner {
+	constructor() {
+		this.duration			= 0,
+		this.startfile		= 0,
+		this.startrank		= 0,
+		this.stopfile			= 0,
+		this.stoprank			= 0,
+		this.fieldsize		= 0,
+		this.fieldcenter	= 0
+	}
+}

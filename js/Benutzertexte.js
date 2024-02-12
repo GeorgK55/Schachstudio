@@ -8,10 +8,10 @@ Variantentexte = {
 	PVS : "Du spielst eine Variante",
 	PVC : "",
 	PVE : "Die Variante ist beendet",
-	CMS : "Spiele zuerst eine Variante",
+	CMS : "Spiele zuerst diese Variante",
 	CMC : "",
 	CME : "",
-	CVS : "Der Gegner spielt zuerst diese Variante",
+	CVS : "Der Gegner spielt eine Variante",
 	CVC : "",
 	CVE : "Die Variante ist beendet",
 
