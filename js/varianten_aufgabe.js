@@ -6,84 +6,90 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 	ChallengeMoveVariantenResult = $.Deferred();
 
 	let MC_challenge = determineChallengeMoveContext(Challenge.AmZug, Stellungsdaten.PreMoveId, Stellungsdaten.ZugLevel)
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MC_challenge);
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MC_challenge.result + ' erkannt');
 
+	// ERROR, UNKNOWNMOVE, NODESCENDENTS und NOCOLORMOVES werden hier einfach weitergegeben
+	// In MAINMOVEMIT werden die nur die für Variantensituationen nötigen Funktionen ausgeführt.
+	// Weiter ohne break, damit die restlichen Funktionen in MAINMOVEOHNE verarbeitet werden.
 	switch(MC_challenge.result) {
 		case MOVERESULT_ERROR:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('reject wegen "' + MOVERESULT_ERROR + '" für: ', T_Zuege);
-			ChallengeMoveVariantenResult.reject({ result: MOVERESULT_ERROR, reason: "", moveid: Stellungsdaten.PreMoveId });
-			break;
-		case MOVERESULT_UNKNOWNMOVE:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('reject wegen "' + MOVERESULT_UNKNOWNMOVE + '" für: ', T_Zuege);
-			ChallengeMoveVariantenResult.reject({ result: MOVERESULT_UNKNOWNMOVE, reason: "", moveid: Stellungsdaten.PreMoveId });
-			break;
+		// case MOVERESULT_UNKNOWNMOVE: kann es hier nicht geben
 		case MOVERESULT_NODESCENDENTS:
-
+		case MOVERESULT_NOCOLORMOVES:
 			showjstreeimportant('ChallengeTreeNotationId');
-
 			ChallengeMoveVariantenResult.reject({ result: MC_challenge.result, reason: Stellungsdaten.ZugFarbe, moveid: Stellungsdaten.PreMoveId });
-
 			break;
-		case MOVERESULT_NOPOSSIBLEMOVES:
-			ChallengeMoveVariantenResult.reject({ result: MOVERESULT_NOPOSSIBLEMOVES,  reason: "", moveid: Stellungsdaten.PreMoveId });
-			break;
-		case MOVERESULT_MAINMOVEOHNE:
-
-			// Ziehen
-			TransferZugNachStellung(Stellungsdaten, MC_challenge.mainmove);
-			ZieheZug(MC_challenge.mainmove, HTMLBRETTNAME_SPIELEN);
-
-			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.mainmove, MOVEMODE_MOVE);
-			// Hier noch die Farbanzeige in VariantetextId aktualisieren?
-
-			// Verwalten
-			Stellungsdaten.PreMoveId = MC_challenge.mainmove.CurMoveId;
-			setMoveState(MC_challenge.mainmove.CurMoveId, MOVESTATE_MOVED);
-			// Das sollte jetzt überflüssig sein
-			setMoveNode(MC_challenge.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
-
-			// Die Anzeige:
-			$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
-
-			// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
-			ChallengeMoveVariantenResult.resolve({ result: MOVERESULT_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.mainmove.CurMoveId });
-
-			break;
-		case MOVERESULT_VARIANTEMOVE:
+		// case MOVERESULT_VARIANTEMOVE: // kann es hier nicht geben
 		case MOVERESULT_MAINMOVEMIT:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MC_challenge.result + ' erkannt');
 
 			// Hauptzug zuerst: Diesen nur Notieren, Verwalten und in den Stack
-			TransferZugNachStellung(Stellungsdaten, MC_challenge.mainmove);
 
+			// Notieren
+			TransferZugNachStellung(Stellungsdaten, MC_challenge.mainmove);
 			// Wenn der Hauptzug schon in die Notation eingetragen ist, jetzt anzeigen. Sonst einfach gleich sichtbar anzeigen
 			if(MC_challenge.mainmove.MoveNode == null) {
-				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.mainmove, MOVEMODE_VARIANTE_MAINVISIBLE); 
+				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.mainmove, MOVEMODE_VARIANTE_MAINHIDDEN); 
 			} else {
 				Stellungsdaten.CurNodeId = MC_challenge.mainmove.MoveNode;
 				UpdateTreeNodeName('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.mainmove);
 			}
 
-			setMoveState(MC_challenge.mainmove.CurMoveId, MOVESTATE_VISIBLE);
+			// Verwalten
+			setMoveState(MC_challenge.mainmove.CurMoveId, MOVESTATE_HIDDEN);
 			setMoveNode(MC_challenge.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
 
-			MoveContextToStack(MC_challenge, CHALLENGE);
+			// In den Stack
+			TriggerMoveToStack(MC_challenge, CHALLENGE);
 
 			// Der Variantenzug:
-			TransferZugNachStellung(Stellungsdaten, MC_challenge.variantenmoves[0]); // Genau dieser wurde nicht in den Stack geschrieben
-			ZieheZug(MC_challenge.variantenmoves[0], HTMLBRETTNAME_SPIELEN);
-			Stellungsdaten.CreateNewNode = true;6
-			Stellungsdaten.PreMoveId = MC_challenge.variantenmoves[0].CurMoveId;
+			// Stellungsdaten.CreateNewNode = true;
+			// Stellungsdaten.PreMoveId = MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId;
+			// Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
+			// NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.variantenmoves[MC_challenge.drawnmoveindex], MOVEMODE_MOVE);
+			// setMoveNode(MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId, Stellungsdaten.CurNodeId); 
+			// setMoveState(MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId, MOVESTATE_MOVED);
+
+			Stellungsdaten.CreateNewNode = true;
 			Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
+
 			Stellungsdaten.VarianteCounter++;
-			Stellungsdaten.VarianteColor[MC_challenge.variantenmoves[0].ZugLevel]++;
-			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.variantenmoves[0], MOVEMODE_MOVE);
-			setMoveNode(MC_challenge.variantenmoves[0].CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
-			setMoveState(MC_challenge.variantenmoves[0].CurMoveId, MOVESTATE_MOVED);
+			Stellungsdaten.VarianteColor[MC_challenge.selectedmove.ZugLevel]++;
 
-			createInterrupt('CVS', MC_challenge.result, MC_challenge.variantenmoves[0].CurMoveId);
+		case MOVERESULT_MAINMOVEOHNE:
+ 
+			// Gilt für MAINMOVEMIT und für MAINMOVEOHNE. Der auszuführende Zug steht in beiden Fällen in selectedmove.
+			
+			TransferZugNachStellung(Stellungsdaten, MC_challenge.selectedmove);
 
-		break;
+			// Notieren
+			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
+			// Hier noch die Farbanzeige in VariantetextId aktualisieren?
+
+			// Ziehen
+			ZieheZug(MC_challenge.selectedmove, HTMLBRETTNAME_SPIELEN);
+
+			// Verwalten
+			setMoveState(MC_challenge.selectedmove.CurMoveId, MOVESTATE_MOVED);
+			// Das sollte jetzt überflüssig sein
+			setMoveNode(MC_challenge.selectedmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
+
+			Stellungsdaten.PreMoveId = MC_challenge.selectedmove.CurMoveId;
+
+			// Die Abschlußbehandlung ist doch wieder unterschiedlich
+			if(MC_challenge.result == MOVERESULT_MAINMOVEMIT) {
+
+				createInterrupt('CVS', MC_challenge.result, MC_challenge.selectedmove.CurMoveId);
+
+			} else {
+				// Die Anzeige:
+				$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
+				// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
+				ChallengeMoveVariantenResult.resolve({ result: MOVERESULT_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.selectedmove.CurMoveId });
+
+			}
+
+
+			break;
 		default:
 			ChallengeMoveVariantenResult.reject({ result: 'Fehler: Moveresult Aufgabe nicht erlaubt', reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;

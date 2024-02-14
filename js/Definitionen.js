@@ -174,13 +174,14 @@ TouchDaten = {
 
 class CMoveContext {
 	constructor() {
-		this.result						= "",
-		this.mainmovestatus		= "",
-		this.varmovescounter	= -1,
-		this.drawnmoveindex		= "M",
-		this.mainmove					= "",
-		this.drawnmove				= "",
-		this.variantenmoves		= [];
+		this.result						= "",	// Texte mit der Bewertung der Situation. Beginnen mit MOVERESULT_
+		this.mainmovestatus		= "",	// MoveState des Hauptzugs
+		this.varmovescounter	= -1,	// Anzahl der gefundenen Variantenzüge
+		this.drawnmoveindex		= -1,	// Index des gezogenen Zugs im Array variantenmoves
+		this.mainmove					= "",	// Der identifizierte Hauptzug selbst, nicht die Id und wegen length ohne [0]
+		this.drawnmove				= "",	// Der gezogene Zug selbst, nicht die Id und wegen length ohne [0]
+		this.selectedmove			= "",	// Der gezogene Zug selbst, nicht die Id und wegen length ohne [0]
+		this.variantenmoves		= [];	// Alle Variantenzüge selbst, einschl gezogener Zug ohne Hauptzug
 	}
 }
 

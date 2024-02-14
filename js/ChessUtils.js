@@ -245,72 +245,77 @@ function StellungAufbauen(div_Brett, FEN) {
 // Für Rochaden gibt es kein Flag, also den Zug direkt als Zeichenkette abfragen
 function ZieheZug(objZug, BoardPräfix) {
 
-	// Der Zug M_0 ist kein echter Zug und wird nie gezogen. 
-	if(objZug.CurMoveId == 'M_0') return;
+	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit objZug.ZugKurz: ', objZug.ZugKurz);
+
+	if(objZug.CurMoveId == 'M_0') return; // Der Zug M_0 ist kein echter Zug und wird nie gezogen. 
 
 	BoardPräfix += '_';
+	let Figursymbol, Figurname;
 
-	// Erkennt beide Rochaden, die werden im else behandelt
-	if (objZug.ZugKurz.indexOf('0-0') == -1) {
+	prepareMove(objZug, BoardPräfix);
+	animateMove(objZug, BoardPräfix).then(processMove(objZug, BoardPräfix));
+	
 
-		let Figursymbol, Figurname;
+	// // Erkennt beide Rochaden, die werden im else behandelt
+	// if (objZug.ZugKurz.indexOf('0-0') == -1) {
 
-		if (objZug.ZugUmwandlung != "") {
-			if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('In objZug ungleich "": objZug.ZugUmwandlung = ' + objZug.ZugUmwandlung);
-			FigursymbolIndex = objZug.ZugFarbe == WEISSAMZUG ? objZug.ZugUmwandlung.toUpperCase() : objZug.ZugUmwandlung.toLowerCase();
-			Figursymbol = eval('FIGUREN.' + FigursymbolIndex);
-			Figurname = objZug.ZugUmwandlung;
-		} else {
-			Figursymbol	= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child').text(); // Figurzeichen retten
-			Figurname		= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(0, 1); // Gilt so für Bauern und Figuren
-		}
+		
+	// 	let Figursymbol, Figurname;
 
-		if(objZug.ZugFarbe != Challenge.AmZug) {
-			addMoveAnimationStyle("ChallengechessboardId", Figurname + '_' + objZug.ZugVon, Challenge.AmZug, objZug.ZugStockfish);
-			$('#' +  Figurname + '_' + objZug.ZugVon).addClass('svgmoveme');
-			$('#' +  Figurname + '_' + objZug.ZugVon).on("animationend", {	brett: BoardPräfix, figur: Figurname, von: objZug.ZugVon }, clearAnimation );
-		} else {
-			$('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
-			$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
-		}
+	// 	// if (objZug.ZugUmwandlung != "") {
+	// 	// 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('In objZug ungleich "": objZug.ZugUmwandlung = ' + objZug.ZugUmwandlung);
+	// 	// 	FigursymbolIndex = objZug.ZugFarbe == WEISSAMZUG ? objZug.ZugUmwandlung.toUpperCase() : objZug.ZugUmwandlung.toLowerCase();
+	// 	// 	Figursymbol = eval('FIGUREN.' + FigursymbolIndex);
+	// 	// 	Figurname = objZug.ZugUmwandlung;
+	// 	// } else {
+	// 	// 	Figursymbol	= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child').text(); // Figurzeichen retten
+	// 	// 	Figurname		= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(0, 1); // Gilt so für Bauern und Figuren
+	// 	// }
 
-		$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
+	// 	if(objZug.ZugFarbe != Challenge.AmZug) {
+	// 		addMoveAnimationStyle("ChallengechessboardId", Figurname + '_' + objZug.ZugVon, Challenge.AmZug, objZug.ZugStockfish);
+	// 		$('#' +  Figurname + '_' + objZug.ZugVon).addClass('svgmoveme');
+	// 		$('#' +  Figurname + '_' + objZug.ZugVon).on("animationend", {	brett: BoardPräfix, figur: Figurname, von: objZug.ZugVon }, clearAnimation );
+	// 	} else {
+	// 		$('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
+	// 		$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
+	// 	}
 
-		// En Passant. Funktioniert für weiss und für schwarz
-		if(Figurname.toUpperCase() == 'P' && objZug.ZugAktion == SCHLÄGT && $('#' + BoardPräfix + objZug.ZugNach).children().length == 0) {
-			$('#' + BoardPräfix + objZug.ZugNach.slice(0, 1) + objZug.ZugVon.slice(1) ).empty();
-		}
+	// 	$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
 
-	} else { // Rochaden
+	// 	// En Passant. Funktioniert für weiss und für schwarz
+	// 	if(Figurname.toUpperCase() == 'P' && objZug.ZugAktion == SCHLÄGT && $('#' + BoardPräfix + objZug.ZugNach).children().length == 0) {
+	// 		$('#' + BoardPräfix + objZug.ZugNach.slice(0, 1) + objZug.ZugVon.slice(1) ).empty();
+	// 	}
 
-		if (objZug.ZugFarbe == WEISSAMZUG) {
-			if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
-				$('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'a1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'c1').append('<span id="K_c1">' + FIGUREN.K + '</span>');
-				$('#' + BoardPräfix + 'd1').append('<span id="R_d1">' + FIGUREN.R + '</span>');
-			} else {
-				$('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'h1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'g1').append('<span id="K_g1">' + FIGUREN.K + '</span>');
-				$('#' + BoardPräfix + 'f1').append('<span id="R_f1">' + FIGUREN.R + '</span>');
-			}
-		} else {
-			if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
-				$('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'a8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'c8').append('<span id="k_c8">' + FIGUREN.k + '</span>');
-				$('#' + BoardPräfix + 'd8').append('<span id="r_d8">' + FIGUREN.r + '</span>');
-			} else {
-				$('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'h8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-				$('#' + BoardPräfix + 'g8').append('<span id="k_g8">' + FIGUREN.k + '</span>');
-				$('#' + BoardPräfix + 'f8').append('<span id="r_f8">' + FIGUREN.r + '</span>');
-			}
-		}
-	}
+	// } else { // Rochaden
 
-	showAid(AIDMODE_INIT);
+	// 	if (objZug.ZugFarbe == WEISSAMZUG) {
+	// 		if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
+	// 			$('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'a1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'c1').append('<span id="K_c1">' + FIGUREN.K + '</span>');
+	// 			$('#' + BoardPräfix + 'd1').append('<span id="R_d1">' + FIGUREN.R + '</span>');
+	// 		} else {
+	// 			$('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'h1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'g1').append('<span id="K_g1">' + FIGUREN.K + '</span>');
+	// 			$('#' + BoardPräfix + 'f1').append('<span id="R_f1">' + FIGUREN.R + '</span>');
+	// 		}
+	// 	} else {
+	// 		if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
+	// 			$('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'a8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'c8').append('<span id="k_c8">' + FIGUREN.k + '</span>');
+	// 			$('#' + BoardPräfix + 'd8').append('<span id="r_d8">' + FIGUREN.r + '</span>');
+	// 		} else {
+	// 			$('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'h8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
+	// 			$('#' + BoardPräfix + 'g8').append('<span id="k_g8">' + FIGUREN.k + '</span>');
+	// 			$('#' + BoardPräfix + 'f8').append('<span id="r_f8">' + FIGUREN.r + '</span>');
+	// 		}
+	// 	}
+	// }
 
 }
 
@@ -370,4 +375,46 @@ function finishChallenge(Endetext) {
 	removeMouseBoardFunctions(HTMLBRETTNAME_SPIELEN);
 	removeNotationMarker('ChallengeTreeNotationId');
 	$('#VariantetextId').removeClass().addClass('centertext');
+}
+
+// Identifizieren des Symbols und des Namens der gezogenen Figur
+function prepareMove(objZug, BoardPräfix) {
+
+	//  Erkennt beide Rochaden und dafür sind keine Vorbereitungen nötig
+	if (objZug.ZugKurz.indexOf('0-0') == -1) {
+
+		if (objZug.ZugUmwandlung != "") {
+			if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('In objZug ungleich "": objZug.ZugUmwandlung = ' + objZug.ZugUmwandlung);
+			FigursymbolIndex = objZug.ZugFarbe == WEISSAMZUG ? objZug.ZugUmwandlung.toUpperCase() : objZug.ZugUmwandlung.toLowerCase();
+			Figursymbol = eval('FIGUREN.' + FigursymbolIndex);
+			Figurname = objZug.ZugUmwandlung;
+		} else {
+			Figursymbol	= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child').text(); // Figurzeichen retten
+			Figurname		= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(0, 1); // Gilt so für Bauern und Figuren
+		}
+
+	}
+}
+
+function animateMove(objZug, BoardPräfix) {
+
+	AnimationFinished = $.Deferred();
+
+	if(objZug.ZugFarbe != Challenge.AmZug) {
+		addMoveAnimationStyle("ChallengechessboardId", Figurname + '_' + objZug.ZugVon, Challenge.AmZug, objZug.ZugStockfish);
+		$('#' +  Figurname + '_' + objZug.ZugVon).addClass('svgmoveme');
+		$('#' +  Figurname + '_' + objZug.ZugVon).on("animationend", {	brett: BoardPräfix, figur: Figurname, von: objZug.ZugVon }, terminateAnimation );
+	} else {
+		AnimationFinished.resolve();
+	}
+	return AnimationFinished.promise();
+}
+
+function processMove(objZug, BoardPräfix) {
+
+	$('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
+	$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
+
+	showAid(AIDMODE_INIT);
+
 }

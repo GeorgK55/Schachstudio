@@ -59,8 +59,8 @@ const MOVEMODE_MATTSIGN							= 'MattSign';
 
 const MOVERESULT_ERROR						= 'Situations- oder Datenfehler';
 const MOVERESULT_UNKNOWNMOVE			= 'UnknownMove';
-const MOVERESULT_NODESCENDENTS		= 'NoDescendents'; // ==> Aufgabeende oder Variantenende
-const MOVERESULT_NOPOSSIBLEMOVES	= 'NoPossibleMoves'; // ==> das ist der "normale" Zustand
+const MOVERESULT_NODESCENDENTS		= 'NoDescendents';	// ==> Aufgabeende oder Variantenende
+const MOVERESULT_NOCOLORMOVES			= 'NoColorMoves';		// ==> das ist der "normale" Zustand
 const MOVERESULT_MAINMOVEMIT			= 'MainMoveMit';
 const MOVERESULT_MAINMOVEOHNE			= 'MainMoveOhne';
 const MOVERESULT_VARIANTEMOVE			= 'VarianteMove';

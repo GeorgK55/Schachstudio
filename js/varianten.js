@@ -36,7 +36,7 @@ function spieleVarianten() {
 					Stellungsdaten.VarianteCounter++;
 
 					break;
-				case MOVERESULT_NOPOSSIBLEMOVES:
+				case MOVERESULT_NOCOLORMOVES:
 
 					if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Es gibt noch Spielerzüge');
 
@@ -52,6 +52,7 @@ function spieleVarianten() {
 	});
 }
 
+// Identifizieren des Spielerzugs
 function determinePlayerMoveContext(amzug, startmoveid, startmovelevel, gezogen) {
 
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit amzug: ' + amzug + ' startmoveid: ' + startmoveid + ' startmovelevel: ' + startmovelevel + ' gezogen: ' + gezogen);
@@ -70,47 +71,53 @@ function determinePlayerMoveContext(amzug, startmoveid, startmovelevel, gezogen)
 	} else {
 
 		// Kann der Spieler mindestens einen noch nicht gespielten Zug selber ziehen?
-		let PossibleMoves	= $.grep(DescendantMoves, function (PM) { return PM['ZugFarbe'] == amzug;	}); 	
-		if(PossibleMoves.length == 0) {
-			MoveContext.result = MOVERESULT_NOPOSSIBLEMOVES; // Kann es das hier überhaupt geben???
-			alert('Player: ' + MOVERESULT_NOPOSSIBLEMOVES + ' found');
+		let ColorMoves	= $.grep(DescendantMoves, function (PM) { return PM['ZugFarbe'] == amzug;	}); 	
+		if(ColorMoves.length == 0) {
+			MoveContext.result = MOVERESULT_NOCOLORMOVES; // Kann es das hier überhaupt geben???
+			alert('Player: ' + MOVERESULT_NOCOLORMOVES + ' found');
 		} else {
 
 			// Ist der gespielte Zug des Spielers überhaupt möglich?
-			let DrawnMove	= $.grep(PossibleMoves, function (PM, i) { return PM['ZugStockfish']	== gezogen; }); 
+			let DrawnMove	= $.grep(ColorMoves, function (PM, i) { return PM['ZugStockfish']	== gezogen; }); 
 			if (DrawnMove.length == 0) {
 				MoveContext.result = MOVERESULT_UNKNOWNMOVE;
 			} else {
 
 				// Der mögliche Zug mit der gleichen Ebene (es kann nur einen geben und der ist sicher noch nicht gespielt)
-				let MainMove	= $.grep(PossibleMoves,	function (PM, i) { return PM['ZugLevel']	== startmovelevel; });
+				let MainMove	= $.grep(ColorMoves,	function (PM, i) { return PM['ZugLevel']	== startmovelevel; });
 
 				if(MainMove.length == 0) {
 					MoveContext.result = MOVERESULT_ERROR; // Dann ist die PGN korrupt
 				} else {
 
-					MoveContext.mainmove	= MainMove[0];
-					MoveContext.drawnmove	= DrawnMove[0];
-
-					let VarMoves	= $.grep(PossibleMoves,	function (PM, i) { return PM['ZugLevel']	>  startmovelevel; });
-
-					for(let i = 0; i <= VarMoves.length - 1; i++) {
-						MoveContext.variantenmoves.push(VarMoves[i])
-						if(VarMoves[i].ZugStockfish == gezogen) {
-							MoveContext.drawnmoveindex = i;
-						}
-					}
-
 					// Der Zustand des gefundenen Hauptzugs wird zurückgegeben
-					MoveContext.mainmovestatus		= MainMove[0].MoveState;
+					MoveContext.mainmove				= MainMove[0];
+					MoveContext.mainmovestatus	= MainMove[0].MoveState;
+
+					MoveContext.drawnmove				= DrawnMove[0];
+
+					let VarMoves	= $.grep(ColorMoves,	function (PM, i) { return PM['ZugLevel']	>  startmovelevel; });
 					MoveContext.varmovescounter	= VarMoves.length;
-					if(MoveContext.drawnmoveindex >= 0) {
-						MoveContext.result	= MOVERESULT_VARIANTEMOVE;
-					} else {
-						if(VarMoves.length == 0)
-							MoveContext.result	= MOVERESULT_MAINMOVEOHNE;
-						else
-							MoveContext.result	= MOVERESULT_MAINMOVEMIT;
+
+					if(VarMoves.length == 0) {// Dann gibt es nur den Hauptzug
+
+						MoveContext.selectedmove		= MainMove[0];
+						MoveContext.result					= MOVERESULT_MAINMOVEOHNE;
+						
+					} else { // Hauptzug mit Varianten
+					
+						// Jetzt wird angenommen, dass der Hauptzug gespielt wurde.  Beide werden überschrieben, wenn eine Variante gezogen wurde
+						MoveContext.result				= MOVERESULT_MAINMOVEMIT;
+						MoveContext.selectedmove	= VarMoves[0];
+
+						for(let i = 0; i <= VarMoves.length - 1; i++) {
+							MoveContext.variantenmoves.push(VarMoves[i])
+							if(VarMoves[i].ZugStockfish == gezogen) {
+								MoveContext.drawnmoveindex	= i;
+								MoveContext.selectedmove		= VarMoves[i];
+								MoveContext.result					= MOVERESULT_VARIANTEMOVE;
+							}
+						}
 					}
 				}
 			}
@@ -118,12 +125,14 @@ function determinePlayerMoveContext(amzug, startmoveid, startmovelevel, gezogen)
 	}
 	return MoveContext;
 }
- 
+
+// Festlegen des Zugs, den der Gegner ausführen muss. Es kann hier keinen gezogenen Zug geben.
+// In MoveContext bleiben die Angaben zu drawnmove unberücksichtigt und MOVERESULT_VARIANTEMOVE kann es auch nicht geben
 function determineChallengeMoveContext(challengecolor, startmoveid, startmovelevel) {
 
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit challengecolor: ' + challengecolor + ' startmoveid: ' + startmoveid + ' startmovelevel: ' + startmovelevel);
 	
-	MoveContext = new CMoveContext();
+	MoveContext = new CMoveContext(); // obwohl es drawnmode hier gar nicht geben kann
 
 	let DescendantMoves	= $.grep(ChallengeMoves,	function (CM)	{ return	CM['PreMoveId'] == startmoveid 
 	&&	(CM['MoveState'] == MOVESTATE_READY 
@@ -135,43 +144,40 @@ function determineChallengeMoveContext(challengecolor, startmoveid, startmovelev
 		MoveContext.result = MOVERESULT_NODESCENDENTS;
 	} else {
 
-		let PossibleMoves	= $.grep(DescendantMoves, function (PM) { return PM['ZugFarbe'] != challengecolor;	}); 	
-		if(PossibleMoves.length == 0) {
-			MoveContext.result = MOVERESULT_NOPOSSIBLEMOVES;
-			//alert('challenge: ' + MOVERESULT_NOPOSSIBLEMOVES + ' found');
+		let ColorMoves	= $.grep(DescendantMoves, function (PM) { return PM['ZugFarbe'] != challengecolor;	}); 	
+		if(ColorMoves.length == 0) {
+			MoveContext.result = MOVERESULT_NOCOLORMOVES;
 		} else {
 
-			let MainMove	= $.grep(PossibleMoves,	function (PM, i) { return PM['ZugLevel']	== startmovelevel; });
+				// Der mögliche Zug mit der gleichen Ebene (es kann nur einen geben und der ist sicher noch nicht gespielt)
+				let MainMove	= $.grep(ColorMoves,	function (PM, i) { return PM['ZugLevel']	== startmovelevel; });
 
 			if(MainMove.length == 0) {
 				MoveContext.result = MOVERESULT_ERROR; // Dann ist die PGN korrupt
 			} else {
 
-				MoveContext.mainmove	= MainMove[0];
+				// Der Zustand des gefundenen Hauptzugs wird zurückgegeben
+				MoveContext.mainmove				= MainMove[0];
+				MoveContext.mainmovestatus	= MainMove[0].MoveState;
 
-				let VarMoves	= $.grep(PossibleMoves,	function (PM, i) { return PM['ZugLevel']	>  startmovelevel; });
+				let VarMoves	= $.grep(ColorMoves,	function (PM, i) { return PM['ZugLevel']	>  startmovelevel; });
+				MoveContext.varmovescounter	= VarMoves.length;
 
-				if(VarMoves.length > 0) {
+				if(VarMoves.length == 0) { // Dann gibt es nur den Hauptzug
+					
+					MoveContext.selectedmove		= MainMove[0];
+					MoveContext.result					= MOVERESULT_MAINMOVEOHNE;
+					
+				} else { // Hauptzug mit Varianten
 
 					for(let i = 0; i <= VarMoves.length - 1; i++) { // Alle Züge übernehmen, es kann ja keinen gezogenen Zug geben
 						MoveContext.variantenmoves.push(VarMoves[i])
 					}
 
-					// Es gibt ja keinen Spielerzug. Also einfach den ersten Variantenzug auswählen:
-					MoveContext.drawnmove				= VarMoves[0];
-					MoveContext.varmovescounter	= VarMoves.length;
-					MoveContext.drawnmoveindex	= 0;
-					MoveContext.result					= MOVERESULT_VARIANTEMOVE;
+					// Es gibt ja keinen gezogenen Spielerzug. Also einfach den ersten Variantenzug auswählen:
+					MoveContext.selectedmove		= VarMoves[0];
+					MoveContext.result					= MOVERESULT_MAINMOVEMIT;
 
-				} else {
-					// Dann gibt es nur den Hauptzug
-					MoveContext.mainmove	= MainMove[0];
-
-					// Der Zustand des gefundenen Hauptzugs wird zurückgegeben.Muss ja ready sein
-					MoveContext.mainmovestatus	= MainMove[0].MoveState;
-					MoveContext.varmovescounter	= 0;
-
-					MoveContext.result	= MOVERESULT_MAINMOVEOHNE;
 				}
 			}
 		} 
@@ -180,13 +186,13 @@ function determineChallengeMoveContext(challengecolor, startmoveid, startmovelev
 }
 
 // Überträgt die Daten des auslösenden Zugs in den Stack.
-function MoveContextToStack(MC, trigger) { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function TriggerMoveToStack(MC, trigger) { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
-	MoveContextToStackCounter++;
+	TriggerMoveToStackCounter++;
 
 		// Den übergangenen Zug ( = Hauptzug)  in den Stack
 		Stellungsdaten.VarianteStack.push( {
-			Counter:		MoveContextToStackCounter,
+			Counter:		TriggerMoveToStackCounter,
 			Trigger:		trigger,
 			CurMove:		Stellungsdaten.CurMoveId,
 			PreMove:		Stellungsdaten.PreMoveId,

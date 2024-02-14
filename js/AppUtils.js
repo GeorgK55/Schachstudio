@@ -395,7 +395,7 @@ function addMoveAnimationStyle(boardid, pieceid, boarddirection, stockfishmove) 
 
 }
 
-function clearAnimation(cleardata) {
+function terminateAnimation(cleardata) {
 
 	$('#' +  cleardata.data.figur + '_' + cleardata.data.von).removeClass('svgmoveme');
 	$('#' + cleardata.data.brett + cleardata.data.von).empty();

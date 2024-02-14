@@ -9,7 +9,7 @@ $(document).ready(function () {
 	//curLogthemes	= [LOGTHEME_SITUATION];
 	//curLogthemes		= [];
 
-	MoveContextToStackCounter = 0; // Ohne Funktion, nur zwecks Debug
+	TriggerMoveToStackCounter = 0; // Ohne Funktion, nur zwecks Debug
 
 	if (window.location.search != "") {
 		let activemode = location.search.split("=").pop();

@@ -28,42 +28,46 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 		htmlKommentar = '<div class="Comment' + Postfix + '">' + Zug.Hinweistext + '</div>';
 	}
 
-	if (Mode == MOVEMODE_VARIANTE_MAINVISIBLE) {
-		// In T_Zuege steht die Farbe des verursachenden Zugs. Hier wird das Zeichen zum Zug eingetragen!
-		if (Zug.ZugFarbe == WEISSAMZUG) {
-			htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
-			htmlNodeText_w = "<span class='movewhite variantezeiger' id='" +
-				Zug.CurMoveId + WHITEPOSTFIX +
-				"'>" + VARIANTEZEIGER + Situation.Text_w + "</span>";
-		} else {
-			htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
-			htmlNodeText_b = "<span class='moveblack variantezeiger' id='" +
-				Zug.CurMoveId + BLACKPOSTFIX +
-				"'>" + VARIANTEZEIGER + Situation.Text_b + "</span>";
-		}
-	} else if (Mode == MOVEMODE_VARIANTE_MAINHIDDEN) {
-		// In T_Zuege steht die Farbe des verursachenden Zugs. Hier wird das Zeichen zum Zug eingetragen!
-		if (Zug.ZugFarbe == WEISSAMZUG) {
-			htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
-			htmlNodeText_w = "<span class='movewhite variantezeiger' id='" +
-				Zug.CurMoveId + WHITEPOSTFIX +
-				"'>" + VARIANTEZEIGER + DEFAULTMOVE_W + "</span>";
-		} else {
-			htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
-			htmlNodeText_b = "<span class='moveblack variantezeiger' id='" +
-				Zug.CurMoveId + BLACKPOSTFIX +
-				"'>" + VARIANTEZEIGER + DEFAULTMOVE_B + "</span>";
-		}
-	} else if (Mode == MOVEMODE_MOVE) {
-		if (Zug.ZugFarbe == WEISSAMZUG) {
-			htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Situation.CurMoveId + WHITEPOSTFIX + "' " +
-				tooltip + jumpTo +">" + Situation.Text_w + "</span>";
-			htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
-		} else {
-			htmlNodeText_b = "<span class='moveblack currentmovemarker' id='" + Situation.CurMoveId + BLACKPOSTFIX + "' " +
-				tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
-			htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
-		}
+	switch(Mode) {
+		case MOVEMODE_VARIANTE_MAINVISIBLE:
+			// In T_Zuege steht die Farbe des verursachenden Zugs. Hier wird das Zeichen zum Zug eingetragen!
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
+				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" +
+					Zug.CurMoveId + WHITEPOSTFIX +
+					"'>" + VARIANTEZEIGER + Situation.Text_w + "</span>";
+			} else {
+				htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
+				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" +
+					Zug.CurMoveId + BLACKPOSTFIX +
+					"'>" + VARIANTEZEIGER + Situation.Text_b + "</span>";
+			}
+			break;
+		case MOVEMODE_VARIANTE_MAINHIDDEN:
+			// In T_Zuege steht die Farbe des verursachenden Zugs. Hier wird das Zeichen zum Zug eingetragen!
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
+				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" +
+					Zug.CurMoveId + WHITEPOSTFIX +
+					"'>" + VARIANTEZEIGER + DEFAULTMOVE_W + "</span>";
+			} else {
+				htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
+				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" +
+					Zug.CurMoveId + BLACKPOSTFIX +
+					"'>" + VARIANTEZEIGER + DEFAULTMOVE_B + "</span>";
+			}
+			break;
+		case MOVEMODE_MOVE:
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Situation.CurMoveId + WHITEPOSTFIX + "' " +
+					tooltip + jumpTo +">" + Situation.Text_w + "</span>";
+				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
+			} else {
+				htmlNodeText_b = "<span class='moveblack currentmovemarker' id='" + Situation.CurMoveId + BLACKPOSTFIX + "' " +
+					tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
+				htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
+			}
+			break;
 	}
 
 	// Der Name für den neuen Knoten wird aus dem Zugname abgeleitet
@@ -115,44 +119,61 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 	let SchonDaKommentar = NodeElements.length == 5 ? NodeElements[4].outerHTML : "";
 	let NeuKommentar = Zug.Hinweistext != "" ? '<div class="Comment' + Postfix + '">' + Zug.Hinweistext + '</div>' : "";
 
-	if (Mode == MOVEMODE_DEFAULT) {
-		// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
-		if (Zug.ZugFarbe == WEISSAMZUG) {
-			htmlNodeText_b = NodeElements[3].outerHTML;
-			htmlNodeText_w = "<span class='movewhite' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + DEFAULTMOVE_W + "</span>";
-		} else {
+	switch(Mode) {
+		case MOVEMODE_DEFAULT:
+			// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_b = NodeElements[3].outerHTML;
+				htmlNodeText_w = "<span class='movewhite' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + DEFAULTMOVE_W + "</span>";
+			} else {
+				htmlNodeText_w = NodeElements[2].outerHTML;
+				htmlNodeText_b = "<span class='moveblack' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + DEFAULTMOVE_B + "</span>";
+			}
+			break;
+		case MOVEMODE_VARIANTE_MAINHIDDEN:
+			// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_b = NodeElements[3].outerHTML;
+				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + "</span>";
+			} else {
+				htmlNodeText_w = NodeElements[2].outerHTML;
+				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + "</span>";
+			}
+			break;
+		case MOVEMODE_VARIANTE_MAINVISIBLE:
+			// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_b = NodeElements[3].outerHTML;
+				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
+			} else {
+				htmlNodeText_w = NodeElements[2].outerHTML;
+				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
+			}
+			break;
+		case MOVEMODE_MATTSIGN:
+			// Das Zeichen soll einfach an den zur Zugfarbe passenden Text angehängt werden
+			// Grund: Das Signal wird in einer eigenen Antwort der Engine zurückgegeben
 			htmlNodeText_w = NodeElements[2].outerHTML;
-			htmlNodeText_b = "<span class='moveblack' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + DEFAULTMOVE_B + "</span>";
-		}
-	} else if (Mode == MOVEMODE_VARIANTE_MAINVISIBLE) {
-		// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
-		if (Zug.ZugFarbe == WEISSAMZUG) {
 			htmlNodeText_b = NodeElements[3].outerHTML;
-			htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
-		} else {
-			htmlNodeText_w = NodeElements[2].outerHTML;
-			htmlNodeText_b = "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
-		}
-		// Das Zeichen soll einfach an den zur Zugfarbe passenden Text angehängt werden
-		// Grund: Das Signal wird in einer eigenen Antwort der Engine zurückgegeben
-	} else if (Mode == MOVEMODE_MATTSIGN) {
-		htmlNodeText_w = NodeElements[2].outerHTML;
-		htmlNodeText_b = NodeElements[3].outerHTML;
-		if (Zug.ZugFarbe == WEISSAMZUG) {
-			htmlNodeText_w = htmlNodeText_w.replace("</span>", MATT + "</span>");
-		} else {
-			htmlNodeText_b = htmlNodeText_b.replace("</span>", MATT + "</span>");
-		}
-	} else if (Mode == MOVEMODE_MOVE) {
-		if (Zug.ZugFarbe == WEISSAMZUG) {
-			htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Zug.CurMoveId + WHITEPOSTFIX + "' " +
-				tooltip + jumpTo + ">" + Situation.Text_w + "</span>";
-			htmlNodeText_b = NodeElements[3].outerHTML;
-		} else {
-			htmlNodeText_b = "<span class='moveblack currentmovemarker' id='" + Zug.CurMoveId + BLACKPOSTFIX + "' " +
-				tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
-			htmlNodeText_w = NodeElements[2].outerHTML;
-		}
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_w = htmlNodeText_w.replace("</span>", MATT + "</span>");
+			} else {
+				htmlNodeText_b = htmlNodeText_b.replace("</span>", MATT + "</span>");
+			}
+			break;
+		case MOVEMODE_MOVE:
+			if (Zug.ZugFarbe == WEISSAMZUG) {
+				htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Zug.CurMoveId + WHITEPOSTFIX + "' " +
+					tooltip + jumpTo + ">" + Situation.Text_w + "</span>";
+				htmlNodeText_b = NodeElements[3].outerHTML;
+			} else {
+				htmlNodeText_b = "<span class='moveblack currentmovemarker' id='" + Zug.CurMoveId + BLACKPOSTFIX + "' " +
+					tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
+				htmlNodeText_w = NodeElements[2].outerHTML;
+			}
+			break;
+		default:
+			break;
 	}
 
 	let changetext = "<div>" + htmlText_Zugnr + htmlNodeText_w + htmlNodeText_b + SchonDaKommentar + NeuKommentar + "</div>";

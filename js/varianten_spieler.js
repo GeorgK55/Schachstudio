@@ -15,69 +15,81 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 
 	switch (MC_player.result) {
 		case MOVERESULT_ERROR:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVERESULT_ERROR + '" für: ' + T_Zuege.ZugStockfish);
-			PlayerMoveVariantenResult.reject({ result: MOVERESULT_ERROR, reason: "", moveid: T_Zuege.CurMoveId});
-			break;
 		case MOVERESULT_UNKNOWNMOVE:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVERESULT_UNKNOWNMOVE + '" für: ', T_Zuege.ZugStockfish);
-			PlayerMoveVariantenResult.reject({ result: MOVERESULT_UNKNOWNMOVE, reason: "", moveid: T_Zuege.CurMoveId});
-			break;
+		// case MOVERESULT_NOCOLORMOVES: kann es das hier geben??? Im determine.... ist ein alert
 		case MOVERESULT_NODESCENDENTS:
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('PlayerMoveVariantenResult.reject wegen "' + MOVERESULT_NODESCENDENTS + '" für: ', T_Zuege.ZugStockfish);
-			PlayerMoveVariantenResult.resolve({	result: MOVERESULT_NODESCENDENTS, reason: "", moveid: T_Zuege.CurMoveId	});
-			break;
-		case MOVERESULT_MAINMOVEOHNE:
-
-			// Ziehen
-			TransferZugNachStellung(Stellungsdaten, MC_player.drawnmove);
-			ZieheZug(MC_player.drawnmove, HTMLBRETTNAME_SPIELEN);
-
-			// Notieren, wenn es kein aus dem Stack geholter Zug ist
-			if(getMoveState(MC_player.drawnmove.CurMoveId) != MOVESTATE_STACKED) {
-				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.drawnmove, MOVEMODE_MOVE);
-			} else {
-				$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, MC_player.drawnmove.ZugLevel));
-			}
-
-			// Verwalten
-			Stellungsdaten.PreMoveId = MC_player.drawnmove.CurMoveId;
-			setMoveState(MC_player.drawnmove.CurMoveId, MOVESTATE_MOVED);
-			setMoveNode(MC_player.drawnmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
-
-			// Die Anzeige:
-			$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
-
-			// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
-			PlayerMoveVariantenResult.resolve({ result: MC_player.result, reason: "Ohne Interrupt", moveid: MC_player.drawnmove.CurMoveId });
-
+			showjstreeimportant('ChallengeTreeNotationId');
+			PlayerMoveVariantenResult.resolve({	result: MC_player.result, reason: "", moveid: T_Zuege.CurMoveId	});
 			break;
 		case MOVERESULT_VARIANTEMOVE:
 		case MOVERESULT_MAINMOVEMIT:
 
 			// Hauptzug zuerst: Diesen nur Notieren, Verwalten und in den Stack
+
+			// Notieren
 			TransferZugNachStellung(Stellungsdaten, MC_player.mainmove);
 			let movemode = MC_player.result == MOVERESULT_MAINMOVEMIT ? MOVEMODE_VARIANTE_MAINVISIBLE : MOVEMODE_VARIANTE_MAINHIDDEN;
 			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.mainmove, movemode); 
 
+			// Verwalten
 			setMoveState(MC_player.mainmove.CurMoveId, MOVESTATE_VISIBLE);
 			setMoveNode(MC_player.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
 
-			MoveContextToStack(MC_player, PLAYER);
+			// In den Stack
+			TriggerMoveToStack(MC_player, PLAYER);
 
 			// Der Variantenzug:
-			TransferZugNachStellung(Stellungsdaten, MC_player.variantenmoves[0]); // Genau dieser wurde nicht in den Stack geschrieben
-			ZieheZug(MC_player.variantenmoves[0], HTMLBRETTNAME_SPIELEN);
-			Stellungsdaten.CreateNewNode = true;
-			Stellungsdaten.PreMoveId = MC_player.variantenmoves[0].CurMoveId;
-			Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
-			Stellungsdaten.VarianteCounter++;
-			Stellungsdaten.VarianteColor[MC_player.variantenmoves[0].ZugLevel]++;
-			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.variantenmoves[0], MOVEMODE_MOVE);
-			setMoveNode(MC_player.variantenmoves[0].CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
-			setMoveState(MC_player.variantenmoves[0].CurMoveId, MOVESTATE_MOVED);
+			//TransferZugNachStellung(Stellungsdaten, MC_player.variantenmoves[0]); // Genau dieser wurde nicht in den Stack geschrieben
+			//ZieheZug(MC_player.variantenmoves[0], HTMLBRETTNAME_SPIELEN);
 
-			let InterruptType =  MC_player.result == MOVERESULT_MAINMOVEMIT ? 'PMS' : 'PVS';
-			createInterrupt(InterruptType, MC_player.result, MC_player.variantenmoves[0].CurMoveId);
+			Stellungsdaten.CreateNewNode = true;
+			//Stellungsdaten.PreMoveId = MC_player.selectedmove.CurMoveId;
+			Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
+
+			Stellungsdaten.VarianteCounter++;
+			Stellungsdaten.VarianteColor[MC_player.selectedmove.ZugLevel]++;
+			//NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
+			//setMoveNode(MC_player.selectedmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
+			//setMoveState(MC_player.selectedmove.CurMoveId, MOVESTATE_MOVED);
+
+			//let InterruptType =  MC_player.result == MOVERESULT_MAINMOVEMIT ? 'PMS' : 'PVS';
+			//createInterrupt(InterruptType, MC_player.result, MC_player.variantenmoves[0].CurMoveId);
+
+		case MOVERESULT_MAINMOVEOHNE:
+
+			TransferZugNachStellung(Stellungsdaten, MC_player.selectedmove);
+
+			// Notieren, wenn es kein aus dem Stack geholter Zug ist
+			if(getMoveState(MC_player.drawnmove.CurMoveId) != MOVESTATE_STACKED) {
+				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
+			} else {
+				$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, MC_player.selectedmove.ZugLevel));
+			}
+
+			// Ziehen
+			ZieheZug(MC_player.drawnmove, HTMLBRETTNAME_SPIELEN);
+
+			// Verwalten
+			setMoveState(MC_player.selectedmove.CurMoveId, MOVESTATE_MOVED);
+			setMoveNode(MC_player.selectedmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
+
+			Stellungsdaten.PreMoveId = MC_player.selectedmove.CurMoveId;
+
+			// Die Abschlußbehandlung ist doch wieder unterschiedlich
+			if(MC_player.result == MOVERESULT_MAINMOVEMIT) {
+
+				let InterruptType =  MC_player.result == MOVERESULT_MAINMOVEMIT ? 'PMS' : 'PVS';
+				createInterrupt(InterruptType, MC_player.result, MC_player.selectedmove.CurMoveId);
+
+			} else {
+
+				// Die Anzeige:
+				$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
+
+				// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
+				PlayerMoveVariantenResult.resolve({ result: MC_player.result, reason: "Ohne Interrupt", moveid: MC_player.selectedmove.CurMoveId });
+
+			}
 
 			break;
 		case XYXYXY:
@@ -90,12 +102,13 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			setMoveState(MC_player.mainmove.CurMoveId, MOVESTATE_VISIBLE);
 			setMoveNode(MC_player.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
 
-			MoveContextToStack(MC_player, PLAYER);
+			TriggerMoveToStack(MC_player, PLAYER);
 
 			createInterrupt('PVS', MC_player.result, MC_player.variantenmoves[0].CurMoveId);
 
 			break;
 		default:
+			PlayerMoveVariantenResult.reject({ result: 'Fehler: Moveresult Spieler nicht erlaubt', reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;
 	}
 
