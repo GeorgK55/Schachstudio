@@ -74,7 +74,7 @@ function TheIndexGeorgFunction() {
 					if (line.indexOf('Fen') >= 0) {
 
 						// Die Engine hat den Zug ausgeführt. Der Zug ist schon in SingleMove eingetragen. Jetzt den Zug auf dem Brett ausführen
-						ZieheZug(SingleMove, HTMLBRETTNAME_IMPORT);
+						ZieheZug(SingleMove, HTMLBRETTNAME_IMPORT, ANIMATIONSPEED_ZERO);
 
 						// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu varianten)
 						TransferZugNachStellung(Importdaten, SingleMove)
@@ -127,7 +127,7 @@ function TheIndexGeorgFunction() {
 									T_Zuege.CurMoveId = MOVEPRÄFIX + T_Zuege.CurMoveIndex;
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 
 									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
@@ -202,7 +202,7 @@ function TheIndexGeorgFunction() {
 									}
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									Stellungsdaten.CurNodeId = NODEPRÄFIX + T_Zuege.CurMoveIndex;
@@ -383,7 +383,7 @@ function TheIndexGeorgFunction() {
 														T_Zuege.ZugKurz = getMoveNotations(T_Zuege.FEN, m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung, "kurz");
 
 														TransferZugNachStellung(Stellungsdaten, T_Zuege);
-														ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+														ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 														NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 														GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
@@ -400,7 +400,7 @@ function TheIndexGeorgFunction() {
 												click: function () {
 
 													TransferZugNachStellung(Stellungsdaten, T_Zuege);
-													ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+													ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 													NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 													GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
@@ -427,7 +427,7 @@ function TheIndexGeorgFunction() {
 									// Spielerzug ist ausreichend gut
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
@@ -479,7 +479,7 @@ function TheIndexGeorgFunction() {
 									}
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGENGINEMOVE;
@@ -566,7 +566,7 @@ function TheIndexGeorgFunction() {
 								} else {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);

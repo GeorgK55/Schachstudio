@@ -111,6 +111,11 @@ const HTMLBRETTNAME_IMPORT  = 'BrettImport';
 const PHPTRUE = 1;
 const PHPFALSE = 0;
 
+const ANIMATIONSPEED_ZERO		= 0;
+const ANIMATIONSPEED_SLOW		= 3;
+const ANIMATIONSPEED_NORMAL	= 2;
+const ANIMATIONSPEED_FAST		= 1;
+
 // Eventangaben im pgn. Lichess-Standard berücksichtigt
 //const r_Event = new RegExp("(\[Event \")(?<event1>.*)(: ?)(?<event2>.*)?([\"])", "mg");
 const r_Event = new RegExp("(\\[Event \")(?<studie>.*)(: ?)(?<kapitel>.*)?([\"])|(\\[Event \")(?<event>.*)([\"])", "m");

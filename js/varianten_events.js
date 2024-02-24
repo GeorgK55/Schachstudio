@@ -86,7 +86,7 @@ function handleInterruptClick(clickevent) {
 			if(Stellungsdaten.VarianteStack.length > 0) {
 
 				let LastStack = Stellungsdaten.VarianteStack.pop();
-				let PreStackMove = $.grep(ChallengeMoves,	function (LSM)	{ return	LSM['CurMoveId'] == LastStack.PreMove; });
+				let PreStackMove = $.grep(ChallengeMoves,	function (PSM)	{ return	PSM['CurMoveId'] == LastStack.PreMove; });
 
 				if(PreStackMove.length > 0) {
 
@@ -109,10 +109,12 @@ function handleInterruptClick(clickevent) {
 					StellungAufbauen(HTMLBRETTNAME_SPIELEN, PreStackMove[0].FEN);
 					$('#ChallengeTreeNotationId').jstree().close_node(Stellungsdaten.CurNodeId);
 
-					if(PreStackMove[0].ZugFarbe == Challenge.AmZug) {
+					//if(PreStackMove[0].ZugFarbe == Challenge.AmZug) {
+					if(LastStack.Trigger == CHALLENGE) {
 						firePlayerMove();
 					} else {
-						ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+
+						ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 						let LastPlayerMove = $.grep(ChallengeMoves,	function (LSM)	{ return	LSM['CurMoveId'] == LastStack.CurMove; });
  
 						T_Zuege = { ...LastPlayerMove[0] };
@@ -131,7 +133,9 @@ function handleInterruptClick(clickevent) {
 	
 						Stellungsdaten.CreateNewNode = false;
 	
-						firePlayerMove();
+						// Wenn der Zug des Stack HIDDEN ist, muss der Spieler den Zug noch selbst finden. Sonst wird jetzt der Spielerzug hier ausgelöst
+						let CurStackMove = $.grep(ChallengeMoves,	function (CSM)	{ return	CSM['CurMoveId'] == LastStack.CurMove; });
+						if(CurStackMove[0].MoveState != MOVESTATE_HIDDEN) {	firePlayerMove();	}
 					}
 
 				}
@@ -187,7 +191,7 @@ function handleInterruptClick(clickevent) {
 					if(PreStackMove[0].ZugFarbe == Challenge.AmZug) {
 						firePlayerMove();
 					} else {
-						ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN);
+						ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 					}
 
 				}

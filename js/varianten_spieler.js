@@ -32,7 +32,8 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.mainmove, movemode); 
 
 			// Verwalten
-			setMoveState(MC_player.mainmove.CurMoveId, MOVESTATE_VISIBLE);
+			let movestate = MC_player.result == MOVERESULT_MAINMOVEMIT ? MOVESTATE_VISIBLE : MOVESTATE_HIDDEN;
+			setMoveState(MC_player.mainmove.CurMoveId, movestate);
 			setMoveNode(MC_player.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
 
 			// In den Stack
@@ -40,7 +41,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 
 			// Der Variantenzug:
 			//TransferZugNachStellung(Stellungsdaten, MC_player.variantenmoves[0]); // Genau dieser wurde nicht in den Stack geschrieben
-			//ZieheZug(MC_player.variantenmoves[0], HTMLBRETTNAME_SPIELEN);
+			//ZieheZug(MC_player.variantenmoves[0], HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 
 			Stellungsdaten.CreateNewNode = true;
 			//Stellungsdaten.PreMoveId = MC_player.selectedmove.CurMoveId;
@@ -60,14 +61,14 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			TransferZugNachStellung(Stellungsdaten, MC_player.selectedmove);
 
 			// Notieren, wenn es kein aus dem Stack geholter Zug ist
-			if(getMoveState(MC_player.drawnmove.CurMoveId) != MOVESTATE_STACKED) {
+			if(getMoveState(MC_player.selectedmove.CurMoveId) != MOVESTATE_STACKED) {
 				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
 			} else {
 				$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 			}
 
 			// Ziehen
-			ZieheZug(MC_player.drawnmove, HTMLBRETTNAME_SPIELEN);
+			ZieheZug(MC_player.selectedmove, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 
 			// Verwalten
 			setMoveState(MC_player.selectedmove.CurMoveId, MOVESTATE_MOVED);
@@ -76,7 +77,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			Stellungsdaten.PreMoveId = MC_player.selectedmove.CurMoveId;
 
 			// Die Abschlußbehandlung ist doch wieder unterschiedlich
-			if(MC_player.result == MOVERESULT_MAINMOVEMIT) {
+			if(MC_player.result == MOVERESULT_MAINMOVEMIT || MC_player.result == MOVERESULT_VARIANTEMOVE) {
 
 				let InterruptType =  MC_player.result == MOVERESULT_MAINMOVEMIT ? 'PMS' : 'PVS';
 				createInterrupt(InterruptType, MC_player.result, MC_player.selectedmove.CurMoveId);
@@ -92,7 +93,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			}
 
 			break;
-		case XYXYXY:
+		case "XYXYXY":
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MOVERESULT_VARIANTEMOVE + ' erkannt');
 
 			// Hauptzug zuerst: Diesen nur Notieren, Verwalten und in den Stack

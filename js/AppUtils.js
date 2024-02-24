@@ -352,32 +352,22 @@ function computeMoveAnimationCorner(boardid, boarddirection, stockfishmove) {
 	AC.fieldsize		= currentFieldSize;
 	AC.fieldcenter	= startmitte;
 
+	AC.startfile	= startmitte;
+	AC.startrank	= startmitte;
+
 	if(boarddirection == WEISSAMZUG) {
-		// AC.startfile	= (FENFileFactor[stockfishmoveparts[0]])		* currentFieldSize + startmitte;
-		// AC.startrank	= (8 - parseInt(stockfishmoveparts[1]) + 1)	* currentFieldSize + startmitte;
-		// AC.stopfile	= (FENFileFactor[stockfishmoveparts[2]])		* currentFieldSize + startmitte;
-		// AC.stoprank	= (8 - parseInt(stockfishmoveparts[3]) + 1)	* currentFieldSize + startmitte;	
-		AC.startfile	= startmitte;
-		AC.startrank	= startmitte;
 		AC.stopfile	= (FENFileFactor[stockfishmoveparts[2]] - FENFileFactor[stockfishmoveparts[0]]) * currentFieldSize;
 		AC.stoprank	= (parseInt(stockfishmoveparts[3]) - parseInt(stockfishmoveparts[1])) * currentFieldSize * -1;
 	} else {
-		AC.startfile	= (8 - FENFileFactor[stockfishmoveparts[0]] + 1)	* currentFieldSize + startmitte;
-		AC.startrank	= (parseInt(stockfishmoveparts[1]) - 1 + 1)				* currentFieldSize + startmitte;
-		AC.stopfile	= (8 - FENFileFactor[stockfishmoveparts[2]] + 1)	* currentFieldSize + startmitte;
-		AC.stoprank	= (parseInt(stockfishmoveparts[3]) - 1 + 1)				* currentFieldSize + startmitte;
+		AC.stopfile	= (FENFileFactor[stockfishmoveparts[0]] - FENFileFactor[stockfishmoveparts[2]]) * currentFieldSize;
+		AC.stoprank	= (parseInt(stockfishmoveparts[1]) - parseInt(stockfishmoveparts[3])) * currentFieldSize * -1;
 	}
 	return AC;
 }
 
-function addMoveAnimationStyle(boardid, pieceid, boarddirection, stockfishmove) {
+function addMoveAnimationStyle(boardid, boarddirection, stockfishmove, speed) {
 
 	let AC = computeMoveAnimationCorner(boardid, boarddirection, stockfishmove);
-
-	// AC.stopfile = AC.startfile - AC.fieldsize;
-	// AC.stoprank = AC.startrank - AC.fieldsize;
-	// AC.startfile = 0;
-	// AC.startrank = 0;
 
 	let cssRulesList = document.styleSheets[5].cssRules;
 
@@ -391,14 +381,6 @@ function addMoveAnimationStyle(boardid, pieceid, boarddirection, stockfishmove) 
 	}
 
 	let animationpath = "M " + AC.fieldcenter + "," + AC.fieldcenter + " l " + AC.stopfile + "," + AC.stoprank;
-	document.styleSheets[5].insertRule(".svgmoveme { offset-path: path('" + animationpath + "'); offset-rotate: 0deg; offset-anchor: center; animation: moveDiv 3s 1; }", ruleindex);
-
-}
-
-function terminateAnimation(cleardata) {
-
-	$('#' +  cleardata.data.figur + '_' + cleardata.data.von).removeClass('svgmoveme');
-	$('#' + cleardata.data.brett + cleardata.data.von).empty();
-	//$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
+	document.styleSheets[5].insertRule(".svgmoveme { offset-path: path('" + animationpath + "'); offset-rotate: 0deg; offset-anchor: center; animation: moveDiv " + speed + "s 1; }", ruleindex);
 
 }

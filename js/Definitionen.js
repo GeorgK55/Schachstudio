@@ -12,8 +12,8 @@ class CImportdaten {
 		this.CurNodeId				=	NODEPRÄFIX + '0';	// der aktuelle Knotenname im html-Tree
 		this.PreMoveId				=	MOVEPRÄFIX + '0'; // Id des Vorgängerzugs; kann gleiche Ebene oder kleinere Ebene sein
 		this.CurMoveId				=	MOVEPRÄFIX + '0'; // MOVEPRÄFIX + PGN_Index; sind also nicht aufsteigend komplett
-		this.PreFEN						=	"";	// Die FEN; die zu diesem Zug geführt hat
-		this.FEN							=	"";	// Die FEN; nachdem dieser Zug ausgeführt wurde
+		this.PreFEN						=	"";	// Die FEN, die zu diesem Zug geführt hat
+		this.FEN							=	"";	// Die FEN nachdem dieser Zug ausgeführt wurde
 		this.Text_w						=	DEFAULTMOVE_W;
 		this.Text_b						=	DEFAULTMOVE_B;
 		this.VarianteCounter	=	0;
@@ -32,7 +32,7 @@ class CStellungsdaten  {
 		this.PreNodeId				=	NODEPRÄFIX + '0';
 		this.CurMoveId				=	MOVEPRÄFIX + '0';
 		this.PreMoveId				=	MOVEPRÄFIX + '0';
-		this.FEN							=	"";	// Die FEN; nachdem ein Zug ausgeführt wurde
+		this.FEN							=	"";	// Die FEN nachdem ein Zug ausgeführt wurde
 		this.Text_w						=	DEFAULTMOVE_W;
 		this.Text_b						=	DEFAULTMOVE_B;
 		this.VarianteCounter	=	0; // wird nur hochgezählt und für die Entscheidung Variantenfarbe genutzt
@@ -62,7 +62,7 @@ VarianteStack = {
 	PreMove:		'',
 	CurNode:		'',
 	PreNode:		'',
-	Move:				'',
+	MainMove:		'',
 	MoveLevel:	0
 }
 

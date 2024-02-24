@@ -61,10 +61,10 @@ function determinePlayerMoveContext(amzug, startmoveid, startmovelevel, gezogen)
 
 	// Hat der Vorgängerzug überhaupt noch Folgezüge (die müssen mal dagewesen sein, können jetzt aber schon gespielt sein)
 	let DescendantMoves	= $.grep(ChallengeMoves,	function (CM)	{ return	CM['PreMoveId'] == startmoveid 
-	&&	(CM['MoveState'] == MOVESTATE_READY 
+	&&	((CM['MoveState'] == MOVESTATE_READY 
 				|| CM['MoveState'] == MOVESTATE_HIDDEN
 				|| CM['MoveState'] == MOVESTATE_VISIBLE
-				|| CM['MoveState'] == MOVESTATE_STACKED); });
+				|| CM['MoveState'] == MOVESTATE_STACKED) && CM['CurMoveId'] != 'M_0'); });
 
 	if(DescendantMoves.length == 0) {
 		MoveContext.result = MOVERESULT_NODESCENDENTS;
@@ -135,10 +135,10 @@ function determineChallengeMoveContext(challengecolor, startmoveid, startmovelev
 	MoveContext = new CMoveContext(); // obwohl es drawnmode hier gar nicht geben kann
 
 	let DescendantMoves	= $.grep(ChallengeMoves,	function (CM)	{ return	CM['PreMoveId'] == startmoveid 
-	&&	(CM['MoveState'] == MOVESTATE_READY 
+	&&	((CM['MoveState'] == MOVESTATE_READY 
 				|| CM['MoveState'] == MOVESTATE_HIDDEN
 				|| CM['MoveState'] == MOVESTATE_VISIBLE
-				|| CM['MoveState'] == MOVESTATE_STACKED); });
+				|| CM['MoveState'] == MOVESTATE_STACKED) && CM['CurMoveId'] != 'M_0'); });
 
 	if(DescendantMoves.length == 0) {
 		MoveContext.result = MOVERESULT_NODESCENDENTS;

@@ -66,7 +66,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			// Hier noch die Farbanzeige in VariantetextId aktualisieren?
 
 			// Ziehen
-			ZieheZug(MC_challenge.selectedmove, HTMLBRETTNAME_SPIELEN);
+			ZieheZug(MC_challenge.selectedmove, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO/*FAST*/);
 
 			// Verwalten
 			setMoveState(MC_challenge.selectedmove.CurMoveId, MOVESTATE_MOVED);
