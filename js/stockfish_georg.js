@@ -26,14 +26,15 @@ function TheIndexGeorgFunction() {
 
 			if (GlobalActionContext == AC_CHALLENGEIMPORT) {
 
-				// In getDataFunctions wird die Kandidatenauswahl für die Bestimmung des Ausgangsfeldes eines Zugs angestoßen
-				// Das Auswahlfeld eines Zuges wird für die Kommunikation mit der Engine zwingend benötigt
-				// Es wird für alle Kandidaten angefragt. Nur für den einzig möglichen Zug wird 'bestmove' zurückgegeben
+				// In executeMove wird die Kandidatenauswahl für die Bestimmung des Ausgangsfeldes eines Zugs angestoßen
+				// Das Auswahlfeld eines Zuges wird für die Kommunikation mit der Engine zwingend benötigt.  Es wird für alle Kandidaten angefragt.
+				// Nur für den einzig möglichen Zug wird 'bestmove .... ponder ....' zurückgegeben.
+				// Für alle anderen Züge kommt 'bestmove (none)' als letzte Antwort der Engine zu diesem Zug. Ist damit also beendet.
+				// VVor den Zeilen mit bestmove kommen noch Zeilen mit 'info depth .....'. Werden zur Zeit ignoriert. Vielleicht mal brauchbar?
 
 				if (GlobalActionStep == AS_IDENTIFYUNIQUEMOVE) {
 
-					// Es gibt nur diese eine relevante Zeile.
-					// Diese Zeile identifiziert den einzig möglichen Zug. Ob bestmove schon ausreicht, kann irgendwann mal geprüft werden
+					// Es gibt nur diese eine relevante Zeile. Diese Zeile identifiziert den einzig möglichen Zug.
 					// Übernehmen und Umschalten in den nächsten Schritt.
 					if (line.indexOf('bestmove') >= 0 && line.match(SingleMove.ZugNach)) {
 

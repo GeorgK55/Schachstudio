@@ -53,26 +53,12 @@ function firePlayerMove() {
 	});
 }
 
-function reactivateMove_obsolet(moveid) {
-
-	let MoveToReact	= $.grep(ChallengeMoves,	function (MTR, i) { return MTR['CurMoveId']	== moveid; })[0];
-
-	T_Zuege.ZugVon		= MoveToReact.ZugVon;
-	T_Zuege.ZugFigur	= MoveToReact.ZugFigur;
-	T_Zuege.ZugNach		= MoveToReact.ZugNach;
-
-	TransferZugNachStellung(Stellungsdaten, MoveToReact);
-	StellungAufbauen(HTMLBRETTNAME_SPIELEN, MoveToReact.FEN);
-	firePlayerMove();
-
-}
-
 // Entweder die Umwandlung vollziehen oder einfach resolve zurückgeben
 function checkPromotion() {
 
 	PromotionAnswer = $.Deferred();
 
-	if (T_Zuege.ZugFigur.toUpperCase() == 'P' && (T_Zuege.ZugNach.slice(-1) == '1' || T_Zuege.ZugNach.slice(-1) == '8')) {
+	if (T_Zuege.ZugFigur.toUpperCase() == 'P' && (T_Zuege.ZugVon.slice(-1) == '2' && T_Zuege.ZugNach.slice(-1) == '1' || T_Zuege.ZugVon.slice(-1) == '7' && T_Zuege.ZugNach.slice(-1) == '8')) {
 
 		PromotionDialog = $("#dialog_promotion").dialog({
 			title: "Auswahl",
@@ -123,17 +109,31 @@ function showChallengeTip(text, darstellung) {
 
 }
 
-// Hier gibt es die html noch nicht. In einer Javascriptkonstante (= 64 leere div
+// Hier gibt es die html noch nicht. In einer Javascriptkonstante (= 64 leere div)
 // ohne id mit Klassen für schwarz und weiß) werden die Figuren ergänzt, indem die
 // FEN-Zeilen in die div übertragen werden. Abschließend wird der string als html mit
 // eigener Id an ein unsichtbares htmltag angehängt
-function ErzeugeTooltip(FEN, Felderarray, TooltipId, Orientierung) {
+function ErzeugeTooltip(FEN, TooltipId, Orientierung) {
 
-	let FEN_split = FEN.split(" ")[0].split("/"); // Hier entstehen IMMER 8 Elemente
-	let FEN_rows = Orientierung == WEISSAMZUG ? FEN_split : FEN_split.reverse();
+	let Felderarray = MiniBoardArray;
+	let gonext, idx;
+	
+	if(Orientierung == WEISSAMZUG) {
+
+		idx = 0;
+		FEN_rows = FEN.split(" ")[0].split("/");
+		gonext = function (idx) { return ++idx; };
+
+	} else {
+
+		idx = 63;
+		FEN_rows = FEN.split(" ")[0].split("/").reverse();
+		for (let r in FEN_rows) {	FEN_rows[r] = FEN_rows[r].split("").reverse().join("");	}
+		gonext = function (idx) { return --idx; };
+
+	}
 
 	let i, k;
-	let idx = 0;
 	let Felderstring = '';
 
 	for (i = 0; i < 8; i++) {
@@ -146,7 +146,7 @@ function ErzeugeTooltip(FEN, Felderarray, TooltipId, Orientierung) {
 				SquareCounter = parseInt(FEN_row[j]);
 				for (k = 0; k < SquareCounter; k++) {
 					Felderstring += Felderarray[idx];
-					idx++;
+					idx = gonext(idx);
 				}
 			} else { // sonst die Figur einfach in das div des array eintragen
 				switch (FEN_row[j]) {
@@ -175,12 +175,18 @@ function ErzeugeTooltip(FEN, Felderarray, TooltipId, Orientierung) {
 					case 'b':
 						{ Felderstring += Felderarray[idx].replace('><', '>' + FIGUREN.b + '<'); break; }
 				}
-				idx++;
+				idx = gonext(idx);
 			}
 		}
 	}
-	// Damit wird das fertige Board an das unsichtbare tag angehängt. Zugriff über id
-	$('#tooltips').append("<div class='cb_tooltip' id='" + TooltipId + "'>" + Felderstring + "</div>");
+
+	let TT = document.createElement("div");
+	TT.id = TooltipId;
+	TT.classList.add('cb_tooltip');
+	TT.innerHTML = Felderstring;
+
+	document.getElementById("tooltips").appendChild(TT); // Wird trotzdem an den body abgehängt. Wegen display: none?
+
 }
 
 // Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
@@ -245,77 +251,26 @@ function StellungAufbauen(div_Brett, FEN) {
 // Für Rochaden gibt es kein Flag, also den Zug direkt als Zeichenkette abfragen
 function ZieheZug(objZug, BoardPräfix, Animationspeed) {
 
+	let cleararray = [];
+	let placearray = [];
+
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit objZug.ZugKurz: ', objZug.ZugKurz);
 
 	if(objZug.CurMoveId == 'M_0') return; // Der Zug M_0 ist kein echter Zug und wird nie gezogen. 
 
 	BoardPräfix += '_';
 
-	prepareMove(objZug, BoardPräfix);
-	animateMove(objZug, BoardPräfix, Animationspeed).then( function() {
-		processMove(objZug, BoardPräfix);
-	});
-
-	// // Erkennt beide Rochaden, die werden im else behandelt
-	// if (objZug.ZugKurz.indexOf('0-0') == -1) {
-
-		
-	// 	let Figursymbol, Figurname;
-
-	// 	// if (objZug.ZugUmwandlung != "") {
-	// 	// 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('In objZug ungleich "": objZug.ZugUmwandlung = ' + objZug.ZugUmwandlung);
-	// 	// 	FigursymbolIndex = objZug.ZugFarbe == WEISSAMZUG ? objZug.ZugUmwandlung.toUpperCase() : objZug.ZugUmwandlung.toLowerCase();
-	// 	// 	Figursymbol = eval('FIGUREN.' + FigursymbolIndex);
-	// 	// 	Figurname = objZug.ZugUmwandlung;
-	// 	// } else {
-	// 	// 	Figursymbol	= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child').text(); // Figurzeichen retten
-	// 	// 	Figurname		= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(0, 1); // Gilt so für Bauern und Figuren
-	// 	// }
-
-	// 	if(objZug.ZugFarbe != Challenge.AmZug) {
-	// 		addMoveAnimationStyle("ChallengechessboardId", Figurname + '_' + objZug.ZugVon, Challenge.AmZug, objZug.ZugStockfish, Animationspeed);
-	// 		$('#' +  Figurname + '_' + objZug.ZugVon).addClass('svgmoveme');
-	// 		$('#' +  Figurname + '_' + objZug.ZugVon).on("animationend", {	brett: BoardPräfix, figur: Figurname, von: objZug.ZugVon }, clearAnimation );
-	// 	} else {
-	// 		$('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
-	// 		$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
-	// 	}
-
-	// 	$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + Figurname + '_' + objZug.ZugNach + '">' + Figursymbol + '</span>');
-
-	// 	// En Passant. Funktioniert für weiss und für schwarz
-	// 	if(Figurname.toUpperCase() == 'P' && objZug.ZugAktion == SCHLÄGT && $('#' + BoardPräfix + objZug.ZugNach).children().length == 0) {
-	// 		$('#' + BoardPräfix + objZug.ZugNach.slice(0, 1) + objZug.ZugVon.slice(1) ).empty();
-	// 	}
-
-	// } else { // Rochaden
-
-	// 	if (objZug.ZugFarbe == WEISSAMZUG) {
-	// 		if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
-	// 			$('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'a1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'c1').append('<span id="K_c1">' + FIGUREN.K + '</span>');
-	// 			$('#' + BoardPräfix + 'd1').append('<span id="R_d1">' + FIGUREN.R + '</span>');
-	// 		} else {
-	// 			$('#' + BoardPräfix + 'e1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'h1').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'g1').append('<span id="K_g1">' + FIGUREN.K + '</span>');
-	// 			$('#' + BoardPräfix + 'f1').append('<span id="R_f1">' + FIGUREN.R + '</span>');
-	// 		}
-	// 	} else {
-	// 		if (objZug.ZugOriginal.indexOf('0-0-0') == 0) {
-	// 			$('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'a8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'c8').append('<span id="k_c8">' + FIGUREN.k + '</span>');
-	// 			$('#' + BoardPräfix + 'd8').append('<span id="r_d8">' + FIGUREN.r + '</span>');
-	// 		} else {
-	// 			$('#' + BoardPräfix + 'e8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'h8').html(''); // Entfernt sowohl das Figurzeichen als auch das span
-	// 			$('#' + BoardPräfix + 'g8').append('<span id="k_g8">' + FIGUREN.k + '</span>');
-	// 			$('#' + BoardPräfix + 'f8').append('<span id="r_f8">' + FIGUREN.r + '</span>');
-	// 		}
-	// 	}
-	// }
+	// Von der Engine aufgerufen, funktioniert das deferred nicht
+	if(BoardPräfix.includes(HTMLBRETTNAME_IMPORT)) {
+		prepareMove(BoardPräfix, objZug, cleararray, placearray);
+		//animateMove(objZug, BoardPräfix, Animationspeed);
+		processMove(BoardPräfix, cleararray, placearray);
+	} else {
+		prepareMove(BoardPräfix, objZug, cleararray, placearray);
+		animateMove(objZug, BoardPräfix, Animationspeed).then( function() {
+			processMove(BoardPräfix, cleararray, placearray);
+		});
+	}
 
 }
 
@@ -356,15 +311,15 @@ function TransferZugNachStellung(Stellung, Zug) {
 
 // Übersetzung verschiedener Notationssprachen (zur Zeit nur englisch) in deutsche Notation
 // Für jede mögliche Zahl oder Buchstabe gibt es eine Entsprechung
-function Zugtext(zugtext) {
+function Zugtext(zt) {
 
 	let returntext = '';
 
-	if (zugtext.startsWith("0")) { // Rochaden
-		returntext = zugtext;
+	if (zt.startsWith("0")) { // Rochaden
+		returntext = zt;
 	} else {
-		for (let i = 0; i < zugtext.length; i++) {
-			returntext += ZUGNOTATION[zugtext[i]];
+		for (let i = 0; i < zt.length; i++) {
+			returntext += ZUGNOTATION[zt[i]];
 		}
 	}
 	return returntext;
@@ -377,24 +332,77 @@ function finishChallenge(Endetext) {
 	$('#VariantetextId').removeClass().addClass('centertext');
 }
 
-// Identifizieren des Symbols und des Namens der gezogenen Figur
-function prepareMove(objZug, BoardPräfix) {
+// Identifizieren des Zugs: Ziehen, Schlagen, e.p., Umwandlung, Rochaden
+// und damit festlegen, welche Felder geleert und welche Felder mit welchen Figuren gefüllt werden müssen
+// als array zurückgeben, dann sind alle Situationen  berücksichtigt
+function prepareMove(BoardPräfix, objZug, toClear, toPlace) {
 
-	// //  Erkennt beide Rochaden und dafür sind keine Vorbereitungen nötig
-	// if (objZug.ZugKurz.indexOf('0-0') == -1) {
+	// Rochaden: alle Änderungen konstant
+	if (objZug.ZugKurz.includes('0-0')) {
+		if(objZug.ZugFarbe == WEISSAMZUG) {
+			if (objZug.ZugKurz.includes('0-0-0')) {
+				toClear.push('a1');
+				toClear.push('e1');
+				toPlace.push({figurname: 'K', feldname: 'c1' });
+				toPlace.push({figurname: 'R', feldname: 'd1' });
+			} else {
+				toClear.push('h1');
+				toClear.push('e1');
+				toPlace.push({figurname: 'K', feldname: 'g1' });
+				toPlace.push({figurname: 'R', feldname: 'f1' });
+			}
+		} else {
+			if (objZug.ZugKurz.includes('0-0-0')) {
+				toClear.push('a8');
+				toClear.push('e8');
+				toPlace.push({figurname: 'k', feldname: 'c8' });
+				toPlace.push({figurname: 'r', feldname: 'd8' });
+			} else {
+				toClear.push('h8');
+				toClear.push('e8');
+				toPlace.push({figurname: 'k', feldname: 'g8' });
+				toPlace.push({figurname: 'r', feldname: 'f8' });
+			}
+		}
+	} else {
 
-	// 	if (objZug.ZugUmwandlung != "") {
-	// 		if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('In objZug ungleich "": objZug.ZugUmwandlung = ' + objZug.ZugUmwandlung);
-	// 		FigursymbolIndex = objZug.ZugFarbe == WEISSAMZUG ? objZug.ZugUmwandlung.toUpperCase() : objZug.ZugUmwandlung.toLowerCase();
-	// 		Figursymbol = eval('FIGUREN.' + FigursymbolIndex);
-	// 		Figurname = objZug.ZugUmwandlung;
-	// 	} else {
-	// 		Figursymbol	= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child').text(); // Figurzeichen retten
-	// 		Figurname		= $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(0, 1); // Gilt so für Bauern und Figuren
-	// 	}
-	// }
+		toClear.push(objZug.ZugVon);	// die Figur auf dem Ausgangsfeld wird einfach immer entfernt
+
+		// 	// En Passant. Der Bauer muss zusätzlich entfernt werden. Funktioniert für weiss und für schwarz.
+		if(objZug.ZugFigur == '' && objZug.ZugAktion == SCHLÄGT && $('#' + BoardPräfix + objZug.ZugNach).children().length == 0) {
+			toClear.push(objZug.ZugNach.slice(0, 1) + objZug.ZugVon.slice(1)); // rank des Zielfeldes und file des Ausgangsfeldes
+		}
+
+		let figur;	// Diese Figur gilt nach dem Zug
+
+		if(objZug.ZugFarbe == WEISSAMZUG) {
+			if (objZug.ZugUmwandlung != "") {
+				figur = objZug.ZugUmwandlung.toUpperCase();
+			} else if(objZug.ZugFigur == '') {
+				figur = 'P';
+			} else {
+				figur = objZug.ZugFigur.toUpperCase();
+			}
+		} else {
+			if (objZug.ZugUmwandlung != "") {
+				figur = objZug.ZugUmwandlung.toLowerCase();
+			} else if(objZug.ZugFigur == '') {
+				figur = 'p';
+			} else {
+				figur = objZug.ZugFigur.toLowerCase();
+			}
+		}
+	
+		toPlace.push({figurname: figur, feldname: objZug.ZugNach });
+
+	}
+
 }
 
+// Wenn der Zug animiert werden soll:
+// Die Bewegung wird als Stil definiert und in das Stylesheet eingetragen.
+// Dann wird der eben berechnete Stil der zu ziehenden Figur zugewiesen
+// Nach der Animation wird die animierte Figur entfernt.
 function animateMove(objZug, BoardPräfix, Animationspeed) {
 
 	AnimationFinished = $.Deferred();
@@ -402,8 +410,6 @@ function animateMove(objZug, BoardPräfix, Animationspeed) {
 	if(Animationspeed != 0) {
 		if(objZug.ZugFarbe != Challenge.AmZug) { // Die Züge des Spielers werden erst mal nicht animiert
 			addMoveAnimationStyle("ChallengechessboardId", Challenge.AmZug, objZug.ZugStockfish, Animationspeed);
-			//$('#' +  Figurname + '_' + objZug.ZugVon).addClass('svgmoveme');
-			//$('#' +  Figurname + '_' + objZug.ZugVon).on("animationend", {	brett: BoardPräfix, figur: Figurname, von: objZug.ZugVon, nach: objZug.ZugNach }, terminateAnimation );
 			$('#' + BoardPräfix + objZug.ZugVon + ' :first-child').addClass('svgmoveme')
 			$('#' + BoardPräfix + objZug.ZugVon + ' :first-child').on("animationend", {	brett: BoardPräfix, von: objZug.ZugVon, nach: objZug.ZugNach }, terminateAnimation );
 		} else {
@@ -418,17 +424,12 @@ function animateMove(objZug, BoardPräfix, Animationspeed) {
 
 function terminateAnimation(cleardata) {
 
-	//$('#' +  cleardata.data.brett + cleardata.data.von).removeClass('svgmoveme');
-	$('#' + cleardata.data.brett + cleardata.data.von).empty();	// Schon hier, damit die Figur nichtnoch mal kurz am alten Platz aufblitzt
-	//$('#' + cleardata.data.brett + cleardata.data.nach).empty().append('<span id="' + cleardata.data.figur + '_' + cleardata.data.nach + '">' + Figursymbol + '</span>');
+	$('#' + cleardata.data.brett + cleardata.data.von).empty();	// Schon hier, damit die Figur nicht noch mal kurz am alten Platz aufblitzt
 
 	AnimationFinished.resolve();
 
 }
-function processMove(objZug, BoardPräfix) {
-
-	//let fig = $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].innerText
-	//let nam = $('#' + BoardPräfix + objZug.ZugVon + ' :first-child')[0].id.slice(1);
+function processMove0(objZug, BoardPräfix) {
 
 	let figur;
 	if(objZug.ZugFarbe == WEISSAMZUG) {
@@ -444,3 +445,18 @@ function processMove(objZug, BoardPräfix) {
 
 }
 
+// toClear: ein Array von Feldnamen, toPlace: ein Array von Objekten mit Figurname und Feldname
+function processMove(BoardPräfix, toClear, toPlace) {
+
+	toClear.forEach(function(feld) { $('#' + BoardPräfix + feld).empty(); });
+
+	toPlace.forEach(function(ziel) {
+		$('#' + BoardPräfix + ziel.feldname).empty();
+		zielspan = document.createElement("span");
+		zielspan.id = ziel.figurname + '_' + ziel.feldname;
+		zielspan.innerHTML = FIGUREN[ziel.figurname];
+
+		document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);
+
+	});
+}

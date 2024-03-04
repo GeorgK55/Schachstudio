@@ -33,7 +33,7 @@ function DatenBereitstellen_Lichess() {
 
 function DatenBereitstellen_Datei() {
 
-	// Das inputElement wird hier immer neu angelegt. damit das changeevnet IMMER getriggert wird
+	// Das inputElement wird hier immer neu angelegt. damit das changeevent IMMER getriggert wird
 	// remove in onFileLoadedend
 	const pgninput = document.createElement('input');
 	pgninput.type = 'file';
@@ -208,10 +208,6 @@ function scanChallengeMetaData(Importtext) {
 
 	}
 
-	// ZugFarbe und und FEN sind jetzt schon bekannt. In das globale Objekt eintragen
-	Importdaten.ZugFarbe	= T_Aufgabe.AmZug;
-	Importdaten.PreFEN		= T_Aufgabe.FEN;
-	Importdaten.FEN 			= T_Aufgabe.FEN;
 }
 
 // Die Zugangaben sind für ein angenehmes Lesen optimiert (Zeilenumbrüche, mal mit mal ohne Leerzeichen usw.)
@@ -244,6 +240,7 @@ function scanChallengePGNData(Importtext) {
 
 function ZuegePruefen() {
 
+	Importdaten.PGN_Index = 0;
 	Importdaten.ZugFarbe	=	T_Aufgabe.AmZug;
 	Importdaten.PreFEN		=	T_Aufgabe.FEN;	// Die FEN; die zu diesem Zug geführt hat
 	Importdaten.FEN				=	T_Aufgabe.FEN;	// Die FEN; mit der dieser Zug ausgeführt wird
@@ -323,7 +320,8 @@ function validateSingleMove() {
 				SingleMove.ZugUmwandlung	= m_BauerKurzeNotation.groups.umwandlung;
 				SingleMove.ZugOriginal		= m_BauerKurzeNotation[0];
 				SingleMove.ZugAktion			= m_BauerKurzeNotation.groups.capture.length > 0 ? SCHLÄGT : ZIEHTKURZ;
-				SingleMove.ZugZeichen		= m_BauerKurzeNotation.groups.schachodermatt;
+				SingleMove.ZugStart				= m_BauerKurzeNotation.groups.mitrank + m_BauerKurzeNotation.groups.mitfile; // Es kann ja nur eins davon geben
+				SingleMove.ZugZeichen			= m_BauerKurzeNotation.groups.schachodermatt;
 				SingleMove.ZugKurz				= m_BauerKurzeNotation.groups.mitfile + SingleMove.ZugAktion + m_BauerKurzeNotation.groups.targetfile + m_BauerKurzeNotation.groups.targetrank;
 				SingleMove.ZugNach				= m_BauerKurzeNotation.groups.targetfile + m_BauerKurzeNotation.groups.targetrank;
 				SingleMove.NAGMove				= m_BauerKurzeNotation.groups.nagmove;
@@ -337,16 +335,17 @@ function validateSingleMove() {
 
 			} else if (m_FigurKurzeNotation != null) {
 
-				SingleMove.ZugFigur		= m_FigurKurzeNotation.groups.figur;
+				SingleMove.ZugFigur			= m_FigurKurzeNotation.groups.figur;
 				SingleMove.ZugOriginal	= m_FigurKurzeNotation[0];
 				SingleMove.ZugAktion		= m_FigurKurzeNotation.groups.capture.length > 0 ? SCHLÄGT : ZIEHTKURZ;
-				SingleMove.ZugZeichen	= m_FigurKurzeNotation.groups.schachodermatt;
-				SingleMove.ZugKurz			= m_FigurKurzeNotation.groups.figur + SingleMove.ZugAktion + m_FigurKurzeNotation.groups.targetfile + m_FigurKurzeNotation.groups.targetrank;
+				SingleMove.ZugStart			= m_FigurKurzeNotation.groups.mitrank + m_FigurKurzeNotation.groups.mitfile; // Es kann ja nur eins davon geben
+				SingleMove.ZugZeichen		= m_FigurKurzeNotation.groups.schachodermatt;
+				SingleMove.ZugKurz			= m_FigurKurzeNotation.groups.figur + SingleMove.ZugStart + SingleMove.ZugAktion + m_FigurKurzeNotation.groups.targetfile + m_FigurKurzeNotation.groups.targetrank;
 				SingleMove.ZugNach			= m_FigurKurzeNotation.groups.targetfile + m_FigurKurzeNotation.groups.targetrank;
 				SingleMove.NAGMove			= m_FigurKurzeNotation.groups.nagmove;
 				SingleMove.NAGSingle		= getNAGSingle(1); // NAGSingle stehen vor den Kommentaren
-				SingleMove.NAGNotation = joinNAG();
-				SingleMove.Hinweistext = getKommentar(1); // Kommentare gehören immer zu Zügen.
+				SingleMove.NAGNotation	= joinNAG();
+				SingleMove.Hinweistext	= getKommentar(1); // Kommentare gehören immer zu Zügen.
 
 				// Jetzt werden die Kandidaten bestimmt und die Engine für alle Kandidaten befragt
 				// Die Auswertung und die Ausfühurng des Zugs geschieht im Messagelistener.
@@ -356,7 +355,7 @@ function validateSingleMove() {
 
 				if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(m_Rochaden);
 
-				SingleMove.ZugFigur			= "";
+				SingleMove.ZugFigur				= "";
 				SingleMove.ZugOriginal		= m_Rochaden[0].replace(/O/g, '0');
 				SingleMove.ZugKurz				= m_Rochaden.groups.rochade.replace(/O/g, '0');
 				SingleMove.ZugLang				= m_Rochaden.groups.rochade.replace(/O/g, '0'); // nur für Rochaden schon hier
@@ -364,7 +363,7 @@ function validateSingleMove() {
 				//SingleMove.ZugNach				= ; // Wird in executeRochade eingetragen
 				SingleMove.ZugAktion			= "";
 				SingleMove.ZugUmwandlung	= "";
-				SingleMove.ZugZeichen		= "";
+				SingleMove.ZugZeichen			= "";
 				SingleMove.NAGMove				= m_Rochaden.groups.nagmove;
 				SingleMove.NAGSingle			= getNAGSingle(1); // NAGSingle stehen vor den Kommentaren
 				SingleMove.NAGNotation		= joinNAG();
@@ -471,28 +470,35 @@ function executeMove(Zugdaten) { // Zugdaten ist der match des regulären Ausdru
 
 	let KandidatenID;
 	let Kandidaten;
-	let i = 0;
+	let CurFigur;
 
 	if (Zugdaten.groups.figur == null) {
-		// Bauernzug. Entscheidung weiss oder schwarz nur über die aktuelle ZugFarbe möglich
-		KandidatenID = SingleMove.FEN.includes("w") ? 'P_' + Zugdaten.groups.mitfile : 'p_' + Zugdaten.groups.mitfile;
-		Kandidaten = $('[id^=' + KandidatenID + ']'); // Kandidaten sind ALLE Bauern der aktuellen Farbe
+		// Bauernzug. Entscheidung weiss oder schwarz nur über die aktuelle ZugFarbe möglich.
+		// Bei Bauernzügen braucht nur über file weiter eingeschränkt werden. rank kann es ja nicht geben
+		CurFigur = SingleMove.FEN.includes("w") ? 'P' : 'p';
+		Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + '"]');
+
 	} else {
 		// Figurenzug. Der Name wird in der kurzen Notation immer gross geschrieben. Die Namen in den ID entsprechen FEN, also gross/klein für weiss/schwarz
-		KandidatenID = SingleMove.FEN.includes("w") ? (Zugdaten.groups.figur).toUpperCase() + "_" + Zugdaten.groups.mitfile : (Zugdaten.groups.figur + "_" + Zugdaten.groups.mitfile).toLowerCase();
-		//	+ Zugdaten.groups.mitfile + Zugdaten.groups.mitrank
-		Kandidaten = $('[id^=' + KandidatenID + ']');
-		if (Zugdaten.groups.mitrank != "") Kandidaten = $('[id^=' + KandidatenID + ']').add('[id$=' + Zugdaten.groups.mitrank + ']'); // wegen Eindeutgkeit
-		//Kandidaten = $('[id^=' + KandidatenID + ']').add('[id$=' + Zugdaten.groups.mitrank + ']');
+
+		CurFigur = SingleMove.FEN.includes("w") ? (Zugdaten.groups.figur).toUpperCase() : Zugdaten.groups.figur.toLowerCase();
+
+		if(SingleMove.ZugStart == "") { // ohne Startangeben
+			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + '"]');
+		} else if($.isNumeric(SingleMove.ZugStart)) { // dann ist es rank als Startangabe (id$= ist Kriterium)
+			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + '"][id$="' + SingleMove.ZugStart + '"]');
+		} else { // dann ist es file ls Startangabe
+			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + SingleMove.ZugStart + '"]');
+		}
 	}
 
-	Kandidaten.each(function (i, K) {
-		$("#TriggerTag").trigger("SetFenPosition", [SingleMove.FEN]);
+	for (const Kandidat of Kandidaten.values()) {
 
-		//let EchteUmwandlung = (/[abcdefgh][27]/g).exec(K.id) != null ? Zugdaten.groups.umwandlung : "";
+		$("#TriggerTag").trigger("SetFenPosition", [SingleMove.FEN]);
 		let EchteUmwandlung = Zugdaten.groups.umwandlung == "" ? "" : SingleMove.FEN.includes("w") ? Zugdaten.groups.umwandlung.toLowerCase() : Zugdaten.groups.umwandlung.toLowerCase();
-		$("#TriggerTag").trigger("isMoveCorrect", [K.id.match('[abcdefgh][12345678]') + SingleMove.ZugNach + EchteUmwandlung]);
-	});
+		$("#TriggerTag").trigger("isMoveCorrect", [Kandidat.id.match('[abcdefgh][12345678]') + SingleMove.ZugNach + EchteUmwandlung]);
+		
+	}
 }
 
 // Die Situation kann eindeutig identifiziert werden. Diese ist zu prüfen.

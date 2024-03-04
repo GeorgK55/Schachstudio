@@ -110,6 +110,7 @@ class CZuege {
 		this.ZugLang				= '';	// Der Zug in echter langer Notation
 		this.ZugStockfish		= '';	// Der Zug in stockfish-Syntax als filerankfilerank und ohne Figurkennung
 		this.ZugAktion			= '';	// Zieht (-) oder schlägt (x)
+		this.ZugStart				= '';	// rank oder file bei mehrdeutiger Kurznotation
 		this.ZugZeichen			= '';	// Schach (+) oder matt (#)
 		this.ZugUmwandlung	= '';	// Der Buchstabe der neuen Figur in FEN-Terminologie
 		this.FEN						= '';	

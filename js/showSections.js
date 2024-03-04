@@ -210,9 +210,9 @@ function initializeSelectionEnvironment() {
 
 function initializeNotationtree() {
 
-	$('#ChallengeTreeNotationWrapperId').empty()
-		.append('<div id="ChallengeTreeNotationId"></div>');
-
+	$('#ChallengeTreeNotationWrapperId').empty().append('<div id="ChallengeTreeNotationId"></div>');
+	$('[id^=' + TOOLTIPPRÄFIX + ']').remove();
+	
 	// NotationstabelleAufgabe initiieren
 	$('#ChallengeTreeNotationId')
 		.jstree({

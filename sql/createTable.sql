@@ -82,6 +82,7 @@ CREATE TABLE T_Zuege (
     ZugLang            CHAR (8)     DEFAULT NULL,
     ZugStockfish       CHAR (8)     DEFAULT NULL,
     ZugAktion          CHAR (1)     DEFAULT NULL,
+    ZugStart           CHAR (1)     DEFAULT NULL,
     ZugZeichen         CHAR (2)     DEFAULT NULL,
     ZugUmwandlung      varchar(2)   DEFAULT NULL,
     FEN                varchar(128) NOT NULL,

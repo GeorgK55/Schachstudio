@@ -176,7 +176,7 @@ if($DesiredFunction == 'Zugliste') {
 
   $Zugliste			= $_POST["Zugliste"];
 
-  $commandtext = "INSERT INTO T_Zuege (AufgabeID, FEN, NAGNotation, NAGMove, NAGSingle, CurMoveIndex, CurMoveId, PreMoveId, ZugNummer, ZugLevel, ZugFarbe, ZugOriginal, ZugFigur, ZugVon, ZugNach, ZugKurz, ZugLang, ZugStockfish, ZugAktion, ZugUmwandlung, ZugZeichen, Hinweistext, Hinweispfeil) VALUES (:AufgabeID, :FEN, :NAGNotation, :NAGMove, :NAGSingle, :CurMoveIndex, :CurMoveId, :PreMoveId, :ZugNummer, :ZugLevel, :ZugFarbe, :ZugOriginal, :ZugFigur, :ZugVon, :ZugNach, :ZugKurz, :ZugLang, :ZugStockfish, :ZugAktion, :ZugUmwandlung, :ZugZeichen, :Hinweistext, :Hinweispfeil)";
+  $commandtext = "INSERT INTO T_Zuege (AufgabeID, FEN, NAGNotation, NAGMove, NAGSingle, CurMoveIndex, CurMoveId, PreMoveId, ZugNummer, ZugLevel, ZugFarbe, ZugOriginal, ZugFigur, ZugVon, ZugNach, ZugKurz, ZugLang, ZugStockfish, ZugAktion, ZugStart, ZugUmwandlung, ZugZeichen, Hinweistext, Hinweispfeil) VALUES (:AufgabeID, :FEN, :NAGNotation, :NAGMove, :NAGSingle, :CurMoveIndex, :CurMoveId, :PreMoveId, :ZugNummer, :ZugLevel, :ZugFarbe, :ZugOriginal, :ZugFigur, :ZugVon, :ZugNach, :ZugKurz, :ZugLang, :ZugStockfish, :ZugAktion, :ZugStart, :ZugUmwandlung, :ZugZeichen, :Hinweistext, :Hinweispfeil)";
 	$paramscompact = $Zugliste;
 
 	processpdo_Zugliste($commandtext, $paramscompact, $responsearray);

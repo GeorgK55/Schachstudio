@@ -17,7 +17,7 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 	if(TooltipFlag) {
 		let Id_Tooltip = Situation.CurMoveId.replace(MOVEPRÄFIX, TOOLTIPPRÄFIX) + Postfix;
 		let TooltipFEN = Situation.FEN;
-		ErzeugeTooltip(TooltipFEN, MiniBoardArray, Id_Tooltip, Challenge.AmZug);
+		ErzeugeTooltip(TooltipFEN, Id_Tooltip, Challenge.AmZug);
 		tooltip = " onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});'";
 	}
 
@@ -104,8 +104,8 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 	if (TooltipFlag) {
 		Id_Tooltip = Situation.CurMoveId.replace(MOVEPRÄFIX, TOOLTIPPRÄFIX) + Postfix;
 		let TooltipFEN = Situation.FEN;
-		ErzeugeTooltip(TooltipFEN, MiniBoardArray, Id_Tooltip, Challenge.AmZug);
-		tooltip = " onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});'";
+		ErzeugeTooltip(TooltipFEN, Id_Tooltip, Challenge.AmZug);
+		tooltip = ' onmouseover="XBT(this, {id:\'' + Id_Tooltip + '"\', x: -150});\"';
 	}
 
 	// Den aktuellen Knoten holen, damit die schon ausgefüllten Teile übernommen werden können
