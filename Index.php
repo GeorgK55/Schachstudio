@@ -43,7 +43,7 @@
 	<script src="js/showSections.js"></script>
 	<script src="js/importData.js"></script>
 	<script src="js/Notation.js"></script>
-	<!-- <script src="js/Dialog.js"></script> -->
+	<script src="js/svg.js"></script>
 	<script src="js/varianten_events.js"></script>
 	<script src="js/getData.js"></script>
 	<script src="js/putData.js"></script>
@@ -54,6 +54,8 @@
 	<script src="js/xbtooltip.js"></script>
 	<script src="js/stockfish_common.js"></script>
 	<script src="js/stockfish_georg.js"></script>
+	<script src="js/lichess.js"></script>
+	<script src="js/accounts.js"></script>
 
 	<link rel="apple-touch-icon" 			sizes="57x57" 	href="favicons/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" 			sizes="60x60" 	href="favicons/apple-icon-60x60.png">
@@ -95,7 +97,8 @@
 							</div>
 						</div>
 						<div class="developerfeatures hideMe">
-							<button onclick="showEnginedialog()"	type="button"	class="uebungenbutton">Enginedialog</button>
+							<button	type="button" onclick="showEnginedialog()"	class="uebungenbutton">Enginedialog</button>
+							<button type="button" onclick="Aufgabenstatistik()"	class="uebungenbutton">Aufgaben aus allen Dateien</button>
 						</div>
 					</div>
 				</section>
@@ -190,9 +193,9 @@
 					<div id="importarea" class="gc-importarea">
 						<div id="filearea" class="filearea">
 							<div id="fileareabuttons">
-								<button type="button" onclick="DatenBereitstellen_Zwischenablage()"	disabled class="uebungenbutton" id="DatenBereitstellen_ZwischenablageID">Aus Zwischenablage<br>übernehmen</button>
+								<!-- <button type="button" onclick="DatenBereitstellen_Zwischenablage()"	disabled class="uebungenbutton" id="DatenBereitstellen_ZwischenablageID">Aus Zwischenablage<br>übernehmen</button> -->
 								<button type="button" onclick="DatenBereitstellen_Datei()"			class="uebungenbutton">Aus Datei (*.pgn)<br>übernehmen</button>
-								<!-- <button type="button" onclick="DatenBereitstellen_Lichess()"		class="uebungenbutton">Kapitel aus lichess<br>kopieren</button> -->
+								<button type="button" onclick="DatenBereitstellen_Lichess()"		class="uebungenbutton">Direkt aus lichess<br>übernehmen</button>
 							</div>
 							<div id="filenametext"></div>
 						</div>
@@ -291,7 +294,7 @@
 								<label for="cb_EngineEindebug">zur Engine</label><br>
 								<input type="checkbox" id="cb_EngineAusdebug" name="EngineAus" value="EngineAus" checked class="shift1vw" onclick="toggleEnginelogAus();">
 								<label for="cb_EngineAusdebug">von der Engine</label>
-								</fieldset>
+							</fieldset>
 						</div>
 						<div id="usedcommands">
 							<select name="frequentlyused"  size="10">
@@ -429,11 +432,15 @@
 					<img src="Grafiken/VarianteEndeSpieler.png" 		alt="" class="dialogfigur">
 					<span class="dialogtext" id="PlayerVarianteEndeText"></span>
 				</div>
-				<div id="dialog_LichessImport" 						class="hiddendialog gc-LichessImport">
-					<p>Bitte die Kennung der Studie und des Kapitels eintragen (siehe Beispiel)</p>
-					<p><img src="Grafiken/lichesskapitel.png" alt="" class="imgkapitel"></p>
-					<label for="lichesskapitel">Kapitelname:</label>
-					<p id="lichessdata"><input type="text" name="lichesskapitel" id = "lichesskapitel"></p>
+				<div id="dialog_LichessUser" 						class="hiddendialog gc-LichessImport">
+					<img src="Grafiken/lichesslogo.jpeg" alt="" class="dialogfigur">
+					<div class="dialogtext">
+						<label for="lichessuser">Bitte die Benutzerkennung eintragen</label>
+						<input type="text" name="lichessuser" id = "lichessuser">
+					</div>
+					<div id='studienanzeige'>
+						<ul id='studienliste' class='scrollme hideMe'></ul>
+					</div>
 				</div>
 				<div id="dialog_Miniboard"							class="hiddendialog">
 				</div>

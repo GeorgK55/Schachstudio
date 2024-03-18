@@ -133,3 +133,92 @@ function logVisitor(Role) {
 	console.log('orientation: ' + Orientation);
 
 }
+
+function Aufgabenstatistik() {
+
+	const headers = {
+		'Content-Type': 'text/plain',
+		'credentials': 'include',
+		'Authorization': 'GeorgK ' + 'lip_dXasEGgvxmJGdYQPZXVM' //process.env.lichessToken,
+	};
+
+	fetch('https://lichess.org/api/account', { headers })
+  .then(res => res.json())
+  .then(alert('then') );
+
+	iii = 0;
+	jjj = 0;
+
+	Aufgabenstatistik = [];
+
+	const dirinput = document.createElement('input');
+	dirinput.type = 'file';
+	dirinput.id = 'multiplefile-input';
+	dirinput.setAttribute("multiple","");
+	document.getElementById("fileimport").appendChild(dirinput);
+
+	$('#multiplefile-input').trigger('click');
+	$('#multiplefile-input').on('change', handleDirectoryFiles);
+
+}
+
+function handleDirectoryFiles(e) {
+
+	let files = e.target.files;
+
+	for (var i = 0; i < files.length; i++) {
+
+		fname = files[i].name;
+
+		let reader = new FileReader();
+		reader.studiename = files[i].name;
+		reader.onloadend = function() {
+			onStudieLoadedend(this.studiename);
+		}
+		reader.readAsText(files[i]);
+
+	}
+	
+}
+
+function onStudieLoadedend(sn) {
+
+	FilePGN = event.target.result.split("\n\n\n").filter(i => i); // .filter(i => i) entfernt leere Elemente
+
+	for (var i = 0; i < FilePGN.length; i++) {
+
+		iii++;
+
+		let aufgabetext	= /Event "([^\"]*)/.exec(FilePGN[i])[1];
+		let aufgabeFEN	= 'Ohne FEN';
+
+		try {
+			aufgabeFEN	= /FEN "([^\"]*)/.exec(FilePGN[i])[1];
+		} catch(e) {
+			aufgabeFEN = 'FEN fehlt für ' + aufgabetext + ' in ' + sn;
+			jjj++;
+			console.log(e);
+		}
+
+		if(aufgabeFEN	== 'Ohne FEN') {
+			aufgabeFEN = 'Ohne FEN für ' + aufgabetext + ' in ' + sn;
+		}
+		Aufgabenstatistik.push(iii + ' --- ' + sn + ' --- ' + aufgabetext + ' --- ' + aufgabeFEN);
+
+		console.log(iii + ' --- ' + sn + ' --- ' + aufgabetext + ' --- ' + aufgabeFEN);
+
+	}
+}
+
+function getlichess() {
+
+	const headers = {
+		'Content-Type': 'text/plain',
+		'credentials': 'include',
+		'Authorization': 'GeorgK ' + 'lip_dXasEGgvxmJGdYQPZXVM' //process.env.lichessToken,
+	};
+
+	fetch('https://lichess.org/api/account', { headers })
+  .then(res => res.json())
+  .then(console.log);
+}

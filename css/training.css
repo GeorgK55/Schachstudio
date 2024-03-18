@@ -10,9 +10,9 @@
     --color_chessblack: Gainsboro;
     --color_commonbackground: BlanchedAlmond;
     --color_importantbackground: Gold;
-    --color_movenumbermain: #28a428;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 40% */
+    --color_movenumbermain: #2864a4;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 40% */
     --color_movenumberodd: #5bd75b;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 60% */
-    --color_movenumbereven: #adebad;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 80% */
+    --color_movenumbereven: #ebadad;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 80% */
 }
 
 /* wenn diese Angabe fehlt, wird der Bildschirm nach Drehen von portrait nach landscape schwarz */
@@ -572,7 +572,17 @@ body {
 }
 
 
-/* .gc-LichessImport							{	display:grid;	grid-template-columns: 1fr 4fr;	grid-template-rows: min-content;	justify-items: center;	align-items: center;	} */
+.gc-LichessImport   {
+	display:grid;
+	grid-template-columns: 1fr 5fr;	
+    grid-template-rows: min-content min-content;
+    grid-column: 1/ 3;	
+    justify-items: center;	
+    align-items: center;
+}
+#studienanzeige {
+    grid-area: 2 / 1 / 2 / 3;
+}
 
 .gc-DBErrorMessages {
     display: grid;
@@ -606,9 +616,9 @@ body {
 .varianteeven {	background-color: var(--color_movenumbereven);  height:100% }
 .varianteodd  {	background-color: var(--color_movenumberodd);   height:100% }
 
-.svgcolormain {	stroke: var(--color_movenumbermain);	}
-.svgcoloreven {	stroke: var(--color_movenumbereven);	}
-.svgcolorodd  {	stroke: var(--color_movenumberodd);		}
+.svgcolormain {	stroke: var(--color_movenumbermain);    fill: var(--color_movenumbermain);	}
+.svgcoloreven {	stroke: var(--color_movenumbereven);    fill: var(--color_movenumbereven);	}
+.svgcolorodd  {	stroke: var(--color_movenumberodd);     fill: var(--color_movenumberodd);	}
 
 #f_Aufgabedetails {
     margin: 1vh 1vw;

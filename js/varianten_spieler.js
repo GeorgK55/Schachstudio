@@ -19,7 +19,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 		// case MOVERESULT_NOCOLORMOVES: kann es das hier geben??? Im determine.... ist ein alert
 		case MOVERESULT_NODESCENDENTS:
 			showjstreeimportant('ChallengeTreeNotationId');
-			PlayerMoveVariantenResult.resolve({	result: MC_player.result, reason: "", moveid: T_Zuege.CurMoveId	});
+			PlayerMoveVariantenResult.reject({	result: MC_player.result, reason: "", moveid: T_Zuege.CurMoveId	});
 			break;
 		case MOVERESULT_VARIANTEMOVE:
 		case MOVERESULT_MAINMOVEMIT:

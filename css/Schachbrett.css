@@ -61,30 +61,9 @@
 	opacity: 0.6;
 }
 
-/* transform oder animate funktionieren für inlineelemente nicht */
 div[id^="BrettSpielen"] span {
 	display:block;
 }
-/* .zuganimation {
-	animation: movepiece 5s;
-}
-
-@keyframes movepiece {
-
-	0% {
-		transform: translateX(0px) translateY(0px);
-	}
-
-	100% {
-		transform: translateX(-100px) translateY(-100px);
-	}
-
-} */
-
-	/*width: 50px;
-	height: 20px;
-	border-radius: 3px 10px 10px 3px;
-	background-color: hotpink;*/
 	
 .svgmoveme {
 	offset-path: path('');

@@ -251,6 +251,8 @@ function StellungAufbauen(div_Brett, FEN) {
 // Für Rochaden gibt es kein Flag, also den Zug direkt als Zeichenkette abfragen
 function ZieheZug(objZug, BoardPräfix, Animationspeed) {
 
+	ZugAnimation = $.Deferred();
+
 	let cleararray = [];
 	let placearray = [];
 
@@ -272,6 +274,7 @@ function ZieheZug(objZug, BoardPräfix, Animationspeed) {
 		});
 	}
 
+	return ZugAnimation.promise();
 }
 
 // In allen htmltags, die mit diesem Präfix anfangen (das sind alle 64 Felder und nur diese) die Inhalte entfernen
@@ -442,6 +445,7 @@ function processMove0(objZug, BoardPräfix) {
 	$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + figur +  '_' + objZug.ZugNach + '">' + eval('FIGUREN.' + figur) + '</span>');
 
 	showAid(AIDMODE_INIT);
+	ZugAnimation.resolve();
 
 }
 
@@ -459,4 +463,8 @@ function processMove(BoardPräfix, toClear, toPlace) {
 		document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);
 
 	});
+
+	showAid(AIDMODE_INIT);
+	ZugAnimation.resolve();
+
 }

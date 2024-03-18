@@ -75,35 +75,38 @@ function TheIndexGeorgFunction() {
 					if (line.indexOf('Fen') >= 0) {
 
 						// Die Engine hat den Zug ausgeführt. Der Zug ist schon in SingleMove eingetragen. Jetzt den Zug auf dem Brett ausführen
-						ZieheZug(SingleMove, HTMLBRETTNAME_IMPORT, ANIMATIONSPEED_ZERO);
+						ZieheZug(SingleMove, HTMLBRETTNAME_IMPORT, ANIMATIONSPEED_ZERO).then(function() { 
 
-						// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu varianten)
-						TransferZugNachStellung(Importdaten, SingleMove)
+							// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu varianten)
+							TransferZugNachStellung(Importdaten, SingleMove)
 
-						// Den Zug in die Notation eintragen, wenn notwendig eine neue Zeile generieren
-						if (SingleMove.ZugFarbe == WEISSAMZUG || Importdaten.CreateNewNode) {
+							// Den Zug in die Notation eintragen, wenn notwendig eine neue Zeile generieren
+							if (SingleMove.ZugFarbe == WEISSAMZUG || Importdaten.CreateNewNode) {
 
-							Importdaten.CurNodeId = NODEPRÄFIX + SingleMove.CurMoveIndex;
+								Importdaten.CurNodeId = NODEPRÄFIX + SingleMove.CurMoveIndex;
+								Importdaten.CurMoveId = SingleMove.CurMoveId;
+
+								NewTreeNode('ImportTreeNotationId', 'move', Importdaten, SingleMove, false, false);
+
+								Importdaten.CreateNewNode = false;
+							} else {
+								UpdateTreeNode('ImportTreeNotationId', 'move', Importdaten, SingleMove, false, false);
+							}
+
+							// Jetzt wird die neue Situation in das Objekt mit den Daten zur Überprüfung des Import eingetragen. 
+							Importdaten.PreFEN		= SingleMove.FEN;
+							Importdaten.FEN				= line.substr(5);
+							Importdaten.ZugFarbe	= Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
 							Importdaten.CurMoveId = SingleMove.CurMoveId;
+							Importdaten.PreMoveId	= SingleMove.PreMoveId;
 
-							NewTreeNode('ImportTreeNotationId', 'move', Importdaten, SingleMove, false, false);
+							// Damit wird die aktuelle Situation und der Zug selbst für den insert in die Datenbank festgehalten
+							Zugliste.push(SingleMove);
 
-							Importdaten.CreateNewNode = false;
-						} else {
-							UpdateTreeNode('ImportTreeNotationId', 'move', Importdaten, SingleMove, false, false);
-						}
+							validateSingleMove(); // Die weitere Analyse wird außerhalb des Listeners durchgeführt
 
-						// Jetzt wird die neue Situation in das Objekt mit den Daten zur Überprüfung des Import eingetragen. 
-						Importdaten.PreFEN		= SingleMove.FEN;
-						Importdaten.FEN				= line.substr(5);
-						Importdaten.ZugFarbe	= Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
-						Importdaten.CurMoveId = SingleMove.CurMoveId;
-						Importdaten.PreMoveId	= SingleMove.PreMoveId;
+						}, function() {alert('reject');});
 
-						// Damit wird die aktuelle Situation und der Zug selbst für den insert in die Datenbank festgehalten
-						Zugliste.push(SingleMove);
-
-						validateSingleMove(); // Die weitere Analyse wird außerhalb des Listeners durchgeführt
 					}
 				}
 			}

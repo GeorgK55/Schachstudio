@@ -284,14 +284,14 @@ function manageChallengeSelection(ChallengeID) {
 
 }
 
-// Alternative zur eigenen Darstellung: hier wird lichess in einem frame eingeblendet
-function showlichess(ChallengeID, lichessdata) {
+// // Alternative zur eigenen Darstellung: hier wird lichess in einem frame eingeblendet
+// function showlichess(ChallengeID, lichessdata) {
 
-	$("[id^='s_']").hide();
-	$('#s_lichess').show();
+// 	$("[id^='s_']").hide();
+// 	$('#s_lichess').show();
 
-	//<iframe width=600 height=371 src="https://lichess.org/study/embed/xgTQJ6HF/04tEMyPj#0" frameborder=0></iframe>
-	//$("#iframeframe").empty().append("<iframe width=600 height=371 src='https://lichess.org/study/embed/" + lichessdata + "' frameborder=0></iframe>");
-	$("#iframeframe").empty().append("<iframe width=600 height=371 src='https://lichess.org/study/embed/E06MI1XV/Cv4blOr1' allowtransparency='true' frameborder=0></iframe>");
+// 	//<iframe width=600 height=371 src="https://lichess.org/study/embed/xgTQJ6HF/04tEMyPj#0" frameborder=0></iframe>
+// 	//$("#iframeframe").empty().append("<iframe width=600 height=371 src='https://lichess.org/study/embed/" + lichessdata + "' frameborder=0></iframe>");
+// 	$("#iframeframe").empty().append("<iframe width=600 height=371 src='https://lichess.org/study/embed/E06MI1XV/Cv4blOr1' allowtransparency='true' frameborder=0></iframe>");
 
-}
+// }

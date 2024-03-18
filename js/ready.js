@@ -11,14 +11,12 @@ $(document).ready(function () {
 
 	TriggerMoveToStackCounter = 0; // Ohne Funktion, nur zwecks Debug
 
+	headers = {};
+
 	if (window.location.search != "") {
-		let activemode = location.search.split("=").pop();
-		if (activemode == "georg") {
-			// Vielleicht kommt da noch mal was
-		} else {
-			// Vielleicht kommt da noch mal was
-		}
 		countVisitor("get"); // Nur anzeigen
+		let activemode = location.search.split("=").pop();
+		if (activemode == "georg") { headers = { 'Authorization': 'Bearer ' + lichessToken }; }
 	} else {
 		countVisitor("increment"); // hochzählen und anzeigen
 		logVisitor("Besucher");

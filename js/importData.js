@@ -11,23 +11,79 @@ function DatenBereitstellen_Zwischenablage() {
 
 function DatenBereitstellen_Lichess() {
 
-	LichessImportDialog = $("#dialog_LichessImport").dialog({
-		title: "Daten aus lichess.org übernehmen",
-		height: 500,
-		width: 700,
+	LichessUserDialog = $("#dialog_LichessUser").dialog({
+		title: "Studien aus lichess.org übernehmen",
+		width: DialogWidth,
 		modal: true,
 		open: function () {
 		},
 		buttons: {
 			'Übernehmen': function () {
-				kapitelimport($('#lichesskapitel').val());
-				$(this).dialog('close');
+				studieauswahl($('#lichessuser').val());
 			},
 			'Abbrechen': function () {
 				$(this).dialog('close');
 			}
 		}
 	});
+
+}
+
+function studieauswahl(username) {
+
+	console.log(username);
+
+	fetch('https://lichess.org/api/study/by/' + username, { headers })
+	.then(res => res.text())
+	.then(function(res) {
+		console.log(res);
+		studienliste = res.split('\n').filter(i => i);
+		console.log(studienliste);
+		showstudylist(studienliste);
+		// studylisttofile(studienliste);
+		// getstudydata(studienliste, studienliste.length);
+	});
+
+}
+
+function showstudylist(studylist) {
+
+	sl = document.getElementById("studienliste");
+
+	studylist.forEach( study => {
+		let li = document.createElement('li');
+		li.id = JSON.parse(study).id;
+		li.innerHTML = JSON.parse(study).name;
+		sl.appendChild(li);
+	});
+
+	$("#studienliste").removeClass('hideMe'); 
+
+	$("#studienliste").selectable({
+
+		selected: function (event, ui) {
+			getLichessStudy(ui.selected.id, ui.selected.innerText);
+		}
+	});
+
+}
+
+function getLichessStudy(studyid, studyname) {
+
+	fetch('https://lichess.org/api/study/' + studyid + '.pgn', { headers })
+	.then(res => res.text())
+	.then(function(res) {
+		console.log(res);
+
+		$('#filenametext').html(studyname);
+
+		// Als globale Variable, da auf die Inhalte später noch per Klick zugegriffen werden soll
+		GlobalImportedPGN = res.split("\n\n\n").filter(i => i); // .filter(i => i) entfernt leere Elemente
+		prepareChallengeImport();
+
+		LichessUserDialog.dialog('close');
+
+	})
 
 }
 
@@ -38,6 +94,7 @@ function DatenBereitstellen_Datei() {
 	const pgninput = document.createElement('input');
 	pgninput.type = 'file';
 	pgninput.id = 'file-input';
+	//pgninput.setAttribute("multiple","");
 	document.getElementById("fileimport").appendChild(pgninput);
 
 	$('#file-input').trigger('click');
@@ -82,9 +139,10 @@ function prepareChallengeImport() {
 
 	$('#ul_importaufgaben').empty();
 	for (i = 0; i < GlobalImportedPGN.length; i++) {
-		let aufgabetext = /Event "([^\"]*)/.exec(GlobalImportedPGN[i])[1];
+		let aufgabetext = GlobalImportedPGN[i].match(r_Event);
+		//let aufgabetext = /Event "([^\"]*)/.exec(GlobalImportedPGN[i])[1];
 		if (aufgabetext != null) {
-			let newitem = '<li id="importedpgn_' + i + '">' + aufgabetext + '</li>';
+			let newitem = '<li id="importedpgn_' + i + '">' + aufgabetext.groups.kapitel + '</li>';
 			$(newitem).appendTo('#ul_importaufgaben');
 		}
 	}

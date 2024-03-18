@@ -61,33 +61,34 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			
 			TransferZugNachStellung(Stellungsdaten, MC_challenge.selectedmove);
 
-			// Notieren
-			NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
-			// Hier noch die Farbanzeige in VariantetextId aktualisieren?
-
 			// Ziehen
-			ZieheZug(MC_challenge.selectedmove, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO/*FAST*/);
+			ZieheZug(MC_challenge.selectedmove, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_FAST).then(function() {
 
-			// Verwalten
-			setMoveState(MC_challenge.selectedmove.CurMoveId, MOVESTATE_MOVED);
-			// Das sollte jetzt überflüssig sein
-			setMoveNode(MC_challenge.selectedmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
+				// Notieren
+				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
+				// Hier noch die Farbanzeige in VariantetextId aktualisieren?
 
-			Stellungsdaten.PreMoveId = MC_challenge.selectedmove.CurMoveId;
+				// Verwalten
+				setMoveState(MC_challenge.selectedmove.CurMoveId, MOVESTATE_MOVED);
+				// Das sollte jetzt überflüssig sein
+				setMoveNode(MC_challenge.selectedmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
 
-			// Die Abschlußbehandlung ist doch wieder unterschiedlich
-			if(MC_challenge.result == MOVERESULT_MAINMOVEMIT) {
+				Stellungsdaten.PreMoveId = MC_challenge.selectedmove.CurMoveId;
 
-				createInterrupt('CVS', MC_challenge.result, MC_challenge.selectedmove.CurMoveId);
+				// Die Abschlußbehandlung ist doch wieder unterschiedlich
+				if(MC_challenge.result == MOVERESULT_MAINMOVEMIT) {
 
-			} else {
-				// Die Anzeige:
-				$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
-				// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
-				ChallengeMoveVariantenResult.resolve({ result: MOVERESULT_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.selectedmove.CurMoveId });
+					createInterrupt('CVS', MC_challenge.result, MC_challenge.selectedmove.CurMoveId);
 
-			}
+				} else {
+					// Die Anzeige:
+					$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
+					// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
+					ChallengeMoveVariantenResult.resolve({ result: MOVERESULT_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.selectedmove.CurMoveId });
 
+				}
+
+			});
 
 			break;
 		default:
