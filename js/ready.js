@@ -49,8 +49,8 @@ $(document).ready(function () {
 
 	$("button").button();
 
-	$("[id^='s_']").hide();		// Alle sections innerhalb der sx_Aktionensection
-	$("#s_Willkommen").show();
+	$("[id^='s_']").hide();		// Alle sections innerhalb der sx_aktionensection
+	$("#s_willkommen").show();
 	$("[id^='s1_']").show();	// Alle Startersections
 	$("[id^='s2_']").hide();	// Alle Anzeigesections
 
@@ -75,7 +75,7 @@ function FullscreenDialog() {
 		modal: true,
 		draggable: false,
 		resizable: false,
-		//position: { my: "left top", at: "left top", of: "#h_Spielen" },
+		//position: { my: "left top", at: "left top", of: "#h_spielen" },
 		show: "blind",
 		hide: "blind",
 		height: 350,

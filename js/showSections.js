@@ -151,17 +151,17 @@ function toggleEnginelogAus() {
 function showImport() {
 
 	$("[id^='s_']").hide();
-	$('#s_Import').show();
+	$('#s_import').show();
 
-	$('#filearea').removeClass( "hideMe" );
+	$('#importselectarea').removeClass( "hideMe" );
 	$('#ul_importaufgaben').addClass( "hideMe" );
-	$('#f_Aufgabedaten').addClass( "hideMe" );
+	$('#f_importaufgabedaten').addClass( "hideMe" );
 	$('#importaufgabePGN').children().addClass( "hideMe" );
 	$('#importchessboardId').addClass( "hideMe" );
 	$('#importTreeNotationWrapperId').addClass( "hideMe" );
-	$('#ImportButtons').addClass( "hideMe" );
+	$('#importactionbuttons').addClass( "hideMe" );
 
-	$('#filenametext').empty();
+	$('#importselectfilename').empty();
 	$('#logliste').empty();
 
 	getNAGList();
@@ -170,7 +170,7 @@ function showImport() {
 
 }
 
-function stageChallenge(ChallengeID) {
+function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	// Schon hier, da die beiden Objekte mit Daten versorgt werden
 	T_Zuege					= new CZuege();
@@ -184,13 +184,13 @@ function stageChallenge(ChallengeID) {
 
 }
 
-function initializeSelectionEnvironment() {
+function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	$("[id^='s_']").hide();
-	$('#s_Spielen').show();
+	$('#s_spielen').show();
 
 	$('#logliste').empty();
-	$('#ChallengeTips').empty();
+	$('#challengetips').empty();
 
 	$("#cb_Enginelog").prop("checked", false);
 	$("#cb_EngineEin").prop("checked", true);
@@ -208,13 +208,14 @@ function initializeSelectionEnvironment() {
 	resetmarker();
 }
 
-function initializeNotationtree() {
+function initializeNotationtree() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
-	$('#ChallengeTreeNotationWrapperId').empty().append('<div id="ChallengeTreeNotationId"></div>');
+
+	$('#challengenotationwrapper').empty().append('<div id="challengenotation"></div>');
 	$('[id^=' + TOOLTIPPRÄFIX + ']').remove();
 	
 	// NotationstabelleAufgabe initiieren
-	$('#ChallengeTreeNotationId')
+	$('#challengenotation')
 		.jstree({
 			'plugins':	["themes", "unique"],
 			'core': 		{
@@ -222,7 +223,7 @@ function initializeNotationtree() {
 										'themes':					{ 'icons': false, 'dots':	false }
 									}
 		}); 
-	dummy = $('#ChallengeTreeNotationId').jstree().create_node(
+	dummy = $('#challengenotation').jstree().create_node(
 		'#', 
 		{	"id": Stellungsdaten.PreNodeId, "text": "Gespielte Züge" },
 		"last",	
@@ -231,7 +232,7 @@ function initializeNotationtree() {
 
 }
 
-function SpielinteraktionEinstellen() {
+function SpielinteraktionEinstellen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	switch ($('input[name="Spielinteraktion"]:checked').val()) {
 		case "StellungOhne":
@@ -266,7 +267,7 @@ function SpielinteraktionEinstellen() {
 
 }
 
-function manageSpielinteraktionSelection() {
+function manageSpielinteraktionSelection() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	SpielinteraktionEinstellen();
 
@@ -281,6 +282,54 @@ function manageChallengeSelection(ChallengeID) {
 	SpielinteraktionEinstellen();
 
 	stageChallenge(ChallengeID);
+
+}
+
+function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+
+	// Schon hier, da die beiden Objekte mit Daten versorgt werden
+	T_Zuege					= new CZuege();
+	Stellungsdaten	= new CStellungsdaten();
+
+	Kapitel = GlobalImportedPGN[KapitelID.split("_")[1]]; //responseData['ergebnisdaten'][0];
+
+	scanPGN(Kapitel);
+	scanChallengePGNData(GlobalImportedPGN[KapitelID.split("_")[1]]);
+	Challenge = { ...Importdaten };
+	Challenge.FEN = T_Aufgabe.FEN;
+	getImportBoard()
+		.then(function () { ZuegePruefen(); })
+		.then(function () { initializeSelectionEnvironment(); })
+		.then(function () { initializeNotationtree(); });	
+
+	console.log(Kapitel);
+
+	// $('#KurztextSpiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
+	// $('#LangtextSpiel').val(Challenge.Langtext);
+	// $('#QuellquellespieleSpiel').val(Challenge.Quelle);
+	// $('#QuelledetailSpiel').val(Challenge.Quelledetail);
+	// $('#Importquellespiel').val(Challenge.ImportQuelle);
+	// $('#ScopeSpiel').val(Challenge.Scope);
+	// $('#SkillSpielSpiel').val(Challenge.Skill);
+	// $('#AmZugSpiel').val(Challenge.AmZug);
+	// $('#FENSpiel').val(Challenge.FEN);
+	// $('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
+
+	// getChallengeData(ChallengeID)
+	// 	.then(function () { getChallengeBoard(); })
+	// 	.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) { getChallengeMoves(ChallengeID, MitVarianten); } })
+	// 	.then(function () {	initializeSelectionEnvironment(); })
+	// 	.then(function () { initializeNotationtree(); });
+
+}
+
+// Diese Funktion reagiert auf die Auswahl eines direkt zu spielenden Kapitels einer lichess-Studie
+// Die Daten, die zum selektierten Kapitel vorliegen, reichen für ein Spiel noch nicht aus, da ja nur die Studiendatei ...???
+function manageKapitelSelection(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+
+	SpielinteraktionEinstellen();
+
+	stageKapitel(ChallengeID);
 
 }
 

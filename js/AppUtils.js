@@ -87,7 +87,7 @@ function showNotAcceptedMove() {
 	$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/fehler.png'/>");
 }
 
-function addBoardFunctions(BoardId) {
+function addBoardFunctions(BoardId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	addMouseBoardFunctions(BoardId);
 	addTouchBoardFunctions(BoardId);

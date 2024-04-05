@@ -107,7 +107,7 @@ function handleInterruptClick(clickevent) {
 					Stellungsdaten.CreateNewNode = false;
 
 					StellungAufbauen(HTMLBRETTNAME_SPIELEN, PreStackMove[0].FEN);
-					$('#ChallengeTreeNotationId').jstree().close_node(Stellungsdaten.CurNodeId);
+					$('#challengenotation').jstree().close_node(Stellungsdaten.CurNodeId);
 
 					//if(PreStackMove[0].ZugFarbe == Challenge.AmZug) {
 					if(LastStack.Trigger == CHALLENGE) {
@@ -186,7 +186,7 @@ function handleInterruptClick(clickevent) {
 					Stellungsdaten.CreateNewNode = false;
 
 					StellungAufbauen(HTMLBRETTNAME_SPIELEN, PreStackMove[0].FEN);
-					$('#ChallengeTreeNotationId').jstree().close_node(Stellungsdaten.CurNodeId);
+					$('#challengenotation').jstree().close_node(Stellungsdaten.CurNodeId);
 
 					if(PreStackMove[0].ZugFarbe == Challenge.AmZug) {
 						firePlayerMove();

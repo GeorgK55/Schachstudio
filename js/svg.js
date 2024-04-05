@@ -6,7 +6,7 @@ function addSVGBoardFunctions() {
 	const svgbase = document.createElementNS('http://www.w3.org/2000/svg','svg');	
   svgbase.setAttribute('id', 'variantensvg');
 	svgbase.setAttribute('class', 'svg_container');
-	document.getElementById('ChallengechessboardId').prepend(svgbase);
+	document.getElementById('challengechessboard').prepend(svgbase);
 
 	// Wiederkehrende Elemente in defs anlegen.defs bekommt nur einen id als Attribut
 	const svgdefstag = document.createElementNS('http://www.w3.org/2000/svg','defs');
@@ -36,8 +36,8 @@ function addVariantePath(zugid) {
 
 	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
 	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
-	const currentFieldSize	= Math.round($( "#ChallengechessboardId" ).width() / 10);
-	const startmitte				= Math.round($( "#ChallengechessboardId" ).width() / 20);
+	const currentFieldSize	= Math.round($( "#challengechessboard" ).width() / 10);
+	const startmitte				= Math.round($( "#challengechessboard" ).width() / 20);
 
 	const path1 = document.createElementNS('http://www.w3.org/2000/svg','path');
 

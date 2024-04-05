@@ -88,8 +88,8 @@ const ZIEHTLANG	= "-";
 const SCHLÄGT		= "x";
 const MATT			= "#";
 
-const DEFAULTMOVE_W = "...";
-const DEFAULTMOVE_B = "&nbsp;";
+const DEFAULTMOVE_W = "&nbsp;";
+const DEFAULTMOVE_B = "...";
 const NODEPRÄFIX		= "N_";
 const MOVEPRÄFIX		= "M_";
 const TOOLTIPPRÄFIX	= "TT_";
@@ -105,8 +105,8 @@ const SPIELERZUG_VARIANTE	= 'Variante';
 const SPIELERZUG_HAUPTZUG	= 'Hauptzug';
 const SPIELERZUG_NOTFOUND	= 'Zug nicht gefunden';
 
-const HTMLBRETTNAME_SPIELEN = 'BrettSpielen';
-const HTMLBRETTNAME_IMPORT  = 'BrettImport';
+const HTMLBRETTNAME_SPIELEN = 'brettspielen';
+const HTMLBRETTNAME_IMPORT  = 'brettimport';
 
 const PHPTRUE = 1;
 const PHPFALSE = 0;

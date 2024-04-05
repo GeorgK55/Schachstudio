@@ -77,8 +77,8 @@
 		<div class="VeryImportantText importantbackgroundcolor">
 			Georgs Schachstudio 2023 
 		</div>
-		<div id="sx_Mitte" class="gc-mitte">
-			<section id="sx_Themensection" class="gc-mitte_themen">
+		<div id="sx_mitte" class="gc-mitte">
+			<section id="sx_themensection" class="gc-mitte_themen">
 				<section id="s1_Themenstarter" class="gc-themenstarter">
 					<header class="ImportantCenterText importantbackgroundcolor">Themenauswahl</header>
 					<div class="Startertext">
@@ -103,7 +103,7 @@
 					</div>
 				</section>
 			</section>
-			<section id="sx_Aufgabensection" class="gc-mitte_aufgaben">
+			<section id="sx_aufgabensection" class="gc-mitte_aufgaben">
 				<section id="s1_Aufgabenstarter" class="gc-aufgabenstarter">
 					<header id="h_AufgabenStarter" class="ImportantCenterText importantbackgroundcolor">Stellungen dazu</header>
 					<div class="Startertext">
@@ -129,6 +129,9 @@
 						<div id="Aufgabenliste">
 							<ul id="ul_Aufgabenliste" class="scrollme"></ul>
 						</div>
+						<div id="Kapitelliste" class="hideMe">
+							<ul id="ul_Kapitelliste" class="scrollme"></ul>
+						</div>
 						<div id="Aufgabenselektion">
 							<!-- button id="btn_Aufgabeauswahl" type="button" onclick="Aufgabeauswahl()" class="uebungenbutton">Alle Aufgaben anzeigen</><br -->
 							<div id="ZeigeAuswahl">
@@ -141,6 +144,9 @@
 							</div>
 						</div>
 						<div id="AufgabelisteButtons">
+							<div>
+							<button id="btn_lichesskapitel"	type="button" onclick="DatenBereitstellen_Lichess('kapitel')"	class="uebungenbutton"></button>
+							</div>
 							<div class="trainerfeatures hideMe">
 								<button id="btn_Import"						type="button" onclick="showImport()"			class="uebungenbutton"></button>
 								<button id="btn_VerbindeAufgabe"	type="button" onclick="VerbindeAufgabe()"	class="uebungenbutton"></button>
@@ -151,8 +157,8 @@
 					</div>
 				</section>
 			</section>
-			<section id="sx_Aktionensection" class="gc-mitte_aktionen">
-				<section id="s_Willkommen" class="gc-willkommen">
+			<section id="sx_aktionensection" class="gc-mitte_aktionen">
+				<section id="s_willkommen" class="gc-willkommen">
 					<header class="ImportantCenterText importantbackgroundcolor">Willkommen</header>
 					<div id="Welcome" class="gc-usertypes">
 						<div class="usertypearea gc-interesse">
@@ -188,34 +194,33 @@
 						</div>
 					</div>
 				</section>
-				<section id="s_Import" class="gc-import">
-					<header id="h_Import" class="ImportantCenterText importantbackgroundcolor">Aufgaben importieren</header>
+				<section id="s_import" class="gc-import">
+					<header id="h_import" class="ImportantCenterText importantbackgroundcolor">Aufgaben importieren</header>
 					<div id="importarea" class="gc-importarea">
-						<div id="filearea" class="filearea">
-							<div id="fileareabuttons">
-								<!-- <button type="button" onclick="DatenBereitstellen_Zwischenablage()"	disabled class="uebungenbutton" id="DatenBereitstellen_ZwischenablageID">Aus Zwischenablage<br>übernehmen</button> -->
-								<button type="button" onclick="DatenBereitstellen_Datei()"			class="uebungenbutton">Aus Datei (*.pgn)<br>übernehmen</button>
-								<button type="button" onclick="DatenBereitstellen_Lichess()"		class="uebungenbutton">Direkt aus lichess<br>übernehmen</button>
+						<div id="importselectarea" class="importselectarea">
+							<div id="importselectbuttons">
+								<button type="button" onclick="DatenBereitstellen_Datei()"						class="uebungenbutton">Aus Datei (*.pgn)<br>übernehmen</button>
+								<button type="button" onclick="DatenBereitstellen_Lichess('import')"	class="uebungenbutton">Direkt aus lichess<br>übernehmen</button>
 							</div>
-							<div id="filenametext"></div>
+							<div id="importselectfilename"></div>
 						</div>
 						<ul id="ul_importaufgaben" class="ul_importaufgaben"></ul>
-						<fieldset id="f_Aufgabedaten" class="f_Aufgabedaten">
-							<legend>Daten der Aufgabe</legend>
-							<ul id="ImportAufgabedetails">
-								<li><label for="KurztextImport">Kurztext</label>		<input type="text" 	name="Kurztext" 	id = "KurztextImport">			</li>
-								<li><label for="LangtextImport">Langtext</label>		<input type="text" 	name="Langtext" 	id = "LangtextImport">			</li>
-								<li><label for="DatumImport">Datum</label>			<input type="text" 	name="Datum" 		id = "DatumImport">			</li>
-								<li><label for="QuelleImport">Quelle</label>			<input type="text" 	name="Quelle" 		id = "QuelleImport">			</li>
-								<li><label for="AnnotatortextImport">Annotator</label>		<input type="text" 	name="Annotatortext" 	id = "AnnotatortextImport">			</li>
-								<li><label for="WeissNameImport">Weiß</label>		<input type="text" 	name="WeissName" 	id = "WeissNameImport">			</li>
-								<li><label for="SchwarzNameImport">Schwarz</label><input type="text" 	name="SchwarzName" 	id = "SchwarzNameImport">			</li>
-								<li><label for="QuelledetailImport">Importdetails</label><input type="text" name="Quelledetail" id = "QuelledetailImport">		</li>
-								<li><label for="ImportQuelleImport">ImportQuelle</label><input type="text" 	name="ImportQuelle" id = "ImportQuelleImport" disabled></li>
-								<li><label for="AmZugImport">Am Zug</label>				<input type="text"	name="AmZug" 		id = "AmZugImport" 	disabled>	</li>
-								<li><label for="FENImport">FEN</label>					<input type="text"	name="FENImport" 	id = "FENImport" 	disabled>	</li>
-								<li><label for="ScopeImport">Scope</label>				<input type="text" 	name="Scope" 		id = "ScopeImport">				</li>
-								<li><label for="SkillImport">Skill</label>				<input type="text"	name="SkillImport" 	id = "SkillImport">				</li>
+						<fieldset id="f_importaufgabedaten" class="f_importaufgabedaten">
+							<legend>Die gewählte Aufgabe</legend>
+							<ul id="ul_importaufgabedetails">
+								<li><label for="KurztextImport">Kurztext</label>					<input type="text" 	name="Kurztext"				id = "KurztextImport">							</li>
+								<li><label for="LangtextImport">Langtext</label>					<input type="text" 	name="Langtext"				id = "LangtextImport">							</li>
+								<li><label for="DatumImport">Datum</label>								<input type="text" 	name="Datum"					id = "DatumImport">									</li>
+								<li><label for="QuelleImport">Quelle</label>							<input type="text" 	name="Quelle"					id = "QuelleImport">								</li>
+								<li><label for="AnnotatortextImport">Annotator</label>		<input type="text" 	name="Annotatortext"	id = "AnnotatortextImport">					</li>
+								<li><label for="WeissNameImport">Weiß</label>							<input type="text" 	name="WeissName"			id = "WeissNameImport">							</li>
+								<li><label for="SchwarzNameImport">Schwarz</label>				<input type="text" 	name="SchwarzName"		id = "SchwarzNameImport">						</li>
+								<li><label for="QuelledetailImport">Importdetails</label>	<input type="text"	name="Quelledetail"		id = "QuelledetailImport">					</li>
+								<li><label for="ImportQuelleImport">ImportQuelle</label>	<input type="text" 	name="ImportQuelle"		id = "ImportQuelleImport"	disabled>	</li>
+								<li><label for="AmZugImport">Am Zug</label>								<input type="text"	name="AmZug"					id = "AmZugImport"				disabled>	</li>
+								<li><label for="FENImport">FEN</label>										<input type="text"	name="FENImport"			id = "FENImport"					disabled>	</li>
+								<li><label for="ScopeImport">Scope</label>								<input type="text" 	name="Scope"					id = "ScopeImport">									</li>
+								<li><label for="SkillImport">Skill</label>								<input type="text"	name="SkillImport"		id = "SkillImport">									</li>
 							</ul>
 						</fieldset>
 						<div id="importaufgabePGN" class="gc-importaufgabepgn">
@@ -226,33 +231,31 @@
 						</div>
 						<div id="importTreeNotationWrapperId" class="importtreenotationwrapper">
 						</div>
-						<div id="ImportButtons" class="importbuttons">
-							<button type="button" onclick="ZuegePruefen()"		class="uebungenbutton">Züge prüfen</button>
+						<div id="importactionbuttons" class="importactionbuttons">
+							<button type="button" onclick="ZuegePruefen()"			class="uebungenbutton">Züge prüfen</button>
 							<button type="button" onclick="AufgabeSpeichern()"	class="uebungenbutton">Aufgabe speichern</button>
 						</div>
 					</div>
 				</section>
-				<section id="s_Spielen" class="gc-spielen">
-					<header id="h_Spielen" class="ImportantCenterText importantbackgroundcolor">Aufgabe spielen</header> <!-- id ist Anker für Dialoge -->
-					<div id="Aufgabedetails">
-						<fieldset id="f_Aufgabedetails">
-							<legend>Details der Aufgabe</legend>
-							<ul>
-							<li><label for="KurztextSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Kurztext</label>			<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Kurztext" 	id = "KurztextSpiel" 		disabled>				</li>
-							<!-- <li><label for="LangtextSpiel"		class="ShowLarge"						>Langtext</label>			<input type="text" class="ShowLarge"						name="Langtext" 	id = "LangtextSpiel" 		disabled>				</li> -->
-							<li><label for="QuelleSpiel"		class="ShowSmall ShowMedium ShowLarge"	>Quelle</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="Quelle" 		id = "QuelleSpiel" 			disabled>				</li>
-							<!-- <li><label for="QuelledetailSpiel"	class="ShowLarge"						>Quelledetail</label>		<input type="text" class="ShowLarge"						name="Quelledetail" id = "QuelledetailSpiel" 	disabled>				</li>  -->
-							<!-- <li><label for="ScopeSpiel"			class="ShowLarge"						>Scope</label>				<input type="text" class="ShowLarge"						name="Scope" 		id = "ScopeSpiel" 			disabled>				</li> -->
-							<!-- <li><label for="AmZugSpiel"			class="ShowSmall ShowMedium ShowLarge"	>Am Zug</label>				<input type="text" class="ShowSmall ShowMedium ShowLarge"	name="AmZug" 		id = "AmZugSpiel" 			disabled>				</li> -->
-							<!-- <li><label for="SkillSpiel"			class="ShowLarge"						>Skill</label>				<input type="text" class="ShowLarge"						name="SkillSpiel" 	id = "SkillSpiel" 			disabled>				</li> -->
-							<!-- <li><label for="FENSpiel"			class="ShowLarge"						>FEN</label>				<input type="text" class="ShowLarge"						name="FENSpiel" 	id = "FENSpiel"				disabled>				</li> -->
-							<!-- <li><label for="ImportquelleSpiel"	class="ShowLarge"						>Importquelle</label>		<input type="text" class="ShowLarge"						name="Importquelle" id = "ImportquelleSpiel"	disabled>				</li> -->
-							<!-- <li><label for="PGNTextSpiel"												>PGN:</label>				<textarea													name="PGNText"		id = "PGNTextSpiel"			disabled>	</textarea>	</li> -->
-							</ul>
-						</fieldset>
-					</div>
-					<div id="ChallengeboardandnotationId" class="gc-boardandnotation">
-						<div id="ChallengevariantenId" class="gc-challengevarianten">
+				<section id="s_spielen" class="gc-spielen">
+					<header id="h_spielen" class="ImportantCenterText importantbackgroundcolor">Aufgabe spielen</header>
+					<fieldset id="f_spielenaufgabedetails">
+						<legend>Details der Aufgabe</legend>
+						<ul>
+						<li><label for="kurztextspiel">Kurztext</label>	<input type="text" name="Kurztext"	id = "kurztextspiel"	disabled>	</li>
+						<li><label for="quellespiel">Quelle</label>			<input type="text" name="Quelle"		id = "quellespiel"		disabled>	</li>
+						<!-- <li><label for="LangtextSpiel">Langtext</label>					<input type="text"	name="Langtext"			id = "LangtextSpiel"			disabled>	</li>	-->
+						<!-- <li><label for="QuelledetailSpiel">Quelledetail</label>	<input type="text"	name="Quelledetail"	id = "QuelledetailSpiel"	disabled>	</li>	-->
+						<!-- <li><label for="ScopeSpiel">Scope</label>								<input type="text"	name="Scope"				id = "ScopeSpiel"					disabled>	</li> -->
+						<!-- <li><label for="AmZugSpiel">Am Zug</label>								<input type="text"	name="AmZug"				id = "AmZugSpiel"					disabled>	</li> -->
+						<!-- <li><label for="SkillSpiel">Skill</label>								<input type="text"	name="SkillSpiel" 	id = "SkillSpiel"					disabled>	</li> -->
+						<!-- <li><label for="FENSpiel">FEN</label>										<input type="text"	name="FENSpiel"			id = "FENSpiel"						disabled>	</li> -->
+						<!-- <li><label for="importquellespiel">Importquelle</label>	<input type="text"	name="Importquelle" id = "importquellespiel"	disabled>	</li> -->
+						<!-- <li><label for="pgntextspiel">PGN:</label>								<textarea						name="PGNText"			id = "pgntextspiel"				disabled>	</textarea>	</li> -->
+						</ul>
+					</fieldset>
+					<div id="challengeboardandnotation" class="gc-challengeboardandnotation">
+						<div id="challengevarianten" class="gc-challengevarianten">
 							<div id="VariantetextId" class="centertext"></div>
 							<!-- <div id="VariantemarkerId" class="variantemarker" onclick="handleVarianteClick()"></div> -->
 							<div id="VariantemarkerrejectId" class="variantemarker"></div>
@@ -261,24 +264,24 @@
 							<div id="ChallengezugmarkerId" class="challengezugmarker">
 							</div>
 						</div>
-						<div id="ChallengechessboardId" class="cb_challenge">
+						<div id="challengechessboard" class="cb_challenge">
 						</div> 
-						<div id="ChallengeChessTipsId" class="gc-challengechesstips">
+						<div id="challengechesstips" class="gc-challengechesstips">
 							<div id="aidicon"></div>
 							<div id="aidtext"></div>
 						</div>
-						<div id="ChallengeTreeNotationWrapperId" class="challengetreenotationwrapper">
-							<div id="ChallengeTreeNotationId" class="challengetreenotation"></div>
+						<div id="challengenotationwrapper" class="challengenotationwrapper"> <!-- id ist Anker für Dialoge -->
+							<div id="challengenotation"></div>
 						</div>
-						<div id="ChallengeTips" class="challengetips"></div>
-						<div id="ChallengeMovesId" class='challengemoves'>
+						<div id="challengetips" class="challengetips"></div>
+						<div id="challengenavigation" class='challengenavigation'>
 							<p>&#9664; &nbsp; &#9654; sollen noch kommen</p>
 							<!-- <label for="Mausersatz">Mausersatz (debugger erkennt die Maus nicht):</label><input type="text" id = "Mausersatz">
 							<button onclick="startMouseUp()">Mouse up starten</button> -->
 						</div>
 						<div class="trainerfeatures hideMe pgn">
-							<!-- <label for="PGNTextSpiel">PGN:</label> -->
-							<textarea name="PGNText" id = "PGNTextSpiel" rows="5" disabled> </textarea>
+							<!-- <label for="pgntextspiel">PGN:</label> -->
+							<textarea name="PGNText" id = "pgntextspiel" rows="5" disabled> </textarea>
 						</div>
 					</div>
 				</section>

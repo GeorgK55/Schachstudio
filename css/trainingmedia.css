@@ -64,7 +64,10 @@
 		content: "Entfernen";
 	}
 	
-  #btn_Import::after {
+  #btn_lichesskapitel::after {
+    content: "lichess spielen";
+  }
+ #btn_Import::after {
     content: "Importieren";
   }
   #btn_VerbindeAufgabe::after {

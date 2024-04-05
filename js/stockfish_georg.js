@@ -101,7 +101,7 @@ function TheIndexGeorgFunction() {
 							Importdaten.PreMoveId	= SingleMove.PreMoveId;
 
 							// Damit wird die aktuelle Situation und der Zug selbst für den insert in die Datenbank festgehalten
-							Zugliste.push(SingleMove);
+							ChallengeMoves.push(SingleMove);
 
 							validateSingleMove(); // Die weitere Analyse wird außerhalb des Listeners durchgeführt
 
@@ -133,7 +133,7 @@ function TheIndexGeorgFunction() {
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
 
-									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									GlobalActionStep = AS_CHECKPOSITIONPLAYERMOVEFINISHED;
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -207,7 +207,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
-									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									Stellungsdaten.CurNodeId = NODEPRÄFIX + T_Zuege.CurMoveIndex;
 									Stellungsdaten.CurMoveId = T_Zuege.CurMoveId;
@@ -219,7 +219,7 @@ function TheIndexGeorgFunction() {
 								} else { // == (none) kommt mindestens (wahrscheinlich aber nur) bei matt
 									T_Zuege.ZugZeichen = MATT;
 									T_Zuege.ZugFarbe = Stellungsdaten.ZugFarbe;
-									UpdateTreeNode('ChallengeTreeNotationId', MOVEMODE_MATTSIGN, Stellungsdaten, T_Zuege, false, false);
+									UpdateTreeNode('challengenotation', MOVEMODE_MATTSIGN, Stellungsdaten, T_Zuege, false, false);
 									GlobalActionStep = AS_MOVECYCLEABORTED;
 									finishChallenge('Gut gemacht');
 								}
@@ -388,7 +388,7 @@ function TheIndexGeorgFunction() {
 
 														TransferZugNachStellung(Stellungsdaten, T_Zuege);
 														ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
-														NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+														NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 														GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
 														postit('position fen ' + T_Zuege.FEN + " moves " + m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung);
@@ -405,7 +405,7 @@ function TheIndexGeorgFunction() {
 
 													TransferZugNachStellung(Stellungsdaten, T_Zuege);
 													ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
-													NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+													NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 													GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
 													postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -432,7 +432,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
-									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -484,7 +484,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
-									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGENGINEMOVE;
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -495,7 +495,7 @@ function TheIndexGeorgFunction() {
 									T_Zuege.ZugZeichen = MATT;
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									// ZieheZug fehlt noch ?
-									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 									finishChallenge('Gut gemacht');
 								}
 							} else {
@@ -571,7 +571,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
-									NotiereZug('ChallengeTreeNotationId', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
 

@@ -1,6 +1,6 @@
 
 // Nur als Muster. Liefert alle Knoten!!!
-//$('#ChallengeTreeNotationId').jstree(true).get_json('#', { flat: true })
+//$('#challengenotation').jstree(true).get_json('#', { flat: true })
 //$('#ImportTreeNotationId').jstree(true).get_json('#', { flat: true })
 
 
@@ -74,9 +74,9 @@ function RegexAbschicken() {
 
 }
 
-// showjstreeimportant('ChallengeTreeNotationId')
+// showjstreeimportant('challengenotation')
 // showjstreeimportant('ImportTreeNotationId')
-// $('#ChallengeTreeNotationId').jstree(true).get_json('#', { flat: true })
+// $('#challengenotation').jstree(true).get_json('#', { flat: true })
 // $('#ImportTreeNotationId').jstree(true).get_json('#', { flat: true })
 function showjstreeimportant(TreeContainer) {
 

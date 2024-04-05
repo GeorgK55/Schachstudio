@@ -65,7 +65,7 @@ function checkPromotion() {
 			modal: true,
 			draggable: false,
 			resizable: false,
-			position: { my: "left top", at: "left top", of: "#h_Spielen" },
+			position: { my: "left top", at: "left top", of: "#challengenotationwrapper" },
 			show: 'blind',
 			hide: 'blind',
 			height: 500,
@@ -105,7 +105,7 @@ function setPromotionPiece(Piece) {
 
 function showChallengeTip(text, darstellung) {
 
-	$('#ChallengeTips').empty().append('<p class="' + darstellung + '">' + text + '</p>');
+	$('#challengetips').empty().append('<p class="' + darstellung + '">' + text + '</p>');
 
 }
 
@@ -331,7 +331,7 @@ function Zugtext(zt) {
 function finishChallenge(Endetext) {
 	showChallengeTip('Bravo. ' + Endetext, 'VeryImportantText');
 	removeMouseBoardFunctions(HTMLBRETTNAME_SPIELEN);
-	removeNotationMarker('ChallengeTreeNotationId');
+	removeNotationMarker('challengenotation');
 	$('#VariantetextId').removeClass().addClass('centertext');
 }
 
@@ -412,7 +412,7 @@ function animateMove(objZug, BoardPräfix, Animationspeed) {
 
 	if(Animationspeed != 0) {
 		if(objZug.ZugFarbe != Challenge.AmZug) { // Die Züge des Spielers werden erst mal nicht animiert
-			addMoveAnimationStyle("ChallengechessboardId", Challenge.AmZug, objZug.ZugStockfish, Animationspeed);
+			addMoveAnimationStyle("challengechessboard", Challenge.AmZug, objZug.ZugStockfish, Animationspeed);
 			$('#' + BoardPräfix + objZug.ZugVon + ' :first-child').addClass('svgmoveme')
 			$('#' + BoardPräfix + objZug.ZugVon + ' :first-child').on("animationend", {	brett: BoardPräfix, von: objZug.ZugVon, nach: objZug.ZugNach }, terminateAnimation );
 		} else {

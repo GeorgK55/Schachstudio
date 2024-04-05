@@ -106,16 +106,16 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 
 		Challenge = responseData['ergebnisdaten'][0];
 
-		$('#KurztextSpiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
+		$('#kurztextspiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
 		$('#LangtextSpiel').val(Challenge.Langtext);
-		$('#QuelleSpiel').val(Challenge.Quelle);
+		$('#quellespiel').val(Challenge.Quelle);
 		$('#QuelledetailSpiel').val(Challenge.Quelledetail);
-		$('#ImportQuelleSpiel').val(Challenge.ImportQuelle);
+		$('#Importquellespiel').val(Challenge.ImportQuelle);
 		$('#ScopeSpiel').val(Challenge.Scope);
 		$('#SkillSpielSpiel').val(Challenge.Skill);
 		$('#AmZugSpiel').val(Challenge.AmZug);
 		$('#FENSpiel').val(Challenge.FEN);
-		$('#PGNTextSpiel').val(Challenge.PGN.split("\n\n")[1]);
+		$('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
 
 	}).fail(function (jqXHR, textStatus, errorThrown) {
 		AjaxError(jqXHR, textStatus, errorThrown);
@@ -162,11 +162,11 @@ function getChallengeMoves(ID, MitVarianten) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEM
 
 function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
-	let BrettName = Challenge.AmZug == WEISSAMZUG ? HTMLBRETTNAME_SPIELEN + "W.html" : HTMLBRETTNAME_SPIELEN + "B.html";
+	let BrettName = Challenge.AmZug == WEISSAMZUG ? HTMLBRETTNAME_SPIELEN + "w.html" : HTMLBRETTNAME_SPIELEN + "b.html";
 
-	$.get("html/" + BrettName)
+	return $.get("html/" + BrettName)
 		.done(function (data) {
-			$("#ChallengechessboardId").html(data);
+			$("#challengechessboard").html(data);
 			addBoardFunctions(HTMLBRETTNAME_SPIELEN);
 			StellungAufbauen(HTMLBRETTNAME_SPIELEN, Challenge.FEN);
 			if(Challenge.AmZug == WEISSAMZUG) $('#ChallengezugmarkerId').html(ZUGMARKERWEISS);
@@ -179,9 +179,9 @@ function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) co
 
 function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
-	let BrettName = T_Aufgabe.AmZug == WEISSAMZUG ? HTMLBRETTNAME_IMPORT + "W.html" : HTMLBRETTNAME_IMPORT + "B.html";
+	let BrettName = T_Aufgabe.AmZug == WEISSAMZUG ? HTMLBRETTNAME_IMPORT + "w.html" : HTMLBRETTNAME_IMPORT + "b.html";
 
-	$.get("html/" + BrettName)
+	return $.get("html/" + BrettName)
 		.done(function (data) {
 			$("#importchessboardId").html(data);
 			StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN);

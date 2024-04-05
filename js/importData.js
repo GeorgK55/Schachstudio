@@ -9,84 +9,13 @@ function DatenBereitstellen_Zwischenablage() {
 	prepareImportedData();
 };
 
-function DatenBereitstellen_Lichess() {
-
-	LichessUserDialog = $("#dialog_LichessUser").dialog({
-		title: "Studien aus lichess.org übernehmen",
-		width: DialogWidth,
-		modal: true,
-		open: function () {
-		},
-		buttons: {
-			'Übernehmen': function () {
-				studieauswahl($('#lichessuser').val());
-			},
-			'Abbrechen': function () {
-				$(this).dialog('close');
-			}
-		}
-	});
-
-}
-
-function studieauswahl(username) {
-
-	console.log(username);
-
-	fetch('https://lichess.org/api/study/by/' + username, { headers })
-	.then(res => res.text())
-	.then(function(res) {
-		console.log(res);
-		studienliste = res.split('\n').filter(i => i);
-		console.log(studienliste);
-		showstudylist(studienliste);
-		// studylisttofile(studienliste);
-		// getstudydata(studienliste, studienliste.length);
-	});
-
-}
-
-function showstudylist(studylist) {
-
-	sl = document.getElementById("studienliste");
-
-	studylist.forEach( study => {
-		let li = document.createElement('li');
-		li.id = JSON.parse(study).id;
-		li.innerHTML = JSON.parse(study).name;
-		sl.appendChild(li);
-	});
-
-	$("#studienliste").removeClass('hideMe'); 
-
-	$("#studienliste").selectable({
-
-		selected: function (event, ui) {
-			getLichessStudy(ui.selected.id, ui.selected.innerText);
-		}
-	});
-
-}
-
-function getLichessStudy(studyid, studyname) {
-
-	fetch('https://lichess.org/api/study/' + studyid + '.pgn', { headers })
-	.then(res => res.text())
-	.then(function(res) {
-		console.log(res);
-
-		$('#filenametext').html(studyname);
-
-		// Als globale Variable, da auf die Inhalte später noch per Klick zugegriffen werden soll
-		GlobalImportedPGN = res.split("\n\n\n").filter(i => i); // .filter(i => i) entfernt leere Elemente
-		prepareChallengeImport();
-
-		LichessUserDialog.dialog('close');
-
-	})
-
-}
-
+// Diese Funktion ruft - solange keine Fehler erkannt weden - zwingend die folgenden Funktionen auf:
+// - handleFileSelect
+// - onFileLoadedend
+// - prepareChallengeImport
+// Nach dieser Sequenz sind:
+// - alle html-Elemente für eine Aufgabenauswal initialisiert ( = sichtbar und leer)
+// - der Eventhandler "selectble" in der Aufgabenliste eingerichtet
 function DatenBereitstellen_Datei() {
 
 	// Das inputElement wird hier immer neu angelegt. damit das changeevent IMMER getriggert wird
@@ -113,7 +42,7 @@ function handleFileSelect(e) {
 	let reader = new FileReader();
 	reader.onloadend = onFileLoadedend;
 	reader.readAsText(file);
-	$('#filenametext').html(file.name);
+	$('#importselectfilename').html(file.name);
 }
 
 // Stellt die eingelesenen Daten in einem array von Aufgaben zur Verfügung
@@ -128,14 +57,15 @@ function onFileLoadedend(e) {
 
 // Falls es mal mehrere Quellen gibt, gilt dies dann für alle Quellen
 // Die Anzeige für die Aufgabenliste öffnen und die Selektion der Aufgaben bereitstellen
+// Einzige Voraussetzung für diese Funktion ist: GlobalImportedPGN, also alle aktuellen Aufgaben in einem Array 
 function prepareChallengeImport() {
 
 	$('#ul_importaufgaben').removeClass( "hideMe" );
-	$('#f_Aufgabedaten').addClass( "hideMe" );
+	$('#f_importaufgabedaten').addClass( "hideMe" );
 	$('#importaufgabePGN').children().addClass( "hideMe" );
 	$('#importchessboardId').addClass( "hideMe" );
 	$('#importTreeNotationWrapperId').addClass( "hideMe" );
-	$('#ImportButtons').addClass( "hideMe" );
+	$('#importactionbuttons').addClass( "hideMe" );
 
 	$('#ul_importaufgaben').empty();
 	for (i = 0; i < GlobalImportedPGN.length; i++) {
@@ -151,32 +81,118 @@ function prepareChallengeImport() {
 		selected: function (event, ui) {
 
 			// Die Anzeige weiter öffnen und die jetzt neu angezeigten Teile zurücksetzen
-			$('#f_Aufgabedaten').removeClass( "hideMe" );
+			$('#f_importaufgabedaten').removeClass( "hideMe" );
 			$('#importaufgabePGN').removeClass( "hideMe" );
 			$('#importaufgabelabel').removeClass( "hideMe" );
 			$('#importaufgabetext').removeClass( "hideMe" );
 			$('#importchessboardId').removeClass( "hideMe" );
 			$('#importTreeNotationWrapperId').removeClass( "hideMe" ).empty();
-			$('#ImportButtons').removeClass( "hideMe" );
+			$('#importactionbuttons').removeClass( "hideMe" );
 
-			// Die Namen der  Aufgaben haben hinter dem Unterstrich einen Zähler. Das ist der Index der gelesenen Aufgaben
+			// Die Namen der Aufgaben haben hinter dem Unterstrich einen Zähler. Das ist der Index der gelesenen Aufgaben
 			GlobalImportedPGNIndex = ui.selected.id.split("_")[1];
 
 			// Die Daten der Aufgabe vorbereiten und die Datenstrukturen mit den Aufgabedaten versorgen
 			document.getElementById("importaufgabetext").innerHTML = GlobalImportedPGN[GlobalImportedPGNIndex];
-			scanChallengeMetaData(GlobalImportedPGN[GlobalImportedPGNIndex]);
+			scanChallengeMetaData0(GlobalImportedPGN[GlobalImportedPGNIndex]);
 			scanChallengePGNData(GlobalImportedPGN[GlobalImportedPGNIndex]);
 			getImportBoard();
 
 			StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN);
 		}
 	});
+
 }
 
 // Aus den Importdaten werden die die Aufgabe beschreibenden Daten extrahiert und in die Oberfläche übertragen
-function scanChallengeMetaData(Importtext) {
+function scanPGN(PGNText) {
 
-	$('#ImportAufgabedetails input').val('');
+	$('#ul_importaufgabedetails input').val('');
+
+	Importdaten = new CImportdaten();
+	T_Aufgabe		= new CAufgabe();
+
+	T_Aufgabe.PGN = PGNText;
+
+	// Alle regex maskieren, da sonst die Fehlermeldung "groups für null" kommt
+
+	// Dieser Ausdruck erkennt Standardlichesstexte (": " zwischen Studie und Kapitel)
+	let m_Aufgabetext		= PGNText.match(r_Event);
+
+	if (m_Aufgabetext == null) {
+		T_Aufgabe.Kurztext = "Fehlt";
+	} else {
+		// Wenn der "lichess-Doppelpunkt" fehlt, steht der Kurztext in der Gruppe event, sonst in den Gruppen Studie und Kapitel
+		if(m_Aufgabetext.groups.event == null) {
+			T_Aufgabe.Kurztext = m_Aufgabetext.groups.kapitel;
+			T_Aufgabe.Langtext = m_Aufgabetext.groups.studie;
+		} else {
+			T_Aufgabe.Kurztext = m_Aufgabetext.groups.event;
+		}
+	}
+
+	let m_Quelle = (/(\[Site \")(?<site>.*)(\"\])/).exec(PGNText);
+	if (m_Quelle != null) {
+		T_Aufgabe.Quelle = m_Quelle.groups.site;
+		if(m_Quelle.groups.site.includes('lichess')) {
+			T_Aufgabe.lichess_studie_id = m_Quelle.groups.site.split('/').slice(-2)[0];
+			T_Aufgabe.lichess_kapitel_id = m_Quelle.groups.site.split('/').slice(-1)[0];
+		}
+	}
+
+	let m_Annotatortext	= PGNText.match(r_Annotator);
+	if (m_Annotatortext != null) {
+		T_Aufgabe.Annotator = m_Annotatortext.groups.annotatortext.includes('lichess') ? m_Annotatortext.groups.annotatortext.split('/').slice(-1)[0]:  m_Annotatortext.groups.annotatortext;
+	}
+
+	let m_Weiss = (/(\[White \")(?<weissname>.*)(\"\])/).exec(PGNText);
+	if (m_Weiss != null) {
+		T_Aufgabe.WeissName = m_Weiss.groups.weissname;
+	}
+
+	let m_Schwarz = (/(\[Black \")(?<schwarzname>.*)(\"\])/).exec(PGNText);
+	if (m_Schwarz != null) {
+		T_Aufgabe.SchwarzName = m_Schwarz.groups.schwarzname;
+	}
+
+	let m_Datum = (/(\[(UTC){0,1}Date \")(?<datum>.*)(\"\])/).exec(PGNText);
+	if (m_Datum != null) {
+		T_Aufgabe.Datum = m_Datum.groups.datum;
+	}
+
+	// Fritz exportiert bei Partieanfang kein FEN. Deshalb erst mal so prüfen
+
+	let m_FEN_Exist = (/\[FEN/g).exec(PGNText);
+
+	if (m_FEN_Exist == null) {
+
+		T_Aufgabe.FEN = FEN_PARTIEANFANG;
+		$('#FENImport').val(FEN_PARTIEANFANG);
+		T_Aufgabe.AmZug = WEISSAMZUG;
+		$("#AmZugImport").val(WEISSAMZUG);
+
+	} else {
+
+		let m_FEN = (/(\[FEN \")(?<fen>.*)(\"\])/).exec(PGNText);
+		T_Aufgabe.FEN = m_FEN.groups.fen;
+		$('#FENImport').val(m_FEN.groups.fen);
+			$("#AmZugImport").val(WEISSAMZUG);
+		if (m_FEN.groups.fen.includes("w")) { // laut Spezifikation ist es in klein
+			T_Aufgabe.AmZug = WEISSAMZUG;
+			$("#AmZugImport").val(WEISSAMZUG);
+		} else {
+			T_Aufgabe.AmZug = SCHWARZAMZUG;
+			$("#AmZugImport").val(SCHWARZAMZUG);
+		}
+
+	}
+
+}
+
+// Aus den Importdaten werden die die Aufgabe beschreibenden Daten extrahiert und in die Oberfläche übertragen
+function scanChallengeMetaData0(Importtext) {
+
+	$('#ul_importaufgabedetails input').val('');
 
 	Importdaten = new CImportdaten();
 	T_Aufgabe		= new CAufgabe();
@@ -296,7 +312,9 @@ function scanChallengePGNData(Importtext) {
 
 }
 
-function ZuegePruefen() {
+function ZuegePruefen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+
+	Zugpruefung = $.Deferred();
 
 	Importdaten.PGN_Index = 0;
 	Importdaten.ZugFarbe	=	T_Aufgabe.AmZug;
@@ -304,6 +322,8 @@ function ZuegePruefen() {
 	Importdaten.FEN				=	T_Aufgabe.FEN;	// Die FEN; mit der dieser Zug ausgeführt wird
 
 	Zugliste = [];
+	ChallengeMoves = [];
+	
 
 	// NotationstabelleAufgabe initiieren
 	// In diesen tag wird die Notation eingetragen (könnte auch per jstree reinitialisiert werden?)
@@ -332,13 +352,15 @@ function ZuegePruefen() {
 	StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN);
 	validateSingleMove(); // Wird von hier aus einmalig am Beginn der Prüfung aufgerufen. Dann wiederholt im stockfishmodul
 
+	return Zugpruefung.promise();
+
 }
 
 // Mit der in Importdaten aktuellen Situation startend, wird der nächste echte Zug gesucht.
 // Eventuell wird Importdaten aktualisiert (Zugnummer, Varianten, ...)
 // Bei kurzer Notation wird für den gefundenen Zug das Startfeld ermittelt
 // Alle Daten über den Zug werden in einem globalen Objekt (entsprechend der Datenbanktabelle) gespeichert
-function validateSingleMove() {
+function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	SingleMove = new CZuege();
 
@@ -518,6 +540,11 @@ function validateSingleMove() {
 		Importdaten.PGN_Index++;
 
 	} while (m_BauerKurzeNotation == null && m_FigurKurzeNotation == null && m_Rochaden == null && Importdaten.PGN_Index < Importdaten.PGN.length);
+
+	if(Importdaten.PGN_Index >= Importdaten.PGN.length) {
+		alert('fertig');
+		Zugpruefung.resolve();
+	}
 }
 
 // Aus den Zugdaten und den Figuren auf dem Brett wird bestimmt, welche Figur gezogen ist.

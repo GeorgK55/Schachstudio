@@ -5,7 +5,7 @@ function NeuesThema() {
 
 	NeuesThemaDialog = $("#dialog_neuesthema").dialog({
 		title:		"Neues Thema",
-		position:	{ my: "left top", at: "left top", of: "#sx_Aufgabensection" },
+		position:	{ my: "left top", at: "left top", of: "#sx_aufgabensection" },
 		width:		DialogWidth,
 		modal:		true,
 		open:			function () {
@@ -52,7 +52,7 @@ function EntferneThema() {
 
 	ThemaEntfernenDialog = $("#dialog_themaentfernen").dialog({
 		title: "Thema entfernen",
-		position:	{ my: "left top", at: "left top", of: "#sx_Aufgabensection" },
+		position:	{ my: "left top", at: "left top", of: "#sx_aufgabensection" },
 		width: DialogWidth,
 		modal: true,
 		open: function () {

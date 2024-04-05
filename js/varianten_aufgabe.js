@@ -16,7 +16,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 		// case MOVERESULT_UNKNOWNMOVE: kann es hier nicht geben
 		case MOVERESULT_NODESCENDENTS:
 		case MOVERESULT_NOCOLORMOVES:
-			showjstreeimportant('ChallengeTreeNotationId');
+			showjstreeimportant('challengenotation');
 			ChallengeMoveVariantenResult.reject({ result: MC_challenge.result, reason: Stellungsdaten.ZugFarbe, moveid: Stellungsdaten.PreMoveId });
 			break;
 		// case MOVERESULT_VARIANTEMOVE: // kann es hier nicht geben
@@ -28,10 +28,10 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			TransferZugNachStellung(Stellungsdaten, MC_challenge.mainmove);
 			// Wenn der Hauptzug schon in die Notation eingetragen ist, jetzt anzeigen. Sonst einfach gleich sichtbar anzeigen
 			if(MC_challenge.mainmove.MoveNode == null) {
-				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.mainmove, MOVEMODE_VARIANTE_MAINHIDDEN); 
+				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.mainmove, MOVEMODE_VARIANTE_MAINHIDDEN); 
 			} else {
 				Stellungsdaten.CurNodeId = MC_challenge.mainmove.MoveNode;
-				UpdateTreeNodeName('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.mainmove);
+				UpdateTreeNodeName('challengenotation', Stellungsdaten, MC_challenge.mainmove);
 			}
 
 			// Verwalten
@@ -45,7 +45,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			// Stellungsdaten.CreateNewNode = true;
 			// Stellungsdaten.PreMoveId = MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId;
 			// Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
-			// NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.variantenmoves[MC_challenge.drawnmoveindex], MOVEMODE_MOVE);
+			// NotiereZug('challengenotation', Stellungsdaten, MC_challenge.variantenmoves[MC_challenge.drawnmoveindex], MOVEMODE_MOVE);
 			// setMoveNode(MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId, Stellungsdaten.CurNodeId); 
 			// setMoveState(MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId, MOVESTATE_MOVED);
 
@@ -65,7 +65,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			ZieheZug(MC_challenge.selectedmove, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_FAST).then(function() {
 
 				// Notieren
-				NotiereZug('ChallengeTreeNotationId', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
+				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
 				// Hier noch die Farbanzeige in VariantetextId aktualisieren?
 
 				// Verwalten

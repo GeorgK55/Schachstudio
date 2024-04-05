@@ -138,8 +138,8 @@ function AufgabeSpeichernErfolg(responseData) {
 
 	if (NeueAufgabeID > 0) {
 
-		console.table(Zugliste);
-		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(JSON.stringify(Zugliste));
+		console.table(ChallengeMoves);
+		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(JSON.stringify(ChallengeMoves));
 
 		$.post({
 			url: 			"php/putDBData.php",
@@ -147,7 +147,7 @@ function AufgabeSpeichernErfolg(responseData) {
 			data: {
 							dataContext:	"Zugliste",
 							AufgabenID:		NeueAufgabeID,
-							Zugliste:			Zugliste
+							Zugliste:			ChallengeMoves
 						}
 			}).done(function (responseData) { ZuglisteErfolg(responseData);
 			}).fail(function (jqXHR, textStatus, errorThrown) { AjaxError(jqXHR, textStatus, errorThrown);

@@ -91,7 +91,7 @@ class CAufgabe  {
 	}	
 };
 
-// Beim Import wird für jeden Zug eine neue Instnz angelegt und die Instanzen in die ZUgliste eingefügt
+// Beim Import wird für jeden Zug eine neue Instnz angelegt und die Instanzen in die Zugliste eingefügt
 // Entspricht der Datenbanktabelle T_Zuege
 class CZuege {
 	constructor() {

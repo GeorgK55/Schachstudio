@@ -68,6 +68,16 @@ function studydatatofile(name, studie){
 
 }
 
+function chapterdatatofile(chapter){
+
+  const fs = require('node:fs');
+
+  fs.writeFile('/Volumes/Web/Schach22/PGN/per_node/AlleKapitel.pgn', chapter, (err) => {
+  if (err) throw err;
+  console.log('AlleKapitel was filled with data!')});
+
+}
+
 function getstudydata() {
 
   const headers = { 'Authorization': 'Bearer ' + process.env.lichessToken, };
@@ -102,9 +112,9 @@ function getlichessUserchapters() {
     .then(res => res.text())
     .then(function(res) {
       //console.log(res);
-      studienliste = res.split('\n').filter(i => i);
+      //kapitelliste = res.split('\n').filter(i => i);
       //console.log(studienliste);
-      studylisttofile(studienliste);
+      chapterdatatofile(res);
       //getstudydata(studienliste, studienliste.length);
     })
 	;
@@ -114,5 +124,5 @@ function getlichessUserchapters() {
 
 //getlichessUserdata();
 //getlichessUserdata2();
-getlichessUserstudies();
-//getlichessUserchapters();
+//getlichessUserstudies();
+getlichessUserchapters();

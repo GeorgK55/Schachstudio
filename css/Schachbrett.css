@@ -32,7 +32,7 @@
 
 .ScrollMe   { overflow-y:auto; }
 
-#ChallengeTreeNotationId	a	{ white-space:normal !important; height: auto; padding:1px 2px; }
+#challengenotation	a	{ white-space:normal !important; height: auto; padding:1px 2px; }
 #ImportTreeNotationId			a	{ white-space:normal !important; height: auto; padding:1px 2px; }
 
 .Comment_w {  background-color:white;       }
@@ -61,7 +61,7 @@
 	opacity: 0.6;
 }
 
-div[id^="BrettSpielen"] span {
+div[id^="brettspielen"] span {
 	display:block;
 }
 	
