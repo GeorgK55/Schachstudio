@@ -78,27 +78,27 @@ function TheIndexGeorgFunction() {
 						ZieheZug(SingleMove, HTMLBRETTNAME_IMPORT, ANIMATIONSPEED_ZERO).then(function() { 
 
 							// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu varianten)
-							TransferZugNachStellung(Importdaten, SingleMove)
+							TransferZugNachStellung(Stellungsdaten, SingleMove)
 
 							// Den Zug in die Notation eintragen, wenn notwendig eine neue Zeile generieren
-							if (SingleMove.ZugFarbe == WEISSAMZUG || Importdaten.CreateNewNode) {
+							if (SingleMove.ZugFarbe == WEISSAMZUG || Stellungsdaten.CreateNewNode) {
 
-								Importdaten.CurNodeId = NODEPRÄFIX + SingleMove.CurMoveIndex;
-								Importdaten.CurMoveId = SingleMove.CurMoveId;
+								Stellungsdaten.CurNodeId = NODEPRÄFIX + SingleMove.CurMoveIndex;
+								Stellungsdaten.CurMoveId = SingleMove.CurMoveId;
 
-								NewTreeNode('ImportTreeNotationId', 'move', Importdaten, SingleMove, false, false);
+								if(GLOBALNOTATIONMODE == NOTATIONMODE_VISIBLE) NewTreeNode('importtreenotationid', 'move', Stellungsdaten, SingleMove, false, false);
 
-								Importdaten.CreateNewNode = false;
+								Stellungsdaten.CreateNewNode = false;
 							} else {
-								UpdateTreeNode('ImportTreeNotationId', 'move', Importdaten, SingleMove, false, false);
+								if(GLOBALNOTATIONMODE == NOTATIONMODE_VISIBLE) UpdateTreeNode('importtreenotationid', 'move', Stellungsdaten, SingleMove, false, false);
 							}
 
 							// Jetzt wird die neue Situation in das Objekt mit den Daten zur Überprüfung des Import eingetragen. 
-							Importdaten.PreFEN		= SingleMove.FEN;
-							Importdaten.FEN				= line.substr(5);
-							Importdaten.ZugFarbe	= Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
-							Importdaten.CurMoveId = SingleMove.CurMoveId;
-							Importdaten.PreMoveId	= SingleMove.PreMoveId;
+							Importdaten.PreFEN				= SingleMove.FEN;
+							Stellungsdaten.FEN				= line.substr(5);
+							Stellungsdaten.ZugFarbe		= Stellungsdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
+							Stellungsdaten.CurMoveId	= SingleMove.CurMoveId;
+							Stellungsdaten.PreMoveId	= SingleMove.PreMoveId;
 
 							// Damit wird die aktuelle Situation und der Zug selbst für den insert in die Datenbank festgehalten
 							ChallengeMoves.push(SingleMove);
@@ -356,21 +356,21 @@ function TheIndexGeorgFunction() {
 
 								if (RatingSpielerzug_vergleich != Enginezug_vergleich && BetterEngineMoveFlag) {
 
-									ZugdifferenzDialog = $("#dialog_Zugdifferenz").dialog({
+									ZugdifferenzDialog = $("#dialog-zugdifferenz").dialog({
 										title: "Zugdifferenz",
 										height: 400,
 										width: 600,
 										modal: true,
 										open: function () {
-											$('#RatingSpielerzug').html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz'));
-											$('#Zugvorschlag').empty();
-											$('#Zugbewertung').empty();
+											$('#ratingspielerzug').html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz'));
+											$('#zugvorschlag').empty();
+											$('#zugbewertung').empty();
 										},
 										buttons: {
 											'Den stärkeren Zug anzeigen': {
 												click: function () {
-													$('#Zugvorschlag').empty().append('<span>' + getMoveNotations(T_Zuege.FEN, m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach, "kurz") + '</span>');
-													$('#Zugbewertung').empty().append('<span>(ist um ' + diff + ' cp	stärker)</span>');
+													$('#zugvorschlag').empty().append('<span>' + getMoveNotations(T_Zuege.FEN, m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach, "kurz") + '</span>');
+													$('#zugbewertung').empty().append('<span>(ist um ' + diff + ' cp	stärker)</span>');
 
 													// Anhand der Beschriftung des Knopfes wird entschieden
 													if ($('.ui-button:contains(Den stärkeren Zug anzeigen)').length == 1) {
@@ -551,15 +551,15 @@ function TheIndexGeorgFunction() {
 
 								//if (getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz') != CCM.ZugKurz) {
 								if (T_Zuege.ZugStockfish != CCM.ZugStockfish) {
-									EnginezugDialog = $("#dialog_BessererZug").dialog({
+									EnginezugDialog = $("#dialog-bessererzug").dialog({
 										title: "Falscher Zug",
 										height: 400,
 										width: 600,
 										modal: true,
 										open: function () {
-											$('#VariantenSpielerzug').html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz'));
-											$('#VariantenZugvorschlag').html(ChallengeMoves[VariantenMovecounter].ZugKurz);
-											$('#Zugbewertung').empty();
+											$('#variantenspielerzug').html(getMoveNotations(T_Zuege.FEN, T_Zuege.ZugStockfish, 'kurz'));
+											$('#variantenzugvorschlag').html(ChallengeMoves[VariantenMovecounter].ZugKurz);
+											$('#zugbewertung').empty();
 										},
 										buttons: {
 											Ok: function () {
@@ -622,15 +622,15 @@ function TheIndexGeorgFunction() {
 		});
 
 		// Diese Nachrichten können ausgelöst werden
-		$("#TriggerTag").on("gocmd", function (event, EngineCommand) { postit(EngineCommand); });
-		$("#TriggerTag").on("GetBoard", function () { postit('d'); });
-		$("#TriggerTag").on("OK", function () { postit('isready'); });
-		$("#TriggerTag").on("SetFenPosition", function (event, FEN_string) { postit('position fen ' + FEN_string); });
-		$("#TriggerTag").on("UciNewGame", function () { postit('ucinewgame'); });
-		$("#TriggerTag").on("go", function () { postit('go depth ' + Suchtiefe); });
-		$("#TriggerTag").on("isMoveCorrect", function (event, Stockfishzug) { postit('go depth 1 searchmoves ' + Stockfishzug); });
-		$("#TriggerTag").on("quit", function () { postit('quit'); });
-		$("#TriggerTag").on("validateMove", function (event, Stockfishzug) { postit('go depth ' + Suchtiefe + ' searchmoves ' + Stockfishzug); });
+		$("#triggertag").on("gocmd", function (event, EngineCommand) { postit(EngineCommand); });
+		$("#triggertag").on("GetBoard", function () { postit('d'); });
+		$("#triggertag").on("OK", function () { postit('isready'); });
+		$("#triggertag").on("SetFenPosition", function (event, FEN_string) { postit('position fen ' + FEN_string); });
+		$("#triggertag").on("UciNewGame", function () { postit('ucinewgame'); });
+		$("#triggertag").on("go", function () { postit('go depth ' + Suchtiefe); });
+		$("#triggertag").on("isMoveCorrect", function (event, Stockfishzug) { postit('go depth 1 searchmoves ' + Stockfishzug); });
+		$("#triggertag").on("quit", function () { postit('quit'); });
+		$("#triggertag").on("validateMove", function (event, Stockfishzug) { postit('go depth ' + Suchtiefe + ' searchmoves ' + Stockfishzug); });
 
 		ConfigureEngine();
 

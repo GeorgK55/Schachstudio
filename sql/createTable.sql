@@ -49,7 +49,6 @@ CREATE TABLE T_Aufgaben (
     Langtext							varchar(511)  DEFAULT NULL,
     Quelle								varchar(63)   DEFAULT NULL,
     Quelledetail					varchar(511)  DEFAULT NULL,
-    ImportQuelle					varchar(31)   NOT NULL,
 		Annotator							varchar(63)   DEFAULT NULL,
 		WeissName							varchar(63)   DEFAULT NULL,
 		SchwarzName						varchar(63)   DEFAULT NULL,
@@ -166,7 +165,6 @@ CREATE VIEW V_AufgabenZuege
 			  T_Aufgaben.Langtext,
 			  T_Aufgaben.Quelle,
 			  T_Aufgaben.Quelledetail,
-			  T_Aufgaben.ImportQuelle,
 			  T_Aufgaben.Annotator,
 			  T_Aufgaben.WeissName,
 			  T_Aufgaben.SchwarzName,
@@ -240,7 +238,6 @@ CREATE VIEW V_ThemenAufgaben
 			  T_Themen.thematext,
 			  T_Aufgaben.Kurztext,
 			  T_Aufgaben.Quelle,
-			  T_Aufgaben.ImportQuelle,
 			  T_Aufgaben.lichess_studie_id,
 			  T_Aufgaben.lichess_kapitel_id
 FROM   T_Themen INNER JOIN

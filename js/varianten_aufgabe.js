@@ -66,7 +66,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 
 				// Notieren
 				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
-				// Hier noch die Farbanzeige in VariantetextId aktualisieren?
+				// Hier noch die Farbanzeige in variantetextid aktualisieren?
 
 				// Verwalten
 				setMoveState(MC_challenge.selectedmove.CurMoveId, MOVESTATE_MOVED);
@@ -82,7 +82,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 
 				} else {
 					// Die Anzeige:
-					$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
+					$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/moveok.png'/>");
 					// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
 					ChallengeMoveVariantenResult.resolve({ result: MOVERESULT_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.selectedmove.CurMoveId });
 

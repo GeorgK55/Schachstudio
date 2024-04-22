@@ -26,12 +26,12 @@ function showAid(aidmode) { // init, first, second
 
 	switch(aidmode) {
 		case AIDMODE_INIT:
-			$('#aidicon').html('<img src="Grafiken/pngegg.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_FIRST)"></img>');
+			$('#aidicon').html('<img src="grafiken/firstaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_FIRST)"></img>');
 			$('#aidtext').empty();
 			break;
 
 		case AIDMODE_FIRST:
-			$('#aidicon').html('<img src="Grafiken/secondaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_SECOND)"></img>');
+			$('#aidicon').html('<img src="grafiken/secondaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_SECOND)"></img>');
 
 			AidMoves = $.grep(ChallengeMoves, function (CM, i) { return CM['PreMoveId'] == Stellungsdaten.CurMoveId &&	(CM['MoveState'] == MOVESTATE_READY || CM['MoveState'] == MOVESTATE_HIDDEN); });
 
@@ -50,7 +50,7 @@ function showAid(aidmode) { // init, first, second
 			break;
 
 		case AIDMODE_SECOND:
-			$('#aidicon').html('<img src="Grafiken/secondaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_SECOND)"></img>');
+			$('#aidicon').html('<img src="grafiken/secondaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_SECOND)"></img>');
 
 			AidMoves = $.grep(ChallengeMoves, function (CM, i) { return CM['PreMoveId'] == Stellungsdaten.CurMoveId &&	(CM['MoveState'] == MOVESTATE_READY || CM['MoveState'] == MOVESTATE_HIDDEN); });
 
@@ -73,18 +73,18 @@ function showAid(aidmode) { // init, first, second
 
 function resetmarker() {
 
-	$('#VariantetextId').empty();
-	// $('#VariantemarkerrejectId').empty();
-	$('#VariantemarkerresolveId').empty();
-	$('#ZugergebnismarkerId').empty();
-	$('#VariantemarkerId').empty();
+	$('#variantetextid').empty();
+	// $('#variantemarkerrejectid').empty();
+	$('#variantemarkerresolveid').empty();
+	$('#zugergebnismarkerid').empty();
+	$('#variantemarkerid').empty();
 
 }
 
 function showNotAcceptedMove() {
 
 	$("#" + T_Zuege.ZugFigur + "_" + T_Zuege.ZugVon).effect("shake");
-	$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/fehler.png'/>");
+	$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/fehler.png'/>");
 }
 
 function addBoardFunctions(BoardId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
@@ -102,8 +102,8 @@ function addMouseBoardFunctions(BoardIdPraefix) {
 
 			if (evx.target.innerText != "") { // nur dann steht eine Figur auf dem Feld
 
-				T_Zuege.ZugVon = evx.target.id.slice(-2);
-				T_Zuege.ZugFigur = evx.target.id.slice(0, 1);
+				T_Zuege.ZugVon = evx.target.getAttribute("data-figur").slice(-2);
+				T_Zuege.ZugFigur = evx.target.getAttribute("data-figur").slice(0, 1);
 
 				MoveMouseDown = true;
 			}
@@ -140,8 +140,8 @@ function addTouchBoardFunctions(BoardIdPraefix) {
 		.on('touchstart', function (evx) {
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('touchstart' + evx.originalEvent.srcElement);
 
-			T_Zuege.ZugVon = evx.target.id.slice(-2);
-			T_Zuege.ZugFigur = evx.target.id.slice(0, 1);
+			T_Zuege.ZugVon = evx.target.getAttribute("data-figur").slice(-2);
+			T_Zuege.ZugFigur = evx.target.getAttribute("data-figur").slice(0, 1);
 
 			MoveMouseDown = true;
 			evx.preventDefault();
@@ -156,7 +156,7 @@ function addTouchBoardFunctions(BoardIdPraefix) {
 			let endTarget = document.elementFromPoint(
 				evx.changedTouches[0].pageX,
 				evx.changedTouches[0].pageY - window.scrollY
-			).id.slice(-2);
+			).getAttribute("data-figur").slice(-2);
 
 			T_Zuege.ZugNach = endTarget;
 			evx.preventDefault();
@@ -212,21 +212,21 @@ function isMoveUsed(MoveId) {
 }
 
 // Es werden in Abhängigkeit der Themenselektion genau die Button aktiviert oder deaktiviert, deren Funktion möglich ist
-// btn_ThemaNeu: enable, wenn genau ein Thema selektiert ist, egal ob Blatt oder Ast
-// btn_ThemaEntfernen: enable nur, wenn denau ein Thema selektiert ist und das ist ein Blatt
+// btn-themaneu: enable, wenn genau ein Thema selektiert ist, egal ob Blatt oder Ast
+// btn-ehemaentfernen: enable nur, wenn denau ein Thema selektiert ist und das ist ein Blatt
 function activateThemaButtons(nodedata) {
 
 	if (nodedata.selected.length == 1) {
-		$("#btn_ThemaNeu").button("enable");
+		$("#btn-themaneu").button("enable");
 		//
-		if ($('#ThemenlisteTree').jstree(true).get_selected(true)[0].children.length == 0) {
-			$("#btn_ThemaEntfernen").button("enable");
+		if ($('#themenlistetree').jstree(true).get_selected(true)[0].children.length == 0) {
+			$("#btn-ehemaentfernen").button("enable");
 		} else {
-			$("#btn_ThemaEntfernen").button("disable");
+			$("#btn-ehemaentfernen").button("disable");
 		}
 	} else {
-		$("#btn_ThemaNeu").button("disable");
-		$("#btn_ThemaEntfernen").button("disable");
+		$("#btn-themaneu").button("disable");
+		$("#btn-ehemaentfernen").button("disable");
 	}
 
 }

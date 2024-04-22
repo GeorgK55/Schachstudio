@@ -22,8 +22,8 @@ function firePlayerMove() {
 		switch (GlobalActionContext) {
 			case AC_POSITION_PLAY:
 				GlobalActionStep = AS_CHECKPOSITIONPLAYERMOVE;
-				$("#TriggerTag").trigger("SetFenPosition", [T_Zuege.FEN]);
-				$("#TriggerTag").trigger("isMoveCorrect", [T_Zuege.ZugStockfish]);
+				$("#triggertag").trigger("SetFenPosition", [T_Zuege.FEN]);
+				$("#triggertag").trigger("isMoveCorrect", [T_Zuege.ZugStockfish]);
 				break;
 			case AC_POSITION_RATING:
 				GlobalActionStep = AS_PREPARERATINGPLAYERMOVE;
@@ -35,9 +35,9 @@ function firePlayerMove() {
 
 				T_Zuege_undo = { ...T_Zuege }; // T_Zuege enthält nur einfache Datentypen
 
-				$("#TriggerTag").trigger("UciNewGame");
-				$("#TriggerTag").trigger("SetFenPosition", [T_Zuege.FEN]);
-				$("#TriggerTag").trigger("validateMove", [T_Zuege.ZugStockfish]);
+				$("#triggertag").trigger("UciNewGame");
+				$("#triggertag").trigger("SetFenPosition", [T_Zuege.FEN]);
+				$("#triggertag").trigger("validateMove", [T_Zuege.ZugStockfish]);
 				break;
 			case AC_CHALLENGE_VARIANTENDIREKT:
 				spieleVarianten();
@@ -73,15 +73,15 @@ function checkPromotion() {
 			open: function () {
 
 				if (T_Zuege.ZugFarbe == WEISSAMZUG) {
-					$("#dialog_promotion").append('<button id="btn_dame" type="button" onclick="setPromotionPiece(\'Q\');" 	class="PromotionButton">&#9813;</button><br>');
-					$("#dialog_promotion").append('<button id="btn_turm" type="button" onclick="setPromotionPiece(\'R\');" 	class="PromotionButton">&#9814;</button><br>');
-					$("#dialog_promotion").append('<button id="btn_bishop" type="button" onclick="setPromotionPiece(\'B\');" 	class="PromotionButton">&#9815;</button><br>');
-					$("#dialog_promotion").append('<button id="btn_knight" type="button" onclick="setPromotionPiece(\'N\');" 	class="PromotionButton">&#9816</button>');
+					$("#dialog_promotion").append('<button id="btn-dame"		type="button" onclick="setPromotionPiece(\'Q\');"	class="PromotionButton">&#9813;</button><br>');
+					$("#dialog_promotion").append('<button id="btn-turm"		type="button" onclick="setPromotionPiece(\'R\');"	class="PromotionButton">&#9814;</button><br>');
+					$("#dialog_promotion").append('<button id="btn-bishop"	type="button" onclick="setPromotionPiece(\'B\');"	class="PromotionButton">&#9815;</button><br>');
+					$("#dialog_promotion").append('<button id="btn-knight"	type="button" onclick="setPromotionPiece(\'N\');"	class="PromotionButton">&#9816</button>');
 				} else {
-					$("#dialog_promotion").append('<button id="btn_dame" type="button" onclick="setPromotionPiece(\'q\');" 	class="PromotionButton">&#9819;</button><br>');
-					$("#dialog_promotion").append('<button id="btn_turm" type="button" onclick="setPromotionPiece(\'r\');" 	class="PromotionButton">&#9820;</button><br>');
-					$("#dialog_promotion").append('<button id="btn_bishop" type="button" onclick="setPromotionPiece(\'b\');" 	class="PromotionButton">&#9821;</button><br>');
-					$("#dialog_promotion").append('<button id="btn_knight" type="button" onclick="setPromotionPiece(\'n\');" 	class="PromotionButton">&#9822</button>');
+					$("#dialog_promotion").append('<button id="btn-dame"		type="button" onclick="setPromotionPiece(\'q\');"	class="PromotionButton">&#9819;</button><br>');
+					$("#dialog_promotion").append('<button id="btn-turm"		type="button" onclick="setPromotionPiece(\'r\');"	class="PromotionButton">&#9820;</button><br>');
+					$("#dialog_promotion").append('<button id="btn-bishop"	type="button" onclick="setPromotionPiece(\'b\');"	class="PromotionButton">&#9821;</button><br>');
+					$("#dialog_promotion").append('<button id="btn-knight"	type="button" onclick="setPromotionPiece(\'n\');"	class="PromotionButton">&#9822</button>');
 				}
 			},
 			close: function () {
@@ -216,29 +216,29 @@ function StellungAufbauen(div_Brett, FEN) {
 				// das Figursymbol in das div (=Feld) eintragen und dann gleich noch das span einfügen
 				switch (FEN_row[j]) {
 					case 'P':
-						{ $('#' + Feldname).html('<span id="P_' + file + rank + '">' + FIGUREN.P + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="P_' + file + rank + '">' + FIGUREN.P + '</span>'); break; }
 					case 'p':
-						{ $('#' + Feldname).html('<span id="p_' + file + rank + '">' + FIGUREN.p + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="p_' + file + rank + '">' + FIGUREN.p + '</span>'); break; }
 					case 'K':
-						{ $('#' + Feldname).html('<span id="K_' + file + rank + '">' + FIGUREN.K + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="K_' + file + rank + '">' + FIGUREN.K + '</span>'); break; }
 					case 'k':
-						{ $('#' + Feldname).html('<span id="k_' + file + rank + '">' + FIGUREN.k + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="k_' + file + rank + '">' + FIGUREN.k + '</span>'); break; }
 					case 'Q':
-						{ $('#' + Feldname).html('<span id="Q_' + file + rank + '">' + FIGUREN.Q + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="Q_' + file + rank + '">' + FIGUREN.Q + '</span>'); break; }
 					case 'q':
-						{ $('#' + Feldname).html('<span id="q_' + file + rank + '">' + FIGUREN.q + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="q_' + file + rank + '">' + FIGUREN.q + '</span>'); break; }
 					case 'R':
-						{ $('#' + Feldname).html('<span id="R_' + file + rank + '">' + FIGUREN.R + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="R_' + file + rank + '">' + FIGUREN.R + '</span>'); break; }
 					case 'r':
-						{ $('#' + Feldname).html('<span id="r_' + file + rank + '">' + FIGUREN.r + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="r_' + file + rank + '">' + FIGUREN.r + '</span>'); break; }
 					case 'N':
-						{ $('#' + Feldname).html('<span id="N_' + file + rank + '">' + FIGUREN.N + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="N_' + file + rank + '">' + FIGUREN.N + '</span>'); break; }
 					case 'n':
-						{ $('#' + Feldname).html('<span id="n_' + file + rank + '">' + FIGUREN.n + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="n_' + file + rank + '">' + FIGUREN.n + '</span>'); break; }
 					case 'B':
-						{ $('#' + Feldname).html('<span id="B_' + file + rank + '">' + FIGUREN.B + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="B_' + file + rank + '">' + FIGUREN.B + '</span>'); break; }
 					case 'b':
-						{ $('#' + Feldname).html('<span id="b_' + file + rank + '">' + FIGUREN.b + '</span>'); break; }
+						{ $('#' + Feldname).html('<span id="X_' + file + rank + '" data-figur="b_' + file + rank + '">' + FIGUREN.b + '</span>'); break; }
 				}
 				FileCounter++;
 			}
@@ -332,13 +332,15 @@ function finishChallenge(Endetext) {
 	showChallengeTip('Bravo. ' + Endetext, 'VeryImportantText');
 	removeMouseBoardFunctions(HTMLBRETTNAME_SPIELEN);
 	removeNotationMarker('challengenotation');
-	$('#VariantetextId').removeClass().addClass('centertext');
+	$('#variantetextid').removeClass().addClass('centertext');
 }
 
 // Identifizieren des Zugs: Ziehen, Schlagen, e.p., Umwandlung, Rochaden
 // und damit festlegen, welche Felder geleert und welche Felder mit welchen Figuren gefüllt werden müssen
 // als array zurückgeben, dann sind alle Situationen  berücksichtigt
 function prepareMove(BoardPräfix, objZug, toClear, toPlace) {
+
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	// Rochaden: alle Änderungen konstant
 	if (objZug.ZugKurz.includes('0-0')) {
@@ -408,6 +410,8 @@ function prepareMove(BoardPräfix, objZug, toClear, toPlace) {
 // Nach der Animation wird die animierte Figur entfernt.
 function animateMove(objZug, BoardPräfix, Animationspeed) {
 
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+
 	AnimationFinished = $.Deferred();
 
 	if(Animationspeed != 0) {
@@ -427,6 +431,8 @@ function animateMove(objZug, BoardPräfix, Animationspeed) {
 
 function terminateAnimation(cleardata) {
 
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+
 	$('#' + cleardata.data.brett + cleardata.data.von).empty();	// Schon hier, damit die Figur nicht noch mal kurz am alten Platz aufblitzt
 
 	AnimationFinished.resolve();
@@ -442,7 +448,7 @@ function processMove0(objZug, BoardPräfix) {
 	}
 
 	$('#' + BoardPräfix + objZug.ZugVon).empty(); // Entfernt sowohl das Figurzeichen als auch das span
-	$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span id="' + figur +  '_' + objZug.ZugNach + '">' + eval('FIGUREN.' + figur) + '</span>');
+	$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span data-figur="' + figur +  '_' + objZug.ZugNach + '">' + eval('FIGUREN.' + figur) + '</span>');
 
 	showAid(AIDMODE_INIT);
 	ZugAnimation.resolve();
@@ -452,12 +458,15 @@ function processMove0(objZug, BoardPräfix) {
 // toClear: ein Array von Feldnamen, toPlace: ein Array von Objekten mit Figurname und Feldname
 function processMove(BoardPräfix, toClear, toPlace) {
 
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+
 	toClear.forEach(function(feld) { $('#' + BoardPräfix + feld).empty(); });
 
 	toPlace.forEach(function(ziel) {
 		$('#' + BoardPräfix + ziel.feldname).empty();
 		zielspan = document.createElement("span");
 		zielspan.id = ziel.figurname + '_' + ziel.feldname;
+		zielspan.setAttribute("data-figur", ziel.figurname + '_' + ziel.feldname);
 		zielspan.innerHTML = FIGUREN[ziel.figurname];
 
 		document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);

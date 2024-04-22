@@ -56,36 +56,36 @@
     margin: 2vh 2vw;
   }
 
-	#btn_ThemaNeu::after {
+	#btn-themaneu::after {
 		content: "Neu";
 	}
 	
-	#btn_ThemaEntfernen::after {
+	#btn-ehemaentfernen::after {
 		content: "Entfernen";
 	}
 	
-  #btn_lichesskapitel::after {
+  #btn-lichesskapitel::after {
     content: "lichess spielen";
   }
- #btn_Import::after {
+ #btn-import::after {
     content: "Importieren";
   }
-  #btn_VerbindeAufgabe::after {
+  #btn-verbindeaufgabe::after {
     content: "Kombinieren";
   }
-  #btn_TrenneAufgabe::after {
+  #btn-trenneaufgabe::after {
     content: "Trennen";
   }
-  #btn_EntferneAufgabe::after {
+  #btn-entferneaufgabe::after {
     content: "Entfernen";
   }
 
-	#LoesungAuswahl {
+	#loesungauswahl {
 		display: flex;
 		justify-content:space-evenly;
 	}
 
-	#LoesungAuswahl fieldset {
+	#loesungauswahl fieldset {
 		width:45%;
 	}
 
@@ -93,14 +93,14 @@
 		width: 40%;
 	}
 
-	#Filterauswahl {
+	#filterauswahl {
 		display: none;
 	}
 
-	#legend_Stellung::after {
+	#legend-stellung::after {
 		content: "Ausspielen";
 	}
-	#legend_Aufgabe::after {
+	#legend-aufgabe::after {
 		content: "Lösen";
 	}
 	
@@ -111,10 +111,10 @@
   #l_StellungMit::after {
     content: "Mit Hinweisen";
   }
-  #l_AufgabeOhne::after {
+  #l-aufgabeohne::after {
     content: "Ohne Varianten";
   }
-  #l_AufgabeMit::after {
+  #l-aufgabemit::after {
     content: "Mit Varianten";
   }
 
@@ -132,13 +132,13 @@
     content: "Entwickler";
   }
 
-  #btn_Spieler::after {
+  #btn-spieler::after {
     content: "Aufgaben lösen";
   }
-  #btn_Trainer::after {
+  #btn-trainer::after {
     content: "Themen und Aufgaben";
   }
-  #btn_Entwickler::after {
+  #btn-entwickler::after {
     content: "Protokoll und Enginekommandos";
   }
 

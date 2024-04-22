@@ -3,12 +3,12 @@ function showSpielerinfo() {
 	$("[id^='s_']").hide();
 	$("[id^='s1_']").hide();
 	$("[id^='s2_']").show();
-	$('#s_Spielerinfo').show();
+	$('#s_spielerinfo').show();
 
 	$.ajax({
 		url: "html/spielerinfo.html",
 		dataType: "text",
-		success: function (data) { $(data).appendTo("#Spielerinfo_div"); }
+		success: function (data) { $(data).appendTo("#spielerinfo_div"); }
 	});
 }
 
@@ -17,7 +17,7 @@ function showTrainerinfo() {
 	$("[id^='s_']").hide();
 	$("[id^='s1_']").hide();
 	$("[id^='s2_']").show();
-	$('#s_Trainerinfo').show();
+	$('#s_trainerinfo').show();
 
 	$(".trainerfeatures").removeClass("hideMe");
 
@@ -25,8 +25,8 @@ function showTrainerinfo() {
 		url: "html/spielerinfo.html",
 		dataType: "text",
 		success: function (data) {
-			$("<div>Als Spieler:</div>").appendTo("#Trainerinfo_div");
-			$(data).appendTo("#Trainerinfo_div");
+			$("<div>Als Spieler:</div>").appendTo("#trainerinfo_div");
+			$(data).appendTo("#trainerinfo_div");
 		}
 	})
 		.then(() => {
@@ -34,8 +34,8 @@ function showTrainerinfo() {
 				url: "html/trainerinfo.html",
 				dataType: "text",
 				success: function (data) {
-					$("<div>Als Trainer:</div>").appendTo("#Trainerinfo_div");
-					$(data).appendTo("#Trainerinfo_div");
+					$("<div>Als Trainer:</div>").appendTo("#trainerinfo_div");
+					$(data).appendTo("#trainerinfo_div");
 				}
 			});
 		});
@@ -46,7 +46,7 @@ function showEntwicklerinfo() {
 	$("[id^='s_']").hide();
 	$("[id^='s1_']").hide();
 	$("[id^='s2_']").show();
-	$('#s_Entwicklerinfo').show();
+	$('#s_entwicklerinfo').show();
 
 	$(".trainerfeatures").removeClass("hideMe");
 	$(".developerfeatures").removeClass("hideMe");
@@ -55,8 +55,8 @@ function showEntwicklerinfo() {
 		url: "html/spielerinfo.html",
 		dataType: "text",
 		success: function (data) {
-			$("<div>Als Spieler:</div>").appendTo("#Entwicklerinfo_div");
-			$(data).appendTo("#Entwicklerinfo_div");
+			$("<div>Als Spieler:</div>").appendTo("#entwicklerinfo_div");
+			$(data).appendTo("#entwicklerinfo_div");
 		}
 	})
 		.then(() => {
@@ -64,8 +64,8 @@ function showEntwicklerinfo() {
 				url: "html/trainerinfo.html",
 				dataType: "text",
 				success: function (data) {
-					$("<div>Als Trainer:</div>").appendTo("#Entwicklerinfo_div");
-					$(data).appendTo("#Entwicklerinfo_div");
+					$("<div>Als Trainer:</div>").appendTo("#entwicklerinfo_div");
+					$(data).appendTo("#entwicklerinfo_div");
 				}
 			});
 		})
@@ -74,8 +74,8 @@ function showEntwicklerinfo() {
 				url: "html/entwicklerinfo.html",
 				dataType: "text",
 				success: function (data) {
-					$("<div>Als Entwickler:</div>").appendTo("#Entwicklerinfo_div");
-					$(data).appendTo("#Entwicklerinfo_div");
+					$("<div>Als Entwickler:</div>").appendTo("#entwicklerinfo_div");
+					$(data).appendTo("#entwicklerinfo_div");
 				}
 			});
 		});
@@ -95,7 +95,7 @@ function showEnginedialog() {
 	$('#logliste').empty();
 
 	$("[id^='s_']").hide();
-	$('#s_EngineDialog').show();
+	$('#s_enginedialog').show();
 
 }
 
@@ -106,12 +106,12 @@ function toggleEnginelog(CheckboxID) {
 	if ($('#' + CheckboxID).is(":checked")) {
 		GlobalEnginelogActive = true;
 
-		EnginelogDialog = $("#dialog_Enginelog").dialog({
+		EnginelogDialog = $("#dialog-enginelog").dialog({
 			title: "Enginelog",
 			height: 800,
 			width: 600,
 			modal: false,
-			position: { my: "left top", at: "left top", of: "#ThemenlisteTree" },
+			position: { my: "left top", at: "left top", of: "#themenlistetree" },
 			open: function () { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('open Enginelog'); },
 			close: function (event, ui) {
 				if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('close in close');
@@ -123,7 +123,7 @@ function toggleEnginelog(CheckboxID) {
 	} else {
 		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('close per checkbox');
 		GlobalEnginelogActive = false;
-		$("#dialog_Enginelog").dialog('close');
+		$("#dialog-enginelog").dialog('close');
 	}
 
 }
@@ -203,7 +203,7 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_S
 
 	showAid(AIDMODE_INIT);
 
-	$('#VariantetextId').removeClass().addClass('centertext');
+	$('#variantetextid').removeClass().addClass('centertext');
 
 	resetmarker();
 }
@@ -235,23 +235,23 @@ function initializeNotationtree() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION
 function SpielinteraktionEinstellen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	switch ($('input[name="Spielinteraktion"]:checked').val()) {
-		case "StellungOhne":
+		case SPIELINTERAKTION_STELLUNGOHNE:
 			GlobalActionContext			= AC_POSITION_PLAY;
 			GlobalSpielinteraktion	= SPIELINTERAKTION_STELLUNGOHNE;
 			postit('ucinewgame');
 			break;
-		case "StellungMit":
+		case SPIELINTERAKTION_STELLUNGMIT:
 			GlobalActionContext			= AC_POSITION_RATING;
 			GlobalSpielinteraktion	= SPIELINTERAKTION_STELLUNGMIT;
 			postit('ucinewgame');
 			break;
-		case "AufgabeMit":
+		case SPIELINTERAKTION_AUFGABEMIT:
 			GlobalActionContext			= AC_CHALLENGE_VARIANTENDIREKT;
 			GlobalSpielinteraktion	= SPIELINTERAKTION_AUFGABEMIT;
 			Stellungsdaten.CreateNewNode = true;
 			MitVarianten = PHPTRUE;
 			break;
-		case "AufgabeOhne":
+		case SPIELINTERAKTION_AUFGABEOHNE:
 			GlobalActionContext			= AC_CHALLENGE_VARIANTENDANACH;
 			GlobalSpielinteraktion	= SPIELINTERAKTION_AUFGABEOHNE;
 			Stellungsdaten.CreateNewNode = true;
@@ -271,8 +271,8 @@ function manageSpielinteraktionSelection() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_
 
 	SpielinteraktionEinstellen();
 
-	if($('#ul_Aufgabenliste')[0].querySelector('.ui-selected') != null) {
-		stageChallenge($('#ul_Aufgabenliste')[0].querySelector('.ui-selected').id);
+	if($('#ul_ufgabenliste')[0].querySelector('.ui-selected') != null) {
+		stageChallenge($('#ul_ufgabenliste')[0].querySelector('.ui-selected').id);
 	}
 
 }
@@ -294,11 +294,12 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)
 	Kapitel = GlobalImportedPGN[KapitelID.split("_")[1]]; //responseData['ergebnisdaten'][0];
 
 	scanPGN(Kapitel);
-	scanChallengePGNData(GlobalImportedPGN[KapitelID.split("_")[1]]);
+	notifyChallengeDetails();
+	normalizePGNMoves(GlobalImportedPGN[KapitelID.split("_")[1]]);
 	Challenge = { ...Importdaten };
 	Challenge.FEN = T_Aufgabe.FEN;
-	getImportBoard()
-		.then(function () { ZuegePruefen(); })
+	getChallengeBoard()
+		.then(function () { ZuegePruefen(NOTATIONMODE_HIDDEN); })
 		.then(function () { initializeSelectionEnvironment(); })
 		.then(function () { initializeNotationtree(); });	
 
@@ -308,7 +309,6 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)
 	// $('#LangtextSpiel').val(Challenge.Langtext);
 	// $('#QuellquellespieleSpiel').val(Challenge.Quelle);
 	// $('#QuelledetailSpiel').val(Challenge.Quelledetail);
-	// $('#Importquellespiel').val(Challenge.ImportQuelle);
 	// $('#ScopeSpiel').val(Challenge.Scope);
 	// $('#SkillSpielSpiel').val(Challenge.Skill);
 	// $('#AmZugSpiel').val(Challenge.AmZug);

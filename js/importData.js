@@ -89,13 +89,15 @@ function prepareChallengeImport() {
 			$('#importTreeNotationWrapperId').removeClass( "hideMe" ).empty();
 			$('#importactionbuttons').removeClass( "hideMe" );
 
-			// Die Namen der Aufgaben haben hinter dem Unterstrich einen Zähler. Das ist der Index der gelesenen Aufgaben
+			// Die id der Aufgaben haben hinter dem Unterstrich einen Zähler. Das ist der Index der gelesenen Aufgaben
 			GlobalImportedPGNIndex = ui.selected.id.split("_")[1];
 
 			// Die Daten der Aufgabe vorbereiten und die Datenstrukturen mit den Aufgabedaten versorgen
 			document.getElementById("importaufgabetext").innerHTML = GlobalImportedPGN[GlobalImportedPGNIndex];
-			scanChallengeMetaData0(GlobalImportedPGN[GlobalImportedPGNIndex]);
-			scanChallengePGNData(GlobalImportedPGN[GlobalImportedPGNIndex]);
+			//scanChallengeMetaData0(GlobalImportedPGN[GlobalImportedPGNIndex]);
+			scanPGN(GlobalImportedPGN[GlobalImportedPGNIndex]);
+			notifyChallengeDetails(); 
+			normalizePGNMoves(GlobalImportedPGN[GlobalImportedPGNIndex]);
 			getImportBoard();
 
 			StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN);
@@ -106,8 +108,6 @@ function prepareChallengeImport() {
 
 // Aus den Importdaten werden die die Aufgabe beschreibenden Daten extrahiert und in die Oberfläche übertragen
 function scanPGN(PGNText) {
-
-	$('#ul_importaufgabedetails input').val('');
 
 	Importdaten = new CImportdaten();
 	T_Aufgabe		= new CAufgabe();
@@ -157,10 +157,11 @@ function scanPGN(PGNText) {
 
 	let m_Datum = (/(\[(UTC){0,1}Date \")(?<datum>.*)(\"\])/).exec(PGNText);
 	if (m_Datum != null) {
-		T_Aufgabe.Datum = m_Datum.groups.datum;
+		 let receiveddate= m_Datum.groups.datum.split('.');
+		 T_Aufgabe.Datum = receiveddate[2] + '.' + receiveddate[1] + '.' + receiveddate[0];
 	}
 
-	// Fritz exportiert bei Partieanfang kein FEN. Deshalb erst mal so prüfen
+	// Weder Fritz noch lichess exportiern bei Partieanfang eine FEN. 
 
 	let m_FEN_Exist = (/\[FEN/g).exec(PGNText);
 
@@ -189,120 +190,138 @@ function scanPGN(PGNText) {
 
 }
 
-// Aus den Importdaten werden die die Aufgabe beschreibenden Daten extrahiert und in die Oberfläche übertragen
-function scanChallengeMetaData0(Importtext) {
+function notifyChallengeDetails() {
 
 	$('#ul_importaufgabedetails input').val('');
 
-	Importdaten = new CImportdaten();
-	T_Aufgabe		= new CAufgabe();
-
-	T_Aufgabe.PGN = Importtext;
-
-	// Alle regex maskieren, da sonst die Fehlermeldung "groups für null" kommt
-
-	// Dieser Ausdruck erkennt Standardlichesstexte (": " zwischen Studie und Kapitel)
-	let m_Aufgabetext		= Importtext.match(r_Event);
-
-	if (m_Aufgabetext == null) {
-		T_Aufgabe.Kurztext = "Fehlt";
-		$('#KurztextImport').val("Fehlt");
-		// Langtext ist optional und nullable
-	} else {
-		// Wenn der "lichess-Doppelpunkt" fehlt, steht der Kurztext in der Gruppe event, sonst in den Gruppen Studie und Kapitel
-		if(m_Aufgabetext.groups.event == null) {
-			T_Aufgabe.Kurztext = m_Aufgabetext.groups.kapitel;
-			$('#KurztextImport').val(m_Aufgabetext.groups.kapitel);
-			T_Aufgabe.Langtext = m_Aufgabetext.groups.studie;
-			$('#LangtextImport').val(m_Aufgabetext.groups.studie);
-		} else {
-			T_Aufgabe.Kurztext = m_Aufgabetext.groups.event;
-			$('#KurztextImport').val(m_Aufgabetext.groups.event);
-		}
-	}
-
-	let m_Quelle = (/(\[Site \")(?<site>.*)(\"\])/).exec(Importtext);
-	if (m_Quelle != null) {
-		T_Aufgabe.Quelle = m_Quelle.groups.site;
-		$('#QuelleImport').val(m_Quelle.groups.site);
-	}
-
-	let m_Annotatortext	= Importtext.match(r_Annotator);
-	if (m_Annotatortext != null) {
-		T_Aufgabe.Annotator = m_Annotatortext.groups.annotatortext;
-		$('#AnnotatortextImport').val(m_Annotatortext.groups.annotatortext);
-	}
-
-	let m_Weiss = (/(\[White \")(?<weissname>.*)(\"\])/).exec(Importtext);
-	if (m_Weiss != null) {
-		T_Aufgabe.WeissName = m_Weiss.groups.weissname;
-		$('#WeissNameImport').val(m_Weiss.groups.weissname);
-	}
-
-	let m_Schwarz = (/(\[Black \")(?<schwarzname>.*)(\"\])/).exec(Importtext);
-	if (m_Schwarz != null) {
-		T_Aufgabe.SchwarzName = m_Schwarz.groups.schwarzname;
-		$('#SchwarzNameImport').val(m_Schwarz.groups.schwarzname);
-	}
-
-	let m_Datum = (/(\[UTCDate \")(?<datum>.*)(\"\])/).exec(Importtext);
-	if (m_Datum != null) {
-		T_Aufgabe.Datum = m_Datum.groups.datum;
-		$('#DatumImport').val(m_Datum.groups.datum);
-	}
-
-	T_Aufgabe.Quelledetail	= "";
-	T_Aufgabe.Scope					= "";
-	T_Aufgabe.Skill					= "";
-
-	// Fritz exportiert bei Partieanfang kein FEN. Deshalb erst mal so prüfen
-
-	let m_FEN_Exist = (/\[FEN/g).exec(Importtext);
-
-	if (m_FEN_Exist == null) {
-
-		T_Aufgabe.FEN = FEN_PARTIEANFANG;
-		$('#FENImport').val(FEN_PARTIEANFANG);
-		T_Aufgabe.AmZug = WEISSAMZUG;
-		$("#AmZugImport").val(WEISSAMZUG);
-
-	} else {
-
-		let m_FEN = (/(\[FEN \")(?<fen>.*)(\"\])/).exec(Importtext);
-		T_Aufgabe.FEN = m_FEN.groups.fen;
-		$('#FENImport').val(m_FEN.groups.fen);
-			$("#AmZugImport").val(WEISSAMZUG);
-		if (m_FEN.groups.fen.includes("w")) { // laut Spezifikation ist es in klein
-			T_Aufgabe.AmZug = WEISSAMZUG;
-			$("#AmZugImport").val(WEISSAMZUG);
-		} else {
-			T_Aufgabe.AmZug = SCHWARZAMZUG;
-			$("#AmZugImport").val(SCHWARZAMZUG);
-		}
-
-	}
+	$('#KurztextImport').val(T_Aufgabe.Kurztext);
+	$('#LangtextImport').val(T_Aufgabe.Langtext);
+	$('#QuelleImport').val(T_Aufgabe.Quelle);
+	$('#AnnotatortextImport').val(T_Aufgabe.Annotator);
+	$('#WeissNameImport').val(T_Aufgabe.WeissName);
+	$('#SchwarzNameImport').val(T_Aufgabe.SchwarzName);
+	$('#DatumImport').val(T_Aufgabe.Datum);
+	$('#FENImport').val(T_Aufgabe.FEN);
+	$("#AmZugImport").val(T_Aufgabe.AmZug);
 
 }
 
+// Aus den Importdaten werden die die Aufgabe beschreibenden Daten extrahiert und in die Oberfläche übertragen
+// function scanChallengeMetaData0(Importtext) {
+
+// 	$('#ul_importaufgabedetails input').val('');
+
+// 	Importdaten = new CImportdaten();
+// 	T_Aufgabe		= new CAufgabe();
+
+// 	T_Aufgabe.PGN = Importtext;
+
+// 	// Alle regex maskieren, da sonst die Fehlermeldung "groups für null" kommt
+
+// 	// Dieser Ausdruck erkennt Standardlichesstexte (": " zwischen Studie und Kapitel)
+// 	let m_Aufgabetext		= Importtext.match(r_Event);
+
+// 	if (m_Aufgabetext == null) {
+// 		T_Aufgabe.Kurztext = "Fehlt";
+// 		$('#KurztextImport').val("Fehlt");
+// 		// Langtext ist optional und nullable
+// 	} else {
+// 		// Wenn der "lichess-Doppelpunkt" fehlt, steht der Kurztext in der Gruppe event, sonst in den Gruppen Studie und Kapitel
+// 		if(m_Aufgabetext.groups.event == null) {
+// 			T_Aufgabe.Kurztext = m_Aufgabetext.groups.kapitel;
+// 			$('#KurztextImport').val(m_Aufgabetext.groups.kapitel);
+// 			T_Aufgabe.Langtext = m_Aufgabetext.groups.studie;
+// 			$('#LangtextImport').val(m_Aufgabetext.groups.studie);
+// 		} else {
+// 			T_Aufgabe.Kurztext = m_Aufgabetext.groups.event;
+// 			$('#KurztextImport').val(m_Aufgabetext.groups.event);
+// 		}
+// 	}
+
+// 	let m_Quelle = (/(\[Site \")(?<site>.*)(\"\])/).exec(Importtext);
+// 	if (m_Quelle != null) {
+// 		T_Aufgabe.Quelle = m_Quelle.groups.site;
+// 		$('#QuelleImport').val(m_Quelle.groups.site);
+// 	}
+
+// 	let m_Annotatortext	= Importtext.match(r_Annotator);
+// 	if (m_Annotatortext != null) {
+// 		T_Aufgabe.Annotator = m_Annotatortext.groups.annotatortext;
+// 		$('#AnnotatortextImport').val(m_Annotatortext.groups.annotatortext);
+// 	}
+
+// 	let m_Weiss = (/(\[White \")(?<weissname>.*)(\"\])/).exec(Importtext);
+// 	if (m_Weiss != null) {
+// 		T_Aufgabe.WeissName = m_Weiss.groups.weissname;
+// 		$('#WeissNameImport').val(m_Weiss.groups.weissname);
+// 	}
+
+// 	let m_Schwarz = (/(\[Black \")(?<schwarzname>.*)(\"\])/).exec(Importtext);
+// 	if (m_Schwarz != null) {
+// 		T_Aufgabe.SchwarzName = m_Schwarz.groups.schwarzname;
+// 		$('#SchwarzNameImport').val(m_Schwarz.groups.schwarzname);
+// 	}
+
+// 	let m_Datum = (/(\[UTCDate \")(?<datum>.*)(\"\])/).exec(Importtext);
+// 	if (m_Datum != null) {
+// 		T_Aufgabe.Datum = m_Datum.groups.datum;
+// 		$('#DatumImport').val(m_Datum.groups.datum);
+// 	}
+
+// 	T_Aufgabe.Quelledetail	= "";
+// 	T_Aufgabe.Scope					= "";
+// 	T_Aufgabe.Skill					= "";
+
+// 	// Fritz exportiert bei Partieanfang kein FEN. Deshalb erst mal so prüfen
+
+// 	let m_FEN_Exist = (/\[FEN/g).exec(Importtext);
+
+// 	if (m_FEN_Exist == null) {
+
+// 		T_Aufgabe.FEN = FEN_PARTIEANFANG;
+// 		$('#FENImport').val(FEN_PARTIEANFANG);
+// 		T_Aufgabe.AmZug = WEISSAMZUG;
+// 		$("#AmZugImport").val(WEISSAMZUG);
+
+// 	} else {
+
+// 		let m_FEN = (/(\[FEN \")(?<fen>.*)(\"\])/).exec(Importtext);
+// 		T_Aufgabe.FEN = m_FEN.groups.fen;
+// 		$('#FENImport').val(m_FEN.groups.fen);
+// 			$("#AmZugImport").val(WEISSAMZUG);
+// 		if (m_FEN.groups.fen.includes("w")) { // laut Spezifikation ist es in klein
+// 			T_Aufgabe.AmZug = WEISSAMZUG;
+// 			$("#AmZugImport").val(WEISSAMZUG);
+// 		} else {
+// 			T_Aufgabe.AmZug = SCHWARZAMZUG;
+// 			$("#AmZugImport").val(SCHWARZAMZUG);
+// 		}
+
+// 	}
+
+// }
+
 // Die Zugangaben sind für ein angenehmes Lesen optimiert (Zeilenumbrüche, mal mit mal ohne Leerzeichen usw.)
-// Hier werden alle später mal relevanten Teile voneinander getrennt. Am Ende gibt es ein Array mit allen Einzelteilen
-function scanChallengePGNData(Importtext) {
+// Hier werden alle später mal relevanten Teile voneinander getrennt und die optischen Optimierungen entfernt. 
+// Nach jeder Korrektur gibt es eine neue Zeichenkette.
+// Am Ende gibt es ein Array mit allen Einzelteilen
+function normalizePGNMoves(Importtext) {
 
 	let ImportMoves = Importtext.match(r_Match_Moves);
 
 	if (ImportMoves.length > 0) {
 
 		// Es liegen Züge vor. Die Engine vorbereiten
-		$("#TriggerTag").trigger("start_ucinewgame");
+		$("#triggertag").trigger("start_ucinewgame");
 
 		// Zeilenschaltungen werden komplett und ohne weitere Bedingungen durch Leerzeichen ersetzt (Zeilenschaltung wird im pgn als Trenner gesehen)
-		let OhneZeilenschaltungen = ImportMoves[0].replace(/(\n)|(\r\n)|(\n\r)/g, " ");
+		let OhneZeilenschaltungen		= ImportMoves[0].replace(/(\n)|(\r\n)|(\n\r)/g, " ");
 
-		let PunkteKorrigiert = OhneZeilenschaltungen.replace(r_Punkte, "$1" + ". ... ");
+		let PunkteKorrigiert				= OhneZeilenschaltungen.replace(r_Punkte, "$1" + ". ... ");
 
-		let KlammernZuAufKorrigiert = PunkteKorrigiert.replace(r_KlammernZuAuf, "$1" + " " + "$2");
-		let KlammernAufKorrigiert = KlammernZuAufKorrigiert.replace(r_KlammernAuf, "$1" + " ");
-		let KlammernZuKorrigiert = KlammernAufKorrigiert.replace(r_KlammernZu, " " + "$1");
+		let KlammernZuAufKorrigiert	= PunkteKorrigiert.replace(r_KlammernZuAuf, "$1" + " " + "$2");
+		let KlammernAufKorrigiert		= KlammernZuAufKorrigiert.replace(r_KlammernAuf, "$1" + " ");
+		let KlammernZuKorrigiert		= KlammernAufKorrigiert.replace(r_KlammernZu, " " + "$1");
 
 		let ZugnummerKorrigiert = KlammernZuKorrigiert.replace(r_Zugnummern, "$1" + " " + "$2");
 
@@ -312,44 +331,49 @@ function scanChallengePGNData(Importtext) {
 
 }
 
-function ZuegePruefen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function ZuegePruefen(notationmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+
+	GLOBALNOTATIONMODE = notationmode == NOTATIONMODE_HIDDEN ? NOTATIONMODE_HIDDEN : NOTATIONMODE_VISIBLE;
 
 	Zugpruefung = $.Deferred();
 
-	Importdaten.PGN_Index = 0;
-	Importdaten.ZugFarbe	=	T_Aufgabe.AmZug;
-	Importdaten.PreFEN		=	T_Aufgabe.FEN;	// Die FEN; die zu diesem Zug geführt hat
-	Importdaten.FEN				=	T_Aufgabe.FEN;	// Die FEN; mit der dieser Zug ausgeführt wird
+	Importdaten.PGN_Index		= 0;
+	Importdaten.PreFEN			=	T_Aufgabe.FEN;	// Die FEN; die zu diesem Zug geführt hat
+	Stellungsdaten.FEN			=	T_Aufgabe.FEN;	// Die FEN; mit der dieser Zug ausgeführt wird
+	Stellungsdaten.ZugFarbe	=	T_Aufgabe.AmZug;
 
-	Zugliste = [];
-	ChallengeMoves = [];
+	Zugliste				= [];
+	ChallengeMoves	= [];
 	
+	if(GLOBALNOTATIONMODE == NOTATIONMODE_VISIBLE) {
 
-	// NotationstabelleAufgabe initiieren
-	// In diesen tag wird die Notation eingetragen (könnte auch per jstree reinitialisiert werden?)
-	$('#importTreeNotationWrapperId').empty()
-		.append('<div id="ImportTreeNotationId"></div>');
+		// NotationstabelleAufgabe initiieren
+		// In diesen tag wird die Notation eingetragen (könnte auch per jstree reinitialisiert werden?)
+		$('#importTreeNotationWrapperId').empty()
+			.append('<div id="importtreenotationid"></div>');
 
-	$('#ImportTreeNotationId').jstree({
-		'plugins': ["themes"],
-		'core': {
-			'check_callback': true,
-			'open_parents': true,
-			'load_open': true,
-			'themes': { 'icons': false },
-			'hover_node':false // wirkt anscheinend nicht. Maus bleibt die Hand
-		}
-	});
+		$('#importtreenotationid').jstree({
+			'plugins': ["themes"],
+			'core': {
+				'check_callback': true,
+				'open_parents': true,
+				'load_open': true,
+				'themes': { 'icons': false },
+				'hover_node':false // wirkt anscheinend nicht. Maus bleibt die Hand
+			}
+		});
 
-	$('#ImportTreeNotationId').jstree().create_node('#', {
-		"id": "N_0",
-		"text": "o"
-	}, "last", function () { /*alert("PreNodeId created"); */
-	});
+		$('#importtreenotationid').jstree().create_node('#', {
+			"id": "N_0",
+			"text": "o"
+		}, "last", function () { /*alert("PreNodeId created"); */
+		});
 
-	Importdaten.CreateNewNode = true;
+		Stellungsdaten.CreateNewNode = true;
+		
+	}
 
-	StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN);
+	StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN); // Hier auch noch ??? Ist das im select nicht schon ausreichend?
 	validateSingleMove(); // Wird von hier aus einmalig am Beginn der Prüfung aufgerufen. Dann wiederholt im stockfishmodul
 
 	return Zugpruefung.promise();
@@ -386,13 +410,13 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 		if (m_BauerKurzeNotation != null || m_FigurKurzeNotation != null || m_Rochaden != null) {
 
 			// Das gilt immer, egal was für ein Zug
-			SingleMove.PreMoveId		= Importdaten.CurMoveId;
+			SingleMove.PreMoveId		= Stellungsdaten.CurMoveId;
 			SingleMove.CurMoveId		= MOVEPRÄFIX + Importdaten.PGN_Index;
 			SingleMove.CurMoveIndex	= Importdaten.PGN_Index;
-			SingleMove.ZugNummer		= Importdaten.ZugNummer;
-			SingleMove.ZugLevel			= Importdaten.ZugLevel;
-			SingleMove.ZugFarbe			= Importdaten.ZugFarbe;
-			SingleMove.FEN					= Importdaten.FEN;
+			SingleMove.ZugNummer		= Importdaten.ZugNummer; // Gibt es die hier wirklich schon ???
+			SingleMove.ZugLevel			= Stellungsdaten.ZugLevel;
+			SingleMove.ZugFarbe			= Stellungsdaten.ZugFarbe;
+			SingleMove.FEN					= Stellungsdaten.FEN;
 
 
 			if (m_BauerKurzeNotation != null) {
@@ -471,28 +495,28 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log("( an index " + Importdaten.PGN_Index + " mit " + JSON.stringify(Importdaten.ZugStack));
 
 			Importdaten.ZugStack.push({
-				FEN:			Importdaten.FEN,
+				FEN:			Stellungsdaten.FEN,
 				PreFEN:		Importdaten.PreFEN,
-				PreNode:	Importdaten.PreNodeId,
-				CurNode:	Importdaten.CurNodeId,
-				PreMove:	Importdaten.PreMoveId,
-				CurMove:	Importdaten.CurMoveId
+				PreNode:	Stellungsdaten.PreNodeId,
+				CurNode:	Stellungsdaten.CurNodeId,
+				PreMove:	Stellungsdaten.PreMoveId,
+				CurMove:	Stellungsdaten.CurMoveId
 			});
 
-			Importdaten.VarianteCounter++;
-			Importdaten.ZugLevel++;
-			Importdaten.VarianteColor[Importdaten.ZugLevel]++;
-			Importdaten.FEN = Importdaten.PreFEN; // Damit bekommt der nächste Zug = erster in der Variante die FEN, die zum aktuellen Zug geführt hat
-			Importdaten.ZugFarbe = Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG; // Der aktuelle Zug bekommt die Farbe des wegen der Variante "zurückgenommenen" Zugs
+			Stellungsdaten.VarianteCounter++;
+			Stellungsdaten.ZugLevel++;
+			Stellungsdaten.VarianteColor[Stellungsdaten.ZugLevel]++;
+			Stellungsdaten.FEN = Importdaten.PreFEN; // Damit bekommt der nächste Zug = erster in der Variante die FEN, die zum aktuellen Zug geführt hat
+			Stellungsdaten.ZugFarbe = Stellungsdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG; // Der aktuelle Zug bekommt die Farbe des wegen der Variante "zurückgenommenen" Zugs
 
-			Importdaten.PreNodeId = Importdaten.CurNodeId; // Varianten werden immer in neue Notationszeilen geschrieben.
+			Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId; // Varianten werden immer in neue Notationszeilen geschrieben.
 
-			Importdaten.CurMoveId = Importdaten.PreMoveId;
-			SingleMove.CurMoveId = Importdaten.PreMoveId; // Der aktuelle Zug soll nicht wirken
+			Stellungsdaten.CurMoveId = Stellungsdaten.PreMoveId;
+			SingleMove.CurMoveId = Stellungsdaten.PreMoveId; // Der aktuelle Zug soll nicht wirken
 
-			Importdaten.CreateNewNode = true;
+			Stellungsdaten.CreateNewNode = true;
 
-			StellungAufbauen(HTMLBRETTNAME_IMPORT, Importdaten.FEN);
+			StellungAufbauen(HTMLBRETTNAME_IMPORT, Stellungsdaten.FEN);
 
 			// Dann ist eine Variante beendet
 			// Es muss:
@@ -503,23 +527,23 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(") an index " + Importdaten.PGN_Index + " mit " + JSON.stringify(Importdaten.ZugStack));
 
-			Importdaten.VarianteCounter++; // damit es in der Farbe VOR dieser Variante weitergeht
-			Importdaten.ZugLevel--;
-			Importdaten.VarianteColor[Importdaten.ZugLevel]++;
+			Stellungsdaten.VarianteCounter++; // damit es in der Farbe VOR dieser Variante weitergeht
+			Stellungsdaten.ZugLevel--;
+			Stellungsdaten.VarianteColor[Stellungsdaten.ZugLevel]++;
 			ZugStack							= [];
 			ZugStack							= Importdaten.ZugStack.pop();
 			Importdaten.PreFEN		= ZugStack.PreFEN;
-			Importdaten.FEN				= ZugStack.FEN;
-			Importdaten.ZugFarbe	= Importdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
-			Importdaten.PreNodeId = ZugStack.PreNode;
-			Importdaten.CurNodeId = ZugStack.CurNode;
-			Importdaten.CurMoveId = ZugStack.CurMove;
-			Importdaten.PreMoveId	= ZugStack.PreMove;
+			Stellungsdaten.FEN				= ZugStack.FEN;
+			Stellungsdaten.ZugFarbe	= Stellungsdaten.FEN.includes("w") ? WEISSAMZUG : SCHWARZAMZUG;
+			Stellungsdaten.PreNodeId = ZugStack.PreNode;
+			Stellungsdaten.CurNodeId = ZugStack.CurNode;
+			Stellungsdaten.CurMoveId = ZugStack.CurMove;
+			Stellungsdaten.PreMoveId	= ZugStack.PreMove;
 			SingleMove.CurMoveId			= ZugStack.CurMove; // Wird beim Erkennen des nächsten Zugs nach PreMoveid geschoben
 
-			Importdaten.CreateNewNode = true;
+			Stellungsdaten.CreateNewNode = true;
 
-			StellungAufbauen(HTMLBRETTNAME_IMPORT, Importdaten.FEN);
+			StellungAufbauen(HTMLBRETTNAME_IMPORT, Stellungsdaten.FEN);
 
 			// Dann muss es sich um einen Kommentar vor dem ersten Zug handeln. Der wird jetzt einfach mal in die Aufgabe übernommen. Noch verbessern.
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("{") == 0) {
@@ -561,7 +585,7 @@ function executeMove(Zugdaten) { // Zugdaten ist der match des regulären Ausdru
 		// Bauernzug. Entscheidung weiss oder schwarz nur über die aktuelle ZugFarbe möglich.
 		// Bei Bauernzügen braucht nur über file weiter eingeschränkt werden. rank kann es ja nicht geben
 		CurFigur = SingleMove.FEN.includes("w") ? 'P' : 'p';
-		Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + '"]');
+		Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + '"]');
 
 	} else {
 		// Figurenzug. Der Name wird in der kurzen Notation immer gross geschrieben. Die Namen in den ID entsprechen FEN, also gross/klein für weiss/schwarz
@@ -569,19 +593,19 @@ function executeMove(Zugdaten) { // Zugdaten ist der match des regulären Ausdru
 		CurFigur = SingleMove.FEN.includes("w") ? (Zugdaten.groups.figur).toUpperCase() : Zugdaten.groups.figur.toLowerCase();
 
 		if(SingleMove.ZugStart == "") { // ohne Startangeben
-			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + '"]');
+			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + '"]');
 		} else if($.isNumeric(SingleMove.ZugStart)) { // dann ist es rank als Startangabe (id$= ist Kriterium)
-			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + '"][id$="' + SingleMove.ZugStart + '"]');
+			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + '"][id$="' + SingleMove.ZugStart + '"]');
 		} else { // dann ist es file ls Startangabe
-			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[id^="' + CurFigur + '_' + SingleMove.ZugStart + '"]');
+			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + SingleMove.ZugStart + '"]');
 		}
 	}
 
 	for (const Kandidat of Kandidaten.values()) {
 
-		$("#TriggerTag").trigger("SetFenPosition", [SingleMove.FEN]);
+		$("#triggertag").trigger("SetFenPosition", [SingleMove.FEN]);
 		let EchteUmwandlung = Zugdaten.groups.umwandlung == "" ? "" : SingleMove.FEN.includes("w") ? Zugdaten.groups.umwandlung.toLowerCase() : Zugdaten.groups.umwandlung.toLowerCase();
-		$("#TriggerTag").trigger("isMoveCorrect", [Kandidat.id.match('[abcdefgh][12345678]') + SingleMove.ZugNach + EchteUmwandlung]);
+		$("#triggertag").trigger("isMoveCorrect", [Kandidat.getAttribute("data-figur").match('[abcdefgh][12345678]') + SingleMove.ZugNach + EchteUmwandlung]);
 		
 	}
 }
@@ -597,8 +621,8 @@ function executeRochade(Zugdaten) {
 		SingleMove.ZugNach = Zugdaten.indexOf('0-0-0') == 0 ? "c8" : "g8";
 	}
 
-	$("#TriggerTag").trigger("SetFenPosition", [SingleMove.FEN]);
-	$("#TriggerTag").trigger("isMoveCorrect", [SingleMove.ZugVon + SingleMove.ZugNach]);
+	$("#triggertag").trigger("SetFenPosition", [SingleMove.FEN]);
+	$("#triggertag").trigger("isMoveCorrect", [SingleMove.ZugVon + SingleMove.ZugNach]);
 }
 
 function getKommentar(Versatz) {

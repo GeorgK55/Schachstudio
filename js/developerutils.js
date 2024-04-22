@@ -1,7 +1,7 @@
 
 // Nur als Muster. Liefert alle Knoten!!!
 //$('#challengenotation').jstree(true).get_json('#', { flat: true })
-//$('#ImportTreeNotationId').jstree(true).get_json('#', { flat: true })
+//$('#importtreenotationid').jstree(true).get_json('#', { flat: true })
 
 
 // Nur zur besseren Lesbarkeit beim debuggen
@@ -58,7 +58,7 @@ function getFuncName() {
 
 function KommandoAbschicken() {
 
-	$("#TriggerTag").trigger("gocmd", Kommandostart.value);
+	$("#triggertag").trigger("gocmd", Kommandostart.value);
 
 }
 
@@ -75,9 +75,9 @@ function RegexAbschicken() {
 }
 
 // showjstreeimportant('challengenotation')
-// showjstreeimportant('ImportTreeNotationId')
+// showjstreeimportant('importtreenotationid')
 // $('#challengenotation').jstree(true).get_json('#', { flat: true })
-// $('#ImportTreeNotationId').jstree(true).get_json('#', { flat: true })
+// $('#importtreenotationid').jstree(true).get_json('#', { flat: true })
 function showjstreeimportant(TreeContainer) {
 
 	let nodesarray = $('#' + TreeContainer).jstree(true).get_json('#', { flat: true })

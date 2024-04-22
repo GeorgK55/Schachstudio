@@ -56,7 +56,7 @@ function getstudydata(studien, counter) {
 // Die Funktionssequenz ist in den beiden Situationen gleich, in getLichessStudy wird dann unterschieden 
 function DatenBereitstellen_Lichess(context) {
 
-	LichessUserDialog = $("#dialog_LichessUser").dialog({
+	LichessUserDialog = $("#dialog-lichessuser").dialog({
 		title: "Studien aus lichess.org übernehmen",
 		width: DialogWidth,
 		modal: true,
@@ -146,19 +146,19 @@ function getLichessStudy(studyid, studyname, context) {	if(logMe(LOGLEVEL_SLIGHT
 // Einzige Voraussetzung für diese Funktion ist: GlobalImportedPGN, also alle aktuellen Aufgaben in einem Array 
 function prepareLichessKapitel() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
-	$('#Aufgabenliste').addClass( "hideMe" );
-	$('#Kapitelliste').removeClass( "hideMe" );
+	$('#aufgabenliste').addClass( "hideMe" );
+	$('#kapitelliste').removeClass( "hideMe" );
 	
-	$('#ul_Kapitelliste').empty();
+	$('#ul_kapitelliste').empty();
 	for (i = 0; i < GlobalImportedPGN.length; i++) {
 		let aufgabetext = GlobalImportedPGN[i].match(r_Event);
 		//let aufgabetext = /Event "([^\"]*)/.exec(GlobalImportedPGN[i])[1];
 		if (aufgabetext != null) {
 			let newitem = '<li id="importedpgn_' + i + '">' + aufgabetext.groups.kapitel + '</li>';
-			$(newitem).appendTo('#ul_Kapitelliste');
+			$(newitem).appendTo('#ul_kapitelliste');
 		}
 	}
-	$("#ul_Kapitelliste").selectable({
+	$("#ul_kapitelliste").selectable({
 
 		selected: function (event, ui) {
 

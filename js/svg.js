@@ -69,14 +69,14 @@ function addVariantePath(zugid) {
 
   document.getElementById("variantensvg").appendChild(path1); // ist damit ein sibling mit defs
 
-	if($( "#VariantetextId" ).hasClass( "variantemain" )) {
+	if($( "#variantetextid" ).hasClass( "variantemain" )) {
 		$("#variantepath_" + zugid).removeClass().addClass('svgcolormain');
 		$("#goalarrowpath").removeClass().addClass('svgcolormain');
-	} else if($( "#VariantetextId" ).hasClass( "varianteodd" )) {
+	} else if($( "#variantetextid" ).hasClass( "varianteodd" )) {
 		$("#variantepath_" + zugid).removeClass().addClass('svgcolorodd');
 		$("#goalarrowpath").removeClass().addClass('svgcolorodd');
 		$("#goalarrow").removeClass().addClass('svgcolorodd');
-	} else if($( "#VariantetextId" ).hasClass( "varianteeven" )) {
+	} else if($( "#variantetextid" ).hasClass( "varianteeven" )) {
 		$("#variantepath_" + zugid).removeClass().addClass('svgcoloreven');
 		$("#goalarrowpath").removeClass().addClass('svgcoloreven');
 		$("#goalarrow").removeClass().addClass('svgcoloreven');

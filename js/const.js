@@ -116,6 +116,9 @@ const ANIMATIONSPEED_SLOW		= 3;
 const ANIMATIONSPEED_NORMAL	= 2;
 const ANIMATIONSPEED_FAST		= 1;
 
+const NOTATIONMODE_VISIBLE	= 'Notationvisible';
+const NOTATIONMODE_HIDDEN		= 'Notationhidden';
+
 // Eventangaben im pgn. Lichess-Standard berücksichtigt
 //const r_Event = new RegExp("(\[Event \")(?<event1>.*)(: ?)(?<event2>.*)?([\"])", "mg");
 const r_Event = new RegExp("(\\[Event \")(?<studie>.*)(: ?)(?<kapitel>.*)?([\"])|(\\[Event \")(?<event>.*)([\"])", "m");

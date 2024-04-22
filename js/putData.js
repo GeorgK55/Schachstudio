@@ -1,7 +1,7 @@
 function ThemaSpeichern(KnotenObj, NeuerName) {
 
 	$.post({
-		url: 			"php/putDBData.php",
+		url: 			"php/put_dbdata.php",
 		dataType: "json",
 		data: {
 						dataContext:	"ThemaSpeichern",
@@ -16,36 +16,35 @@ function ThemaSpeichern(KnotenObj, NeuerName) {
 
 function AufgabeSpeichern() {
 
-	if ($('#QuelleImport').val().includes("https://lichess.org/study/")) {
-		let quelledetails	= $('#QuelleImport').val().split("/");
-		lichess_studie		= quelledetails[4];
-		lichess_kapitel		= quelledetails[5];
-	} else {
-		lichess_studie	= "";
-		lichess_kapitel	= "";
-	}
+	// if ($('#QuelleImport').val().includes("https://lichess.org/study/")) {
+	// 	let quelledetails	= $('#QuelleImport').val().split("/");
+	// 	lichess_studie		= quelledetails[4];
+	// 	lichess_kapitel		= quelledetails[5];
+	// } else {
+	// 	lichess_studie	= "";
+	// 	lichess_kapitel	= "";
+	// }
 
 	$.post({
-		url: 			"php/putDBData.php",
+		url: 			"php/put_dbdata.php",
 		dataType: "json",
 		data: {
-						dataContext: 	"AufgabeSpeichern",
-						Kurztext: 		$('#KurztextImport').val(),
-						Langtext: 		$('#LangtextImport').val(),
-						Quelle: 			$('#QuelleImport').val(),
-						Quelledetail:	$('#QuelledetailImport').val(),
-						ImportQuelle: $('#ImportQuelleImport').val(),
-						Annotator:		$('#AnnotatortextImport').val(),
-						WeissName:		$('#WeissNameImport').val(),
-						SchwarzName:	$('#SchwarzNameImport').val(),
-						Datum:				$('#DatumImport').val(),
-						AmZug: 				$('#AmZugImport').val(),
-						FEN: 					$('#FENImport').val(),
-						Scope: 				$('#ScopeImport').val(),
-						Skill: 				$('#SkillImport').val(),
-						studieId: 		lichess_studie,
-						kapitelId: 		lichess_kapitel,
-						pgn: 					T_Aufgabe.PGN
+						dataContext: 				"AufgabeSpeichern",
+						Kurztext: 					$('#KurztextImport').val(),
+						Langtext: 					$('#LangtextImport').val(),
+						Quelle: 						T_Aufgabe.Quelle,
+						Quelledetail:				$('#QuelledetailImport').val(),
+						Annotator:					T_Aufgabe.Annotator,
+						WeissName:					$('#WeissNameImport').val(),
+						SchwarzName:				$('#SchwarzNameImport').val(),
+						Datum:							T_Aufgabe.Datum,
+						AmZug: 							T_Aufgabe.AmZug,
+						FEN: 								T_Aufgabe.FEN,
+						Scope: 							$('#ScopeImport').val(),
+						Skill: 							$('#SkillImport').val(),
+						lichess_studie_id:	T_Aufgabe.lichess_studie_id,
+						lichess_kapitel_id:	T_Aufgabe.lichess_kapitel_id,
+						pgn: 								T_Aufgabe.PGN
 					}
 		}).done(function (responseData) { AufgabeSpeichernErfolg(responseData);
 		}).fail(function (jqXHR, textStatus, errorThrown) { AjaxError(jqXHR, textStatus, errorThrown);
@@ -56,7 +55,7 @@ function AufgabeSpeichern() {
 function ThemaUndAufgabeVerbinden(T_id, A_id) {
 
 	$.post({
-		url: 			"php/putDBData.php",
+		url: 			"php/put_dbdata.php",
 		dataType: "json",
 		data: {
 						dataContext: 		"ThemaUndAufgabeVerbinden",
@@ -71,7 +70,7 @@ function ThemaUndAufgabeVerbinden(T_id, A_id) {
 function ThemaUndAufgabeTrennen(T_id, A_id) {
 
 	$.post({
-		url: 			"php/putDBData.php",
+		url: 			"php/put_dbdata.php",
 		dataType: "json",
 		data: {
 						dataContext: 		"ThemaUndAufgabeTrennen",
@@ -86,7 +85,7 @@ function ThemaUndAufgabeTrennen(T_id, A_id) {
 function ThemaEntfernen(KnotenId) {
 
 	$.post({
-		url: 			"php/putDBData.php",
+		url: 			"php/put_dbdata.php",
 		dataType: "json",
 		data: {
 						dataContext:	"ThemaEntfernen",
@@ -100,7 +99,7 @@ function ThemaEntfernen(KnotenId) {
 function AufgabeEntfernen(id) {
 
 	$.post({
-		url: 			"php/putDBData.php",
+		url: 			"php/put_dbdata.php",
 		dataType: "json",
 		data: {
 						dataContext:	"AufgabeEntfernen",
@@ -115,14 +114,14 @@ function ThemaSpeichernErfolg(responseData) {
 
 	if (responseData.ergebnisflag) {
 
-		$('#ThemenlisteTree').jstree(true).create_node(
+		$('#themenlistetree').jstree(true).create_node(
 			KnotenObj.id, {
 				"id":				THEMAPRÄFIX + parseInt(responseData['neueid']),
 				"text":			responseData['ergebnisdaten'],
 				"li_attr":	{ "level": parseInt(KnotenObj.id.split('_')[0]) + 1 }
 			},
 			"last",
-			function () { $('#ThemenlisteTree').jstree(true).open_node(KnotenObj.id) }
+			function () { $('#themenlistetree').jstree(true).open_node(KnotenObj.id) }
 		);
 
 	} else {
@@ -142,7 +141,7 @@ function AufgabeSpeichernErfolg(responseData) {
 		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(JSON.stringify(ChallengeMoves));
 
 		$.post({
-			url: 			"php/putDBData.php",
+			url: 			"php/put_dbdata.php",
 			dataType: "json",
 			data: {
 							dataContext:	"Zugliste",
@@ -158,7 +157,7 @@ function AufgabeSpeichernErfolg(responseData) {
 function ThemaEntfernenErfolg(responseData) {
 
 	if (responseData.ergebnisflag) {
-		$('#ThemenlisteTree').jstree(true).delete_node(KnotenObj);
+		$('#themenlistetree').jstree(true).delete_node(KnotenObj);
 	} else {
 		showDBErrorMessagesDialog(responseData);
 	}

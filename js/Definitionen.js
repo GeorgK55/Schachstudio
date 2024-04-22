@@ -5,19 +5,19 @@ class CImportdaten {
 		this.PGN 							=	[]; // Alle Teile der Datei; an Leerzeichen aufgeteilt
 		this.PGN_Index 				=	0;	// integer; der Zähler in der do while
 		this.ZugNummer				=	0;	// aus dem PGN-String
-		this.ZugLevel					=	0;
-		this.ZugFarbe					=	"";
-		this.CreateNewNode		=	true;
-		this.PreNodeId				=	NODEPRÄFIX + '0';	// der Vorgängerknotenname im html-Tree; kann parent oder sibling sein
-		this.CurNodeId				=	NODEPRÄFIX + '0';	// der aktuelle Knotenname im html-Tree
-		this.PreMoveId				=	MOVEPRÄFIX + '0'; // Id des Vorgängerzugs; kann gleiche Ebene oder kleinere Ebene sein
-		this.CurMoveId				=	MOVEPRÄFIX + '0'; // MOVEPRÄFIX + PGN_Index; sind also nicht aufsteigend komplett
+		// this.ZugLevel					=	0;
+		// this.ZugFarbe					=	"";
+		// this.CreateNewNode		=	true;
+		// this.PreNodeId				=	NODEPRÄFIX + '0';	// der Vorgängerknotenname im html-Tree; kann parent oder sibling sein
+		// this.CurNodeId				=	NODEPRÄFIX + '0';	// der aktuelle Knotenname im html-Tree
+		// this.PreMoveId				=	MOVEPRÄFIX + '0'; // Id des Vorgängerzugs; kann gleiche Ebene oder kleinere Ebene sein
+		// this.CurMoveId				=	MOVEPRÄFIX + '0'; // MOVEPRÄFIX + PGN_Index; sind also nicht aufsteigend komplett
 		this.PreFEN						=	"";	// Die FEN, die zu diesem Zug geführt hat
-		this.FEN							=	"";	// Die FEN nachdem dieser Zug ausgeführt wurde
-		this.Text_w						=	DEFAULTMOVE_W;
-		this.Text_b						=	DEFAULTMOVE_B;
-		this.VarianteCounter	=	0;
-		this.VarianteColor		= [0, 0, 0, 0, 0, 0, 0, 0]
+		// this.FEN							=	"";	// Die FEN nachdem dieser Zug ausgeführt wurde
+		// this.Text_w						=	DEFAULTMOVE_W;
+		// this.Text_b						=	DEFAULTMOVE_B;
+		// this.VarianteCounter	=	0;
+		// this.VarianteColor		= [0, 0, 0, 0, 0, 0, 0, 0] 
 		this.ZugStack					=	[];
 	}
 };
@@ -69,11 +69,10 @@ VarianteStack = {
 // Die Aufgabe selbst. Entspricht der Datenbanktabelle T_Aufgabe
 class CAufgabe  {
 	constructor() {
-		this.Kurztext 						=	"";
-		this.Langtext 						=	"";
-		this.Quelle								=	"";
-		this.Quelledetail					=	"";
-		this.ImportQuelle					=	"";
+		this.Kurztext 						=	"";	// Der in der Liste angezeigte Text.
+		this.Langtext 						=	"";	// Der komplette Text aus dem PGN-Tag Event oder bei lichess der Studienname.
+		this.Quelle								=	"";	// Eine im Import generierte Zeichenkette: 'lichess' oder 'import' Später mal ein Fremdschlüsseö zu T_Quellen
+		this.Quelledetail					=	"";	// Die Fundstelle in der Quelle, bei lichess leer. 
 		this.Annotator						=	"";
 		this.WeissName						=	"";
 		this.SchwarzName					=	"";
@@ -85,8 +84,6 @@ class CAufgabe  {
 		this.Skill 		 						=	"";
 		this.lichess_studie_id		=	"";
 		this.lichess_kapitel_id		=	"";
-		this.lichess_studie_name	=	"";
-		this.lichess_kapitel_name	=	"";
 		this.PGN									=	"";
 	}	
 };

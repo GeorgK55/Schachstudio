@@ -10,43 +10,43 @@ function createInterrupt(Interrupt, result, zugid) {
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION))	console.log('Beginn in ' + getFuncName() + ' mit result: ' + result + ', reason: ' + Interrupt + ' und zugid: ' + zugid );
 
-	$('#VariantemarkerresolveId').on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
-	// $('#VariantemarkerrejectId').click(		{ reason: Interrupt, zug: zugid }, handleInterruptClick);
+	$('#variantemarkerresolveid').on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
+	// $('#variantemarkerrejectid').click(		{ reason: Interrupt, zug: zugid }, handleInterruptClick);
 
-	$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/questionmark.png'/>");
+	$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/questionmark.png'/>");
 
 	switch(Interrupt) {
 		case 'PMS':
-			$('#VariantemarkerresolveId').empty().html("<img id='VarianteStartSpielerId' src='Grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
-			// $('#VariantemarkerrejectId' ).empty().html("<img id='VarianteStartSpielerId' src='Grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
+			$('#variantemarkerresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
+			// $('#variantemarkerrejectid' ).empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
 			break;
 		case 'PVS':
-			$('#VariantemarkerresolveId').empty().html("<img id='VarianteStartSpielerId' src='Grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
-			// $('#VariantemarkerrejectId' ).empty().html("<img id='VarianteStartSpielerId' src='Grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
+			$('#variantemarkerresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
+			// $('#variantemarkerrejectid' ).empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
 			break;
 		case 'PVC':
 			break;
 		case 'PVE':
-			$('#VariantemarkerresolveId').empty().html("<img id='VarianteEndeSpielerId' src='Grafiken/VarianteEndeSpieler.png' class='zugergebnismarker'/>");
-			// $('#VariantemarkerrejectId' ).empty().html("<img id='VarianteEndeSpielerId' src='Grafiken/VarianteEndeSpieler.png' class='zugergebnismarker'/>");
+			$('#variantemarkerresolveid').empty().html("<img id='varianteendespielerid' src='grafiken/VarianteEndeSpieler.png' class='zugergebnismarker'/>");
+			// $('#variantemarkerrejectid' ).empty().html("<img id='varianteendespielerid' src='grafiken/VarianteEndeSpieler.png' class='zugergebnismarker'/>");
 			break;
 		case 'CMS':
-			$('#VariantemarkerresolveId').empty().html("<img id='VarianteStartSpielerId' src='Grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
+			$('#variantemarkerresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
 			break;
 		case 'CVS':
-			$('#VariantemarkerresolveId').empty().html("<img id='VarianteEndeAufgabeId' src='Grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
-			// $('#VariantemarkerrejectId' ).empty().html("<img id='VarianteEndeAufgabeId' src='Grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
+			$('#variantemarkerresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
+			// $('#variantemarkerrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
 			break;
 		case 'CVC':
 			break;
 		case 'CVE':
-			$('#VariantemarkerresolveId').empty().html("<img id='VarianteEndeAufgabeId' src='Grafiken/VarianteEndeAufgabe.png' class='zugergebnismarker'/>");
-			// $('#VariantemarkerrejectId' ).empty().html("<img id='VarianteEndeAufgabeId' src='Grafiken/VarianteEndeAufgabe.png' class='zugergebnismarker'/>");
+			$('#variantemarkerresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='zugergebnismarker'/>");
+			// $('#variantemarkerrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='zugergebnismarker'/>");
 			break;
 	}
 
-	$('#VariantetextId').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
-	$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, getMoveLevel(zugid)));
+	$('#variantetextid').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
+	$('#variantetextid').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, getMoveLevel(zugid)));
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
 
@@ -70,15 +70,15 @@ function handleInterruptClick(clickevent) {
 	switch (clickevent.data.reason) {
 		case 'PMS':
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 		case 'PVS':
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 		case 'PVC':
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 			case 'CVE':
 			case 'PVE':
@@ -144,19 +144,19 @@ function handleInterruptClick(clickevent) {
 			}
 
 			//PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 		case 'CMS':
 			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 		case 'CVS':
 			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 		case 'CVC':
 			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 		case 'XXX':
 			// Das deferred ist hier schon gelaufen.
@@ -199,11 +199,11 @@ function handleInterruptClick(clickevent) {
 
 			}
 
-			$('#VariantetextId').html("<span>&nbsp</span>");
+			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
 	}
-	$('#VariantemarkerresolveId').off();
-	//$('#VariantemarkerrejectId').off();
+	$('#variantemarkerresolveid').off();
+	//$('#variantemarkerrejectid').off();
 
 	$('[id^=' + HTMLBRETTNAME_SPIELEN + ']').removeClass('noClick');
 }

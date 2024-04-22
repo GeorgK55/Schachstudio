@@ -317,7 +317,7 @@ body {
     padding-left: 2vw;
 }
 
-#Welcome button {
+#welcome button {
     font-size: var(--dynfontsize20);
 }
 
@@ -341,38 +341,38 @@ body {
     background: linear-gradient( 180deg, rgba(255, 140, 0, 1) 0%, rgba(245, 222, 179, 1) 50%, rgba(245, 222, 179, 1) 50%, rgba(255, 140, 0, 1) 100%);
 }
 
-#btn_ThemaNeu::after {
+#btn-themaneu::after {
 	content: "Neues Thema";
 }
 
-#btn_ThemaEntfernen::after {
+#btn-ehemaentfernen::after {
 	content: "Thema entfernen";
 }
 
-#btn_lichesskapitel::after {
+#btn-lichesskapitel::after {
     content: "Ein Kapitel aus lichess spielen";
 }
 
-#btn_Import::after {
+#btn-import::after {
     content: "Aufgaben importieren";
 }
 
-#btn_VerbindeAufgabe::after {
+#btn-verbindeaufgabe::after {
     content: "Aufgabe mit Thema kombinieren";
 }
 
-#btn_TrenneAufgabe::after {
+#btn-trenneaufgabe::after {
     content: "Aufgabe und Thema trennen";
 }
 
-#btn_EntferneAufgabe::after {
+#btn-entferneaufgabe::after {
     content: "Aufgabe entfernen";
 }
 
-#legend_Stellung::after {
+#legend-stellung::after {
 	content: "Stellung ausspielen";
 }
-#legend_Aufgabe::after {
+#legend-aufgabe::after {
 	content: "Aufgabe lösen";
 }
 
@@ -384,11 +384,11 @@ body {
     content: "Mit Bewertungshinweisen";
 }
 
-#l_AufgabeOhne::after {
+#l-aufgabeohne::after {
     content: "Ohne Variantenanalyse";
 }
 
-#l_AufgabeMit::after {
+#l-aufgabemit::after {
     content: "Mit Variantenanalyse";
 }
 
@@ -408,15 +408,15 @@ body {
     content: "Für Entwickler";
 }
 
-#btn_Spieler::after {
+#btn-spieler::after {
     content: "Stellungen und Aufgaben auswählen und lösen";
 }
 
-#btn_Trainer::after {
+#btn-trainer::after {
     content: "Aufgaben auswählen und lösen \a Themen und Aufgaben \a ergänzen und kombinieren";
 }
 
-#btn_Entwickler::after {
+#btn-entwickler::after {
     content: "Aufgaben und Themen verwalten und lösen \a Protokoll und eigene Kommandos mit der Engine stockfish";
 }
 
@@ -428,7 +428,7 @@ body {
     display: none;
 }
 
-#VisitorCounterSpan {
+#visitorcounterspan {
     float: left;
     margin-left: 5vw;
     padding-top: 1vh;
@@ -724,7 +724,7 @@ body {
     grid-area: 3 / 4 / 3 / 5;
 }
 
-#ImportTreeNotationId {
+#importtreenotationid {
     height: 30vh;
     overflow: auto;
 }

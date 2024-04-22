@@ -1,18 +1,18 @@
 function getThemes() {
 
 	$.get({
-		url: "php/getDBData.php",
+		url: "php/get_dbdata.php",
 		data: { dataContext: "Themes" },
 		dataType: "json"
 		}).done(function (responseData) {
 
-		$('#ScrollWrapperThemen').empty().append('<div id="ThemenlisteTree"></div>');
+		$('#ScrollWrapperThemen').empty().append('<div id="themenlistetree"></div>');
 
 		// NotationstabelleAufgabe initiieren:
 		// Baumeigenschaften festlegen
 		// Handler für select und deselect aktivieren (das ist eine Funktion des tree)
 		// Für jedes Them der DB einen Knoten im Baum anlegen 
-		$('#ThemenlisteTree').empty()
+		$('#themenlistetree').empty()
 			.jstree({
 				'plugins': ["themes", "checkbox", "unique"],
 				'core': {
@@ -25,16 +25,16 @@ function getThemes() {
 					'cascade':			'none' 
 				}
 			}).on("select_node.jstree", function (evt, nodedata) {
-				$('#r_ZeigeAufgaben').prop('checked', true); // es ist ja mindestens ein Thema ausgewählt
+				$('#r-zeigeaufgaben').prop('checked', true); // es ist ja mindestens ein Thema ausgewählt
 				activateThemaButtons(nodedata); // die zu dieser Konstellation passen
-				getChallenges($('#ThemenlisteTree').jstree(true).get_selected());
+				getChallenges($('#themenlistetree').jstree(true).get_selected());
 
 			}).on("deselect_node.jstree", function (evt, nodedata) {
-				let selectedThemes = $('#ThemenlisteTree').jstree(true).get_selected();
+				let selectedThemes = $('#themenlistetree').jstree(true).get_selected();
 				if (selectedThemes.length > 0) {
-					$('#r_ZeigeAufgaben').prop('checked', true);
+					$('#r-zeigeaufgaben').prop('checked', true);
 				} else {
-					$('#r_ZeigeAlle').prop('checked', true);
+					$('#r-zeigealle').prop('checked', true);
 				}
 				activateThemaButtons(nodedata); // die zu dieser Konstellation passen
 				getChallenges(selectedThemes);
@@ -43,7 +43,7 @@ function getThemes() {
 		// Die item der DB enthalten alle notwendigen Daten	
 		responseData['ergebnisdaten'].forEach(function (item) {
 
-			$('#ThemenlisteTree').jstree(true).create_node(
+			$('#themenlistetree').jstree(true).create_node(
 				item.Parent == null ? '#' : THEMAPRÄFIX + item.Parent, {
 				"id":				THEMAPRÄFIX + item.Id,
 				"text":			item.Thematext,
@@ -66,12 +66,12 @@ function getChallenges(ThemaId) {
 	});
 
 	$.get({
-		url:			"php/getDBData.php",
+		url:			"php/get_dbdata.php",
 		data:			{ dataContext: "Challenges", themaid: ThemaId },
 		dataType:	"json"
 	}).done(function (responseData) {
 
-		$('#ul_Aufgabenliste').empty();
+		$('#ul_ufgabenliste').empty();
 
 		responseData['ergebnisdaten'].forEach(function (item) {
 
@@ -82,10 +82,10 @@ function getChallenges(ThemaId) {
 			}
 
 			let newitem = '<li id="' + item.Aufgaben_ID + '" data-lichess="' + quelleclass + '">' + item.Kurztext + '</li>';
-			$(newitem).appendTo('#ul_Aufgabenliste');
+			$(newitem).appendTo('#ul_ufgabenliste');
 		});
 
-		$("#ul_Aufgabenliste").selectable({
+		$("#ul_ufgabenliste").selectable({
 
 			selected: function (event, ui) {
 				manageChallengeSelection(ui.selected.id);
@@ -99,7 +99,7 @@ function getChallenges(ThemaId) {
 function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	return $.get({
-		url: "php/getDBData.php",
+		url: "php/get_dbdata.php",
 		data: { dataContext: "Aufgabedaten", AufgabeID: ID },
 		dataType: "json"
 	}).done(function (responseData) {
@@ -110,7 +110,6 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 		$('#LangtextSpiel').val(Challenge.Langtext);
 		$('#quellespiel').val(Challenge.Quelle);
 		$('#QuelledetailSpiel').val(Challenge.Quelledetail);
-		$('#Importquellespiel').val(Challenge.ImportQuelle);
 		$('#ScopeSpiel').val(Challenge.Scope);
 		$('#SkillSpielSpiel').val(Challenge.Skill);
 		$('#AmZugSpiel').val(Challenge.AmZug);
@@ -128,7 +127,7 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 function getChallengeMoves(ID, MitVarianten) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 
 	return $.get({
-		url: "php/getDBData.php",
+		url: "php/get_dbdata.php",
 		data: { dataContext: "Zugdaten", AufgabeID: ID, Varianten: MitVarianten },
 		dataType: "json"
 	}).done(function (responseData) {
@@ -169,8 +168,8 @@ function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) co
 			$("#challengechessboard").html(data);
 			addBoardFunctions(HTMLBRETTNAME_SPIELEN);
 			StellungAufbauen(HTMLBRETTNAME_SPIELEN, Challenge.FEN);
-			if(Challenge.AmZug == WEISSAMZUG) $('#ChallengezugmarkerId').html(ZUGMARKERWEISS);
-			else $('#ChallengezugmarkerId').html(ZUGMARKERSCHWARZ);
+			if(Challenge.AmZug == WEISSAMZUG) $('#challengezugmarkerid').html(ZUGMARKERWEISS);
+			else $('#challengezugmarkerid').html(ZUGMARKERSCHWARZ);
 
 		}).fail(function (jqXHR, textStatus, errorThrown) {
 			AjaxError(jqXHR, textStatus, errorThrown);
@@ -210,7 +209,7 @@ function isChallengeUsed(ID) {
 	return new Promise(function (resolve, reject) {
 
 		$.get({
-			url: "php/getDBData.php",
+			url: "php/get_dbdata.php",
 			data: { dataContext: "Aufgabebenutzung", AufgabeID: ID },
 			dataType: "json"
 		}).done(function (responseData) {
@@ -233,7 +232,7 @@ function isChallengeUsed(ID) {
 function getNAGList() {
 
 	$.get({
-		url: "php/getDBData.php",
+		url: "php/get_dbdata.php",
 		data: { dataContext: "NAGdaten" },
 		dataType: "json"
 	}).done(function (responseData) {

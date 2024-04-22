@@ -39,13 +39,13 @@ $(document).ready(function () {
 				getChallenges([]);
 				break;
 			case "Alle":
-				getChallenges($("#ThemenlisteTree").jstree(true).get_selected());
+				getChallenges($("#themenlistetree").jstree(true).get_selected());
 				break;
 		}
 	});
 
-	$("#btn_ThemaNeu").prop("disabled", true);
-	$("#btn_ThemaEntfernen").prop("disabled", true);
+	$("#btn-themaneu").prop("disabled", true);
+	$("#btn-ehemaentfernen").prop("disabled", true);
 
 	$("button").button();
 
@@ -54,7 +54,7 @@ $(document).ready(function () {
 	$("[id^='s1_']").show();	// Alle Startersections
 	$("[id^='s2_']").hide();	// Alle Anzeigesections
 
-	Stellungsdaten = new CStellungsdaten();
+	Stellungsdaten = new CStellungsdaten(); // Hier ???
 	getThemes();
 	getChallenges([]);
 
@@ -63,6 +63,7 @@ $(document).ready(function () {
 	GlobalSpielinteraktion				= SPIELINTERAKTION_AUFGABEMIT;
 	Stellungsdaten.CreateNewNode	= true;
 	MitVarianten									= PHPTRUE;
+	GLOBALNOTATIONMODE 						= NOTATIONMODE_VISIBLE;
 
 	// Wird die Engine nur hier aktiviert. Je nach Spielinteraktion nicht nötig, aber es entstehen auch keine Mehrfachaktivierungen
 	TheIndexGeorgFunction();
@@ -111,7 +112,7 @@ function openFullscreen() {
 
 function countVisitor(CounterAction) {
 	$.get({
-		url: "php/getDBData.php",
+		url: "php/get_dbdata.php",
 		data: { dataContext: "VisitorCounter", CounterAction: CounterAction },
 		dataType: "json",
 	})
@@ -120,7 +121,7 @@ function countVisitor(CounterAction) {
 
 			//	if (Antwort.ergebnisflag) {
 			if (responseData["ergebnisflag"]) {
-				$("#VisitorCounterSpan").html(
+				$("#visitorcounterspan").html(
 					"Besucher: " + responseData["ergebnisdaten"]
 				);
 			} else {
@@ -146,7 +147,7 @@ function logVisitor(Role) {
 	let ReturnText = "";
 
 	$.post({
-		url: "php/putDBData.php",
+		url: "php/put_dbdata.php",
 		dataType: "json",
 		data: {
 			dataContext:		"LogVisitor",

@@ -64,7 +64,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			if(getMoveState(MC_player.selectedmove.CurMoveId) != MOVESTATE_STACKED) {
 				NotiereZug('challengenotation', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
 			} else {
-				$('#VariantetextId').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, MC_player.selectedmove.ZugLevel));
+				$('#variantetextid').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 			}
 
 			// Ziehen
@@ -85,7 +85,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			} else {
 
 				// Die Anzeige:
-				$('#ZugergebnismarkerId').html("<img id='moveokId' src='Grafiken/moveok.png'/>");
+				$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/moveok.png'/>");
 
 				// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
 				PlayerMoveVariantenResult.resolve({ result: MC_player.result, reason: "Ohne Interrupt", moveid: MC_player.selectedmove.CurMoveId });

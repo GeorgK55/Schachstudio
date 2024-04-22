@@ -1,7 +1,7 @@
 // Neue Zeile mit den Stellungsdaten in der Notationsliste anlegen
 // TreeContainer: der tagname des html-elements
 // Mode: alle MOVEMODE_... berücksichtigen
-// Situation: die Import- bzw Stellungsdaten. Nur CurNodeId wird geändert, Rest bleibt
+// Situation: die Stellungsdaten. Nur CurNodeId wird geändert, Rest bleibt
 function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
@@ -111,8 +111,8 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 	// Den aktuellen Knoten holen, damit die schon ausgefüllten Teile übernommen werden können
 	let changenode = $('#' + TreeContainer).jstree(true).get_node(Situation.CurNodeId);
 
-	Nodetext.innerHTML = changenode.text;
-	let NodeElements = Nodetext.getElementsByTagName("*");
+	document.getElementById("nodetext").innerHTML = changenode.text;
+	let NodeElements = document.getElementById("nodetext").getElementsByTagName("*");
 
 	htmlText_Zugnr = NodeElements[1].outerHTML;
 

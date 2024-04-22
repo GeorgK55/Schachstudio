@@ -33,7 +33,7 @@
 .ScrollMe   { overflow-y:auto; }
 
 #challengenotation	a	{ white-space:normal !important; height: auto; padding:1px 2px; }
-#ImportTreeNotationId			a	{ white-space:normal !important; height: auto; padding:1px 2px; }
+#importtreenotationid			a	{ white-space:normal !important; height: auto; padding:1px 2px; }
 
 .Comment_w {  background-color:white;       }
 .Comment_b {  background-color:Gainsboro;   }
