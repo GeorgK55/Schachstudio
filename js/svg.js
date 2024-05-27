@@ -1,6 +1,6 @@
 
 // Die beiden svg-Elemente in html an die richtige Stelle einbinden
-function addSVGBoardFunctions() {
+function addSVGBoardFunctions() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// svg mit id und Klasse (wichtig: position ist absolute) versehen und auch wichtig als erstes Kind des chessboards einhängen
 	const svgbase = document.createElementNS('http://www.w3.org/2000/svg','svg');	
@@ -32,7 +32,7 @@ function addSVGBoardFunctions() {
 }
 
 // Beim Start einer Variante wird der erste Zug der Variante (der ja auch gezogen wird) mit einem Pfeil gekennzeichnet
-function addVariantePath(zugid) {
+function addVariantePath(zugid) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
 	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
@@ -84,10 +84,10 @@ function addVariantePath(zugid) {
 
 }
 
-function computeMoveAnimationCorner(boardid, boarddirection, stockfishmove) {
+function computeMoveAnimationCorner(boarddirection, stockfishmove) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	const currentFieldSize	= Math.round($( "#" + boardid).width() / 10);
-	const startmitte				= Math.round($( "#" + boardid).width() / 20);
+	const currentFieldSize	= Math.round($( ".svgboard").width() / 10);
+	const startmitte				= Math.round($( ".svgboard").width() / 20);
 
 	let AC = new CAnimationCorner;
 
@@ -109,9 +109,9 @@ function computeMoveAnimationCorner(boardid, boarddirection, stockfishmove) {
 	return AC;
 }
 
-function addMoveAnimationStyle(boardid, boarddirection, stockfishmove, speed) {
+function addMoveAnimationStyle(boarddirection, stockfishmove, speed) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	let AC = computeMoveAnimationCorner(boardid, boarddirection, stockfishmove);
+	let AC = computeMoveAnimationCorner(boarddirection, stockfishmove);
 
 	let cssRulesList = document.styleSheets[5].cssRules;
 
@@ -125,6 +125,6 @@ function addMoveAnimationStyle(boardid, boarddirection, stockfishmove, speed) {
 	}
 
 	let animationpath = "M " + AC.fieldcenter + "," + AC.fieldcenter + " l " + AC.stopfile + "," + AC.stoprank;
-	document.styleSheets[5].insertRule(".svgmoveme { offset-path: path('" + animationpath + "'); offset-rotate: 0deg; offset-anchor: center; animation: moveDiv " + speed + "s 1; }", ruleindex);
+	document.styleSheets[5].insertRule(".svgmoveme { offset-path: path('" + animationpath + "'); offset-rotate: 0deg; offset-anchor: center; animation: moveDiv " + speed + "s 1 forwards; }", ruleindex);
 
 }

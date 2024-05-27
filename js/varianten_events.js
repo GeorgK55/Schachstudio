@@ -50,7 +50,7 @@ function createInterrupt(Interrupt, result, zugid) {
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
 
-	$('[id^=' + HTMLBRETTNAME_SPIELEN + ']').addClass('noClick');
+		$('#challengechessboard').addClass('noClick');
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('events generiert' );
 
@@ -106,7 +106,7 @@ function handleInterruptClick(clickevent) {
 
 					Stellungsdaten.CreateNewNode = false;
 
-					StellungAufbauen(HTMLBRETTNAME_SPIELEN, PreStackMove[0].FEN);
+					StellungAufbauen(PreStackMove[0].FEN);
 					$('#challengenotation').jstree().close_node(Stellungsdaten.CurNodeId);
 
 					//if(PreStackMove[0].ZugFarbe == Challenge.AmZug) {
@@ -114,7 +114,7 @@ function handleInterruptClick(clickevent) {
 						firePlayerMove();
 					} else {
 
-						ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+						ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 						let LastPlayerMove = $.grep(ChallengeMoves,	function (LSM)	{ return	LSM['CurMoveId'] == LastStack.CurMove; });
  
 						T_Zuege = { ...LastPlayerMove[0] };
@@ -185,13 +185,13 @@ function handleInterruptClick(clickevent) {
 
 					Stellungsdaten.CreateNewNode = false;
 
-					StellungAufbauen(HTMLBRETTNAME_SPIELEN, PreStackMove[0].FEN);
+					StellungAufbauen(PreStackMove[0].FEN);
 					$('#challengenotation').jstree().close_node(Stellungsdaten.CurNodeId);
 
 					if(PreStackMove[0].ZugFarbe == Challenge.AmZug) {
 						firePlayerMove();
 					} else {
-						ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+						ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 					}
 
 				}
@@ -205,7 +205,7 @@ function handleInterruptClick(clickevent) {
 	$('#variantemarkerresolveid').off();
 	//$('#variantemarkerrejectid').off();
 
-	$('[id^=' + HTMLBRETTNAME_SPIELEN + ']').removeClass('noClick');
+	$('#challengechessboard').removeClass('noClick');
 }
 
 // Nur, damit dann was passiert

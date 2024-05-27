@@ -240,6 +240,19 @@ body {
     padding: 1vh;
 }
 
+.gc-willkommentip {
+    display: grid;
+    grid-template-columns: 5fr 20fr;
+    grid-template-rows: 1fr 5fr;
+    align-items: center;
+    /* justify-items: center; */
+    grid-template-areas: "icon titel titel" "icon text text";
+    padding: 1vh;
+}
+.willkommentipicon     {    grid-area: icon;    height: 5vh;    padding-left: 1vw;    }
+.willkommentiptitel    {    grid-area: titel;   font-weight: bold;   }
+.willkommentiptext     {    grid-area: text;    }
+
 .gc-rolleninfo {
     overflow: auto;
     margin: 5vh 2vw;
@@ -308,11 +321,6 @@ body {
     vertical-align: middle;
 }
 
-.Willkommentipicon {
-    height: 5vh;
-    vertical-align: middle;
-}
-
 .padmeleft2vw {
     padding-left: 2vw;
 }
@@ -345,8 +353,12 @@ body {
 	content: "Neues Thema";
 }
 
-#btn-ehemaentfernen::after {
+#btn-themaentfernen::after {
 	content: "Thema entfernen";
+}
+
+#btn-aufgabenliste::after {
+    content: "Aufgaben spielen";
 }
 
 #btn-lichesskapitel::after {
@@ -431,6 +443,12 @@ body {
 #visitorcounterspan {
     float: left;
     margin-left: 5vw;
+    /* padding-top: 1vh; */
+    font-size: var(--dynfontsize20);
+}
+#messageline {
+    float: left;
+    margin-left: 10vw;
     padding-top: 1vh;
     font-size: var(--dynfontsize20);
 }
@@ -594,6 +612,14 @@ body {
     grid-template-rows: min-content;
     justify-items: center;
     align-items: center;
+}
+
+.gc-baseline {
+    display: grid;
+    grid-template-columns: 2fr 5fr 1fr 1fr;
+    grid-column-gap: 2vw;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .movewhite {

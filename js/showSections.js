@@ -1,4 +1,4 @@
-function showSpielerinfo() {
+function showSpielerinfo() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$("[id^='s_']").hide();
 	$("[id^='s1_']").hide();
@@ -12,7 +12,7 @@ function showSpielerinfo() {
 	});
 }
 
-function showTrainerinfo() {
+function showTrainerinfo() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$("[id^='s_']").hide();
 	$("[id^='s1_']").hide();
@@ -41,7 +41,7 @@ function showTrainerinfo() {
 		});
 }
 
-function showEntwicklerinfo() {
+function showEntwicklerinfo() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$("[id^='s_']").hide();
 	$("[id^='s1_']").hide();
@@ -81,12 +81,12 @@ function showEntwicklerinfo() {
 		});
 }
 
-function showEnginedialog() {
+function showEnginedialog() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	GlobalActionContext = AC_ENGINEDIALOG;
 
 	$('#usedcommands').click(function () {
-		$('#Kommandostart').val($("select option:selected")[0].value + ' ');
+		$('#kommandostart').val($("select option:selected")[0].value + ' ');
 	});
 
 	stockFish.postMessage('ucinewgame');
@@ -100,8 +100,7 @@ function showEnginedialog() {
 }
 
 // Anzeige des Enginelogs umschalten
-function toggleEnginelog(CheckboxID) {
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('toggleEnginelog');
+function toggleEnginelog(CheckboxID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if ($('#' + CheckboxID).is(":checked")) {
 		GlobalEnginelogActive = true;
@@ -129,13 +128,26 @@ function toggleEnginelog(CheckboxID) {
 }
 
 // Logeinträge der Richtung 'zur Engine' umschalten
-function toggleEnginelogEin() {
+function toggleEnginelogEin() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	$('.LogEin').toggle();
 }
 
 // Logeinträge der Richtung 'von der Engine' umschalten
-function toggleEnginelogAus() {
+function toggleEnginelogAus() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	$('.LogAus').toggle();
+}
+
+function showMessageHistory() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	MessagelogDialog = $("#dialog-messagelog").dialog({
+		title: "Messagelog",
+		height: 800,
+		width: 600,
+		modal: false,
+		position: { my: "left top", at: "left top", of: "#themenlistetree" },
+		open: function () { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('open Messagelog'); }
+	});
+
 }
 
 // Es müssen diese Aktionen in jeder Funktion ausgeführt werden:
@@ -148,7 +160,7 @@ function toggleEnginelogAus() {
 // - in der section alle Teile bis auf die Dateiauswahl ausblenden
 // - html-tags und logliste zurücksetzen
 // - die engine starten (könnte auch in ZuegePruefen enthalten sein)
-function showImport() {
+function showImport() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$("[id^='s_']").hide();
 	$('#s_import').show();
@@ -157,7 +169,7 @@ function showImport() {
 	$('#ul_importaufgaben').addClass( "hideMe" );
 	$('#f_importaufgabedaten').addClass( "hideMe" );
 	$('#importaufgabePGN').children().addClass( "hideMe" );
-	$('#importchessboardId').addClass( "hideMe" );
+	$('#importchessboard').addClass( "hideMe" );
 	$('#importTreeNotationWrapperId').addClass( "hideMe" );
 	$('#importactionbuttons').addClass( "hideMe" );
 
@@ -170,24 +182,13 @@ function showImport() {
 
 }
 
-function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
-
-	// Schon hier, da die beiden Objekte mit Daten versorgt werden
-	T_Zuege					= new CZuege();
-	Stellungsdaten	= new CStellungsdaten();
-
-	getChallengeData(ChallengeID)
-		.then(function () { getChallengeBoard(); })
-		.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) { getChallengeMoves(ChallengeID, MitVarianten); } })
-		.then(function () {	initializeSelectionEnvironment(); })
-		.then(function () { initializeNotationtree(); });
-
-}
-
-function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$("[id^='s_']").hide();
 	$('#s_spielen').show();
+
+	$('#importchessboard').empty();
+	$('#challengechessboard').empty();
 
 	$('#logliste').empty();
 	$('#challengetips').empty();
@@ -196,10 +197,7 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_S
 	$("#cb_EngineEin").prop("checked", true);
 	$("#cb_EngineAus").prop("checked", true);
 
-	Stellungsdaten.ZugFarbe	=	Challenge.AmZug;
-	Stellungsdaten.FEN			=	Challenge.FEN;	
-
-	MoveMouseDown = false;
+	InputDeviceStart = false; 
 
 	showAid(AIDMODE_INIT);
 
@@ -208,7 +206,7 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_S
 	resetmarker();
 }
 
-function initializeNotationtree() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function initializeNotationtree() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 
 	$('#challengenotationwrapper').empty().append('<div id="challengenotation"></div>');
@@ -232,7 +230,7 @@ function initializeNotationtree() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION
 
 }
 
-function SpielinteraktionEinstellen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function SpielinteraktionEinstellen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	switch ($('input[name="Spielinteraktion"]:checked').val()) {
 		case SPIELINTERAKTION_STELLUNGOHNE:
@@ -267,69 +265,102 @@ function SpielinteraktionEinstellen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 
 }
 
-function manageSpielinteraktionSelection() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function manageSpielinteraktionSelection() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	SpielinteraktionEinstellen();
 
-	if($('#ul_ufgabenliste')[0].querySelector('.ui-selected') != null) {
-		stageChallenge($('#ul_ufgabenliste')[0].querySelector('.ui-selected').id);
+	if($('#ul_aufgabenliste')[0].querySelector('.ui-selected') != null) {
+		stageChallenge($('#ul_aufgabenliste')[0].querySelector('.ui-selected').id);
 	}
 
 }
 
-function manageChallengeSelection(ChallengeID) {
+// Diese Funktion reagiert auf die Auswhl einer Aufgabe aus der Datenbank. Hier ist lediglich der Name und der ID der Aufgabe in der Datenbank bekannt
+function manageChallengeSelection(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	SpielinteraktionEinstellen();
-
+	initializeSelectionEnvironment();
 	stageChallenge(ChallengeID);
 
 }
 
-function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+// Diese Funktion reagiert auf die Auswahl eines direkt zu spielenden Kapitels in der Kapitelliste. Hier ist lediglich der Name und der Index der Aufgabe in der Studienliste bekannt
+function manageKapitelSelection(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	// Schon hier, da die beiden Objekte mit Daten versorgt werden
+	SpielinteraktionEinstellen();
+	initializeSelectionEnvironment();
+	stageKapitel(ChallengeID);
+
+}
+
+// Danach ist das Brett spielbereit
+function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	// Schon hier, da die Objekte mit Daten versorgt werden
+	Challenge				= new CChallenge();
 	T_Zuege					= new CZuege();
 	Stellungsdaten	= new CStellungsdaten();
+
+	//initializeSelectionEnvironment();
+	getChallengeData(ChallengeID)	// holt die eine Zeile aus T_Aufgaben und versorgt T_Aufgabe und Stellungsdaten
+		.then(function () { getChallengeBoard(); })
+		.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) { getChallengeMoves(ChallengeID, MitVarianten); } })
+		//.then(function () {	initializeSelectionEnvironment(); })
+		.then(function () { initializeNotationtree(); });
+
+}
+
+// Danach ist das Brett spielbereit
+function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	// Schon hier, da die Objekte mit Daten versorgt werden
+	Challenge				= new CChallenge();
+	T_Zuege					= new CZuege();
+	Stellungsdaten	= new CStellungsdaten();
+
+	// Nachholen der Schritte, die sonst beim Import durchgeführt wurden:
+	Importdaten			= new CImportdaten();
 
 	Kapitel = GlobalImportedPGN[KapitelID.split("_")[1]]; //responseData['ergebnisdaten'][0];
 
 	scanPGN(Kapitel);
 	notifyChallengeDetails();
-	normalizePGNMoves(GlobalImportedPGN[KapitelID.split("_")[1]]);
-	Challenge = { ...Importdaten };
-	Challenge.FEN = T_Aufgabe.FEN;
-	getChallengeBoard()
-		.then(function () { ZuegePruefen(NOTATIONMODE_HIDDEN); })
-		.then(function () { initializeSelectionEnvironment(); })
-		.then(function () { initializeNotationtree(); });	
+	normalizePGNMoves(Kapitel);
+	// Challenge = { ...Importdaten };
+	// Challenge.FEN = T_Aufgabe.FEN;
 
-	console.log(Kapitel);
+	$('#kurztextspiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
+	$('#langtextspiel').val(Challenge.Langtext);
+	// $('#quellespiel').val(Challenge.Quelle);
+	// $('#quelledetailspiel').val(Challenge.Quelledetail);
+	// $('#scopespiel').val(Challenge.Scope); 
 
-	// $('#KurztextSpiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
-	// $('#LangtextSpiel').val(Challenge.Langtext);
-	// $('#QuellquellespieleSpiel').val(Challenge.Quelle);
-	// $('#QuelledetailSpiel').val(Challenge.Quelledetail);
-	// $('#ScopeSpiel').val(Challenge.Scope);
-	// $('#SkillSpielSpiel').val(Challenge.Skill);
-	// $('#AmZugSpiel').val(Challenge.AmZug);
-	// $('#FENSpiel').val(Challenge.FEN);
-	// $('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
+	// $('#skillspiel').val(Challenge.Skill);
+	// $('#amzugspiel').val(Challenge.AmZug);
+	// $('#fenspiel').val(Challenge.FEN);
+	$('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
+
+	//initializeSelectionEnvironment();
+	getImportBoard()
+		.then(function () { ZuegePruefen(NOTATIONMODE_HIDDEN)
+													.then(function () { getChallengeBoard(); })
+													.then(function () { 
+														initializeNotationtree(); 
+														T_Zuege = new CZuege();	// Es kann das Original genutzt werden
+														Stellungsdaten = new CStellungsdaten();
+														Stellungsdaten.CreateNewNode = true;
+														Stellungsdaten.FEN = Challenge.FEN;
+													}); 
+		})
+
+	//console.log(Kapitel);
+
 
 	// getChallengeData(ChallengeID)
 	// 	.then(function () { getChallengeBoard(); })
 	// 	.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) { getChallengeMoves(ChallengeID, MitVarianten); } })
 	// 	.then(function () {	initializeSelectionEnvironment(); })
 	// 	.then(function () { initializeNotationtree(); });
-
-}
-
-// Diese Funktion reagiert auf die Auswahl eines direkt zu spielenden Kapitels einer lichess-Studie
-// Die Daten, die zum selektierten Kapitel vorliegen, reichen für ein Spiel noch nicht aus, da ja nur die Studiendatei ...???
-function manageKapitelSelection(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
-
-	SpielinteraktionEinstellen();
-
-	stageKapitel(ChallengeID);
 
 }
 

@@ -1,12 +1,10 @@
-function getThemes() {
+function getThemes() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$.get({
 		url: "php/get_dbdata.php",
 		data: { dataContext: "Themes" },
 		dataType: "json"
 		}).done(function (responseData) {
-
-		$('#ScrollWrapperThemen').empty().append('<div id="themenlistetree"></div>');
 
 		// NotationstabelleAufgabe initiieren:
 		// Baumeigenschaften festlegen
@@ -56,7 +54,7 @@ function getThemes() {
 	});
 }
 
-function getChallenges(ThemaId) {
+function getChallenges(ThemaId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('getChallenges mit ThemaID: "' + ThemaId + '"');
 
@@ -71,7 +69,7 @@ function getChallenges(ThemaId) {
 		dataType:	"json"
 	}).done(function (responseData) {
 
-		$('#ul_ufgabenliste').empty();
+		$('#ul_aufgabenliste').empty();
 
 		responseData['ergebnisdaten'].forEach(function (item) {
 
@@ -82,10 +80,10 @@ function getChallenges(ThemaId) {
 			}
 
 			let newitem = '<li id="' + item.Aufgaben_ID + '" data-lichess="' + quelleclass + '">' + item.Kurztext + '</li>';
-			$(newitem).appendTo('#ul_ufgabenliste');
+			$(newitem).appendTo('#ul_aufgabenliste');
 		});
 
-		$("#ul_ufgabenliste").selectable({
+		$("#ul_aufgabenliste").selectable({
 
 			selected: function (event, ui) {
 				manageChallengeSelection(ui.selected.id);
@@ -96,7 +94,7 @@ function getChallenges(ThemaId) {
 	});
 }
 
-function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	return $.get({
 		url: "php/get_dbdata.php",
@@ -104,17 +102,20 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 		dataType: "json"
 	}).done(function (responseData) {
 
-		Challenge = responseData['ergebnisdaten'][0];
+		Challenge = responseData['ergebnisdaten'][0]; // Ist ja ein einfaches Objekt
 
-		$('#kurztextspiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
-		$('#LangtextSpiel').val(Challenge.Langtext);
-		$('#quellespiel').val(Challenge.Quelle);
-		$('#QuelledetailSpiel').val(Challenge.Quelledetail);
-		$('#ScopeSpiel').val(Challenge.Scope);
-		$('#SkillSpielSpiel').val(Challenge.Skill);
-		$('#AmZugSpiel').val(Challenge.AmZug);
-		$('#FENSpiel').val(Challenge.FEN);
+		$('#kurztextspiel').val(Challenge.Kurztext);
+		$('#langtextspiel').val(Challenge.Langtext);
+		// $('#quellespiel').val(Challenge.Quelle);
+		// $('#quelledetailspiel').val(Challenge.Quelledetail);
+		// $('#scopespiel').val(Challenge.Scope);
+		// $('#skillspiel').val(Challenge.Skill);
+		// $('#amzugspiel').val(Challenge.AmZug);
+		// $('#fenspiel').val(Challenge.FEN);
 		$('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
+
+		Stellungsdaten.ZugFarbe	=	Challenge.AmZug;
+		Stellungsdaten.FEN			=	Challenge.FEN;		
 
 	}).fail(function (jqXHR, textStatus, errorThrown) {
 		AjaxError(jqXHR, textStatus, errorThrown);
@@ -124,7 +125,7 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 
 // Alle Züge einer Aufgabe holen und im globalen array zur Verfügung stellen
 // In den erhaltenen Zügen gleich in die richtigen Datenformate (hier nur int) übertragen
-function getChallengeMoves(ID, MitVarianten) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function getChallengeMoves(ID, MitVarianten) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	return $.get({
 		url: "php/get_dbdata.php",
@@ -159,15 +160,17 @@ function getChallengeMoves(ID, MitVarianten) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEM
 	});
 }
 
-function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	let BrettName = Challenge.AmZug == WEISSAMZUG ? HTMLBRETTNAME_SPIELEN + "w.html" : HTMLBRETTNAME_SPIELEN + "b.html";
+	let BrettName = Stellungsdaten.ZugFarbe == WEISSAMZUG ? HTMLBRETTNAME_SPIELEN + "w.html" : HTMLBRETTNAME_SPIELEN + "b.html";
 
-	return $.get("html/" + BrettName)
-		.done(function (data) {
+	return $.get({
+			url:	"html/" + BrettName
+		}).done(function (data) {
+			$("#importchessboard").empty();
 			$("#challengechessboard").html(data);
 			addBoardFunctions(HTMLBRETTNAME_SPIELEN);
-			StellungAufbauen(HTMLBRETTNAME_SPIELEN, Challenge.FEN);
+			StellungAufbauen(Challenge.FEN);
 			if(Challenge.AmZug == WEISSAMZUG) $('#challengezugmarkerid').html(ZUGMARKERWEISS);
 			else $('#challengezugmarkerid').html(ZUGMARKERSCHWARZ);
 
@@ -176,14 +179,17 @@ function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) co
 		});
 }
 
-function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	let BrettName = T_Aufgabe.AmZug == WEISSAMZUG ? HTMLBRETTNAME_IMPORT + "w.html" : HTMLBRETTNAME_IMPORT + "b.html";
+	ImportboardFinished = $.Deferred();
+
+	let BrettName = Challenge.AmZug == WEISSAMZUG ? HTMLBRETTNAME_IMPORT + "w.html" : HTMLBRETTNAME_IMPORT + "b.html";
 
 	return $.get("html/" + BrettName)
 		.done(function (data) {
-			$("#importchessboardId").html(data);
-			StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN);
+			$("#challengechessboard").empty();
+			$("#importchessboard").html(data);
+			StellungAufbauen(Challenge.FEN);
 
 			GlobalActionContext = AC_CHALLENGEIMPORT;
 
@@ -197,14 +203,18 @@ function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) conso
 				CurMove: Importdaten.CurMoveId
 			});
 
+			ImportboardFinished.resolve();
+			ImportboardFinished.promise();
 
 		}).fail(function (jqXHR, textStatus, errorThrown) {
 			AjaxError(jqXHR, textStatus, errorThrown);
 		});
 
+		// return ImportboardFinished.promise();
+
 }
 
-function isChallengeUsed(ID) {
+function isChallengeUsed(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	return new Promise(function (resolve, reject) {
 
@@ -229,7 +239,7 @@ function isChallengeUsed(ID) {
 
 }
 
-function getNAGList() {
+function getNAGList() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$.get({
 		url: "php/get_dbdata.php",
@@ -238,7 +248,7 @@ function getNAGList() {
 	}).done(function (responseData) {
 
 		NAGresult = responseData['ergebnisdaten'];
-		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(NAGresult);
+		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_DATA)) console.log(NAGresult);
 
 	}).fail(function (jqXHR, textStatus, errorThrown) {
 		AjaxError(jqXHR, textStatus, errorThrown);

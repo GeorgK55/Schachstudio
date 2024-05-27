@@ -14,7 +14,7 @@ function TheIndexGeorgFunction() {
 		sf.addMessageListener((line) => {
 
 			// Immer:
-			if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('==== Nachricht: "' + line + '" für "' + GlobalActionContext + '" mit "' + GlobalActionStep + '" erhalten ');
+			if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_ENGINEDIALOG)) console.log('==== Nachricht: "' + line + '" für "' + GlobalActionContext + '" mit "' + GlobalActionStep + '" erhalten ');
 
 			// Pro GlobalActionContext:
 
@@ -31,6 +31,8 @@ function TheIndexGeorgFunction() {
 				// Nur für den einzig möglichen Zug wird 'bestmove .... ponder ....' zurückgegeben.
 				// Für alle anderen Züge kommt 'bestmove (none)' als letzte Antwort der Engine zu diesem Zug. Ist damit also beendet.
 				// VVor den Zeilen mit bestmove kommen noch Zeilen mit 'info depth .....'. Werden zur Zeit ignoriert. Vielleicht mal brauchbar?
+
+				$('<p class="LogAus LogAusMiddle">' + compressline(line) + '</p>').appendTo('#logliste');
 
 				if (GlobalActionStep == AS_IDENTIFYUNIQUEMOVE) {
 
@@ -75,7 +77,7 @@ function TheIndexGeorgFunction() {
 					if (line.indexOf('Fen') >= 0) {
 
 						// Die Engine hat den Zug ausgeführt. Der Zug ist schon in SingleMove eingetragen. Jetzt den Zug auf dem Brett ausführen
-						ZieheZug(SingleMove, HTMLBRETTNAME_IMPORT, ANIMATIONSPEED_ZERO).then(function() { 
+						ZieheZug(SingleMove, ANIMATIONSPEED_ZERO).then(function() { 
 
 							// Schon hier übertragen. In ...TreeNode werden die Daten aus den Importdaten gelesen (wegen Kompatibilität zu varianten)
 							TransferZugNachStellung(Stellungsdaten, SingleMove)
@@ -131,7 +133,7 @@ function TheIndexGeorgFunction() {
 									T_Zuege.CurMoveId = MOVEPRÄFIX + T_Zuege.CurMoveIndex;
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 
 									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
@@ -206,7 +208,7 @@ function TheIndexGeorgFunction() {
 									}
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									Stellungsdaten.CurNodeId = NODEPRÄFIX + T_Zuege.CurMoveIndex;
@@ -387,7 +389,7 @@ function TheIndexGeorgFunction() {
 														T_Zuege.ZugKurz = getMoveNotations(T_Zuege.FEN, m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung, "kurz");
 
 														TransferZugNachStellung(Stellungsdaten, T_Zuege);
-														ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+														ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 														NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 														GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
@@ -404,7 +406,7 @@ function TheIndexGeorgFunction() {
 												click: function () {
 
 													TransferZugNachStellung(Stellungsdaten, T_Zuege);
-													ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+													ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 													NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 													GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
@@ -431,7 +433,7 @@ function TheIndexGeorgFunction() {
 									// Spielerzug ist ausreichend gut
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
@@ -483,7 +485,7 @@ function TheIndexGeorgFunction() {
 									}
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGENGINEMOVE;
@@ -570,7 +572,7 @@ function TheIndexGeorgFunction() {
 								} else {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
-									ZieheZug(T_Zuege, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
 
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);

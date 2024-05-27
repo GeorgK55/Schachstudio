@@ -67,7 +67,7 @@ VarianteStack = {
 }
 
 // Die Aufgabe selbst. Entspricht der Datenbanktabelle T_Aufgabe
-class CAufgabe  {
+class CChallenge  {
 	constructor() {
 		this.Kurztext 						=	"";	// Der in der Liste angezeigte Text.
 		this.Langtext 						=	"";	// Der komplette Text aus dem PGN-Tag Event oder bei lichess der Studienname.
@@ -116,8 +116,8 @@ class CZuege {
 		this.NAGNotation		= '';	// Die in der Notation angezeigten Zeichen
 		this.Hinweistext		= '';	// Beliebiger Text
 		this.Hinweispfeil		= '';	// Pfeilkodierung gemäß scid
-		this.MoveState			= '';
-		this.MoveNode				= '';
+		this.MoveState			= 'R';
+		this.MoveNode				= null;
 	}
 };
 

@@ -1,5 +1,5 @@
 
-function getlichessUserdata() {
+function getlichessUserdata() { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	const headers = { Authorization: 'Bearer ' + 'lip_dXasEGgvxmJGdYQPZXVM' };
 
@@ -11,7 +11,7 @@ function getlichessUserdata() {
 
 }
 
-function getlichessUserstudies() {
+function getlichessUserstudies() { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	const headers = { 'Authorization': 'Bearer ' + 'lip_dXasEGgvxmJGdYQPZXVM' };
 
@@ -27,7 +27,7 @@ function getlichessUserstudies() {
 
 }
 
-function getstudydata(studien, counter) {
+function getstudydata(studien, counter) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	const headers = { 'Authorization': 'Bearer ' + 'lip_dXasEGgvxmJGdYQPZXVM' };
 
@@ -49,12 +49,16 @@ function getstudydata(studien, counter) {
 // Wird in zwei Situationen benutzt:
 // - Zum echten Import von Kapiteln aus einer Studie
 // - ZUm direkten Spiel eines Kapitels einer Studie ohne Übernahme
-// Diese Funktion ruft - solange keine Fehler erkannt weden - zwingend die folgenden Funktionen auf:
+// Diese Funktion ruft - solange keine Fehler erkannt werden - die folgenden Funktionen auf:
 // - studieauswahl
 // - showstudylist
 // - getLichessStudy
 // Die Funktionssequenz ist in den beiden Situationen gleich, in getLichessStudy wird dann unterschieden 
-function DatenBereitstellen_Lichess(context) {
+function DatenBereitstellen_Lichess(context) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	$('#btn-aufgabenliste').removeClass( "hideMe" );
+	$('#btn-lichesskapitel').addClass( "hideMe" );
+
 
 	LichessUserDialog = $("#dialog-lichessuser").dialog({
 		title: "Studien aus lichess.org übernehmen",
@@ -74,9 +78,7 @@ function DatenBereitstellen_Lichess(context) {
 
 }
 
-function studieauswahl(username, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
-
-	console.log(username);
+function studieauswahl(username, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName() + ' mit user ' + username);
 
 	fetch('https://lichess.org/api/study/by/' + username, { headers })
 	.then(res => res.text())
@@ -92,7 +94,7 @@ function studieauswahl(username, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_S
 
 }
 
-function showstudylist(studylist, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function showstudylist(studylist, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	sl = document.getElementById("studienliste");
 
@@ -119,7 +121,7 @@ function showstudylist(studylist, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_
 
 }
 
-function getLichessStudy(studyid, studyname, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function getLichessStudy(studyid, studyname, context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	fetch('https://lichess.org/api/study/' + studyid + '.pgn', { headers })
 	.then(res => res.text())
@@ -144,10 +146,12 @@ function getLichessStudy(studyid, studyname, context) {	if(logMe(LOGLEVEL_SLIGHT
 }
 
 // Einzige Voraussetzung für diese Funktion ist: GlobalImportedPGN, also alle aktuellen Aufgaben in einem Array 
-function prepareLichessKapitel() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function prepareLichessKapitel() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$('#aufgabenliste').addClass( "hideMe" );
 	$('#kapitelliste').removeClass( "hideMe" );
+
+	// Und hier noch den Themenbereich deaktivieren
 	
 	$('#ul_kapitelliste').empty();
 	for (i = 0; i < GlobalImportedPGN.length; i++) {

@@ -4,9 +4,9 @@ $(document).ready(function () {
 	curLoglevel = LOGLEVEL_SLIGHT;
 	//curLoglevel = LOGLEVEL_NICE;
 	//curLoglevel = LOGLEVEL_IMPORTANT;
-	curLogthemes	= [LOGTHEME_DATA, LOGTHEME_SITUATION];
+	//curLogthemes	= [LOGTHEME_DATA, LOGTHEME_SITUATION, LOGTHEME_FUNCTIONBEGINN, LOGTHEME_ENGINEDIALOG];
 	//curLogthemes	= [LOGTHEME_DATA]; 
-	//curLogthemes	= [LOGTHEME_SITUATION];
+	curLogthemes	= [LOGTHEME_FUNCTIONBEGINN, LOGTHEME_ENGINEDIALOG];
 	//curLogthemes		= [];
 
 	TriggerMoveToStackCounter = 0; // Ohne Funktion, nur zwecks Debug
@@ -45,7 +45,7 @@ $(document).ready(function () {
 	});
 
 	$("#btn-themaneu").prop("disabled", true);
-	$("#btn-ehemaentfernen").prop("disabled", true);
+	$("#btn-themaentfernen").prop("disabled", true);
 
 	$("button").button();
 
@@ -70,7 +70,7 @@ $(document).ready(function () {
 	//TheIndexExperimentFunction();
 });
 
-function FullscreenDialog() {
+function FullscreenDialog() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	FrageFullscreenDialog = $("#dialog_fragefullscreen").dialog({
 		title: "Zum Training",
 		modal: true,
@@ -93,7 +93,7 @@ function FullscreenDialog() {
 	});
 }
 
-function openFullscreen() {
+function openFullscreen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	document.getElementById("seite").requestFullscreen();
 
 	GlobalFullscreenflag = true;
@@ -110,7 +110,7 @@ function openFullscreen() {
 	);
 }
 
-function countVisitor(CounterAction) {
+function countVisitor(CounterAction) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	$.get({
 		url: "php/get_dbdata.php",
 		data: { dataContext: "VisitorCounter", CounterAction: CounterAction },
@@ -133,7 +133,7 @@ function countVisitor(CounterAction) {
 		});
 }
 
-function logVisitor(Role) {
+function logVisitor(Role) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	let DBDate								= moment().format("YYYY-MM-DD H:mm:ss");
 	let CurrentBrowserName		= navigator.userAgent.split(" ").slice(-1)[0];
 	let CurrentBrowserDetails	= navigator.userAgent;
@@ -174,12 +174,12 @@ function logVisitor(Role) {
 		});
 }
 
-function zeigeWillkommentip() {
+function zeigeWillkommentip() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	let Zufallsindex = Math.floor(Math.random() * Willkommentip.length);
-	$(".Willkommentiptitleclass").append(
+	$(".willkommentiptitel").append(
 		"<span>" + Willkommentip[Zufallsindex]["titel"] + "</span>"
 	);
-	$(".Willkommentiptextclass").append(
+	$(".willkommentiptext").append(
 		"<span>" + Willkommentip[Zufallsindex]["text"] + "</span>"
 	);
 }

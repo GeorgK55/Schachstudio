@@ -5,7 +5,9 @@
 // Ist der gespielte Zug der einzig vorgesehene, werden alle Daten des entsprechenden Zugs aus der Aufgabenstellung übernommen und resolve eingestellt
 // Ist der gespielte Zug mehrdeutig (= es gibt Varianten für den Spieler), werden ALLE Züge in den Stack übertragen.
 // Dann wird ein Interrupt generiert. Resolve wird erst im Interrupt eingestellt.
-function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	showChallengeMovesShort();
 
 	PlayerMoveVariantenResult = $.Deferred();
 
@@ -41,7 +43,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 
 			// Der Variantenzug:
 			//TransferZugNachStellung(Stellungsdaten, MC_player.variantenmoves[0]); // Genau dieser wurde nicht in den Stack geschrieben
-			//ZieheZug(MC_player.variantenmoves[0], HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+			//ZieheZug(MC_player.variantenmoves[0], ANIMATIONSPEED_ZERO);
 
 			Stellungsdaten.CreateNewNode = true;
 			//Stellungsdaten.PreMoveId = MC_player.selectedmove.CurMoveId;
@@ -68,7 +70,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUA
 			}
 
 			// Ziehen
-			ZieheZug(MC_player.selectedmove, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_ZERO);
+			ZieheZug(MC_player.selectedmove, ANIMATIONSPEED_ZERO);
 
 			// Verwalten
 			setMoveState(MC_player.selectedmove.CurMoveId, MOVESTATE_MOVED);

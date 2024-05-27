@@ -1,5 +1,5 @@
 
-function ConfigureEngine() {
+function ConfigureEngine() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// Grundsätzliche Initialisierung der Engine
 	postit('setoption name UCI_AnalyseMode value true');
@@ -19,7 +19,8 @@ function ConfigureEngine() {
 	postit('isready');
 }
 
-function showAid(aidmode) { // init, first, second
+ // init, first, second
+function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	const AidSet = new Set();
 	let AidMoves, AidText = "";
@@ -71,7 +72,7 @@ function showAid(aidmode) { // init, first, second
 	}
 }
 
-function resetmarker() {
+function resetmarker() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$('#variantetextid').empty();
 	// $('#variantemarkerrejectid').empty();
@@ -81,42 +82,48 @@ function resetmarker() {
 
 }
 
-function showNotAcceptedMove() {
+function showNotAcceptedMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$("#" + T_Zuege.ZugFigur + "_" + T_Zuege.ZugVon).effect("shake");
 	$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/fehler.png'/>");
 }
 
-function addBoardFunctions(BoardId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function addBoardFunctions(BoardId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	addMouseBoardFunctions(BoardId);
-	addTouchBoardFunctions(BoardId);
+	addMouseBoardFunctions();
+	addTouchBoardFunctions();
 	addSVGBoardFunctions(); 
 
 }
 
-function addMouseBoardFunctions(BoardIdPraefix) {
+function addMouseBoardFunctions() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	$('[id^=' + BoardIdPraefix + ']')
+	$('[data-square]')
 		.mousedown(function (evx) {
 
-			if (evx.target.innerText != "") { // nur dann steht eine Figur auf dem Feld
+			if (evx.target.childNodes.length > 0) { // nur dann steht eine Figur auf dem Feld
 
-				T_Zuege.ZugVon = evx.target.getAttribute("data-figur").slice(-2);
-				T_Zuege.ZugFigur = evx.target.getAttribute("data-figur").slice(0, 1);
+				T_Zuege.ZugVon		= evx.target.parentNode.getAttribute('data-square');
+				T_Zuege.ZugFigur	= evx.target.getAttribute("data-piece");
 
-				MoveMouseDown = true;
+				InputDeviceStart = true;
 			}
 			evx.preventDefault();
 		})
 		.mouseup(function (evx) {
 
-			if (MoveMouseDown) {
+			if (InputDeviceStart) {
 
-				if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('mouseup event.target.id: ' + evx.target.id);
+				InputDeviceStart = false;
 
-				MoveMouseDown = false;
-				T_Zuege.ZugNach = evx.target.id.slice(-2);
+				if(evx.target.childNodes.length > 0) { // dann wird eine Figur geschlagen
+					if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('mouseup evx.target.parentNode.getAttribute("data-square"): ' + evx.target.parentNode.getAttribute("data-square"));
+					T_Zuege.ZugNach = evx.target.parentNode.getAttribute('data-square');
+				} else {
+					if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('mouseup evx.target.getAttribute("data-square"): ' + evx.target.getAttribute("data-square"));
+					T_Zuege.ZugNach = evx.target.getAttribute("data-square");
+				}
+
 				evx.preventDefault();
 
 				firePlayerMove();
@@ -127,54 +134,67 @@ function addMouseBoardFunctions(BoardIdPraefix) {
 }
 
 // Wird nach Beendigung einer Aufgabe aufgerufen
-function removeMouseBoardFunctions(BoardIdPraef) {
+function removeMouseBoardFunctions(BoardIdPraef) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// .off ohne weitere Parameter deaktiviert ALLE handler
 	$('[id^=' + BoardIdPraef + ']').off();
 
 }
 
-function addTouchBoardFunctions(BoardIdPraefix) {
+function addTouchBoardFunctions() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	$('[id^=' + BoardIdPraefix + ']')
+	$('[data-square]')
 		.on('touchstart', function (evx) {
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('touchstart' + evx.originalEvent.srcElement);
 
-			T_Zuege.ZugVon = evx.target.getAttribute("data-figur").slice(-2);
-			T_Zuege.ZugFigur = evx.target.getAttribute("data-figur").slice(0, 1);
+			if (evx.target.childNodes.length > 0) { // nur dann steht eine Figur auf dem Feld
 
-			MoveMouseDown = true;
+				T_Zuege.ZugVon = evx.target.parentNode.getAttribute('data-square');
+				T_Zuege.ZugFigur = evx.target.getAttribute("data-piece");
+
+				InputDeviceStart = true;
+			}
+
 			evx.preventDefault();
 		})
 		.on('touchmove', function (evx) {
 			evx.preventDefault();
 		})
 		.on('touchend', function (evx) {
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('touchend	' + evx.originalEvent.srcElement);
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('x und y	' + evx.changedTouches[0].pageX + ' ' + evx.changedTouches[0].pageY);
 
-			let endTarget = document.elementFromPoint(
-				evx.changedTouches[0].pageX,
-				evx.changedTouches[0].pageY - window.scrollY
-			).getAttribute("data-figur").slice(-2);
+			if (InputDeviceStart) {	
 
-			T_Zuege.ZugNach = endTarget;
-			evx.preventDefault();
+				InputDeviceStart = false;
 
-			firePlayerMove();
+				if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('touchend	' + evx.originalEvent.srcElement);
+				if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('x und y	' + evx.changedTouches[0].pageX + ' ' + evx.changedTouches[0].pageY);
+
+				let endTarget = document.elementFromPoint(
+					evx.changedTouches[0].pageX,
+					evx.changedTouches[0].pageY - window.scrollY
+				);
+				
+				if(endTarget.childNodes.length > 0) {
+					T_Zuege.ZugNach = endTarget.parentNode.getAttribute('data-square');
+				} else {
+					T_Zuege.ZugNach = endTarget.getAttribute("data-square");
+				}
+
+				firePlayerMove();
+			}
 		})
 		;
 
 }
 	
-function getMoveState(MoveId) {
+function getMoveState(MoveId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	return ChallengeMoves[index].MoveState;
 
 }
 
-function setMoveState(MoveId, NewState) {
+function setMoveState(MoveId, NewState) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	ChallengeMoves[index].MoveState = NewState;
@@ -183,28 +203,28 @@ function setMoveState(MoveId, NewState) {
 
 // MoveNode ist in der DB null.
 // Bei zeigen oder notieren wird die KnotenID der Notation hier eingetragen
-function setMoveNode(MoveId, Nodeid) {
+function setMoveNode(MoveId, Nodeid) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	ChallengeMoves[index].MoveNode = Nodeid;
 
 }
 
-function getMoveLevel(MoveId) {
+function getMoveLevel(MoveId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	return ChallengeMoves[index].ZugLevel;
 
 }
 
-function getMoveStockfish(MoveId) {
+function getMoveStockfish(MoveId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	return ChallengeMoves[index].ZugStockfish;
 
 }
 
-function isMoveUsed(MoveId) {
+function isMoveUsed(MoveId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	return ChallengeMoves[index].MoveNode == null ? false : true;
@@ -213,25 +233,25 @@ function isMoveUsed(MoveId) {
 
 // Es werden in Abhängigkeit der Themenselektion genau die Button aktiviert oder deaktiviert, deren Funktion möglich ist
 // btn-themaneu: enable, wenn genau ein Thema selektiert ist, egal ob Blatt oder Ast
-// btn-ehemaentfernen: enable nur, wenn denau ein Thema selektiert ist und das ist ein Blatt
-function activateThemaButtons(nodedata) {
+// btn-themaentfernen: enable nur, wenn denau ein Thema selektiert ist und das ist ein Blatt
+function activateThemaButtons(nodedata) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if (nodedata.selected.length == 1) {
 		$("#btn-themaneu").button("enable");
 		//
 		if ($('#themenlistetree').jstree(true).get_selected(true)[0].children.length == 0) {
-			$("#btn-ehemaentfernen").button("enable");
+			$("#btn-themaentfernen").button("enable");
 		} else {
-			$("#btn-ehemaentfernen").button("disable");
+			$("#btn-themaentfernen").button("disable");
 		}
 	} else {
 		$("#btn-themaneu").button("disable");
-		$("#btn-ehemaentfernen").button("disable");
+		$("#btn-themaentfernen").button("disable");
 	}
 
 }
 
-function getVarianteLevelColorClass(situation, zuglevel) {
+function getVarianteLevelColorClass(situation, zuglevel) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let VariantetextFarbeClass;
 

@@ -1,12 +1,10 @@
 
-function postit(mess) {
-	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('postit: ' + mess);
+function postit(mess) {	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_ENGINEDIALOG)) console.log('postit: ' + mess);
 	$('<p class="LogEin">' + mess + '</p>').appendTo('#logliste');
 	stockFish.postMessage(mess);
 };
 
-function postitdebug(mess) {
-	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('postitdebug: ' + mess);
+function postitdebug(mess) {	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_ENGINEDIALOG)) console.log('postitdebug: ' + mess);
 	$('<p class="LogEin">' + mess + '</p>').prependTo('#logliste');
 	stockFish.postMessage(mess);
 };
@@ -26,9 +24,7 @@ function compressline(line) {
 
 // Bei der Zugnotation für stockfish fehlt der Figurname.
 // Der wird hier über FEN bestimmt: aus dem Feldname ergibt sich ein "Index" in FEN
-function getMoveNotations(FEN, sfmove, result) {
-
-	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('FEN: ' + FEN + ' sfmove: ' + sfmove + ' result: ' + result);
+function getMoveNotations(FEN, sfmove, result) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('FEN: ' + FEN + ' sfmove: ' + sfmove + ' result: ' + result);
 
 	let FileVon = sfmove.substr(0, 1);
 	let RankVon = sfmove.substr(1, 1);

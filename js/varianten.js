@@ -2,9 +2,8 @@
 // Zuerst wird der Spielerzug verarbeitet. 
 // Wenn der Zug gültig war, wird die Bearbeitung des Folgezugs durchgeführt.
 // Diese Funktion ist rekursiv und endet erst, wenn der Folgezug fertig verarbeitet bzw die Situation analysiert ist
-function spieleVarianten() {
+function spieleVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_DATA)) console.log(Stellungsdaten);
 
 	showChallengeMovesShort();

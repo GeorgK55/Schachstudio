@@ -1,7 +1,7 @@
 // Das Kopieren aus der Zwischenablage als Einzelschritt ist nur wegen debug nötig.
 // Wenn der Debugger hier schon gestartet ist, kommt eine Fehlermeldung (sinngemäß: not allowed) und die Zwischenablage wird nicht ausgelesen
 // Ist auch so bei einer Internetrecherche zu finden
-function DatenBereitstellen_Zwischenablage() {
+function DatenBereitstellen_Zwischenablage() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	navigator.clipboard.readText().then(text => { document.getElementById("importaufgabetext").innerHTML = text; ImportText = text })
 		.catch(err => { document.getElementById("importaufgabetext").innerHTML = 'Failed to read clipboard contents: ' + err; })
@@ -16,7 +16,8 @@ function DatenBereitstellen_Zwischenablage() {
 // Nach dieser Sequenz sind:
 // - alle html-Elemente für eine Aufgabenauswal initialisiert ( = sichtbar und leer)
 // - der Eventhandler "selectble" in der Aufgabenliste eingerichtet
-function DatenBereitstellen_Datei() {
+function DatenBereitstellen_Datei() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
 
 	// Das inputElement wird hier immer neu angelegt. damit das changeevent IMMER getriggert wird
 	// remove in onFileLoadedend
@@ -32,7 +33,7 @@ function DatenBereitstellen_Datei() {
 }
 
 // Das war eine Fundstelle im Netz
-function handleFileSelect(e) {
+function handleFileSelect(e) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	let files = e.target.files;
 	if (files.length < 1) {
 		alert('select a file...');
@@ -47,7 +48,7 @@ function handleFileSelect(e) {
 
 // Stellt die eingelesenen Daten in einem array von Aufgaben zur Verfügung
 // Anschließend werden die allgemeinen Vorbereitungen aufgerufen
-function onFileLoadedend(e) {
+function onFileLoadedend(e) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// Als globale Variable, da auf die Inhalte später noch per Klick zugegriffen werden soll
 	GlobalImportedPGN = e.target.result.split("\n\n\n").filter(i => i); // .filter(i => i) entfernt leere Elemente
@@ -58,12 +59,12 @@ function onFileLoadedend(e) {
 // Falls es mal mehrere Quellen gibt, gilt dies dann für alle Quellen
 // Die Anzeige für die Aufgabenliste öffnen und die Selektion der Aufgaben bereitstellen
 // Einzige Voraussetzung für diese Funktion ist: GlobalImportedPGN, also alle aktuellen Aufgaben in einem Array 
-function prepareChallengeImport() {
+function prepareChallengeImport() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$('#ul_importaufgaben').removeClass( "hideMe" );
 	$('#f_importaufgabedaten').addClass( "hideMe" );
 	$('#importaufgabePGN').children().addClass( "hideMe" );
-	$('#importchessboardId').addClass( "hideMe" );
+	$('#importchessboard').addClass( "hideMe" );
 	$('#importTreeNotationWrapperId').addClass( "hideMe" );
 	$('#importactionbuttons').addClass( "hideMe" );
 
@@ -85,7 +86,7 @@ function prepareChallengeImport() {
 			$('#importaufgabePGN').removeClass( "hideMe" );
 			$('#importaufgabelabel').removeClass( "hideMe" );
 			$('#importaufgabetext').removeClass( "hideMe" );
-			$('#importchessboardId').removeClass( "hideMe" );
+			$('#importchessboard').removeClass( "hideMe" );
 			$('#importTreeNotationWrapperId').removeClass( "hideMe" ).empty();
 			$('#importactionbuttons').removeClass( "hideMe" );
 
@@ -94,25 +95,27 @@ function prepareChallengeImport() {
 
 			// Die Daten der Aufgabe vorbereiten und die Datenstrukturen mit den Aufgabedaten versorgen
 			document.getElementById("importaufgabetext").innerHTML = GlobalImportedPGN[GlobalImportedPGNIndex];
-			//scanChallengeMetaData0(GlobalImportedPGN[GlobalImportedPGNIndex]);
+
+			Importdaten			= new CImportdaten();
+			Stellungsdaten	= new CStellungsdaten();
+			Challenge				= new CChallenge();
+		
+					//scanChallengeMetaData0(GlobalImportedPGN[GlobalImportedPGNIndex]);
 			scanPGN(GlobalImportedPGN[GlobalImportedPGNIndex]);
 			notifyChallengeDetails(); 
 			normalizePGNMoves(GlobalImportedPGN[GlobalImportedPGNIndex]);
-			getImportBoard();
+			getImportBoard(); // schon in getImportBoard durchgeführt: .then(function() {	StellungAufbauen(T_Aufgabe.FEN)	}	);
 
-			StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN);
+			;
 		}
 	});
 
 }
 
 // Aus den Importdaten werden die die Aufgabe beschreibenden Daten extrahiert und in die Oberfläche übertragen
-function scanPGN(PGNText) {
+function scanPGN(PGNText) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	Importdaten = new CImportdaten();
-	T_Aufgabe		= new CAufgabe();
-
-	T_Aufgabe.PGN = PGNText;
+	Challenge.PGN = PGNText;
 
 	// Alle regex maskieren, da sonst die Fehlermeldung "groups für null" kommt
 
@@ -120,89 +123,89 @@ function scanPGN(PGNText) {
 	let m_Aufgabetext		= PGNText.match(r_Event);
 
 	if (m_Aufgabetext == null) {
-		T_Aufgabe.Kurztext = "Fehlt";
+		Challenge.Kurztext = "Fehlt";
 	} else {
 		// Wenn der "lichess-Doppelpunkt" fehlt, steht der Kurztext in der Gruppe event, sonst in den Gruppen Studie und Kapitel
 		if(m_Aufgabetext.groups.event == null) {
-			T_Aufgabe.Kurztext = m_Aufgabetext.groups.kapitel;
-			T_Aufgabe.Langtext = m_Aufgabetext.groups.studie;
+			Challenge.Kurztext = m_Aufgabetext.groups.kapitel;
+			Challenge.Langtext = m_Aufgabetext.groups.studie;
 		} else {
-			T_Aufgabe.Kurztext = m_Aufgabetext.groups.event;
+			Challenge.Kurztext = m_Aufgabetext.groups.event;
 		}
 	}
 
 	let m_Quelle = (/(\[Site \")(?<site>.*)(\"\])/).exec(PGNText);
 	if (m_Quelle != null) {
-		T_Aufgabe.Quelle = m_Quelle.groups.site;
+		Challenge.Quelle = m_Quelle.groups.site;
 		if(m_Quelle.groups.site.includes('lichess')) {
-			T_Aufgabe.lichess_studie_id = m_Quelle.groups.site.split('/').slice(-2)[0];
-			T_Aufgabe.lichess_kapitel_id = m_Quelle.groups.site.split('/').slice(-1)[0];
+			Challenge.lichess_studie_id = m_Quelle.groups.site.split('/').slice(-2)[0];
+			Challenge.lichess_kapitel_id = m_Quelle.groups.site.split('/').slice(-1)[0];
 		}
 	}
 
 	let m_Annotatortext	= PGNText.match(r_Annotator);
 	if (m_Annotatortext != null) {
-		T_Aufgabe.Annotator = m_Annotatortext.groups.annotatortext.includes('lichess') ? m_Annotatortext.groups.annotatortext.split('/').slice(-1)[0]:  m_Annotatortext.groups.annotatortext;
+		Challenge.Annotator = m_Annotatortext.groups.annotatortext.includes('lichess') ? m_Annotatortext.groups.annotatortext.split('/').slice(-1)[0]:  m_Annotatortext.groups.annotatortext;
 	}
 
 	let m_Weiss = (/(\[White \")(?<weissname>.*)(\"\])/).exec(PGNText);
 	if (m_Weiss != null) {
-		T_Aufgabe.WeissName = m_Weiss.groups.weissname;
+		Challenge.WeissName = m_Weiss.groups.weissname;
 	}
 
 	let m_Schwarz = (/(\[Black \")(?<schwarzname>.*)(\"\])/).exec(PGNText);
 	if (m_Schwarz != null) {
-		T_Aufgabe.SchwarzName = m_Schwarz.groups.schwarzname;
+		Challenge.SchwarzName = m_Schwarz.groups.schwarzname;
 	}
 
 	let m_Datum = (/(\[(UTC){0,1}Date \")(?<datum>.*)(\"\])/).exec(PGNText);
 	if (m_Datum != null) {
 		 let receiveddate= m_Datum.groups.datum.split('.');
-		 T_Aufgabe.Datum = receiveddate[2] + '.' + receiveddate[1] + '.' + receiveddate[0];
+		 Challenge.Datum = receiveddate[2] + '.' + receiveddate[1] + '.' + receiveddate[0];
 	}
 
-	// Weder Fritz noch lichess exportiern bei Partieanfang eine FEN. 
+	// Weder Fritz noch lichess exportieren bei Partieanfang eine FEN. 
 
 	let m_FEN_Exist = (/\[FEN/g).exec(PGNText);
 
 	if (m_FEN_Exist == null) {
 
-		T_Aufgabe.FEN = FEN_PARTIEANFANG;
-		$('#FENImport').val(FEN_PARTIEANFANG);
-		T_Aufgabe.AmZug = WEISSAMZUG;
-		$("#AmZugImport").val(WEISSAMZUG);
+		Challenge.FEN = FEN_PARTIEANFANG;
+		$('#fenimport').val(FEN_PARTIEANFANG);
+		Challenge.AmZug = WEISSAMZUG;
+		$("#amzugimport").val(WEISSAMZUG);
 
 	} else {
 
 		let m_FEN = (/(\[FEN \")(?<fen>.*)(\"\])/).exec(PGNText);
-		T_Aufgabe.FEN = m_FEN.groups.fen;
-		$('#FENImport').val(m_FEN.groups.fen);
-			$("#AmZugImport").val(WEISSAMZUG);
+		Challenge.FEN = m_FEN.groups.fen;
+		$('#fenimport').val(m_FEN.groups.fen);
+			$("#amzugimport").val(WEISSAMZUG);
 		if (m_FEN.groups.fen.includes("w")) { // laut Spezifikation ist es in klein
-			T_Aufgabe.AmZug = WEISSAMZUG;
-			$("#AmZugImport").val(WEISSAMZUG);
+			Challenge.AmZug = WEISSAMZUG;
+			$("#amzugimport").val(WEISSAMZUG);
 		} else {
-			T_Aufgabe.AmZug = SCHWARZAMZUG;
-			$("#AmZugImport").val(SCHWARZAMZUG);
+			Challenge.AmZug = SCHWARZAMZUG;
+			$("#amzugimport").val(SCHWARZAMZUG);
 		}
 
 	}
 
 }
 
-function notifyChallengeDetails() {
+function notifyChallengeDetails() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	$('#ul_importaufgabedetails input').val('');
+	//$('#ul_importaufgabedetails input').val('');
 
-	$('#KurztextImport').val(T_Aufgabe.Kurztext);
-	$('#LangtextImport').val(T_Aufgabe.Langtext);
-	$('#QuelleImport').val(T_Aufgabe.Quelle);
-	$('#AnnotatortextImport').val(T_Aufgabe.Annotator);
-	$('#WeissNameImport').val(T_Aufgabe.WeissName);
-	$('#SchwarzNameImport').val(T_Aufgabe.SchwarzName);
-	$('#DatumImport').val(T_Aufgabe.Datum);
-	$('#FENImport').val(T_Aufgabe.FEN);
-	$("#AmZugImport").val(T_Aufgabe.AmZug);
+	$('#kurztextimport').val(Challenge.Kurztext);
+	$('#langtextimport').val(Challenge.Langtext);
+	$('#quelleimport').val(Challenge.Quelle);
+	$('#annotatortextimport').val(Challenge.Annotator);
+	$('#weissnameimport').val(Challenge.WeissName);
+	$('#schwarznameimport').val(Challenge.SchwarzName);
+	$('#datumimport').val(Challenge.Datum);
+	$('#fenimport').val(Challenge.FEN);
+	$("#amzugimport").val(Challenge.AmZug);
 
 }
 
@@ -223,49 +226,49 @@ function notifyChallengeDetails() {
 
 // 	if (m_Aufgabetext == null) {
 // 		T_Aufgabe.Kurztext = "Fehlt";
-// 		$('#KurztextImport').val("Fehlt");
+// 		$('#kurztextimport').val("Fehlt");
 // 		// Langtext ist optional und nullable
 // 	} else {
 // 		// Wenn der "lichess-Doppelpunkt" fehlt, steht der Kurztext in der Gruppe event, sonst in den Gruppen Studie und Kapitel
 // 		if(m_Aufgabetext.groups.event == null) {
 // 			T_Aufgabe.Kurztext = m_Aufgabetext.groups.kapitel;
-// 			$('#KurztextImport').val(m_Aufgabetext.groups.kapitel);
+// 			$('#kurztextimport').val(m_Aufgabetext.groups.kapitel);
 // 			T_Aufgabe.Langtext = m_Aufgabetext.groups.studie;
-// 			$('#LangtextImport').val(m_Aufgabetext.groups.studie);
+// 			$('#langtextimport').val(m_Aufgabetext.groups.studie);
 // 		} else {
 // 			T_Aufgabe.Kurztext = m_Aufgabetext.groups.event;
-// 			$('#KurztextImport').val(m_Aufgabetext.groups.event);
+// 			$('#kurztextimport').val(m_Aufgabetext.groups.event);
 // 		}
 // 	}
 
 // 	let m_Quelle = (/(\[Site \")(?<site>.*)(\"\])/).exec(Importtext);
 // 	if (m_Quelle != null) {
 // 		T_Aufgabe.Quelle = m_Quelle.groups.site;
-// 		$('#QuelleImport').val(m_Quelle.groups.site);
+// 		$('#quelleimport').val(m_Quelle.groups.site);
 // 	}
 
 // 	let m_Annotatortext	= Importtext.match(r_Annotator);
 // 	if (m_Annotatortext != null) {
 // 		T_Aufgabe.Annotator = m_Annotatortext.groups.annotatortext;
-// 		$('#AnnotatortextImport').val(m_Annotatortext.groups.annotatortext);
+// 		$('#annotatortextimport').val(m_Annotatortext.groups.annotatortext);
 // 	}
 
 // 	let m_Weiss = (/(\[White \")(?<weissname>.*)(\"\])/).exec(Importtext);
 // 	if (m_Weiss != null) {
 // 		T_Aufgabe.WeissName = m_Weiss.groups.weissname;
-// 		$('#WeissNameImport').val(m_Weiss.groups.weissname);
+// 		$('#weissnameimport').val(m_Weiss.groups.weissname);
 // 	}
 
 // 	let m_Schwarz = (/(\[Black \")(?<schwarzname>.*)(\"\])/).exec(Importtext);
 // 	if (m_Schwarz != null) {
 // 		T_Aufgabe.SchwarzName = m_Schwarz.groups.schwarzname;
-// 		$('#SchwarzNameImport').val(m_Schwarz.groups.schwarzname);
+// 		$('#schwarznameimport').val(m_Schwarz.groups.schwarzname);
 // 	}
 
 // 	let m_Datum = (/(\[UTCDate \")(?<datum>.*)(\"\])/).exec(Importtext);
 // 	if (m_Datum != null) {
 // 		T_Aufgabe.Datum = m_Datum.groups.datum;
-// 		$('#DatumImport').val(m_Datum.groups.datum);
+// 		$('#datumimport').val(m_Datum.groups.datum);
 // 	}
 
 // 	T_Aufgabe.Quelledetail	= "";
@@ -279,22 +282,22 @@ function notifyChallengeDetails() {
 // 	if (m_FEN_Exist == null) {
 
 // 		T_Aufgabe.FEN = FEN_PARTIEANFANG;
-// 		$('#FENImport').val(FEN_PARTIEANFANG);
+// 		$('#fenimport').val(FEN_PARTIEANFANG);
 // 		T_Aufgabe.AmZug = WEISSAMZUG;
-// 		$("#AmZugImport").val(WEISSAMZUG);
+// 		$("#amzugimport").val(WEISSAMZUG);
 
 // 	} else {
 
 // 		let m_FEN = (/(\[FEN \")(?<fen>.*)(\"\])/).exec(Importtext);
 // 		T_Aufgabe.FEN = m_FEN.groups.fen;
-// 		$('#FENImport').val(m_FEN.groups.fen);
-// 			$("#AmZugImport").val(WEISSAMZUG);
+// 		$('#fenimport').val(m_FEN.groups.fen);
+// 			$("#amzugimport").val(WEISSAMZUG);
 // 		if (m_FEN.groups.fen.includes("w")) { // laut Spezifikation ist es in klein
 // 			T_Aufgabe.AmZug = WEISSAMZUG;
-// 			$("#AmZugImport").val(WEISSAMZUG);
+// 			$("#amzugimport").val(WEISSAMZUG);
 // 		} else {
 // 			T_Aufgabe.AmZug = SCHWARZAMZUG;
-// 			$("#AmZugImport").val(SCHWARZAMZUG);
+// 			$("#amzugimport").val(SCHWARZAMZUG);
 // 		}
 
 // 	}
@@ -305,7 +308,7 @@ function notifyChallengeDetails() {
 // Hier werden alle später mal relevanten Teile voneinander getrennt und die optischen Optimierungen entfernt. 
 // Nach jeder Korrektur gibt es eine neue Zeichenkette.
 // Am Ende gibt es ein Array mit allen Einzelteilen
-function normalizePGNMoves(Importtext) {
+function normalizePGNMoves(Importtext) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let ImportMoves = Importtext.match(r_Match_Moves);
 
@@ -331,16 +334,18 @@ function normalizePGNMoves(Importtext) {
 
 }
 
-function ZuegePruefen(notationmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function ZuegePruefen(notationmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	GlobalActionContext = AC_CHALLENGEIMPORT;
 
 	GLOBALNOTATIONMODE = notationmode == NOTATIONMODE_HIDDEN ? NOTATIONMODE_HIDDEN : NOTATIONMODE_VISIBLE;
 
 	Zugpruefung = $.Deferred();
 
 	Importdaten.PGN_Index		= 0;
-	Importdaten.PreFEN			=	T_Aufgabe.FEN;	// Die FEN; die zu diesem Zug geführt hat
-	Stellungsdaten.FEN			=	T_Aufgabe.FEN;	// Die FEN; mit der dieser Zug ausgeführt wird
-	Stellungsdaten.ZugFarbe	=	T_Aufgabe.AmZug;
+	Importdaten.PreFEN			=	Challenge.FEN;	// Die FEN; die zu diesem Zug geführt hat
+	Stellungsdaten.FEN			=	Challenge.FEN;	// Die FEN; mit der dieser Zug ausgeführt wird
+	Stellungsdaten.ZugFarbe	=	Challenge.AmZug;
 
 	Zugliste				= [];
 	ChallengeMoves	= [];
@@ -373,7 +378,7 @@ function ZuegePruefen(notationmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATI
 		
 	}
 
-	StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN); // Hier auch noch ??? Ist das im select nicht schon ausreichend?
+	//StellungAufbauen(HTMLBRETTNAME_IMPORT, T_Aufgabe.FEN); // Hier auch noch ??? Ist das im select nicht schon ausreichend?
 	validateSingleMove(); // Wird von hier aus einmalig am Beginn der Prüfung aufgerufen. Dann wiederholt im stockfishmodul
 
 	return Zugpruefung.promise();
@@ -384,7 +389,7 @@ function ZuegePruefen(notationmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATI
 // Eventuell wird Importdaten aktualisiert (Zugnummer, Varianten, ...)
 // Bei kurzer Notation wird für den gefundenen Zug das Startfeld ermittelt
 // Alle Daten über den Zug werden in einem globalen Objekt (entsprechend der Datenbanktabelle) gespeichert
-function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	SingleMove = new CZuege();
 
@@ -516,7 +521,7 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 
 			Stellungsdaten.CreateNewNode = true;
 
-			StellungAufbauen(HTMLBRETTNAME_IMPORT, Stellungsdaten.FEN);
+			StellungAufbauen(Stellungsdaten.FEN);
 
 			// Dann ist eine Variante beendet
 			// Es muss:
@@ -543,12 +548,12 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 
 			Stellungsdaten.CreateNewNode = true;
 
-			StellungAufbauen(HTMLBRETTNAME_IMPORT, Stellungsdaten.FEN);
+			StellungAufbauen(Stellungsdaten.FEN);
 
 			// Dann muss es sich um einen Kommentar vor dem ersten Zug handeln. Der wird jetzt einfach mal in die Aufgabe übernommen. Noch verbessern.
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("{") == 0) {
 
-			T_Aufgabe.Langtext = getKommentar(0);
+			Challenge.Langtext = getKommentar(0);
 
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("$") == 0) {
 
@@ -566,8 +571,18 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 	} while (m_BauerKurzeNotation == null && m_FigurKurzeNotation == null && m_Rochaden == null && Importdaten.PGN_Index < Importdaten.PGN.length);
 
 	if(Importdaten.PGN_Index >= Importdaten.PGN.length) {
-		alert('fertig');
+		//alert('fertig');
+		$( "#messagetext" ).fadeIn("fast")
+			.html('fertig')
+			.delay(10000)
+			.fadeOut( "slow", function() {
+				$('<p>fertig</p>').appendTo('#messageliste');
+				$('#messagetext').empty();
+		});
+
+		//$( "#messageline" ).hide( "fade", 10000,  );
 		Zugpruefung.resolve();
+		//return Zugpruefung.promise();
 	}
 }
 
@@ -575,7 +590,8 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) c
 // In der kurzen Notation werden ja nur die Zielfelder genannt. Stockfish braucht Züge aber zwingend in der Form filerankfilerank
 // Es werden ALLE Figuren/Bauern der Farbe auf dem Brett gesucht und Stockfish zur Prüfung übergeben.
 // Das Ergebnis sollte immer eineutig sein.
-function executeMove(Zugdaten) { // Zugdaten ist der match des regulären Ausdrucks
+// Zugdaten ist der match des regulären Ausdrucks
+function executeMove(Zugdaten) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let KandidatenID;
 	let Kandidaten;
@@ -585,7 +601,11 @@ function executeMove(Zugdaten) { // Zugdaten ist der match des regulären Ausdru
 		// Bauernzug. Entscheidung weiss oder schwarz nur über die aktuelle ZugFarbe möglich.
 		// Bei Bauernzügen braucht nur über file weiter eingeschränkt werden. rank kann es ja nicht geben
 		CurFigur = SingleMove.FEN.includes("w") ? 'P' : 'p';
-		Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + '"]');
+		if (Zugdaten.groups.capture == '') {
+			Kandidaten = $("[data-piece=" + CurFigur + "]");
+		} else {
+			Kandidaten = $("[data-square^='" + Zugdaten.groups.mitfile + "']").find('[data-piece="' + CurFigur + '"]');
+		}
 
 	} else {
 		// Figurenzug. Der Name wird in der kurzen Notation immer gross geschrieben. Die Namen in den ID entsprechen FEN, also gross/klein für weiss/schwarz
@@ -593,25 +613,28 @@ function executeMove(Zugdaten) { // Zugdaten ist der match des regulären Ausdru
 		CurFigur = SingleMove.FEN.includes("w") ? (Zugdaten.groups.figur).toUpperCase() : Zugdaten.groups.figur.toLowerCase();
 
 		if(SingleMove.ZugStart == "") { // ohne Startangeben
-			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + '"]');
-		} else if($.isNumeric(SingleMove.ZugStart)) { // dann ist es rank als Startangabe (id$= ist Kriterium)
-			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + '"][id$="' + SingleMove.ZugStart + '"]');
+			Kandidaten = $("[data-piece=" + CurFigur + "]");
+		} else if($.isNumeric(SingleMove.ZugStart)) { // dann ist es rank als Startangabe
+			//Kandidaten = document.getElementById("importchessboard").querySelectorAll('[data-square$="' + SingleMove.ZugStart + '"]').querySelectorAll('[data-piece="' + CurFigur + '"]');
+			Kandidaten = $("[data-square$='" + Zugdaten.groups.mitrank + "']").find('[data-piece="' + CurFigur + '"]');
 		} else { // dann ist es file ls Startangabe
-			Kandidaten = document.getElementById("importchessboardId").querySelectorAll('[data-figur^="' + CurFigur + '_' + SingleMove.ZugStart + '"]');
+			//Kandidaten = document.getElementById("importchessboard").querySelectorAll('[data-square^="' + SingleMove.ZugStart + '"]').querySelectorAll('[data-piece="' + CurFigur + '"]');
+			Kandidaten = $("[data-square^='" + Zugdaten.groups.mitfile + "']").find('[data-piece="' + CurFigur + '"]');
 		}
 	}
 
-	for (const Kandidat of Kandidaten.values()) {
+	for (const Kandidat of Kandidaten) {
 
 		$("#triggertag").trigger("SetFenPosition", [SingleMove.FEN]);
 		let EchteUmwandlung = Zugdaten.groups.umwandlung == "" ? "" : SingleMove.FEN.includes("w") ? Zugdaten.groups.umwandlung.toLowerCase() : Zugdaten.groups.umwandlung.toLowerCase();
-		$("#triggertag").trigger("isMoveCorrect", [Kandidat.getAttribute("data-figur").match('[abcdefgh][12345678]') + SingleMove.ZugNach + EchteUmwandlung]);
+		let von = Kandidat.parentNode.getAttribute('data-square');
+		$("#triggertag").trigger("isMoveCorrect", [von + Zugdaten.groups.targetfile + Zugdaten.groups.targetrank + EchteUmwandlung]);
 		
 	}
 }
 
 // Die Situation kann eindeutig identifiziert werden. Diese ist zu prüfen.
-function executeRochade(Zugdaten) {
+function executeRochade(Zugdaten) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if (SingleMove.FEN.includes("w")) {
 		SingleMove.ZugVon = "e1";
@@ -625,7 +648,7 @@ function executeRochade(Zugdaten) {
 	$("#triggertag").trigger("isMoveCorrect", [SingleMove.ZugVon + SingleMove.ZugNach]);
 }
 
-function getKommentar(Versatz) {
+function getKommentar(Versatz) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	let Kommentar = "";
 	if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + Versatz].indexOf('{') == 0) {
 		let fertig = false;
@@ -639,7 +662,7 @@ function getKommentar(Versatz) {
 	return Kommentar.replace('{', '').replace('}', '').trim();
 }
 
-function getNAGSingle(Versatz) {
+function getNAGSingle(Versatz) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	let NAGSingle = "";
 	if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + Versatz].indexOf('$') == 0) {
 		let fertig = false;
@@ -653,7 +676,7 @@ function getNAGSingle(Versatz) {
 	return NAGSingle.trim();
 }
 
-function joinNAG() {
+function joinNAG() { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let NotationNAG = '';
 

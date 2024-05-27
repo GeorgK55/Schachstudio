@@ -5,25 +5,25 @@
 
 
 // Nur zur besseren Lesbarkeit beim debuggen
-function showChallengeMovesShort() {
+function showChallengeMovesShort() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let ChallengeMoveShort = [];
 
 	for(i = 0; i < ChallengeMoves.length; i++) {
 		ChallengeMoveShort.push({
-			Id:						ChallengeMoves[i].Id,
+			//Id:						ChallengeMoves[i].Id,
 			CurMoveId:		ChallengeMoves[i].CurMoveId,
 			PreMoveId:		ChallengeMoves[i].PreMoveId,
 			ZugOriginal:	ChallengeMoves[i].ZugOriginal,
-			ZugLevel:			ChallengeMoves[i].ZugLevel,
-			MoveState: 		ChallengeMoves[i].MoveState,
-			MoveNode:			ChallengeMoves[i].MoveNode
+			//ZugLevel:			ChallengeMoves[i].ZugLevel,
+			//MoveState: 		ChallengeMoves[i].MoveState,
+			//MoveNode:			ChallengeMoves[i].MoveNode
 		});
 	}
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.table(ChallengeMoveShort);
 }
 
-function showMoveContext(MoveC) {
+function showMoveContext(MoveC) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let ReturnMoveC = [];
 
@@ -40,12 +40,12 @@ function showMoveContext(MoveC) {
 }
 
 // Weil der debugger nicht auf Mausklick im Schachbrett reagiert
-function startMouseUp() {
+function startMouseUp() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	T_Zuege.ZugVon = $('#Mausersatz').val().slice(0, 2);
-	T_Zuege.ZugFigur = $("span[id$='" + $('#Mausersatz').val().slice(0, 2) + "']")[0].id.slice(0, 1);
+	T_Zuege.ZugVon = $('#mausersatz').val().slice(0, 2);
+	T_Zuege.ZugFigur = $("span[id$='" + $('#mausersatz').val().slice(0, 2) + "']")[0].id.slice(0, 1);
 
-	T_Zuege.ZugNach = $('#Mausersatz').val().slice(-2);
+	T_Zuege.ZugNach = $('#mausersatz').val().slice(-2);
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('firePlayerMove1');
 	firePlayerMove();
@@ -57,18 +57,18 @@ function getFuncName() {
 }
 
 function KommandoAbschicken() {
-
-	$("#triggertag").trigger("gocmd", Kommandostart.value);
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+	$("#triggertag").trigger("gocmd", kommandostart.value);
 
 }
 
-function RegexAbschicken() {
+function RegexAbschicken() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 
-	let m_depth = (/(depth )(?<depth>\d)/g).exec(Regexstart.value);
-	let m_seldepth = (/(seldepth )(?<seldepth>\d)/g).exec(Regexstart.value);
+	let m_depth = (/(depth )(?<depth>\d)/g).exec(regexstart.value);
+	let m_seldepth = (/(seldepth )(?<seldepth>\d)/g).exec(regexstart.value);
 
-	let m_scorecp = (/(score cp )(?<scorecp>\d)/g).exec(Regexstart.value);
+	let m_scorecp = (/(score cp )(?<scorecp>\d)/g).exec(regexstart.value);
 
 	let i = 0;
 
@@ -78,7 +78,7 @@ function RegexAbschicken() {
 // showjstreeimportant('importtreenotationid')
 // $('#challengenotation').jstree(true).get_json('#', { flat: true })
 // $('#importtreenotationid').jstree(true).get_json('#', { flat: true })
-function showjstreeimportant(TreeContainer) {
+function showjstreeimportant(TreeContainer) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let nodesarray = $('#' + TreeContainer).jstree(true).get_json('#', { flat: true })
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(nodesarray);
@@ -122,7 +122,8 @@ function logMe(level, theme) {
 
 }
 
-function logVisitor(Role) {
+function logVisitor(Role) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
 	let Orientation						= screen.orientation.type; /*screen.orientation.type*/ // safari kann das nicht
 	let myWidth								= window.innerWidth;
 	let myHeight							= window.innerHeight;
@@ -130,11 +131,9 @@ function logVisitor(Role) {
 	let pixelDepth						= screen.pixelDepth;
 	let colorDepth						= screen.colorDepth;
 
-	console.log('orientation: ' + Orientation);
-
 }
 
-function Aufgabenstatistik() {
+function Aufgabenstatistik() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	const headers = {
 		'Content-Type': 'text/plain',
@@ -162,7 +161,7 @@ function Aufgabenstatistik() {
 
 }
 
-function handleDirectoryFiles(e) {
+function handleDirectoryFiles(e) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let files = e.target.files;
 
@@ -181,7 +180,7 @@ function handleDirectoryFiles(e) {
 	
 }
 
-function onStudieLoadedend(sn) {
+function onStudieLoadedend(sn) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	FilePGN = event.target.result.split("\n\n\n").filter(i => i); // .filter(i => i) entfernt leere Elemente
 
@@ -210,7 +209,7 @@ function onStudieLoadedend(sn) {
 	}
 }
 
-function getlichess() {
+function getlichess() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	const headers = {
 		'Content-Type': 'text/plain',

@@ -52,7 +52,17 @@
   padding: 1vh;
 }
 
-  .Startertext {
+.gc-willkommentip {
+  display: grid;
+  grid-template-columns: 10fr 40fr;
+  grid-template-rows: 1fr 5fr;
+  align-items: center;
+  justify-items: center;
+  grid-template-areas: "icon titel" "icon text";
+  padding: 1vh;
+}
+
+.Startertext {
     margin: 2vh 2vw;
   }
 
@@ -60,10 +70,14 @@
 		content: "Neu";
 	}
 	
-	#btn-ehemaentfernen::after {
+	#btn-themaentfernen::after {
 		content: "Entfernen";
 	}
-	
+
+  #btn-aufgabenliste::after {
+    content: "Aufgaben spielen";
+  }
+
   #btn-lichesskapitel::after {
     content: "lichess spielen";
   }

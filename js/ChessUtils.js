@@ -2,11 +2,9 @@
 // Zuerst eine eventuelle Umwandlung prüfen, da der Zug ja sonst nicht abgeschlossen ist. 
 // In T_Zuege werden hier nur die drei Felder ZugKurz, ZugStockfish und ZugUmwandlung versorgt. 
 // Abschließend wird die Kontrolle an den aktiven ActionContext übergeben.
-function firePlayerMove() {
+function firePlayerMove() {	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName() + ' mit T_Zuege.ZugNach: ', T_Zuege.ZugNach);
 
-	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit T_Zuege.ZugNach: ', T_Zuege.ZugNach);
-
-	checkPromotion().then(function () {
+	checkPromotion().then(function () {	
 
 		// Sondernotation für Rochaden in ZugKurz eintragen
 		if (T_Zuege.ZugFigur.toUpperCase() == 'K' && (T_Zuege.ZugVon.substr(0, 1) == 'e' && T_Zuege.ZugNach.substr(0, 1) == 'g')) {
@@ -54,7 +52,7 @@ function firePlayerMove() {
 }
 
 // Entweder die Umwandlung vollziehen oder einfach resolve zurückgeben
-function checkPromotion() {
+function checkPromotion() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	PromotionAnswer = $.Deferred();
 
@@ -96,14 +94,14 @@ function checkPromotion() {
 	return PromotionAnswer.promise();
 }
 
-function setPromotionPiece(Piece) {
+function setPromotionPiece(Piece) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	T_Zuege.ZugUmwandlung = Piece;
 	PromotionAnswer.resolve();
 	PromotionDialog.dialog('close');
 }
 
-function showChallengeTip(text, darstellung) {
+function showChallengeTip(text, darstellung) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$('#challengetips').empty().append('<p class="' + darstellung + '">' + text + '</p>');
 
@@ -113,7 +111,7 @@ function showChallengeTip(text, darstellung) {
 // ohne id mit Klassen für schwarz und weiß) werden die Figuren ergänzt, indem die
 // FEN-Zeilen in die div übertragen werden. Abschließend wird der string als html mit
 // eigener Id an ein unsichtbares htmltag angehängt
-function ErzeugeTooltip(FEN, TooltipId, Orientierung) {
+function ErzeugeTooltip(FEN, TooltipId, Orientierung) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let Felderarray = MiniBoardArray;
 	let gonext, idx;
@@ -189,8 +187,8 @@ function ErzeugeTooltip(FEN, TooltipId, Orientierung) {
 
 }
 
-// Eine Stellung wird aufgebaut, indem die FEN-Zeilen in die div übertragen werden
-function StellungAufbauen(div_Brett, FEN) {
+// Eine Stellung wird aufgebaut, indem die FEN in die div übertragen wird
+function StellungAufbauen0(div_Brett, FEN) {
 
 	let FEN_rows = FEN.split("/"); // Jede Zeile wird getrennt übertragen
 	let files = ("abcdefgh").split(''); // das wird dann Teil des jquery-Identifikators. Für die Zahlen ist das ja nicht nötig
@@ -247,9 +245,42 @@ function StellungAufbauen(div_Brett, FEN) {
 
 }
 
+// Ohne Brettangabe. Die Identifikation erfolgt über Klassen und die sind eindeutig
+function StellungAufbauen(FEN) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	let FEN_rows = FEN.split(" ")[0].split("/");// Jede Zeile wird getrennt übertragen
+	let files = ("abcdefgh").split(''); // das wird dann Teil des jquery-Identifikators. Für die Zahlen ist das ja nicht nötig
+
+	BrettLeeren(); // Entfernt nur die Inhalte, keine tags, keine Id
+
+	let i;
+	for (i = 0; i < 8; i++) {
+		let FEN_row = FEN_rows[i]; // Zeile extrahieren
+		FileCounter = 0; // Zeigt auf die aktuelle Stelle im Brett
+		let j; // die Stellen in der FEN-Zeile
+		for (j = 0; j < FEN_row.length; j++) {
+			// Bei einer Zahl in der FEN-Zeile einfach hochzählen (das sind Felder ohne Figuren)
+			if ($.isNumeric(FEN_row[j]))
+				FileCounter += parseInt(FEN_row[j]);
+			else {
+
+				// Zusammenbauen des Feldnamens im Brett
+				let rank = 8 - i; // FEN beginnt bei der achten Reihe
+				let file = files[FileCounter];
+
+				adjustPiece({	figurname: FEN_row[j], feldname: file + rank	})
+				
+				FileCounter++;
+			}
+
+		}
+	}
+
+}
+
 //span verschieben, dabei Umwandlungen berücksichtigen und Rochaden separat behandeln
 // Für Rochaden gibt es kein Flag, also den Zug direkt als Zeichenkette abfragen
-function ZieheZug(objZug, BoardPräfix, Animationspeed) {
+function ZieheZug(objZug, Animationspeed) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	ZugAnimation = $.Deferred();
 
@@ -260,41 +291,37 @@ function ZieheZug(objZug, BoardPräfix, Animationspeed) {
 
 	if(objZug.CurMoveId == 'M_0') return; // Der Zug M_0 ist kein echter Zug und wird nie gezogen. 
 
-	BoardPräfix += '_';
-
 	// Von der Engine aufgerufen, funktioniert das deferred nicht
-	if(BoardPräfix.includes(HTMLBRETTNAME_IMPORT)) {
-		prepareMove(BoardPräfix, objZug, cleararray, placearray);
-		//animateMove(objZug, BoardPräfix, Animationspeed);
-		processMove(BoardPräfix, cleararray, placearray);
+	if(Animationspeed == ANIMATIONSPEED_ZERO) {
+		prepareMove(objZug, cleararray, placearray);
+		processMove(cleararray, placearray);
 	} else {
-		prepareMove(BoardPräfix, objZug, cleararray, placearray);
-		animateMove(objZug, BoardPräfix, Animationspeed).then( function() {
-			processMove(BoardPräfix, cleararray, placearray);
-		});
+		prepareMove(objZug, cleararray, placearray);
+		animateMove(objZug, Animationspeed).then( function() {	processMove(cleararray, placearray);	});
 	}
 
 	return ZugAnimation.promise();
 }
 
 // In allen htmltags, die mit diesem Präfix anfangen (das sind alle 64 Felder und nur diese) die Inhalte entfernen
-function BrettLeeren(div_Brett) {
+function BrettLeeren(div_Brett) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	$('[id^=' + div_Brett + '_]').html('');
+	//$('[id^=' + div_Brett + '_]').html('');
+	$('[data-square]').empty();
 
 }
 
 // wird zwar in die Notation mit eingetragen, funktioniert aber noch nicht
-function jumpToPosition(Brett, FEN, Notationtree, Farbe, NotationszeileId) {
+function jumpToPosition(Brett, FEN, Notationtree, Farbe, NotationszeileId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	removeNotationMarker(Notationtree);
 	addNotationMarker(Notationtree, Farbe, NotationszeileId);
 
-	StellungAufbauen(Brett, FEN);
+	StellungAufbauen(FEN);
 }
 
 // Übertrag der aktuellen Zugdaten in das Objekt Stellung
-function TransferZugNachStellung(Stellung, Zug) {
+function TransferZugNachStellung(Stellung, Zug) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	Stellung.ZugLevel		= Zug.ZugLevel;
 	Stellung.ZugFarbe		= Zug.ZugFarbe;
@@ -314,7 +341,7 @@ function TransferZugNachStellung(Stellung, Zug) {
 
 // Übersetzung verschiedener Notationssprachen (zur Zeit nur englisch) in deutsche Notation
 // Für jede mögliche Zahl oder Buchstabe gibt es eine Entsprechung
-function Zugtext(zt) {
+function Zugtext(zt) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let returntext = '';
 
@@ -328,19 +355,20 @@ function Zugtext(zt) {
 	return returntext;
 }
 
-function finishChallenge(Endetext) {
+function finishChallenge(Endetext) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
 	showChallengeTip('Bravo. ' + Endetext, 'VeryImportantText');
 	removeMouseBoardFunctions(HTMLBRETTNAME_SPIELEN);
 	removeNotationMarker('challengenotation');
 	$('#variantetextid').removeClass().addClass('centertext');
+
 }
 
 // Identifizieren des Zugs: Ziehen, Schlagen, e.p., Umwandlung, Rochaden
 // und damit festlegen, welche Felder geleert und welche Felder mit welchen Figuren gefüllt werden müssen
-// als array zurückgeben, dann sind alle Situationen  berücksichtigt
-function prepareMove(BoardPräfix, objZug, toClear, toPlace) {
-
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+// toClear und toPlace sind arrays, die Werte werden also zurückgegeben.
+// Hier werden alle möglichen Situationen berücksichtigt.
+function prepareMove(objZug, toClear, toPlace) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// Rochaden: alle Änderungen konstant
 	if (objZug.ZugKurz.includes('0-0')) {
@@ -374,7 +402,7 @@ function prepareMove(BoardPräfix, objZug, toClear, toPlace) {
 		toClear.push(objZug.ZugVon);	// die Figur auf dem Ausgangsfeld wird einfach immer entfernt
 
 		// 	// En Passant. Der Bauer muss zusätzlich entfernt werden. Funktioniert für weiss und für schwarz.
-		if(objZug.ZugFigur == '' && objZug.ZugAktion == SCHLÄGT && $('#' + BoardPräfix + objZug.ZugNach).children().length == 0) {
+		if(objZug.ZugFigur == '' && objZug.ZugAktion == SCHLÄGT && $("[data-square^='" + objZug.ZugNach + "']").children().length == 0) {
 			toClear.push(objZug.ZugNach.slice(0, 1) + objZug.ZugVon.slice(1)); // rank des Zielfeldes und file des Ausgangsfeldes
 		}
 
@@ -408,17 +436,15 @@ function prepareMove(BoardPräfix, objZug, toClear, toPlace) {
 // Die Bewegung wird als Stil definiert und in das Stylesheet eingetragen.
 // Dann wird der eben berechnete Stil der zu ziehenden Figur zugewiesen
 // Nach der Animation wird die animierte Figur entfernt.
-function animateMove(objZug, BoardPräfix, Animationspeed) {
-
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function animateMove(objZug, Animationspeed) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	AnimationFinished = $.Deferred();
 
 	if(Animationspeed != 0) {
 		if(objZug.ZugFarbe != Challenge.AmZug) { // Die Züge des Spielers werden erst mal nicht animiert
-			addMoveAnimationStyle("challengechessboard", Challenge.AmZug, objZug.ZugStockfish, Animationspeed);
-			$('#' + BoardPräfix + objZug.ZugVon + ' :first-child').addClass('svgmoveme')
-			$('#' + BoardPräfix + objZug.ZugVon + ' :first-child').on("animationend", {	brett: BoardPräfix, von: objZug.ZugVon, nach: objZug.ZugNach }, terminateAnimation );
+			addMoveAnimationStyle(Challenge.AmZug, objZug.ZugStockfish, Animationspeed);
+			$('[data-square="' + objZug.ZugVon + '"] :first-child').addClass('svgmoveme')
+			$('[data-square="' + objZug.ZugVon + '"] :first-child').on("animationend", {	von: objZug.ZugVon, nach: objZug.ZugNach }, terminateAnimation );
 		} else {
 			AnimationFinished.resolve();
 		}
@@ -429,11 +455,9 @@ function animateMove(objZug, BoardPräfix, Animationspeed) {
 	return AnimationFinished.promise();
 }
 
-function terminateAnimation(cleardata) {
+function terminateAnimation(cleardata) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
-
-	$('#' + cleardata.data.brett + cleardata.data.von).empty();	// Schon hier, damit die Figur nicht noch mal kurz am alten Platz aufblitzt
+	$('#' + cleardata.data.von).empty();	// Schon hier, damit die Figur nicht noch mal kurz am alten Platz aufblitzt
 
 	AnimationFinished.resolve();
 
@@ -456,24 +480,37 @@ function processMove0(objZug, BoardPräfix) {
 }
 
 // toClear: ein Array von Feldnamen, toPlace: ein Array von Objekten mit Figurname und Feldname
-function processMove(BoardPräfix, toClear, toPlace) {
+function processMove(toClear, toPlace) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
-
-	toClear.forEach(function(feld) { $('#' + BoardPräfix + feld).empty(); });
+	toClear.forEach(function(feld) {	$('[data-square="' + feld + '"]').empty();	});
 
 	toPlace.forEach(function(ziel) {
-		$('#' + BoardPräfix + ziel.feldname).empty();
-		zielspan = document.createElement("span");
-		zielspan.id = ziel.figurname + '_' + ziel.feldname;
-		zielspan.setAttribute("data-figur", ziel.figurname + '_' + ziel.feldname);
-		zielspan.innerHTML = FIGUREN[ziel.figurname];
+		$('[data-square="' + ziel.feldname + '"]').empty();
 
-		document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);
+		adjustPiece(ziel);
+		// zielspan = document.createElement("span");
+		// //zielspan.id = ziel.figurname + '_' + ziel.feldname;
+		// zielspan.setAttribute("data-figur", ziel.figurname + '_' + ziel.feldname);
+		// zielspan.innerHTML = FIGUREN[ziel.figurname];
+
+		// document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);
 
 	});
 
 	showAid(AIDMODE_INIT);
 	ZugAnimation.resolve();
+
+}
+
+function adjustPiece(ziel) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	zielspan = document.createElement("span");
+	//zielspan.id = ziel.figurname + '_' + ziel.feldname;
+	zielspan.setAttribute("data-piece", ziel.figurname);
+	zielspan.innerHTML = FIGUREN[ziel.figurname];
+
+	//$('[data-square]').appendChild(zielspan);
+	document.querySelector('div[data-square="' + ziel.feldname + '"]').appendChild(zielspan);
+	//document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);
 
 }

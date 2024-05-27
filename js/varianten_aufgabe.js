@@ -1,12 +1,12 @@
 
 // Wird nach jedem Zug des Spielers aufgerufen.
 //
-function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	ChallengeMoveVariantenResult = $.Deferred();
 
 	let MC_challenge = determineChallengeMoveContext(Challenge.AmZug, Stellungsdaten.PreMoveId, Stellungsdaten.ZugLevel)
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MC_challenge.result + ' erkannt');
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(MC_challenge);
 
 	// ERROR, UNKNOWNMOVE, NODESCENDENTS und NOCOLORMOVES werden hier einfach weitergegeben
 	// In MAINMOVEMIT werden die nur die für Variantensituationen nötigen Funktionen ausgeführt.
@@ -62,7 +62,7 @@ function processChallengeMoveVarianten() { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SI
 			TransferZugNachStellung(Stellungsdaten, MC_challenge.selectedmove);
 
 			// Ziehen
-			ZieheZug(MC_challenge.selectedmove, HTMLBRETTNAME_SPIELEN, ANIMATIONSPEED_FAST).then(function() {
+			ZieheZug(MC_challenge.selectedmove, ANIMATIONSPEED_FAST).then(function() {
 
 				// Notieren
 				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);

@@ -1,5 +1,5 @@
 // Ist nur aktiv, wewnn genau ein Thema ausgewählt ist
-function NeuesThema() {
+function NeuesThema() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	KnotenObj = $('#themenlistetree').jstree().get_selected(true)[0];
 
@@ -10,14 +10,14 @@ function NeuesThema() {
 		modal:		true,
 		open:			function () {
 								$('#neuesthemaparent').html(KnotenObj.text); // Ist sicher ungleich null
-								$('#Themaname').val('').focus();
+								$('#themaname').val('').focus();
 		},
 		buttons: [{
 			id: 'NeuesThemaOK',
 			text: 'Ok',
 			click: function () {
-				if ($('#Themaname').val() != "") {
-					ThemaSpeichern(KnotenObj, $('#Themaname').val());
+				if ($('#themaname').val() != "") {
+					ThemaSpeichern(KnotenObj, $('#themaname').val());
 					$(this).dialog('close');
 				} else {
 					alert("Neues Thema ohne Name nicht möglich");
@@ -35,7 +35,7 @@ function NeuesThema() {
 	});
 }
 
-function EntferneThema() {
+function EntferneThema() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	KnotenObj = $('#themenlistetree').jstree(true).get_selected(true);
 
@@ -63,7 +63,7 @@ function EntferneThema() {
 				ThemaEntfernen(KnotenObj[0].id.split('_')[1]);
 				$(this).dialog('close');
 				$("#btn-themaneu").button("disable");
-				$("#btn-ehemaentfernen").button("disable");
+				$("#btn-themaentfernen").button("disable");
 			},
 			Abbrechen: function () {
 				$(this).dialog('close');
@@ -72,10 +72,10 @@ function EntferneThema() {
 	});
 }
 
-function VerbindeAufgabe() {
+function VerbindeAufgabe() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let ThemaKnotenObj = $('#themenlistetree').jstree().get_checked(true);
-	let Aufgabetext = $("#ul_ufgabenliste li.ui-selected");
+	let Aufgabetext = $("#ul_aufgabenliste li.ui-selected");
 
 	if (ThemaKnotenObj.length != 1 || Aufgabetext.length == 0) {
 		alert('Bitte vorher genau ein Thema und genau eine Aufgabe auswählen');
@@ -110,10 +110,10 @@ function VerbindeAufgabe() {
 	});
 }
 
-function TrenneAufgabe() {
+function TrenneAufgabe() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	ThemaKnotenObj = $('#themenlistetree').jstree().get_selected(true);
-	Aufgabetext = $("#ul_ufgabenliste li.ui-selected");
+	Aufgabetext = $("#ul_aufgabenliste li.ui-selected");
 
 	if (ThemaKnotenObj.length != 1 || Aufgabetext.length != 1) {
 		alert('Bitte vorher genau ein Thema und genau eine Aufgabe auswählen');
@@ -141,28 +141,28 @@ function TrenneAufgabe() {
 	});
 }
 
-function EntferneAufgabe() {
+function EntferneAufgabe() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	if ($("#ul_ufgabenliste li.ui-selected").length == 0) {
+	if ($("#ul_aufgabenliste li.ui-selected").length == 0) {
 		alert("Bitte vorher eine Aufgabe auswählen");
 		return;
 	}
 
-	isChallengeUsed($("#ul_ufgabenliste li.ui-selected")[0].id).then(function (isChallengeUsedResult) {
+	isChallengeUsed($("#ul_aufgabenliste li.ui-selected")[0].id).then(function (isChallengeUsedResult) {
 		if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('resolve isChallengeUsedResult: ' + isChallengeUsedResult);
 
 		if (isChallengeUsedResult == true) {
 			alert("Bitte vorher die Verbindungen zu den Themen entfernen");
 			return;
 		} else {
-			AufgabeID = $("#ul_ufgabenliste li.ui-selected")[0].id;
+			AufgabeID = $("#ul_aufgabenliste li.ui-selected")[0].id;
 			AugabeEntfernenDialog = $("#dialog-aufgabeentfernen").dialog({
 				title: "Thema entfernen",
 				position:	{ my: "left top", at: "left top", of: "#aufgabelistebuttons" },
 				width: DialogWidth,
 				modal: true,
 				open: function () {
-					$('#aufgabenodename').html($("#ul_ufgabenliste li.ui-selected")[0].innerText);
+					$('#aufgabenodename').html($("#ul_aufgabenliste li.ui-selected")[0].innerText);
 				},
 				buttons: {
 					Ok: function () {
@@ -184,7 +184,7 @@ function EntferneAufgabe() {
 }
 
 // So war das mal. Noch nicht aktiviert
-function Aufgabeauswahl() {
+function Aufgabeauswahl() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if ($('#btn_Aufgabeauswahl').html() == "Alle Aufgaben anzeigen") {
 		GlobalThemaId = [];

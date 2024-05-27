@@ -14,10 +14,10 @@ function ThemaSpeichern(KnotenObj, NeuerName) {
 	});
 }
 
-function AufgabeSpeichern() {
+function AufgabeSpeichern() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	// if ($('#QuelleImport').val().includes("https://lichess.org/study/")) {
-	// 	let quelledetails	= $('#QuelleImport').val().split("/");
+	// if ($('#quelleimport').val().includes("https://lichess.org/study/")) {
+	// 	let quelledetails	= $('#quelleimport').val().split("/");
 	// 	lichess_studie		= quelledetails[4];
 	// 	lichess_kapitel		= quelledetails[5];
 	// } else {
@@ -30,21 +30,21 @@ function AufgabeSpeichern() {
 		dataType: "json",
 		data: {
 						dataContext: 				"AufgabeSpeichern",
-						Kurztext: 					$('#KurztextImport').val(),
-						Langtext: 					$('#LangtextImport').val(),
-						Quelle: 						T_Aufgabe.Quelle,
-						Quelledetail:				$('#QuelledetailImport').val(),
-						Annotator:					T_Aufgabe.Annotator,
-						WeissName:					$('#WeissNameImport').val(),
-						SchwarzName:				$('#SchwarzNameImport').val(),
-						Datum:							T_Aufgabe.Datum,
-						AmZug: 							T_Aufgabe.AmZug,
-						FEN: 								T_Aufgabe.FEN,
-						Scope: 							$('#ScopeImport').val(),
-						Skill: 							$('#SkillImport').val(),
-						lichess_studie_id:	T_Aufgabe.lichess_studie_id,
-						lichess_kapitel_id:	T_Aufgabe.lichess_kapitel_id,
-						pgn: 								T_Aufgabe.PGN
+						Kurztext: 					$('#kurztextimport').val(),
+						Langtext: 					$('#langtextimport').val(),
+						Quelle: 						Challenge.Quelle,
+						Quelledetail:				$('#quelledetailimport').val(),
+						Annotator:					Challenge.Annotator,
+						WeissName:					$('#weissnameimport').val(),
+						SchwarzName:				$('#schwarznameimport').val(),
+						Datum:							Challenge.Datum,
+						AmZug: 							Challenge.AmZug,
+						FEN: 								Challenge.FEN,
+						Scope: 							$('#scopeimport').val(),
+						Skill: 							$('#skillimport').val(),
+						lichess_studie_id:	Challenge.lichess_studie_id,
+						lichess_kapitel_id:	Challenge.lichess_kapitel_id,
+						pgn: 								Challenge.PGN
 					}
 		}).done(function (responseData) { AufgabeSpeichernErfolg(responseData);
 		}).fail(function (jqXHR, textStatus, errorThrown) { AjaxError(jqXHR, textStatus, errorThrown);
@@ -52,7 +52,7 @@ function AufgabeSpeichern() {
 
 };
 
-function ThemaUndAufgabeVerbinden(T_id, A_id) {
+function ThemaUndAufgabeVerbinden(T_id, A_id) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$.post({
 		url: 			"php/put_dbdata.php",
@@ -67,7 +67,7 @@ function ThemaUndAufgabeVerbinden(T_id, A_id) {
 	});
 }
 
-function ThemaUndAufgabeTrennen(T_id, A_id) {
+function ThemaUndAufgabeTrennen(T_id, A_id) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$.post({
 		url: 			"php/put_dbdata.php",
@@ -82,7 +82,7 @@ function ThemaUndAufgabeTrennen(T_id, A_id) {
 	});
 }
 
-function ThemaEntfernen(KnotenId) {
+function ThemaEntfernen(KnotenId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$.post({
 		url: 			"php/put_dbdata.php",
@@ -96,7 +96,7 @@ function ThemaEntfernen(KnotenId) {
 	});
 }
 
-function AufgabeEntfernen(id) {
+function AufgabeEntfernen(id) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$.post({
 		url: 			"php/put_dbdata.php",
@@ -110,7 +110,7 @@ function AufgabeEntfernen(id) {
 	});
 }
 
-function ThemaSpeichernErfolg(responseData) {
+function ThemaSpeichernErfolg(responseData) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if (responseData.ergebnisflag) {
 
@@ -129,7 +129,7 @@ function ThemaSpeichernErfolg(responseData) {
 	}
 }
 
-function AufgabeSpeichernErfolg(responseData) {
+function AufgabeSpeichernErfolg(responseData) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	NeueAufgabeID = parseInt(responseData['neueid']);
 
@@ -154,7 +154,7 @@ function AufgabeSpeichernErfolg(responseData) {
 	}
 };
 
-function ThemaEntfernenErfolg(responseData) {
+function ThemaEntfernenErfolg(responseData) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if (responseData.ergebnisflag) {
 		$('#themenlistetree').jstree(true).delete_node(KnotenObj);
@@ -163,7 +163,7 @@ function ThemaEntfernenErfolg(responseData) {
 	}
 }
 
-function AufgabeEntfernenErfolg(responseData) {
+function AufgabeEntfernenErfolg(responseData) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if (responseData.ergebnisflag) {
 		getChallenges([]);
@@ -172,7 +172,7 @@ function AufgabeEntfernenErfolg(responseData) {
 	}
 };
 
-function ThemaUndAufgabeErfolg(responseData) {
+function ThemaUndAufgabeErfolg(responseData) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if (responseData.ergebnisflag) {
 		alert("Thema und Aufgabe erledigt");
@@ -181,7 +181,7 @@ function ThemaUndAufgabeErfolg(responseData) {
 	}
 }
 
-function ZuglisteErfolg(responseData) {
+function ZuglisteErfolg(responseData) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if (responseData.ergebnisflag) {
 		alert("Die neue Aufgabe wurde mit " + responseData.zeilenanzahl + " Zügen übernommen");
@@ -191,6 +191,6 @@ function ZuglisteErfolg(responseData) {
 }
 
 // errorThrown hat keinen hier interssanten Inhalt
-function AjaxError(jqXHR, textStatus, errorThrown) {
+function AjaxError(jqXHR, textStatus, errorThrown) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	alert(textStatus + '\n\n' + jqXHR.status + '\n\n' + jqXHR.responseText);
 }

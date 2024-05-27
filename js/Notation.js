@@ -2,9 +2,7 @@
 // TreeContainer: der tagname des html-elements
 // Mode: alle MOVEMODE_... berücksichtigen
 // Situation: die Stellungsdaten. Nur CurNodeId wird geändert, Rest bleibt
-function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {
-
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	removeNotationMarker(TreeContainer);
 
@@ -89,9 +87,7 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 // Ein Knoten kann nur einen Text enthalten. Also den Knoten holen, die schon vorhandenen Daten
 // merken und durch die neuen Teile ergänzen und dann komplett wegschreiben
 // Änderungen gibt es nur am Knotentext, sonst nirgendwo.
-function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {
-
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	removeNotationMarker(TreeContainer);
 
@@ -105,7 +101,7 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 		Id_Tooltip = Situation.CurMoveId.replace(MOVEPRÄFIX, TOOLTIPPRÄFIX) + Postfix;
 		let TooltipFEN = Situation.FEN;
 		ErzeugeTooltip(TooltipFEN, Id_Tooltip, Challenge.AmZug);
-		tooltip = ' onmouseover="XBT(this, {id:\'' + Id_Tooltip + '"\', x: -150});\"';
+		tooltip = ' onmouseover="XBT(this, {id:\'' + Id_Tooltip + '\', x: -150});\"';
 	}
 
 	// Den aktuellen Knoten holen, damit die schon ausgefüllten Teile übernommen werden können
@@ -182,7 +178,7 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 }
 
 // Den aktuellen Knoten holen und wenn der Zug noch nicht enthalten ist, diesen eintragen
-function UpdateTreeNodeName(TreeContainer, Situation, Zug) {
+function UpdateTreeNodeName(TreeContainer, Situation, Zug) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 		let changenode = $('#' + TreeContainer).jstree(true).get_node(Situation.CurNodeId);
 
@@ -192,9 +188,7 @@ function UpdateTreeNodeName(TreeContainer, Situation, Zug) {
 		}
 }
 
-function NotiereZug(TreeContainer, Stellung, objZug, movemode) {
-
-	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName());
+function NotiereZug(TreeContainer, Stellung, objZug, movemode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// Wenn eine neue Zeile in der Notationsliste nötig ist, wird diese hier mit den Stellungsdaten generiert
 	// Sonst wird die Notationszeile aktualisiert
@@ -209,7 +203,7 @@ function NotiereZug(TreeContainer, Stellung, objZug, movemode) {
 // Ein NotationMarker (Diamantsymbol) steht immer einmalig irgendwo im Text (=Name) eines Knotens im jsTree
 // Das Zeichen wird durch die Pseudoklasse ::after von currentmovemarker erzeugt.
 // Hier wird einfach die Klasse aus dem Name des Knotens entfernt
-function removeNotationMarker(TreeContainer) {
+function removeNotationMarker(TreeContainer) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let nodesarray = $('#' + TreeContainer).jstree(true).get_json('#', { flat: true })
 
@@ -227,7 +221,7 @@ function removeNotationMarker(TreeContainer) {
 
 }
 
-function addNotationMarker(TreeContainer, Farbe, KnotenId) {
+function addNotationMarker(TreeContainer, Farbe, KnotenId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let changenode = $('#' + TreeContainer).jstree(true).get_node(KnotenId);
 	let changetext = "";

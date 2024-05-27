@@ -73,9 +73,11 @@ const LOGLEVEL_SLIGHT			= '0';
 const LOGLEVEL_NICE				= '10';
 const LOGLEVEL_IMPORTANT	= '100';
 
-const LOGTHEME_NOTHING		= '';
-const LOGTHEME_DATA				= 'data';
-const LOGTHEME_SITUATION	= 'situation';
+const LOGTHEME_NOTHING				= '';
+const LOGTHEME_DATA						= 'data';
+const LOGTHEME_SITUATION			= 'situation';
+const LOGTHEME_FUNCTIONBEGINN = 'begin';
+const LOGTHEME_ENGINEDIALOG		= 'engineanswer';
 
 const PLAYER		= "spieler";
 const CHALLENGE	= "challenge";
