@@ -13,6 +13,8 @@ $(document).ready(function () {
 
 	headers = {};
 
+	Benutzerrolle = '';
+
 	if (window.location.search != "") {
 		countVisitor("get"); // Nur anzeigen
 		let activemode = location.search.split("=").pop();
@@ -68,6 +70,9 @@ $(document).ready(function () {
 	// Wird die Engine nur hier aktiviert. Je nach Spielinteraktion nicht nötig, aber es entstehen auch keine Mehrfachaktivierungen
 	TheIndexGeorgFunction();
 	//TheIndexExperimentFunction();
+
+	getNAGList(); // Wird ja mehrfach gebraucht
+	
 });
 
 function FullscreenDialog() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
@@ -182,4 +187,74 @@ function zeigeWillkommentip() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 	$(".willkommentiptext").append(
 		"<span>" + Willkommentip[Zufallsindex]["text"] + "</span>"
 	);
+}
+
+function showDBErrorMessagesDialog(Antwort) {
+
+	DBErrorMessagesDialog = $("#dialog_DBErrorMessages").dialog({
+		title: "Fehler im Auftrag",
+		modal: true,
+		draggable: false,
+		resizable: false,
+		position: { my: "left-10% top+20%", at: "left top", of: "#h_situationenanzeige" },
+		show: 'blind',
+		hide: 'blind',
+		height: 300,
+		width: 600,
+		open: function () {
+
+			//$( "#dialog_DBErrorMessages" ).append('<p>' + Antwort.errorinfo0 + '</p>');
+			//$( "#dialog_DBErrorMessages" ).append('<p>' + Antwort.errorinfo1 + '</p>');
+			$("#DBErrorMessage").html(Antwort.errorinfo2);
+		},
+		buttons: [{
+			id: 'DBErrorMessage',
+			text: 'Weiter',
+			click: function () {
+				//$("#DBErrorMessage").val('');
+				DBErrorMessagesDialog.dialog('close');
+			}
+		}]
+	});
+}
+
+function showCommonMessagesDialog(severity, errornote, errortext) {
+
+	let Dialogtitel;
+
+	switch(severity) {
+		case MESSAGESEVERITY_FEHLER:
+			Dialogtitel = "Fehlerhinweis";
+			$("#commonmessageimg").attr('src', "grafiken/fehler.png");
+			break;
+		case MESSAGESEVERITY_INFORMATION:
+			Dialogtitel = "Information";
+			$("#commonmessageimg").attr('src', "grafiken/hinweis.png");
+			break;
+	}
+
+	CommonMessagesDialog = $("#dialog-commonmessages").dialog({
+		title: Dialogtitel,
+		modal: true,
+		draggable: false,
+		resizable: false,
+		position: { my: "left-10% top+20%", at: "left top", of: "#h_situationenanzeige" },
+		show: 'blind',
+		hide: 'blind',
+		height: 300,
+		width: 600,
+		open: function () {
+			$("#commonmessagenote").html(errornote);
+			$("#commonmessagetext").html(errortext);
+		},
+		buttons: [{
+			id: 'btn_commonmessagedialog',
+			text: 'Weiter',
+			click: function () {
+				$("#commonmessagenote").val('');
+				$("#commonmessagetext").val('');
+				CommonMessagesDialog.dialog('close');
+			}
+		}]
+	});
 }

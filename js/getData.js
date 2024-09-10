@@ -135,26 +135,8 @@ function getChallengeMoves(ID, MitVarianten) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEM
 
 		ChallengeMoves = responseData['ergebnisdaten'];
 
-		// Die Felder werden wirklich benötigt
-		T_Zuege.FEN				= Challenge.FEN; 
-		T_Zuege.ZugFarbe	= Challenge.AmZug;
+		completeMoves(T_Zuege, ChallengeMoves);
 
-		// Diese beiden Felder werden grad mal zweckentfremdet
-		T_Zuege.ZugVon	= ChallengeMoves[0].ZugVon;
-		T_Zuege.ZugNach	= ChallengeMoves[0].ZugNach;
-
-		const Nullzug			= { ...T_Zuege }; // spread syntax
-
-		ChallengeMoves.splice(0, 0, Nullzug);
-		setMoveState('M_0', MOVESTATE_MOVED);
-
-		// Diese Werte sollen als int verwendet werden
-		ChallengeMoves.forEach(function(item) {
-			item.AufgabeID		= parseInt(item.AufgabeID);
-			item.CurMoveIndex	= parseInt(item.CurMoveIndex);
-			item.ZugNummer		= parseInt(item.ZugNummer);
-			item.ZugLevel			= parseInt(item.ZugLevel);
-		})
 	}).fail(function (jqXHR, textStatus, errorThrown) {
 		AjaxError(jqXHR, textStatus, errorThrown);
 	});
@@ -162,7 +144,7 @@ function getChallengeMoves(ID, MitVarianten) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEM
 
 function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	let BrettName = Stellungsdaten.ZugFarbe == WEISSAMZUG ? HTMLBRETTNAME_SPIELEN + "w.html" : HTMLBRETTNAME_SPIELEN + "b.html";
+	let BrettName = Challenge.AmZug == WEISSAMZUG ? HTMLBRETTNAME_SPIELEN + "w.html" : HTMLBRETTNAME_SPIELEN + "b.html";
 
 	return $.get({
 			url:	"html/" + BrettName
@@ -181,7 +163,7 @@ function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN
 
 function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	ImportboardFinished = $.Deferred();
+	ImportboardFinished = $.Deferred(); 
 
 	let BrettName = Challenge.AmZug == WEISSAMZUG ? HTMLBRETTNAME_IMPORT + "w.html" : HTMLBRETTNAME_IMPORT + "b.html";
 

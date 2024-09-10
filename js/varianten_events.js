@@ -50,7 +50,7 @@ function createInterrupt(Interrupt, result, zugid) {
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
 
-		$('#challengechessboard').addClass('noClick');
+	$('#challengechessboard').addClass('noClick');
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('events generiert' );
 
@@ -80,8 +80,8 @@ function handleInterruptClick(clickevent) {
 			PlayerMoveVariantenResult.resolve( clickevent.data );
 			$('#variantetextid').html("<span>&nbsp</span>");
 			break;
-			case 'CVE':
-			case 'PVE':
+		case 'CVE':
+		case 'PVE':
 
 			if(Stellungsdaten.VarianteStack.length > 0) {
 

@@ -282,22 +282,25 @@ function StellungAufbauen(FEN) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGI
 // Für Rochaden gibt es kein Flag, also den Zug direkt als Zeichenkette abfragen
 function ZieheZug(objZug, Animationspeed) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	ZugAnimation = $.Deferred();
-
-	let cleararray = [];
-	let placearray = [];
-
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit objZug.ZugKurz: ', objZug.ZugKurz);
 
 	if(objZug.CurMoveId == 'M_0') return; // Der Zug M_0 ist kein echter Zug und wird nie gezogen. 
 
+	ZugAnimation = $.Deferred();
+
+	let cleararray	= [];
+	let placearray	= [];
+	let drawarray		= [];
+
+	$("[id^='anno']").remove();
+
 	// Von der Engine aufgerufen, funktioniert das deferred nicht
 	if(Animationspeed == ANIMATIONSPEED_ZERO) {
-		prepareMove(objZug, cleararray, placearray);
-		processMove(cleararray, placearray);
+		prepareMove(objZug, cleararray, placearray, drawarray);
+		processMove(cleararray, placearray, drawarray);
 	} else {
-		prepareMove(objZug, cleararray, placearray);
-		animateMove(objZug, Animationspeed).then( function() {	processMove(cleararray, placearray);	});
+		prepareMove(objZug, cleararray, placearray, drawarray);
+		animateMove(objZug, Animationspeed).then( function() {	processMove(cleararray, placearray, drawarray);	});
 	}
 
 	return ZugAnimation.promise();
@@ -330,11 +333,11 @@ function TransferZugNachStellung(Stellung, Zug) {	if(logMe(LOGLEVEL_SLIGHT, LOGT
 	Stellung.FEN				= Zug.FEN;
 
 	if (Zug.ZugFarbe == WEISSAMZUG) {
-		Stellung.Text_w	= Zugtext(Zug.ZugKurz) + Zugtext(Zug.ZugUmwandlung) + Zug.NAGNotation + Zug.ZugZeichen;
+		Stellung.Text_w	= Zugtext(Zug.ZugKurz) + Zugtext(Zug.ZugUmwandlung) + Zug.ZugZeichen + Zug.NAGNotation;
 		Stellung.Text_b	= DEFAULTMOVE_B;
 	} else {
 		Stellung.Text_w	= DEFAULTMOVE_W;
-		Stellung.Text_b	= Zugtext(Zug.ZugKurz) + Zugtext(Zug.ZugUmwandlung) + Zug.NAGNotation + Zug.ZugZeichen;
+		Stellung.Text_b	= Zugtext(Zug.ZugKurz) + Zugtext(Zug.ZugUmwandlung) + Zug.ZugZeichen + Zug.NAGNotation;
 	}
 
 }
@@ -368,7 +371,7 @@ function finishChallenge(Endetext) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTION
 // und damit festlegen, welche Felder geleert und welche Felder mit welchen Figuren gefüllt werden müssen
 // toClear und toPlace sind arrays, die Werte werden also zurückgegeben.
 // Hier werden alle möglichen Situationen berücksichtigt.
-function prepareMove(objZug, toClear, toPlace) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+function prepareMove(objZug, toClear, toPlace, toDraw) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// Rochaden: alle Änderungen konstant
 	if (objZug.ZugKurz.includes('0-0')) {
@@ -430,6 +433,21 @@ function prepareMove(objZug, toClear, toPlace) {	if(logMe(LOGLEVEL_SLIGHT, LOGTH
 
 	}
 
+	// Zeichnen ist von Rochade und Farbe unabhängig
+	//toDraw = (objZug.Hinweiskreis + ',' + objZug.Hinweispfeil).split(',');
+
+	// (objZug.Hinweiskreis + ',' + objZug.Hinweispfeil).split(',').filter(i => i).forEach(function(item) {
+	// 	toDraw.push(item);
+	// })
+	determineannotations(objZug.Hinweiskreis, objZug.Hinweispfeil, toDraw);
+}
+
+function determineannotations(circles, arrows, annotations) {
+
+	(circles + ',' + arrows).split(',').filter(i => i).forEach(function(item) {
+		annotations.push(item);
+	})
+
 }
 
 // Wenn der Zug animiert werden soll:
@@ -480,7 +498,7 @@ function processMove0(objZug, BoardPräfix) {
 }
 
 // toClear: ein Array von Feldnamen, toPlace: ein Array von Objekten mit Figurname und Feldname
-function processMove(toClear, toPlace) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+function processMove(toClear, toPlace, toDraw) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	toClear.forEach(function(feld) {	$('[data-square="' + feld + '"]').empty();	});
 
@@ -497,6 +515,7 @@ function processMove(toClear, toPlace) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNC
 
 	});
 
+	showDraw(toDraw);
 	showAid(AIDMODE_INIT);
 	ZugAnimation.resolve();
 

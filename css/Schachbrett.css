@@ -3,7 +3,7 @@
 .cb_import    { width: 30vh;  height: 30vh; border: 2px solid #333; background-image:url("Melamine-wood-003.png"); } /* 10 mal 3 units, mit Koordinaten */
 .cb_challenge { width: 60vh;  height: 60vh; border: 2px solid #333; background-image:url("Melamine-wood-003.png");	position:relative;	} /* 10 mal 6 units, mit Koordinaten */
 
-.svg_container	{
+.svgvariantencontainer, .svghilfecontainer, .svgannocontainer	{
 	position:	absolute;
 	width:					100%;
 	height:					100%;
@@ -30,7 +30,7 @@
 	position: absolute;
 }
 
-.ScrollMe   { overflow-y:auto; }
+/* .ScrollMe   { overflow-y:auto; } */
 
 #challengenotation	a	{ white-space:normal !important; height: auto; padding:1px 2px; }
 #importtreenotationid			a	{ white-space:normal !important; height: auto; padding:1px 2px; }

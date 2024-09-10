@@ -71,7 +71,10 @@ class CChallenge  {
 	constructor() {
 		this.Kurztext 						=	"";	// Der in der Liste angezeigte Text.
 		this.Langtext 						=	"";	// Der komplette Text aus dem PGN-Tag Event oder bei lichess der Studienname.
-		this.Quelle								=	"";	// Eine im Import generierte Zeichenkette: 'lichess' oder 'import' Später mal ein Fremdschlüsseö zu T_Quellen
+		this.Hinweistext 					=	"";	// Ein Kommentar vor dem ersten Zug
+		this.Hinweiskreis					= '';	// Kreismarkierung vor dem ersten Zug
+		this.Hinweispfeil					= '';	// Pfeilmarkierung vor dem ersten Zug
+		this.Quelle								=	"";	// Eine im Import generierte Zeichenkette: 'lichess' oder 'import' Später mal ein Fremdschlüssel zu T_Quellen
 		this.Quelledetail					=	"";	// Die Fundstelle in der Quelle, bei lichess leer. 
 		this.Annotator						=	"";
 		this.WeissName						=	"";
@@ -112,10 +115,11 @@ class CZuege {
 		this.ZugUmwandlung	= '';	// Der Buchstabe der neuen Figur in FEN-Terminologie
 		this.FEN						= '';	
 		this.NAGMove				= '';	// Die Sonderzeichen; die direkt an den Zug angehängt wrden
-		this.NAGSingle			= '';	// Die Dollarwerte; die eigenstaändig hinter dem Zug stehen
+		this.NAGSingle			= '';	// Die Dollarwerte; die eigenständig hinter dem Zug stehen
 		this.NAGNotation		= '';	// Die in der Notation angezeigten Zeichen
 		this.Hinweistext		= '';	// Beliebiger Text
-		this.Hinweispfeil		= '';	// Pfeilkodierung gemäß scid
+		this.Hinweiskreis		= '';	// Kreismarkierung gemäß scid
+		this.Hinweispfeil		= '';	// Pfeilmarkierung gemäß scid
 		this.MoveState			= 'R';
 		this.MoveNode				= null;
 	}
@@ -192,5 +196,15 @@ class CAnimationCorner {
 		this.stoprank			= 0,
 		this.fieldsize		= 0,
 		this.fieldcenter	= 0
+	}
+}
+
+class Csvgdata {
+	constructor() {
+		this.startfile	= null,
+		this.startrank	= null,
+		this.stopfile		= null,
+		this.stoprank		= null,
+		this.color 			= null
 	}
 }

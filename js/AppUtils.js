@@ -22,13 +22,16 @@ function ConfigureEngine() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN))
  // init, first, second
 function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	const AidSet = new Set();
+	const AidTextSet = new Set();
+
 	let AidMoves, AidText = "";
 
 	switch(aidmode) {
 		case AIDMODE_INIT:
 			$('#aidicon').html('<img src="grafiken/firstaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_FIRST)"></img>');
 			$('#aidtext').empty();
+			$("[id^='aidpath_']").remove();
+
 			break;
 
 		case AIDMODE_FIRST:
@@ -37,12 +40,12 @@ function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 			AidMoves = $.grep(ChallengeMoves, function (CM, i) { return CM['PreMoveId'] == Stellungsdaten.CurMoveId &&	(CM['MoveState'] == MOVESTATE_READY || CM['MoveState'] == MOVESTATE_HIDDEN); });
 
 			$.each(AidMoves, function (i, HK) {
-				$('span[id$=' + HK.ZugVon + ']').removeClass('erstehilfe');
-				$('span[id$=' + HK.ZugVon + ']').addClass('erstehilfe'); // Achtung: nach span darf kein Leerzeichen kommen
-				AidSet.add(HK.ZugFigur + HK.ZugVon); // Es gibt kein Feld, in dem beide Werte enthalten sind
+				//$('[data-square="' + HK.ZugVon + '"]').removeClass('erstehilfe');
+				$('[data-square="' + HK.ZugVon + '"]').addClass('erstehilfe');
+				AidTextSet.add(HK.ZugFigur + HK.ZugVon); // Es gibt kein Feld, in dem beide Werte enthalten sind
 			});
 
-			for (const entry of AidSet.values()) {
+			for (const entry of AidTextSet.values()) {
   			AidText += entry + " ";
 			}
 
@@ -51,25 +54,94 @@ function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 			break;
 
 		case AIDMODE_SECOND:
-			$('#aidicon').html('<img src="grafiken/secondaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_SECOND)"></img>');
+			$('#aidicon').html('<img src="grafiken/firstaid.png" alt="" class="aidmarker" onclick="showAid(AIDMODE_INIT)"></img>');
+			$('.erstehilfe').removeClass('erstehilfe');
 
 			AidMoves = $.grep(ChallengeMoves, function (CM, i) { return CM['PreMoveId'] == Stellungsdaten.CurMoveId &&	(CM['MoveState'] == MOVESTATE_READY || CM['MoveState'] == MOVESTATE_HIDDEN); });
 
 			$.each(AidMoves, function (i, HK) {
-				$('span[id$=' + HK.ZugVon + ']').removeClass('erstehilfe');
-				$('span[id$=' + HK.ZugVon + ']').addClass('erstehilfe'); // Achtung: nach span darf kein Leerzeichen kommen
-				AidSet.add(HK.ZugLang);
+				//$('[data-square="' + HK.ZugVon + '"]').removeClass('erstehilfe');
+				//$('[data-square="' + HK.ZugVon + '"]').addClass('erstehilfe');
+				AidTextSet.add(HK.ZugLang);
+
+				addAidPath(HK);
 			});
 
-			for (const entry of AidSet.values()) {
+			for (const entry of AidTextSet.values()) {
   			AidText += entry + " ";
 			}
-
 			$('#aidtext').html(AidText);
+
 
 		break;
 
 	}
+}
+
+function showDraw(drawarray) {
+
+
+	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
+	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
+	const currentFieldSize	= Math.round($( "#challengechessboard" ).width() / 10);
+	const startmitte				= Math.round($( "#challengechessboard" ).width() / 20);
+
+	drawarray.forEach(function(svgitem) {
+		console.log(svgitem);
+		let sd = new Csvgdata();
+		let itemparts = svgitem.split('');
+
+		sd.color			= itemparts[0].toLowerCase();
+
+		if(Challenge.AmZug == WEISSAMZUG) {
+			sd.startfile	= (FENFileFactor[itemparts[1]])			* currentFieldSize + startmitte;
+			sd.startrank	= (8 - parseInt(itemparts[2]) + 1)	* currentFieldSize + startmitte;
+			if(svgitem.length == 5) {
+				sd.stopfile	= (FENFileFactor[itemparts[3]])			* currentFieldSize + startmitte;
+				sd.stoprank	= (8 - parseInt(itemparts[4]) + 1)	* currentFieldSize + startmitte;					
+			}
+
+
+		} else {
+			sd.startfile	= (8 - FENFileFactor[itemparts[1]] + 1)	* currentFieldSize + startmitte;
+			sd.startrank	= (parseInt(itemparts[2]) - 1 + 1)			* currentFieldSize + startmitte;
+			if(svgitem.length == 5) {
+				sd.stopfile	= (8 - FENFileFactor[itemparts[3]] + 1)	* currentFieldSize + startmitte;
+				sd.stoprank	= (parseInt(itemparts[4]) - 1 + 1)			* currentFieldSize + startmitte;
+			}
+
+		}
+
+		if(svgitem.length == 5) {
+
+			const markerpath = document.createElementNS('http://www.w3.org/2000/svg','path');
+
+			markerpath.setAttribute("id", "annopath_" + svgitem)
+			markerpath.setAttribute("d", "M " + sd.startfile + "," + sd.startrank + " L " + sd.stopfile + "," + sd.stoprank);
+			markerpath.setAttribute("stroke-width", 6);
+			markerpath.setAttribute("marker-end", "url(#svgannogoalarrow_" + sd.color + ")");
+			markerpath.setAttribute("class", "svgcolorannoarrow_" + sd.color);
+		
+			document.getElementById("svganno").appendChild(markerpath); // ist damit ein sibling mit defs
+
+		} else if(svgitem.length == 3) {
+
+			const markercircle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+
+			//<circle cx="170" cy="200" r="160" fill="ivory" stroke="orange" />
+
+			markercircle.setAttribute("id", "annocircle_" + svgitem)
+			markercircle.setAttribute("cx", sd.startfile);
+			markercircle.setAttribute("cy", sd.startrank);
+			markercircle.setAttribute("r", startmitte);
+			markercircle.setAttribute("class", "svgcolorannocircle_" + sd.color);
+		
+			document.getElementById("svganno").appendChild(markercircle); // ist damit ein sibling mit defs
+
+		}
+
+	})
+
 }
 
 function resetmarker() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
@@ -262,4 +334,30 @@ function getVarianteLevelColorClass(situation, zuglevel) {	if(logMe(LOGLEVEL_SLI
 	}
 
 	return VariantetextFarbeClass
+}
+
+function completeMoves(Zug, Moves) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+			// Die Felder werden wirklich benötigt
+			Zug.FEN				= Challenge.FEN; 
+			Zug.ZugFarbe	= Challenge.AmZug;
+	
+			// Diese beiden Felder werden grad mal zweckentfremdet
+			Zug.ZugVon	= ChallengeMoves[0].ZugVon;
+			Zug.ZugNach	= ChallengeMoves[0].ZugNach;
+	
+			const Nullzug			= { ...Zug }; // spread syntax
+	
+			Moves.splice(0, 0, Nullzug);
+			setMoveState('M_0', MOVESTATE_MOVED);
+	
+			// Diese Werte sollen als int verwendet werden
+			Moves.forEach(function(item) {
+				item.AufgabeID		= parseInt(item.AufgabeID);
+				item.CurMoveIndex	= parseInt(item.CurMoveIndex);
+				item.ZugNummer		= parseInt(item.ZugNummer);
+				item.ZugLevel			= parseInt(item.ZugLevel);
+			})
+			
+	
 }

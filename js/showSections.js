@@ -5,6 +5,8 @@ function showSpielerinfo() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN))
 	$("[id^='s2_']").show();
 	$('#s_spielerinfo').show();
 
+	Benutzerrolle = BENUTZERROLLE_SPIELER;
+
 	$.ajax({
 		url: "html/spielerinfo.html",
 		dataType: "text",
@@ -21,6 +23,8 @@ function showTrainerinfo() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN))
 
 	$(".trainerfeatures").removeClass("hideMe");
 
+	Benutzerrolle = BENUTZERROLLE_TRAINER;
+	
 	$.ajax({
 		url: "html/spielerinfo.html",
 		dataType: "text",
@@ -51,6 +55,8 @@ function showEntwicklerinfo() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 	$(".trainerfeatures").removeClass("hideMe");
 	$(".developerfeatures").removeClass("hideMe");
 
+	Benutzerrolle = BENUTZERROLLE_ENTWICKLER;
+	
 	$.ajax({
 		url: "html/spielerinfo.html",
 		dataType: "text",
@@ -176,8 +182,6 @@ function showImport() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) cons
 	$('#importselectfilename').empty();
 	$('#logliste').empty();
 
-	getNAGList();
-	
 	stockFish.postMessage('ucinewgame');
 
 }
@@ -187,8 +191,8 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_F
 	$("[id^='s_']").hide();
 	$('#s_spielen').show();
 
-	$('#importchessboard').empty();
-	$('#challengechessboard').empty();
+	$('#importchessboard').empty().removeClass('noClick');
+	$('#challengechessboard').empty().removeClass('noClick');
 
 	$('#logliste').empty();
 	$('#challengetips').empty();
@@ -350,7 +354,8 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 														Stellungsdaten = new CStellungsdaten();
 														Stellungsdaten.CreateNewNode = true;
 														Stellungsdaten.FEN = Challenge.FEN;
-													}); 
+													})
+													.then(function () { completeMoves(T_Zuege, ChallengeMoves); }); 
 		})
 
 	//console.log(Kapitel);
@@ -364,6 +369,38 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 
 }
 
+function AufgabenAnzeigen() {
+
+	// $('#kapiteldetails').addClass( "hideMe" );
+	// $('#aufgabendetails').removeClass( "hideMe" );
+	// $('#ul_aufgabenliste').removeClass( "hideMe" );
+	
+	$("[id^='s_']").hide();
+	$("[id^='s1_']").hide();
+	$("[id^='s2_']").show();
+
+	$('#kapiteldetails').hide();
+	$('#aufgabendetails').show();
+
+	$('#challengechessboard').removeClass('noClick');
+
+	switch (Benutzerrolle) {
+		case BENUTZERROLLE_SPIELER:
+			//showSpielerinfo();
+			$('#s_spielerinfo').show();
+			break;
+		case BENUTZERROLLE_TRAINER:
+			//showTrainerinfo();
+			$('#s_trainerinfo').show();
+			break;
+		case BENUTZERROLLE_ENTWICKLER:
+			//showEntwicklerinfo();
+			$('#s_entwicklerinfo').show();
+			break;	
+		default:
+			break;
+	}
+}
 // // Alternative zur eigenen Darstellung: hier wird lichess in einem frame eingeblendet
 // function showlichess(ChallengeID, lichessdata) {
 

@@ -45,21 +45,24 @@ CREATE TABLE T_NutzerLog (
 
 CREATE TABLE T_Aufgaben (
     Id										INT           NOT NULL AUTO_INCREMENT,
-    Kurztext							varchar(63)   NOT NULL,
-    Langtext							varchar(511)  DEFAULT NULL,
-    Quelle								varchar(63)   DEFAULT NULL,
-    Quelledetail					varchar(511)  DEFAULT NULL,
-		Annotator							varchar(63)   DEFAULT NULL,
-		WeissName							varchar(63)   DEFAULT NULL,
-		SchwarzName						varchar(63)   DEFAULT NULL,
+    Kurztext							varchar(64)   NOT NULL,
+    Langtext							varchar(512)  DEFAULT NULL,
+    Hinweistext           varchar(512)  DEFAULT NULL,
+    Hinweiskreis          varchar(64)   DEFAULT NULL,
+    Hinweispfeil          varchar(64)   DEFAULT NULL,
+    Quelle								varchar(64)   DEFAULT NULL,
+    Quelledetail					varchar(512)  DEFAULT NULL,
+		Annotator							varchar(64)   DEFAULT NULL,
+		WeissName							varchar(64)   DEFAULT NULL,
+		SchwarzName						varchar(64)   DEFAULT NULL,
     Ab										datetime      DEFAULT CURRENT_TIMESTAMP NOT NULL,
     Datum									datetime      DEFAULT CURRENT_TIMESTAMP NULL,
-    AmZug									varchar(15)   NOT NULL,
-    FEN										varchar(127)  NOT NULL,
-    Scope									varchar(15)   DEFAULT NULL,
-    Skill									varchar(15)   DEFAULT NULL,
-    lichess_studie_id			varchar(31)   DEFAULT NULL,
-    lichess_kapitel_id		varchar(31)   DEFAULT NULL,
+    AmZug									varchar(16)   NOT NULL,
+    FEN										varchar(128)  NOT NULL,
+    Scope									varchar(16)   DEFAULT NULL,
+    Skill									varchar(16)   DEFAULT NULL,
+    lichess_studie_id			varchar(32)   DEFAULT NULL,
+    lichess_kapitel_id		varchar(32)   DEFAULT NULL,
     PGN										varchar(8192) NOT NULL,
     PRIMARY KEY (Id)
 );
@@ -89,7 +92,8 @@ CREATE TABLE T_Zuege (
     NAGSingle          varchar(32)  DEFAULT NULL,
     NAGNotation        varchar(32)  DEFAULT NULL,
     Hinweistext        varchar(512) DEFAULT NULL,
-    Hinweispfeil       varchar(512) DEFAULT NULL,
+    Hinweiskreis       varchar(64)  DEFAULT NULL,
+    Hinweispfeil       varchar(64)  DEFAULT NULL,
     MoveState          varchar(16)  DEFAULT 'R' NOT NULL,
     MoveNode           varchar(16)  DEFAULT NULL,
     Ab                 DATETIME     DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -198,6 +202,7 @@ CREATE VIEW V_AufgabenZuege
 			  T_Zuege.ZugZeichen,
 			  T_Zuege.ZugUmwandlung,
 			  T_Zuege.Hinweistext,
+			  T_Zuege.Hinweiskreis,
 			  T_Zuege.Hinweispfeil
 FROM   T_Aufgaben INNER JOIN
            T_Zuege ON T_Aufgaben.Id = T_Zuege.AufgabeID;
@@ -227,6 +232,7 @@ CREATE VIEW V_AufgabenZuegeWichtig
 			  T_Zuege.ZugZeichen,
 			  T_Zuege.ZugUmwandlung,
 			  T_Zuege.Hinweistext,
+			  T_Zuege.Hinweiskreis,
 			  T_Zuege.Hinweispfeil
 FROM   T_Aufgaben INNER JOIN
            T_Zuege ON T_Aufgaben.Id = T_Zuege.AufgabeID;
@@ -258,5 +264,6 @@ CREATE VIEW V_ZuegeWichtig
     ZugFarbe,
     ZugOriginal,
     Hinweistext,
+    Hinweiskreis,
     Hinweispfeil
 FROM T_Zuege;

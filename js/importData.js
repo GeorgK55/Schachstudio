@@ -322,11 +322,12 @@ function normalizePGNMoves(Importtext) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNC
 
 		let PunkteKorrigiert				= OhneZeilenschaltungen.replace(r_Punkte, "$1" + ". ... ");
 
-		let KlammernZuAufKorrigiert	= PunkteKorrigiert.replace(r_KlammernZuAuf, "$1" + " " + "$2");
-		let KlammernAufKorrigiert		= KlammernZuAufKorrigiert.replace(r_KlammernAuf, "$1" + " ");
-		let KlammernZuKorrigiert		= KlammernAufKorrigiert.replace(r_KlammernZu, " " + "$1");
+		let RundeKlammernZuAufKorrigiert	= PunkteKorrigiert.replace(r_RundeKlammernZuAuf, "$1" + " " + "$2");
+		let EckigeKlammernZuAufKorrigiert	= RundeKlammernZuAufKorrigiert.replace(r_EckigeKlammernZuAuf, "$1" + " " + "$2");
+		let RundeKlammernAufKorrigiert		= EckigeKlammernZuAufKorrigiert.replace(r_KlammernAuf, "$1" + " ");
+		let RundeKlammernZuKorrigiert			= RundeKlammernAufKorrigiert.replace(r_KlammernZu, " " + "$1");
 
-		let ZugnummerKorrigiert = KlammernZuKorrigiert.replace(r_Zugnummern, "$1" + " " + "$2");
+		let ZugnummerKorrigiert	= RundeKlammernZuKorrigiert.replace(r_Zugnummern, "$1" + " " + "$2");
 
 		// Alle Einzelteile in eigene Arrayelemente. Die werden in das globale Objekt eingetragen
 		Importdaten.PGN = ZugnummerKorrigiert.match(/[^ ]+/g);
@@ -434,9 +435,9 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 				SingleMove.ZugKurz				= m_BauerKurzeNotation.groups.mitfile + SingleMove.ZugAktion + m_BauerKurzeNotation.groups.targetfile + m_BauerKurzeNotation.groups.targetrank;
 				SingleMove.ZugNach				= m_BauerKurzeNotation.groups.targetfile + m_BauerKurzeNotation.groups.targetrank;
 				SingleMove.NAGMove				= m_BauerKurzeNotation.groups.nagmove;
-				SingleMove.NAGSingle			= getNAGSingle(1); // NAGSingle stehen vor den Kommentaren
+				SingleMove.NAGSingle			= getNAGSingle(); // NAGSingle stehen vor den Kommentaren
 				SingleMove.NAGNotation		= joinNAG();
-				SingleMove.Hinweistext		= getKommentar(1); // Kommentare gehören immer zu Zügen.
+				getKommentar(SingleMove, 1); // Kommentare gehören immer zu Zügen.
 
 				// Jetzt werden die Kandidaten bestimmt und die Engine für alle Kandidaten befragt
 				// Die Auswertung und die Ausfühurng des Zugs geschieht im Messagelistener.
@@ -452,9 +453,9 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 				SingleMove.ZugKurz			= m_FigurKurzeNotation.groups.figur + SingleMove.ZugStart + SingleMove.ZugAktion + m_FigurKurzeNotation.groups.targetfile + m_FigurKurzeNotation.groups.targetrank;
 				SingleMove.ZugNach			= m_FigurKurzeNotation.groups.targetfile + m_FigurKurzeNotation.groups.targetrank;
 				SingleMove.NAGMove			= m_FigurKurzeNotation.groups.nagmove;
-				SingleMove.NAGSingle		= getNAGSingle(1); // NAGSingle stehen vor den Kommentaren
+				SingleMove.NAGSingle		= getNAGSingle(); // NAGSingle stehen vor den Kommentaren
 				SingleMove.NAGNotation	= joinNAG();
-				SingleMove.Hinweistext	= getKommentar(1); // Kommentare gehören immer zu Zügen.
+				getKommentar(SingleMove, 1); // Kommentare gehören immer zu Zügen.
 
 				// Jetzt werden die Kandidaten bestimmt und die Engine für alle Kandidaten befragt
 				// Die Auswertung und die Ausfühurng des Zugs geschieht im Messagelistener.
@@ -474,9 +475,9 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 				SingleMove.ZugUmwandlung	= "";
 				SingleMove.ZugZeichen			= "";
 				SingleMove.NAGMove				= m_Rochaden.groups.nagmove;
-				SingleMove.NAGSingle			= getNAGSingle(1); // NAGSingle stehen vor den Kommentaren
+				SingleMove.NAGSingle			= getNAGSingle(); // NAGSingle stehen vor den Kommentaren
 				SingleMove.NAGNotation		= joinNAG();
-				SingleMove.Hinweistext		= getKommentar(1); // Kommentare gehören immer zu Zügen.
+				getKommentar(SingleMove, 1); // Kommentare gehören immer zu Zügen.
 
 				// Jetzt werden die Rochade exakt bestimmt und die Engine damit befragt
 				// Die Auswertung und die Ausfühurng des Zugs geschieht im Messagelistener.
@@ -550,10 +551,10 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 
 			StellungAufbauen(Stellungsdaten.FEN);
 
-			// Dann muss es sich um einen Kommentar vor dem ersten Zug handeln. Der wird jetzt einfach mal in die Aufgabe übernommen. Noch verbessern.
+			// Dann muss es sich um einen Kommentar vor dem ersten Zug handeln. Der wird in die Aufgabe übernommen.
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("{") == 0) {
 
-			Challenge.Langtext = getKommentar(0);
+			getKommentar(Challenge, 0);
 
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("$") == 0) {
 
@@ -564,6 +565,7 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 			// Wird das so gebraucht?
 			//Importdaten.ZugFarbe 	= Importdaten.ZugFarbe == WEISSAMZUG ? SCHWARZAMZUG : WEISSAMZUG;
 		} else {
+			// Hier kommt das Ende eines Kommentars oder ?
 			//alert(Importdaten.PGN[Importdaten.PGN_Index]);
 		}
 		Importdaten.PGN_Index++;
@@ -648,34 +650,78 @@ function executeRochade(Zugdaten) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTION
 	$("#triggertag").trigger("isMoveCorrect", [SingleMove.ZugVon + SingleMove.ZugNach]);
 }
 
-function getKommentar(Versatz) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
-	let Kommentar = "";
-	if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + Versatz].indexOf('{') == 0) {
-		let fertig = false;
-		do {
-			Kommentar += Importdaten.PGN[Importdaten.PGN_Index + Versatz] + ' '; // also ohne {
-			Importdaten.PGN_Index++;
-			if (Importdaten.PGN[Importdaten.PGN_Index].indexOf('}') == 0) fertig = true;
-		} while (!fertig)
-		//SingleMove.Hinweistext = Kommentar;
+// Für jeden Kommentar
+function getKommentar(callingclass, offset) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	while (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] == '{') {
+
+		// Textkommentar oder Markierungskommentar
+		Importdaten.PGN_Index++; // die öffende geschweifte Klammer ist jetzt schon verarbeitet
+
+		if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] == '[') { // Markierungskommentar
+
+			while (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] == '[') {
+				Importdaten.PGN_Index++; // hinter die öffende eckige Klammer
+
+				if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] == '%csl') {
+
+					Importdaten.PGN_Index++; // hinter %csl
+
+					while (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] != ']') {
+						callingclass.Hinweiskreis +=  Importdaten.PGN[Importdaten.PGN_Index + offset] + ' ';
+						Importdaten.PGN_Index++; // auf den nächsten Kreis
+					}
+					callingclass.Hinweiskreis =  callingclass.Hinweiskreis.trim();
+
+				} else if(Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] == '%cal') {
+
+					Importdaten.PGN_Index++; // hinter %cal
+
+					while (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] != ']') {
+						callingclass.Hinweispfeil +=  Importdaten.PGN[Importdaten.PGN_Index + offset] + ' ';
+						Importdaten.PGN_Index++; // auf den nächsten Pfeil
+					}
+					callingclass.Hinweispfeil =  callingclass.Hinweispfeil.trim();
+
+				} else {
+					i = 0;
+				}
+
+				Importdaten.PGN_Index++; // hinter die schließende eckige Klammer
+				//Importdaten.PGN_Index++; // hinter die schließende geschweifte Klammer
+
+			}
+
+		} else { // Textkommentar
+
+			while (Importdaten.PGN[Importdaten.PGN_Index + offset].indexOf('}') < 0) {
+				callingclass.Hinweistext +=  Importdaten.PGN[Importdaten.PGN_Index + offset] + ' ';
+				Importdaten.PGN_Index++;
+			}
+			callingclass.Hinweistext = callingclass.Hinweistext.trim();
+
+		}
+
+		Importdaten.PGN_Index++; // zum nächsten Kommentar
+
 	}
-	return Kommentar.replace('{', '').replace('}', '').trim();
 }
 
-function getNAGSingle(Versatz) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+// Sammelt alle mit $ startenden folgenden Elemente in einem String
+function getNAGSingle() { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 	let NAGSingle = "";
-	if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + Versatz].indexOf('$') == 0) {
+	if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + 1].indexOf('$') == 0) {
 		let fertig = false;
 		do {
-			NAGSingle += Importdaten.PGN[Importdaten.PGN_Index + Versatz] + ' '; // also ohne {
+			NAGSingle += Importdaten.PGN[Importdaten.PGN_Index + 1] + ' '; // also ohne {
 			Importdaten.PGN_Index++;
-			if (Importdaten.PGN[Importdaten.PGN_Index + Versatz].indexOf('$') == -1) fertig = true;
+			if (Importdaten.PGN[Importdaten.PGN_Index + 1].indexOf('$') == -1) fertig = true;
 		} while (!fertig)
-		//SingleMove.Hinweistext = Kommentar;
 	}
 	return NAGSingle.trim();
 }
 
+// Teilt im aktuellen Zug einen NAG-String auf und ersetzt die $-Werte durch die anzuzeigenden Zeichen
 function joinNAG() { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	let NotationNAG = '';
@@ -684,7 +730,12 @@ function joinNAG() { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) consol
 		let NAGSingleArray = SingleMove.NAGSingle.split(" ");
 
 		NAGSingleArray.forEach(function(item) {
-			NotationNAG += $.grep(NAGresult, function (NN, i) { return NN['DollarIndex'] == item; })[0].html;
+			try {
+				NotationNAG += $.grep(NAGresult, function (NN, i) { return NN['DollarIndex'] == item; })[0].html;
+			} catch(e) {
+				console.log(e);
+				alert('Undefined NAG: ' + item);
+			}
 		});
 	}
 

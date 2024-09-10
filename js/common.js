@@ -5,7 +5,7 @@ function NeuesThema() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) cons
 
 	NeuesThemaDialog = $("#dialog_neuesthema").dialog({
 		title:		"Neues Thema",
-		position:	{ my: "left top", at: "left top", of: "#sx_aufgabensection" },
+		position:	{ my: "left top", at: "left top", of: "#sx_situationensection" },
 		width:		DialogWidth,
 		modal:		true,
 		open:			function () {
@@ -52,7 +52,7 @@ function EntferneThema() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) c
 
 	ThemaEntfernenDialog = $("#dialog_themaentfernen").dialog({
 		title: "Thema entfernen",
-		position:	{ my: "left top", at: "left top", of: "#sx_aufgabensection" },
+		position:	{ my: "left top", at: "left top", of: "#sx_situationensection" },
 		width: DialogWidth,
 		modal: true,
 		open: function () {

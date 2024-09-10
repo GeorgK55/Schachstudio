@@ -81,6 +81,9 @@ if($DesiredFunction == 'AufgabeSpeichern') {
 
   $Kurztext						= $_POST['Kurztext'];
   $Langtext						= $_POST['Langtext'];
+  $Hinweistext				= $_POST['Hinweistext'];
+  $Hinweiskreis				= $_POST['Hinweiskreis'];
+  $Hinweispfeil				= $_POST['Hinweispfeil'];
   $Quelle							= $_POST['Quelle'];
   $Quelledetail				= $_POST['Quelledetail'];
 	$Annotator					= $_POST['Annotator'];
@@ -96,9 +99,9 @@ if($DesiredFunction == 'AufgabeSpeichern') {
   $lichess_kapitel_id	= $_POST['lichess_kapitel_id'];
   $pgn								= $_POST['pgn'];
 
-  $commandtext = "INSERT INTO T_Aufgaben (Kurztext, Langtext, Quelle, Quelledetail, Annotator, WeissName, SchwarzName, Ab, Datum, AmZug, FEN, Scope, Skill, lichess_studie_id, lichess_kapitel_id, PGN) VALUES (:Kurztext, :Langtext, :Quelle, :Quelledetail, :Annotator, :WeissName, :SchwarzName, :Ab, :Datum, :AmZug, :FEN, :Scope, :Skill, :lichess_studie_id, :lichess_kapitel_id, :PGN)";
+  $commandtext = "INSERT INTO T_Aufgaben (Kurztext, Langtext, Hinweistext, Hinweiskreis, Hinweispfeil, Quelle, Quelledetail, Annotator, WeissName, SchwarzName, Ab, Datum, AmZug, FEN, Scope, Skill, lichess_studie_id, lichess_kapitel_id, PGN) VALUES (:Kurztext, :Langtext, :Hinweistext, :Hinweiskreis, :Hinweispfeil, :Quelle, :Quelledetail, :Annotator, :WeissName, :SchwarzName, :Ab, :Datum, :AmZug, :FEN, :Scope, :Skill, :lichess_studie_id, :lichess_kapitel_id, :PGN)";
 
-  $paramsarray = array(':Kurztext' => $Kurztext, ':Langtext' => $Langtext, ':Quelle' => $Quelle, ':Quelledetail' => $Quelledetail, ':Annotator' => $Annotator, ':WeissName' => $WeissName, ':SchwarzName' => $SchwarzName, ':Ab' => $Ab, ':Datum' => $Datum, ':AmZug' => $AmZug, ':FEN' => $FEN, ':Scope' => $Scope, ':Skill' => $Skill, ':lichess_studie_id' => $lichess_studie_id, ':lichess_kapitel_id' => $lichess_kapitel_id, ':PGN' => $pgn);
+  $paramsarray = array(':Kurztext' => $Kurztext, ':Langtext' => $Langtext, ':Hinweistext' => $Hinweistext, ':Hinweiskreis' => $Hinweiskreis, ':Hinweispfeil' => $Hinweispfeil, ':Quelle' => $Quelle, ':Quelledetail' => $Quelledetail, ':Annotator' => $Annotator, ':WeissName' => $WeissName, ':SchwarzName' => $SchwarzName, ':Ab' => $Ab, ':Datum' => $Datum, ':AmZug' => $AmZug, ':FEN' => $FEN, ':Scope' => $Scope, ':Skill' => $Skill, ':lichess_studie_id' => $lichess_studie_id, ':lichess_kapitel_id' => $lichess_kapitel_id, ':PGN' => $pgn);
 
 	processpdo($commandtext, $paramsarray, $responsearray);
 
@@ -175,7 +178,7 @@ if($DesiredFunction == 'Zugliste') {
 
   $Zugliste			= $_POST["Zugliste"];
 
-  $commandtext = "INSERT INTO T_Zuege (AufgabeID, FEN, NAGNotation, NAGMove, NAGSingle, CurMoveIndex, CurMoveId, PreMoveId, ZugNummer, ZugLevel, ZugFarbe, ZugOriginal, ZugFigur, ZugVon, ZugNach, ZugKurz, ZugLang, ZugStockfish, ZugAktion, ZugStart, ZugUmwandlung, ZugZeichen, Hinweistext, Hinweispfeil) VALUES (:AufgabeID, :FEN, :NAGNotation, :NAGMove, :NAGSingle, :CurMoveIndex, :CurMoveId, :PreMoveId, :ZugNummer, :ZugLevel, :ZugFarbe, :ZugOriginal, :ZugFigur, :ZugVon, :ZugNach, :ZugKurz, :ZugLang, :ZugStockfish, :ZugAktion, :ZugStart, :ZugUmwandlung, :ZugZeichen, :Hinweistext, :Hinweispfeil)";
+  $commandtext = "INSERT INTO T_Zuege (AufgabeID, FEN, NAGNotation, NAGMove, NAGSingle, CurMoveIndex, CurMoveId, PreMoveId, ZugNummer, ZugLevel, ZugFarbe, ZugOriginal, ZugFigur, ZugVon, ZugNach, ZugKurz, ZugLang, ZugStockfish, ZugAktion, ZugStart, ZugUmwandlung, ZugZeichen, Hinweistext, Hinweiskreis, Hinweispfeil) VALUES (:AufgabeID, :FEN, :NAGNotation, :NAGMove, :NAGSingle, :CurMoveIndex, :CurMoveId, :PreMoveId, :ZugNummer, :ZugLevel, :ZugFarbe, :ZugOriginal, :ZugFigur, :ZugVon, :ZugNach, :ZugKurz, :ZugLang, :ZugStockfish, :ZugAktion, :ZugStart, :ZugUmwandlung, :ZugZeichen, :Hinweistext, :Hinweiskreis, :Hinweispfeil)";
 	$paramscompact = $Zugliste;
 
 	processpdo_Zugliste($commandtext, $paramscompact, $responsearray);

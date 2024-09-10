@@ -127,6 +127,7 @@ function processpdo_Zugliste( $pdocommand,  $pdoparams, & $pdoresponsearray) {
 			':ZugUmwandlung'	=> $paramrow['ZugUmwandlung'],
 			':ZugZeichen'			=> $paramrow['ZugZeichen'],
 			':Hinweistext'		=> $paramrow['Hinweistext'],
+			':Hinweiskreis'		=> $paramrow['Hinweiskreis'],
 			':Hinweispfeil'		=> $paramrow['Hinweispfeil']
 		);
 

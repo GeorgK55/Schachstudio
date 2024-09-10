@@ -103,55 +103,59 @@
 					</div>
 				</section>
 			</section>
-			<section id="sx_aufgabensection" class="gc-mitte_aufgaben">
-				<section id="s1_aufgabenstarter" class="gc-aufgabenstarter">
-					<header id="h_aufgabenstarter" class="ImportantCenterText importantbackgroundcolor">Stellungen dazu</header>
+			<section id="sx_situationensection" class="gc-mitte_situationen">
+				<section id="s1_situationenstarter" class="gc-situationenstarter">
+					<header id="h_situationenstarter" class="ImportantCenterText importantbackgroundcolor">Stellungen dazu</header>
 					<div class="Startertext">
 						Eine alphabetische Liste aller oder der zu einem Thema gehörenden Aufgaben, sowie die Auswahl,
 						wie eine Aufgabe gelöst werden soll (mit oder ohne Hilfe, mit Variantensuche, ...)
 					</div>
 				</section>
-				<section id="s2_aufgabenanzeige" class="gc-aufgabenanzeige">
-					<header id="h_aufgabenanzeige" class="ImportantCenterText importantbackgroundcolor">Stellungen dazu</header>
-					<div class="gc-aufgabendetails">
-						<div id="loesungauswahl">
-							<fieldset>
-								<legend id="legend-stellung"></legend>
-								<input type="radio" id="r-stellungohne"	name="Spielinteraktion"	value="StellungOhne" onchange="manageSpielinteraktionSelection();">	<label id="l_StellungOhne" for="r-stellungohne"></label><br>
-								<input type="radio" id="r-stellungmit"	name="Spielinteraktion"	value="StellungMit" onchange="manageSpielinteraktionSelection();">		<label id="l_StellungMit" for="r-stellungmit"></label><br>
-							</fieldset>
-							<fieldset>
-								<legend id="legend-aufgabe"></legend>
-								<input type="radio" id="r-aufgabeohne"	name="Spielinteraktion"	value="AufgabeOhne" 				onchange="manageSpielinteraktionSelection();">	<label id="l-aufgabeohne" for="r-aufgabeohne"></label><br>
-								<input type="radio" id="r-aufgabemit"		name="Spielinteraktion"	value="AufgabeMit" checked 	onchange="manageSpielinteraktionSelection();">	<label id="l-aufgabemit" for="r-aufgabemit"></label><br>
-							</fieldset>
-						</div>
-						<div id="aufgabenliste">
-							<ul id="ul_aufgabenliste" class="scrollme"></ul>
-						</div>
-						<div id="kapitelliste" class="hideMe">
-							<ul id="ul_kapitelliste" class="scrollme"></ul>
-						</div>
-						<div id="aufgabenselektion">
-							<div id="zeigeauswahl">
-								<input type="radio" id="r-zeigealle" 			name="AufgabenFilterAlle"	value="Selektion" checked>													<label for="r-zeigealle">Alle Aufgaben anzeigen</label><br>
-								<input type="radio" id="r-zeigeaufgaben"	name="AufgabenFilterAlle"	value="Alle">																				<label for="r-zeigeaufgaben">Aufgaben nur zur Themenauswahl anzeigen</label>
+				<section id="s2_situationenanzeige" class="gc-situationenanzeige">
+					<header id="h_situationenanzeige" class="ImportantCenterText importantbackgroundcolor">Stellungen dazu</header>
+					<div id="loesungauswahl">
+						<fieldset>
+							<legend id="legend-stellung"></legend>
+							<input type="radio" id="r-stellungohne"	name="Spielinteraktion"	value="StellungOhne" onchange="manageSpielinteraktionSelection();">	<label id="l_StellungOhne" for="r-stellungohne"></label><br>
+							<input type="radio" id="r-stellungmit"	name="Spielinteraktion"	value="StellungMit" onchange="manageSpielinteraktionSelection();">		<label id="l_StellungMit" for="r-stellungmit"></label><br>
+						</fieldset>
+						<fieldset>
+							<legend id="legend-aufgabe"></legend>
+							<input type="radio" id="r-aufgabeohne"	name="Spielinteraktion"	value="AufgabeOhne" 				onchange="manageSpielinteraktionSelection();">	<label id="l-aufgabeohne" for="r-aufgabeohne"></label><br>
+							<input type="radio" id="r-aufgabemit"		name="Spielinteraktion"	value="AufgabeMit" checked 	onchange="manageSpielinteraktionSelection();">	<label id="l-aufgabemit" for="r-aufgabemit"></label><br>
+						</fieldset>
+					</div>
+					<div>
+						<div id="aufgabendetails" class="gc-aufgabendetails">
+							<div id="aufgabenliste">
+								<ul id="ul_aufgabenliste" class="scrollme"></ul>
+							</div>
+							<div id="aufgabenselektion">
+								<div id="zeigeauswahl">
+									<input type="radio" id="r-zeigealle" 			name="AufgabenFilterAlle"	value="Selektion" checked>													<label for="r-zeigealle">Alle Aufgaben anzeigen</label><br>
+									<input type="radio" id="r-zeigeaufgaben"	name="AufgabenFilterAlle"	value="Alle">																				<label for="r-zeigeaufgaben">Aufgaben nur zur Themenauswahl anzeigen</label>
+								</div>
 							</div>
 							<div id="filterauswahl">
-									<input type="radio" id="r-zeigefilter"		name="AufgabenFilterAlle"	value="Filter"  class="entwicklerfeatures hideMe">	<label for="r-zeigefilter">Geplant: Aufgaben nur zum Filter anzeigen</label>
+									<input type="radio" id="r-zeigefilter"		name="AufgabenFilterAlle"	value="Filter"  class="entwicklerfeatures">	<label for="r-zeigefilter">Geplant: Aufgaben nur zum Filter anzeigen</label>
 								<button id="btn-aufgabefilter" type="button" onclick="Aufgabeauswahl()" disabled>Aufgabenfilter</button>
 							</div>
-						</div>
-						<div id="aufgabelistebuttons">
-							<div>
-							<button id="btn-lichesskapitel"	type="button" onclick="DatenBereitstellen_Lichess('kapitel')"	class="uebungenbutton"></button>
-							<button id="btn-aufgabenliste"	type="button" onclick="AufgabenlisteAnzeigen()"	class="uebungenbutton hideMe"></button>
+							<div id="aufgabelistebuttons">
+								<button id="btn-kapitelliste"	type="button" onclick="KapitelAnzeigen()"				class="uebungenbutton"></button>
 							</div>
 							<div class="trainerfeatures hideMe">
 								<button id="btn-import"						type="button" onclick="showImport()"			class="uebungenbutton"></button>
 								<button id="btn-verbindeaufgabe"	type="button" onclick="VerbindeAufgabe()"	class="uebungenbutton"></button>
 								<button id="btn-trenneaufgabe" 		type="button" onclick="TrenneAufgabe()"		class="uebungenbutton"></button>
 								<button id="btn-entferneaufgabe" 	type="button" onclick="EntferneAufgabe()"	class="uebungenbutton"></button>
+							</div>
+						</div>
+						<div id="kapiteldetails" class="gc-kapiteldetails hideMe">
+							<div id="kapitelliste">
+							<ul id="ul_kapitelliste" class="scrollme"></ul>
+							</div>
+							<div id="kapitellistebuttons">
+								<button id="btn-aufgabenliste"	type="button" onclick="AufgabenAnzeigen()"	class="uebungenbutton"></button>
 							</div>
 						</div>
 					</div>
@@ -232,6 +236,20 @@
 						</div>
 					</div>
 				</section>
+				<section id="s_kapitel" class="gc-kapitel">
+					<header id="h_kapitel" class="ImportantCenterText importantbackgroundcolor">Kapitel spielen</header>
+					<div id="kapitelarea" class="gc-kapitelarea">
+						<img src="grafiken/lichesslogo.png" alt="" class="dialogfigur lichesslogo">
+						<div class="dialogtext lichessuserarea">
+							<label for="lichessuser">Bitte die Benutzerkennung eintragen</label>
+							<input type="text" name="lichessuser" id = "lichessuser">
+						</div>
+						<button type="button" onclick="studieauswahl('kapitel')"						class="uebungenbutton studienbutton">Studien anzeigen</button>
+						<div id='studienanzeige' class="studienanzeigeliste">
+							<ul id='studienliste' class='scrollme hideMe'></ul>
+						</div>
+					</div>
+				</section>
 				<section id="s_spielen" class="gc-spielen">
 					<header id="h_spielen" class="ImportantCenterText importantbackgroundcolor">Aufgabe spielen</header>
 					<fieldset id="f_spielenaufgabedetails">
@@ -269,7 +287,7 @@
 						</div>
 						<div id="challengetips" class="challengetips"></div>
 						<div id="challengenavigation" class='challengenavigation'>
-							<p>&#9664; &nbsp; &#9654; sollen noch kommen</p>
+							<!-- <p>&#9664; &nbsp; &#9654; sollen noch kommen</p> -->
 							<!-- <label for="mausersatz">mausersatz (debugger erkennt die Maus nicht):</label><input type="text" id = "mausersatz">
 							<button onclick="startMouseUp()">Mouse up starten</button> -->
 						</div>
@@ -433,14 +451,22 @@
 			<div id="dialog-lichessuser" 						class="hiddendialog gc-LichessImport">
 				<img src="grafiken/lichesslogo.png" alt="" class="dialogfigur">
 				<div class="dialogtext">
-					<label for="lichessuser">Bitte die Benutzerkennung eintragen</label>
-					<input type="text" name="lichessuser" id = "lichessuser">
+					<label for="lichessdialoguser">Bitte die Benutzerkennung eintragen</label>
+					<input type="text" name="lichessdialoguser" id = "lichessdialoguser">
 				</div>
-				<div id='studienanzeige'>
-					<ul id='studienliste' class='scrollme hideMe'></ul>
+				<div id='dialogstudienanzeige'>
+					<ul id='dialogstudienliste' class='scrollme hideMe'></ul>
 				</div>
 			</div>
-			<div id="dialog_DBErrorMessages"				class="hiddendialog gc-DBErrorMessages">
+			<div id="dialog-commonmessages"				class="hiddendialog gc-commonmessages">
+				<img id="commonmessageimg" alt="" class="dialogfigur">
+				<div class="dialogtext">
+				<div class="dialogvariable"></div>
+					<div class="dialogvariable" id="commonmessagenote"></div>
+					<div class="dialogvariable" id="commonmessagetext"></div>
+				</div>
+			</div>
+			<div id="dialog_DBErrorMessages"				class="hiddendialog gc-commonmessages">
 				<img src="grafiken/fehler.png" alt="" class="dialogfigur">
 				<div class="dialogtext">
 					Der Auftrag konnte nicht erfolgreich durchgeführt werden:

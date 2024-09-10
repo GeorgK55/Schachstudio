@@ -121,6 +121,14 @@ const ANIMATIONSPEED_FAST		= 1;
 const NOTATIONMODE_VISIBLE	= 'Notationvisible';
 const NOTATIONMODE_HIDDEN		= 'Notationhidden';
 
+const MESSAGESEVERITY_FEHLER			= 'Fehler';
+const MESSAGESEVERITY_INFORMATION	= 'Information';
+
+const BENUTZERROLLE_SPIELER			= 'spieler';
+const BENUTZERROLLE_TRAINER			= 'trainer';
+const BENUTZERROLLE_ENTWICKLER	= 'entwickler';
+
+
 // Eventangaben im pgn. Lichess-Standard berücksichtigt
 //const r_Event = new RegExp("(\[Event \")(?<event1>.*)(: ?)(?<event2>.*)?([\"])", "mg");
 const r_Event = new RegExp("(\\[Event \")(?<studie>.*)(: ?)(?<kapitel>.*)?([\"])|(\\[Event \")(?<event>.*)([\"])", "m");
@@ -138,7 +146,8 @@ const r_Punkte = new RegExp("(\\d{1,2})(\\.{3})", "g");
 const r_KlammernAuf	= new RegExp("([\\[\\{\\(])", "g");
 const r_KlammernZu	= new RegExp("([\\]\\}\\)])", "g");
 // Aufeindanderfolgende Klammern zusätzlich trennen
-const r_KlammernZuAuf = new RegExp("([\\)])([\\(])", "g");
+const r_RundeKlammernZuAuf	= new RegExp("([\\)])([\\(])", "g");
+const r_EckigeKlammernZuAuf	= new RegExp("([\\]])([\\[])", "g");
 
 // Je nach Exporteinstellungen kann es sein, dass die weißen Züge direkt hinter den Zugnummern stehen, Trennen.
 const r_Zugnummern = new RegExp("(\\d{1,2}\\.{1})([abcdefgh]{1}|[KDTSL]{1})|(\\d{1,2}\\.{1})(0{1})", "g");
@@ -171,6 +180,8 @@ const r_Rochaden = new RegExp("^(?<rochade>(O-O-O)|^(O-O))(?<nagmove>[!?]{0,2})"
 const r_Zugnummer = new RegExp("^\\d{1,2}\\.{1}$");
 
 const r_bestmove = new RegExp("bestmove (?<movevon>[abcdefgh]{1}[12345678]{1})(?<movenach>[abcdefgh]{1}[12345678]{1})(?<umwandlung>[QqRrBbNn]{0,1})");
+
+const r_markup = new RegExp("(.*)(\[%csl.*?\])(\[%cal.*?\])");
 
 const MiniBoardArray = [
 	"<div class='f_tooltip_w'></div>",

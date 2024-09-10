@@ -11,7 +11,7 @@
   /* .gc-mitte_themen {
     grid-area: Themen;
   }
-  .gc-mitte_aufgaben {
+  .gc-mitte_situationen {
     grid-area: Aufgaben;
   }
   .gc-mitte_aktionen {
@@ -78,7 +78,7 @@
     content: "Aufgaben spielen";
   }
 
-  #btn-lichesskapitel::after {
+  #btn-kapitelliste::after {
     content: "lichess spielen";
   }
  #btn-import::after {

@@ -13,6 +13,11 @@
     --color_movenumbermain: #2864a4;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 40% */
     --color_movenumberodd: #5bd75b;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 60% */
     --color_movenumbereven: #ebadad;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 80% */
+    --color_aidpath: #33ccff;          /* https://www.w3schools.com/colors */
+    --color_anno_r: red;
+    --color_anno_b: blue;
+    --color_anno_y: yellow;
+    --color_anno_g: green;
 }
 
 /* wenn diese Angabe fehlt, wird der Bildschirm nach Drehen von portrait nach landscape schwarz */
@@ -56,7 +61,7 @@ body {
     overflow: auto;
 }
 
-.gc-mitte_aufgaben {
+.gc-mitte_situationen {
     grid-area: Aufgaben;
     display: grid;
     overflow: auto;
@@ -80,16 +85,16 @@ body {
     grid-template-rows: min-content 1fr min-content min-content;
 }
 
-.gc-aufgabenstarter {
+.gc-situationenstarter {
     display: grid;
     overflow: hidden;
     grid-template-rows: min-content 1fr;
 }
 
-.gc-aufgabenanzeige {
+.gc-situationenanzeige {
     display: grid;
     overflow: hidden;
-    grid-template-rows: min-content 1fr;
+    grid-template-rows: min-content min-content 1fr;
 }
 
 .gc-willkommen {
@@ -128,6 +133,12 @@ body {
     grid-template-rows: min-content 1fr;
 }
 
+.gc-kapitel {
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: min-content 1fr;
+}
+
 .gc-themenliste {
     display: grid;
     grid-template-rows: 10fr 2fr 1fr;
@@ -138,7 +149,7 @@ body {
 
 .gc-aufgabendetails {
     display: grid;
-    grid-template-rows: min-content min-content min-content min-content;
+    grid-template-rows: min-content min-content min-content;
     /* grid-template-rows: 1fr 5fr 1fr 1fr;
 	margin: 1vh 2vw; */
     grid-row-gap: 1vh;
@@ -361,7 +372,7 @@ body {
     content: "Aufgaben spielen";
 }
 
-#btn-lichesskapitel::after {
+#btn-kapitelliste::after {
     content: "Ein Kapitel aus lichess spielen";
 }
 
@@ -602,11 +613,11 @@ body {
     justify-items: center;	
     align-items: center;
 }
-#studienanzeige {
+#studienanzeige, #dialogstudienanzeige    {
     grid-area: 2 / 1 / 2 / 3;
 }
 
-.gc-DBErrorMessages {
+.gc-commonmessages { 
     display: grid;
     grid-template-columns: 1fr 4fr;
     grid-template-rows: min-content;
@@ -646,10 +657,18 @@ body {
 .varianteeven {	background-color: var(--color_movenumbereven);  height:100% }
 .varianteodd  {	background-color: var(--color_movenumberodd);   height:100% }
 
-.svgcolormain {	stroke: var(--color_movenumbermain);    fill: var(--color_movenumbermain);	}
+.svgcolormain {	stroke: var(--color_movenumbermain);    fill: var(--color_movenumbermain);  }
 .svgcoloreven {	stroke: var(--color_movenumbereven);    fill: var(--color_movenumbereven);	}
 .svgcolorodd  {	stroke: var(--color_movenumberodd);     fill: var(--color_movenumberodd);	}
-
+.svgcoloraid  {	stroke: var(--color_aidpath);           fill: var(--color_aidpath);	        opacity: .6;   }
+.svgcolorannoarrow_r {   stroke:red;     fill:red;       }
+.svgcolorannoarrow_b {   stroke:blue;    fill:blue;      }
+.svgcolorannoarrow_y {   stroke:yellow;  fill:yellow;    }
+.svgcolorannoarrow_g {   stroke:green;   fill:green;     }
+.svgcolorannocircle_r {   stroke:red;       stroke-width: 4; fill: none;       }
+.svgcolorannocircle_b {   stroke:blue;      stroke-width: 4; fill: none;      }
+.svgcolorannocircle_y {   stroke:yellow;    stroke-width: 4; fill: none;    }
+.svgcolorannocircle_g {   stroke:green;     stroke-width: 4; fill: none;     }
 #f_spielenaufgabedetails {
     margin: 1vh 1vw;
     padding-left: 2vw;
@@ -711,6 +730,15 @@ body {
     grid-gap: 3vh;
 }
 
+.gc-kapitelarea {
+    display: grid;
+    grid-template-rows: min-content min-content;
+    grid-template-columns: 1fr 30fr 30fr;
+    margin: 1vh 1vw;
+    grid-gap: 3vh;
+    align-items: center;
+}
+
 .gc-enginekommandos {
     display: grid;
     /* grid-template-columns: 10fr 1fr 1fr; */
@@ -763,6 +791,22 @@ body {
 #ul_importaufgaben {
     height: 20vh;
     overflow: auto;
+}
+
+.lichesslogo    {
+    grid-area: 1 / 1 / 1 / 1;
+}
+
+.lichessuserarea    {
+    grid-area: 1 / 2 / 1 / 2;
+}
+
+.studienbutton    {
+    grid-area: 1 / 3 / 1 / 3;
+}
+
+.studienanzeigeliste    {
+    grid-area: 2 / 1 / 3 / 2;
 }
 
 /* fieldset {
