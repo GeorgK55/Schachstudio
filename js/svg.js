@@ -76,18 +76,9 @@ function addVariantePath(zugid) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEG
 
   document.getElementById("svgvarianten").appendChild(path1); // ist damit ein sibling mit defs
 
-	if($( "#variantetextid" ).hasClass( "variantemain" )) {
-		$("#variantepath_" + zugid).removeClass().addClass('svgcolormain');
-		$("#goalarrowpath").removeClass().addClass('svgcolormain');
-	} else if($( "#variantetextid" ).hasClass( "varianteodd" )) {
-		$("#variantepath_" + zugid).removeClass().addClass('svgcolorodd');
-		$("#goalarrowpath").removeClass().addClass('svgcolorodd');
-		$("#goalarrow").removeClass().addClass('svgcolorodd');
-	} else if($( "#variantetextid" ).hasClass( "varianteeven" )) {
-		$("#variantepath_" + zugid).removeClass().addClass('svgcoloreven');
-		$("#goalarrowpath").removeClass().addClass('svgcoloreven');
-		$("#goalarrow").removeClass().addClass('svgcoloreven');
-	}
+	$("#variantepath_" + zugid).removeClass().addClass(getVarianteLevelColorClass(Stellungsdaten, getMoveLevel(zugid)));
+	$("#goalarrowpath").removeClass().addClass(getVarianteLevelColorClass(Stellungsdaten, getMoveLevel(zugid)));
+	$("#goalarrow").removeClass().addClass(getVarianteLevelColorClass(Stellungsdaten, getMoveLevel(zugid)));
 
 }
 

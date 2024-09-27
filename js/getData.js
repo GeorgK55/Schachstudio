@@ -113,6 +113,7 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 		// $('#amzugspiel').val(Challenge.AmZug);
 		// $('#fenspiel').val(Challenge.FEN);
 		$('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
+		showChallengeTip(Challenge.Hinweistext, 'dialogtext');
 
 		Stellungsdaten.ZugFarbe	=	Challenge.AmZug;
 		Stellungsdaten.FEN			=	Challenge.FEN;		

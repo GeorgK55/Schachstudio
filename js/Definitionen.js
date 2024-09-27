@@ -36,7 +36,7 @@ class CStellungsdaten  {
 		this.Text_w						=	DEFAULTMOVE_W;
 		this.Text_b						=	DEFAULTMOVE_B;
 		this.VarianteCounter	=	0; // wird nur hochgezählt und für die Entscheidung Variantenfarbe genutzt
-		this.VarianteColor		= [0, 0, 0, 0, 0, 0, 0, 0]
+		this.VarianteColor		= [0, 1, 0, 1, 0, 1, 0, 1]
 		this.ZugStack					=	[];
 		this.VarianteStack		=	[];
 	}

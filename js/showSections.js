@@ -308,7 +308,13 @@ function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTI
 	//initializeSelectionEnvironment();
 	getChallengeData(ChallengeID)	// holt die eine Zeile aus T_Aufgaben und versorgt T_Aufgabe und Stellungsdaten
 		.then(function () { getChallengeBoard(); })
-		.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) { getChallengeMoves(ChallengeID, MitVarianten); } })
+		.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) {
+													getChallengeMoves(ChallengeID, MitVarianten); 
+												} else {
+													T_Zuege.FEN				= Challenge.FEN; 
+													T_Zuege.ZugFarbe	= Challenge.AmZug;
+												}
+											})
 		//.then(function () {	initializeSelectionEnvironment(); })
 		.then(function () { initializeNotationtree(); });
 

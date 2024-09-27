@@ -293,7 +293,8 @@ function ZieheZug(objZug, Animationspeed) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_F
 	let drawarray		= [];
 
 	$("[id^='anno']").remove();
-
+	$('#challengetips').empty();
+	
 	// Von der Engine aufgerufen, funktioniert das deferred nicht
 	if(Animationspeed == ANIMATIONSPEED_ZERO) {
 		prepareMove(objZug, cleararray, placearray, drawarray);

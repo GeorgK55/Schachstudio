@@ -66,7 +66,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 			if(getMoveState(MC_player.selectedmove.CurMoveId) != MOVESTATE_STACKED) {
 				NotiereZug('challengenotation', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
 			} else {
-				$('#variantetextid').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, MC_player.selectedmove.ZugLevel));
+				$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 			}
 
 			// Ziehen

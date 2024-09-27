@@ -156,7 +156,7 @@ function resetmarker() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) con
 
 function showNotAcceptedMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	$("#" + T_Zuege.ZugFigur + "_" + T_Zuege.ZugVon).effect("shake");
+	$("[data-square=" + T_Zuege.ZugVon + "]").children().effect("shake");
 	$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/fehler.png'/>");
 }
 
@@ -328,12 +328,25 @@ function getVarianteLevelColorClass(situation, zuglevel) {	if(logMe(LOGLEVEL_SLI
 	let VariantetextFarbeClass;
 
 	if(zuglevel == 0) {
-	VariantetextFarbeClass =	'variantemain';
+	VariantetextFarbeClass =	'svgcolormain';
 	} else  {
-	VariantetextFarbeClass =	situation.VarianteColor[zuglevel] % 2 == 0 ? 'varianteeven' : 'varianteodd';
+	VariantetextFarbeClass =	situation.VarianteColor[zuglevel] % 2 == 0 ? 'svgcoloreven_' + zuglevel : 'svgcolorodd_' + zuglevel;
 	}
 
 	return VariantetextFarbeClass
+}
+
+function getVarianteLevelColorVar(situation, zuglevel) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	let VariantetextFarbeVar;
+
+	if(zuglevel == 0) {
+		VariantetextFarbeVar =	'var(--color_movecolormain)';
+	} else  {
+		VariantetextFarbeVar =	situation.VarianteColor[zuglevel] % 2 == 0 ? 'var(--color_movecoloreven_' + zuglevel + ')' : 'var(--color_movecolorodd_' + zuglevel + ')';
+	}
+
+	return VariantetextFarbeVar
 }
 
 function completeMoves(Zug, Moves) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());

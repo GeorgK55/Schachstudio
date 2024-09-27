@@ -10,14 +10,46 @@
     --color_chessblack: Gainsboro;
     --color_commonbackground: BlanchedAlmond;
     --color_importantbackground: Gold;
-    --color_movenumbermain: #2864a4;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 40% */
-    --color_movenumberodd: #5bd75b;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 60% */
-    --color_movenumbereven: #ebadad;	/* https://www.w3schools.com/colors/colors_picker.asp?colorhex=32CD32 80% */
-    --color_aidpath: #33ccff;          /* https://www.w3schools.com/colors */
+
+    --color_movecolormain: #FFDEAD;    /* NavajoWhite */
+    --color_movecolorodd: #87CEFA;	/* LightSkyBlue bei w3schools und dann shades gewählt */
+    --color_movecolorodd_1: #87CEFA;	/* LightSkyBlue 75% */
+    --color_movecolorodd_2: #3baff7;	/* LightSkyBlue 60% */
+    --color_movecolorodd_3: #087cc4;	/* LightSkyBlue 40% */
+    --color_movecolorodd_4: #a8b3bd;	/* LightSkyBlue 75% */
+    --color_movecolorodd_5: #7c8c9c;	/* LightSkyBlue 60% */
+    --color_movecolorodd_6: #637383;	/* LightSkyBlue 40% */
+    --color_movecoloreven: #9ACD32;	/* YellowGreen bei w3schools und dann shades gewählt */
+    --color_movecoloreven_1: #9ACD32;	/* YellowGreen 50% */
+    --color_movecoloreven_2: #7ba428;	/* YellowGreen 40% */
+    --color_movecoloreven_3: #5c7b1e;	/* YellowGreen 30% */
+    --color_movecoloreven_4: #ffe033;	/* YellowGreen 50% */
+    --color_movecoloreven_5: #e6c300;	/* YellowGreen 40% */
+    --color_movecoloreven_6: #b39800;	/* YellowGreen 30% */
+
+    /* --color_movecolormain: #FFDEAD;    /* NavajoWhite */
+    /* --color_movecolorodd: #87CEFA;	/* LightSkyBlue bei w3schools und dann shades gewählt */
+    /* --color_movecolorodd_1: blue;	/* LightSkyBlue */
+    /* --color_movecolorodd_2: red;	/* LightSkyBlue */
+    /* --color_movecolorodd_3: yellow;	/* LightSkyBlue */
+    /* --color_movecolorodd_4: #0a9bf5;	/* LightSkyBlue */
+    /* --color_movecolorodd_5: #087cc4;	/* LightSkyBlue */
+    /* --color_movecoloreven: #9ACD32;	/* YellowGreen bei w3schools und dann shades gewählt */
+    /* --color_movecoloreven_1: green;	/* YellowGreen */
+    /* --color_movecoloreven_2: pink;	/* YellowGreen */
+    /* --color_movecoloreven_3: brown;	/* YellowGreen */
+    /* --color_movecoloreven_4: #5c7b1e;	/* YellowGreen */
+    /* --color_movecoloreven_5: #3d5214;	/* YellowGreen */
+
+    --color_aidpath: #FF4500;          /* OrangeRed  */
+
     --color_anno_r: red;
     --color_anno_b: blue;
     --color_anno_y: yellow;
     --color_anno_g: green;
+
+    /* https://colorkit.co/color-shades-generator/87cefa/ */
+    /* https://colorkit.co/color-shades-generator/9acd32/ */
 }
 
 /* wenn diese Angabe fehlt, wird der Bildschirm nach Drehen von portrait nach landscape schwarz */
@@ -183,7 +215,7 @@ body {
     padding: 1vh;
 }
 .video_interessetext1::before {
-    content: "Schachstudio was ist das ";
+    content: "Variantenstudio was ist das ";
 }
 
 .gc-spieler {
@@ -199,6 +231,7 @@ body {
 .spielertext {
     grid-area: Text;
 }
+
 
 .video_spielertext1 {
     grid-area: V1;
@@ -477,7 +510,7 @@ body {
 
 .dialogtext {
     margin-left: 2vw;
-    font-size: var(--dynfontsize17);
+    font-size: var(--dynfontsize20);
     font-weight: normal;
     text-align: left;
 }
@@ -653,22 +686,38 @@ body {
     padding-left: 0.5vw;
 }
 
-.variantemain {	background-color: var(--color_movenumbermain);  height:100% }
-.varianteeven {	background-color: var(--color_movenumbereven);  height:100% }
-.varianteodd  {	background-color: var(--color_movenumberodd);   height:100% }
+.variantemain {	background-color: var(--color_movecolormain);  height:100% }
+.varianteeven {	background-color: var(--color_movecoloreven);  height:100% }
+.varianteodd  {	background-color: var(--color_movecolorodd);   height:100% }
 
-.svgcolormain {	stroke: var(--color_movenumbermain);    fill: var(--color_movenumbermain);  }
-.svgcoloreven {	stroke: var(--color_movenumbereven);    fill: var(--color_movenumbereven);	}
-.svgcolorodd  {	stroke: var(--color_movenumberodd);     fill: var(--color_movenumberodd);	}
+.svgcolormain {	stroke: var(--color_movecolormain);    fill: var(--color_movecolormain);  }
+
+.svgcoloreven {	stroke: var(--color_movecoloreven);    fill: var(--color_movecoloreven);	}
+.svgcoloreven_1 {	stroke: var(--color_movecoloreven_1);    fill: var(--color_movecoloreven_1);	}
+.svgcoloreven_2 {	stroke: var(--color_movecoloreven_2);    fill: var(--color_movecoloreven_2);    }
+.svgcoloreven_3 {	stroke: var(--color_movecoloreven_3);    fill: var(--color_movecoloreven_3);	}
+.svgcoloreven_4 {	stroke: var(--color_movecoloreven_4);    fill: var(--color_movecoloreven_4);	}
+.svgcoloreven_5 {	stroke: var(--color_movecoloreven_5);    fill: var(--color_movecoloreven_5);	}
+
+.svgcolorodd  {	stroke: var(--color_movecolorodd);     fill: var(--color_movecolorodd);	}
+.svgcolorodd_1  {	stroke: var(--color_movecolorodd_1);     fill: var(--color_movecolorodd_1);	}
+.svgcolorodd_2  {	stroke: var(--color_movecolorodd_2);     fill: var(--color_movecolorodd_2);	}
+.svgcolorodd_3  {	stroke: var(--color_movecolorodd_3);     fill: var(--color_movecolorodd_3);	}
+.svgcolorodd_4  {	stroke: var(--color_movecolorodd_4);     fill: var(--color_movecolorodd_4);	}
+.svgcolorodd_5  {	stroke: var(--color_movecolorodd_5);     fill: var(--color_movecolorodd_5);	}
+
 .svgcoloraid  {	stroke: var(--color_aidpath);           fill: var(--color_aidpath);	        opacity: .6;   }
+
 .svgcolorannoarrow_r {   stroke:red;     fill:red;       }
 .svgcolorannoarrow_b {   stroke:blue;    fill:blue;      }
 .svgcolorannoarrow_y {   stroke:yellow;  fill:yellow;    }
 .svgcolorannoarrow_g {   stroke:green;   fill:green;     }
+
 .svgcolorannocircle_r {   stroke:red;       stroke-width: 4; fill: none;       }
 .svgcolorannocircle_b {   stroke:blue;      stroke-width: 4; fill: none;      }
 .svgcolorannocircle_y {   stroke:yellow;    stroke-width: 4; fill: none;    }
 .svgcolorannocircle_g {   stroke:green;     stroke-width: 4; fill: none;     }
+
 #f_spielenaufgabedetails {
     margin: 1vh 1vw;
     padding-left: 2vw;
@@ -681,7 +730,7 @@ body {
 .gc-challengeboardandnotation {
     display: grid;
     grid-template-columns: min-content 10fr;
-    grid-template-rows: min-content 1fr min-content min-content;
+    grid-template-rows: min-content min-content min-content min-content;
     grid-template-areas: "challengevariantenarea schachtips" "challengeboard notation" "zugpfeile aufgabehinweise" "pgn aufgabehinweise";
     margin: 1vh 1vw;
 }
@@ -689,7 +738,7 @@ body {
 .gc-challengevarianten {
 	grid-area: challengevariantenarea;
 	display: grid;
-	grid-template-columns: 15fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 15fr 1fr 1fr 1fr;
 	align-items: center;
 }
 
@@ -699,12 +748,14 @@ body {
 
 .challengezugmarker {
     text-align: center;
+    font-size: 1.5vw;
+    margin: 0 1vw;
 }
 
 .gc-challengechesstips {
     grid-area: schachtips;
 		display: grid;
-		grid-template-columns: 1fr 10fr;
+		grid-template-columns: 1fr 1fr 10fr;
 		align-items: center;
 	}
 
@@ -733,7 +784,7 @@ body {
 .gc-kapitelarea {
     display: grid;
     grid-template-rows: min-content min-content;
-    grid-template-columns: 1fr 30fr 30fr;
+    grid-template-columns: 5fr 30fr 30fr;
     margin: 1vh 1vw;
     grid-gap: 3vh;
     align-items: center;
@@ -893,6 +944,7 @@ li input[type="text"] {
 
 .aidmarker {
     height: 3vh;
+    margin-right: 1vw;
 }
 
 .height100 {

@@ -51,7 +51,7 @@ const MOVESTATE_VISIBLE	= "V";
 const MOVESTATE_HIDDEN	= "H";
 const MOVESTATE_IGNORED	= "I";
 
-const MOVEMODE_DEFAULT							= 'default';
+//const MOVEMODE_DEFAULT							= 'default';
 const MOVEMODE_MOVE									= 'move';
 const MOVEMODE_VARIANTE_MAINHIDDEN	= 'VarianteSignMainHidden';
 const MOVEMODE_VARIANTE_MAINVISIBLE	= 'VarianteSignMainvisible';
@@ -153,7 +153,9 @@ const r_EckigeKlammernZuAuf	= new RegExp("([\\]])([\\[])", "g");
 const r_Zugnummern = new RegExp("(\\d{1,2}\\.{1})([abcdefgh]{1}|[KDTSL]{1})|(\\d{1,2}\\.{1})(0{1})", "g");
 
 // Alle unterschiedlichen Darstellungen für Züge
-const r_BauerKurzeNotation = new RegExp("^(?<mitfile>[abcdefgh]{0,1})" +
+const r_BauerKurzeNotation = new RegExp(
+		"^(?<mitfile>[abcdefgh]{0,1})" +
+		"(?<mitrank>[12345678]{0,1})" +
 		"(?<capture>[x]{0,1})" +
 		"(?<targetfile>[abcdefgh]{1})" +
 		"(?<targetrank>[12345678]{1})" +
@@ -162,7 +164,8 @@ const r_BauerKurzeNotation = new RegExp("^(?<mitfile>[abcdefgh]{0,1})" +
 		"(?<schachodermatt>[+#]{0,1})" +
 		"(?<nagmove>[!?]{0,2})");
 
-const r_FigurKurzeNotation = new RegExp("^(?<figur>[KDTSLQRNB]{1})" +
+const r_FigurKurzeNotation = new RegExp(
+		"^(?<figur>[KDTSLQRNB]{1})" +
 		"(?<mitfile>[abcdefgh]{0,1})" +
 		"(?<mitrank>[12345678]{0,1})" +
 		"(?<capture>[x]{0,1})" +

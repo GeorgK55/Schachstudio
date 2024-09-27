@@ -19,7 +19,7 @@
   } */
 
   .video_interessetext1::before {
-    content: "Schachstudio ?" ;
+    content: "Variantenstudio ?" ;
   }
 
   .gc-spieler {
@@ -107,9 +107,9 @@
 		width: 40%;
 	}
 
-	#filterauswahl {
+	/* #filterauswahl {
 		display: none;
-	}
+	} */
 
 	#legend-stellung::after {
 		content: "Ausspielen";

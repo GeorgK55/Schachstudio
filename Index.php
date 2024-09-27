@@ -16,7 +16,7 @@
 	<meta name="viewport"			content="width=device-width, initial-scale=1.0">
 	<meta name="author" 			content="Georg Klepp">
 
-	<title>Georgs Schachstudio</title>
+	<title>Georgs Variantenstudio</title>
 
 	<link rel="stylesheet"	href="css/jquery-ui.css">
 	<link rel="stylesheet"	href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css">
@@ -75,7 +75,7 @@
 <body>
 	<div id="seite" class="gc-seite">
 		<div class="VeryImportantText importantbackgroundcolor">
-			Georgs Schachstudio 2023
+			Georgs Variantenstudio
 		</div>
 		<div id="sx_mitte" class="gc-mitte">
 			<section id="sx_themensection" class="gc-mitte_themen">
@@ -136,10 +136,10 @@
 									<input type="radio" id="r-zeigeaufgaben"	name="AufgabenFilterAlle"	value="Alle">																				<label for="r-zeigeaufgaben">Aufgaben nur zur Themenauswahl anzeigen</label>
 								</div>
 							</div>
-							<div id="filterauswahl">
+							<!-- <div id="filterauswahl">
 									<input type="radio" id="r-zeigefilter"		name="AufgabenFilterAlle"	value="Filter"  class="entwicklerfeatures">	<label for="r-zeigefilter">Geplant: Aufgaben nur zum Filter anzeigen</label>
 								<button id="btn-aufgabefilter" type="button" onclick="Aufgabeauswahl()" disabled>Aufgabenfilter</button>
-							</div>
+							</div> -->
 							<div id="aufgabelistebuttons">
 								<button id="btn-kapitelliste"	type="button" onclick="KapitelAnzeigen()"				class="uebungenbutton"></button>
 							</div>
@@ -167,18 +167,18 @@
 					<div id="welcome" class="gc-usertypes">
 						<div class="usertypearea gc-interesse">
 							<div class="padmeleft2vw interessetext"></div>
-							<a class="video_interessetext1" target="_blank" href="https://youtu.be/I6xg-D_4blM"><img src="grafiken/youtube_icon_66802.png" alt="" class="youtubelink"></a>
+							<a class="video_interessetext1 inactiveanchor" target="_blank" href="https://youtu.be/I6xg-D_4blM"><img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 						</div>
 						<div class="usertypearea gc-spieler">
 							<div class="spielertext leftmepad5vh"></div>
-							<a class="video_spielertext1" target="_blank" href="https://youtu.be/sMGFUEhRQM8">Erklärungen<img src="grafiken/youtube_icon_66802.png" alt="" class="youtubelink"></a>
+							<a class="video_spielertext1 inactiveanchor" target="_blank" href="https://youtu.be/sMGFUEhRQM8">Erklärungen<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<a class="video_spielertext2 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Musterlösungen<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<a class="video_spielertext3 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Vergleich mit lichess.org<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<button class="spielerweiter uebungenbutton" id="btn-spieler" type="button" onclick="showSpielerinfo()"></button>
 						</div>
 						<div class="usertypearea gc-trainer">
 							<div class="leftmepad5vh trainertext"></div>
-							<a class="video_trainertext1" target="_blank" href="https://youtu.be/3LIYBxYjlpk">Aufgaben importieren <img src="grafiken/youtube_icon_66802.png" alt="" class="youtubelink"></a>
+							<a class="video_trainertext1 inactiveanchor" target="_blank" href="https://youtu.be/3LIYBxYjlpk">Aufgaben importieren <img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<a class="video_trainertext2 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Themen und Aufgaben verwalten<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<button class="trainerweiter uebungenbutton" id="btn-trainer" type="button" onclick="showTrainerinfo()"></button>
 						</div>
@@ -273,12 +273,11 @@
 							<div id="variantemarkerrejectid" class="variantemarker"></div>
 							<div id="variantemarkerresolveid" class="variantemarker"></div>
 							<div id="zugergebnismarkerid" class="zugergebnismarker" onclick="handleZugergebnisClick()"></div>
-							<div id="challengezugmarkerid" class="challengezugmarker">
-							</div>
 						</div>
-						<div id="challengechessboard" class="cb_challenge svgboard">
+						<div id="challengechessboard" class="cb_challenge variantemain svgboard">
 						</div> 
 						<div id="challengechesstips" class="gc-challengechesstips">
+							<div id="challengezugmarkerid" class="challengezugmarker"></div>
 							<div id="aidicon"></div>
 							<div id="aidtext"></div>
 						</div>

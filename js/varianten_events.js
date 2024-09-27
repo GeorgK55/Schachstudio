@@ -46,7 +46,7 @@ function createInterrupt(Interrupt, result, zugid) {
 	}
 
 	$('#variantetextid').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
-	$('#variantetextid').removeClass().addClass('centertext').addClass(getVarianteLevelColorClass(Stellungsdaten, getMoveLevel(zugid)));
+	$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, getMoveLevel(zugid)));
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
 

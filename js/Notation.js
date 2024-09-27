@@ -6,64 +6,55 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 
 	removeNotationMarker(TreeContainer);
 
-	let Postfix = Zug.ZugFarbe == WEISSAMZUG ? WHITEPOSTFIX : BLACKPOSTFIX;
 
 	jumpTo = ''; // Diese Funktion wird erst mal einfach komplett ignoriert:
 	//let jumpTo =" onclick='jumpToPosition(\"" + Situation.FEN + Postfix + "\");'";
 
 	let tooltip = '';
 	if(TooltipFlag) {
+		let Postfix = Zug.ZugFarbe == WEISSAMZUG ? WHITEPOSTFIX : BLACKPOSTFIX;
 		let Id_Tooltip = Situation.CurMoveId.replace(MOVEPRÄFIX, TOOLTIPPRÄFIX) + Postfix;
 		let TooltipFEN = Situation.FEN;
 		ErzeugeTooltip(TooltipFEN, Id_Tooltip, Challenge.AmZug);
 		tooltip = " onmouseover='XBT(this, {id:\"" + Id_Tooltip + "\", x: -150});'";
 	}
 
-	htmlText_Zugnr = "<span class='movenumber " + getVarianteLevelColorClass(Situation, Zug.ZugLevel) + "'>" + Zug.ZugNummer + "</span>";
+	let htmlText_Zugnr = "<span class='movenumber' style='background-color: " + getVarianteLevelColorVar(Situation, Zug.ZugLevel) + "'>" + Zug.ZugNummer + "</span>";
 
 	let htmlKommentar = "";
-	if (Zug.Hinweistext != "") {
-		htmlKommentar = '<div class="Comment' + Postfix + '">' + Zug.Hinweistext + '</div>';
-	}
 
 	switch(Mode) {
-		case MOVEMODE_VARIANTE_MAINVISIBLE:
-			// In T_Zuege steht die Farbe des verursachenden Zugs. Hier wird das Zeichen zum Zug eingetragen!
+		case MOVEMODE_VARIANTE_MAINVISIBLE:	// Variantezeiger, Zug und Kommentar eintragen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
-				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" +
-					Zug.CurMoveId + WHITEPOSTFIX +
-					"'>" + VARIANTEZEIGER + Situation.Text_w + "</span>";
-			} else {
+				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + Situation.Text_w + "</span>";
+				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + WHITEPOSTFIX + '" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
+		} else {
 				htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
-				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" +
-					Zug.CurMoveId + BLACKPOSTFIX +
-					"'>" + VARIANTEZEIGER + Situation.Text_b + "</span>";
-			}
+				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + Situation.Text_b + "</span>";
+				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + BLACKPOSTFIX + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
+				}
 			break;
-		case MOVEMODE_VARIANTE_MAINHIDDEN:
-			// In T_Zuege steht die Farbe des verursachenden Zugs. Hier wird das Zeichen zum Zug eingetragen!
+		case MOVEMODE_VARIANTE_MAINHIDDEN:	// Variantezeiger, Zugdefault und Kommentar verborgen eintragen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
-				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" +
-					Zug.CurMoveId + WHITEPOSTFIX +
-					"'>" + VARIANTEZEIGER + DEFAULTMOVE_W + "</span>";
+				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + DEFAULTMOVE_W + "</span>";
+				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + WHITEPOSTFIX + ' hideMe" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
 			} else {
 				htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
-				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" +
-					Zug.CurMoveId + BLACKPOSTFIX +
-					"'>" + VARIANTEZEIGER + DEFAULTMOVE_B + "</span>";
+				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + DEFAULTMOVE_B + "</span>";
+				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + BLACKPOSTFIX + ' hideMe" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
 			}
 			break;
 		case MOVEMODE_MOVE:
 			if (Zug.ZugFarbe == WEISSAMZUG) {
-				htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Situation.CurMoveId + WHITEPOSTFIX + "' " +
-					tooltip + jumpTo +">" + Situation.Text_w + "</span>";
+				htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Situation.CurMoveId + WHITEPOSTFIX + "' " + tooltip + jumpTo +">" + Situation.Text_w + "</span>";
 				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
+				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + WHITEPOSTFIX + '" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
 			} else {
-				htmlNodeText_b = "<span class='moveblack currentmovemarker' id='" + Situation.CurMoveId + BLACKPOSTFIX + "' " +
-					tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
+				htmlNodeText_b = "<span class='moveblack currentmovemarker' id='" + Situation.CurMoveId + BLACKPOSTFIX + "' " + tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
 				htmlNodeText_w = "<span class='movewhite' id='" + Situation.CurMoveId + WHITEPOSTFIX + "'>" + Situation.Text_w + "</span>";
+				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + BLACKPOSTFIX + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
 			}
 			break;
 	}
@@ -84,20 +75,20 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 
 }
 
-// Ein Knoten kann nur einen Text enthalten. Also den Knoten holen, die schon vorhandenen Daten
-// merken und durch die neuen Teile ergänzen und dann komplett wegschreiben
+// Ein Knoten kann nur einen Texttag enthalten. Also den Knoten holen, die schon vorhandenen Daten
+// aufteilen und durch die neuen Teile ergänzen und dann wieder konkatnieren und wegschreiben
 // Änderungen gibt es nur am Knotentext, sonst nirgendwo.
 function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	removeNotationMarker(TreeContainer);
 
-	let Postfix = Zug.ZugFarbe == WEISSAMZUG ? WHITEPOSTFIX : BLACKPOSTFIX;
 
 	jumpTo = ''; // Diese Funktion wird erst mal einfach komplett ignoriert:
 	//let jumpTo =" onclick='jumpToPosition(\"" + Situation.FEN + Postfix + "\");'";
 
 	let tooltip = '';
 	if (TooltipFlag) {
+		let Postfix = Zug.ZugFarbe == WEISSAMZUG ? WHITEPOSTFIX : BLACKPOSTFIX;
 		Id_Tooltip = Situation.CurMoveId.replace(MOVEPRÄFIX, TOOLTIPPRÄFIX) + Postfix;
 		let TooltipFEN = Situation.FEN;
 		ErzeugeTooltip(TooltipFEN, Id_Tooltip, Challenge.AmZug);
@@ -107,72 +98,60 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 	// Den aktuellen Knoten holen, damit die schon ausgefüllten Teile übernommen werden können
 	let changenode = $('#' + TreeContainer).jstree(true).get_node(Situation.CurNodeId);
 
+	// In einen htmltag stecken, damit der Zugriff einfacher wird
 	document.getElementById("nodetext").innerHTML = changenode.text;
-	let NodeElements = document.getElementById("nodetext").getElementsByTagName("*");
 
-	htmlText_Zugnr = NodeElements[1].outerHTML;
-
-	let SchonDaKommentar = NodeElements.length == 5 ? NodeElements[4].outerHTML : "";
-	let NeuKommentar = Zug.Hinweistext != "" ? '<div class="Comment' + Postfix + '">' + Zug.Hinweistext + '</div>' : "";
+	let htmlText_Zugnr 		= document.getElementById("nodetext").querySelector(".movenumber").outerHTML;
+	let htmlText_MoveW		= document.getElementById("nodetext").querySelector(".movewhite").outerHTML;
+	let htmlText_MoveB 		= document.getElementById("nodetext").querySelector(".moveblack").outerHTML;
+	let htmlText_CommentW = document.getElementById("nodetext").querySelector(".Comment" + WHITEPOSTFIX) != null ? document.getElementById("nodetext").querySelector(".Comment" + WHITEPOSTFIX).outerHTML : "";
+	let htmlText_CommentB = document.getElementById("nodetext").querySelector(".Comment" + BLACKPOSTFIX) != null ? document.getElementById("nodetext").querySelector(".Comment" + BLACKPOSTFIX).outerHTML : "";
 
 	switch(Mode) {
-		case MOVEMODE_DEFAULT:
-			// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
+		case MOVEMODE_VARIANTE_MAINHIDDEN: // Variantezeiger und Kommentaar versteckt
 			if (Zug.ZugFarbe == WEISSAMZUG) {
-				htmlNodeText_b = NodeElements[3].outerHTML;
-				htmlNodeText_w = "<span class='movewhite' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + DEFAULTMOVE_W + "</span>";
+				htmlText_MoveW		= "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + "</span>";
+				htmlText_CommentW = Zug.Hinweistext != "" ? '<div class="Comment' + WHITEPOSTFIX + ' hideMe" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			} else {
-				htmlNodeText_w = NodeElements[2].outerHTML;
-				htmlNodeText_b = "<span class='moveblack' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + DEFAULTMOVE_B + "</span>";
+				htmlText_MoveB		= "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + "</span>";
+				htmlText_CommentB	= Zug.Hinweistext != "" ? '<div class="Comment' + BLACKPOSTFIX + ' hideMe" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			}
 			break;
-		case MOVEMODE_VARIANTE_MAINHIDDEN:
-			// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
+		case MOVEMODE_VARIANTE_MAINVISIBLE:	// Variantezeiger und Kommentar anzeigen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
-				htmlNodeText_b = NodeElements[3].outerHTML;
-				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + "</span>";
+				htmlText_MoveW		= "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
+				htmlText_CommentW	= Zug.Hinweistext != "" ? '<div class="Comment' + WHITEPOSTFIX + '" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			} else {
-				htmlNodeText_w = NodeElements[2].outerHTML;
-				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + "</span>";
-			}
-			break;
-		case MOVEMODE_VARIANTE_MAINVISIBLE:
-			// Stimmt nicht mehr: In T_Zuege steht die Farbe des verursachenden Zugs. Das Zeichen also bei der anderen Farbe eintragen.
-			if (Zug.ZugFarbe == WEISSAMZUG) {
-				htmlNodeText_b = NodeElements[3].outerHTML;
-				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
-			} else {
-				htmlNodeText_w = NodeElements[2].outerHTML;
-				htmlNodeText_b = "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
-			}
+				htmlText_MoveB		= "<span class='moveblack variantezeiger' id='" + Zug.CurMoveId + BLACKPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
+				htmlText_CommentB	= Zug.Hinweistext != "" ? '<div class="Comment' + BLACKPOSTFIX + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
+				}
 			break;
 		case MOVEMODE_MATTSIGN:
 			// Das Zeichen soll einfach an den zur Zugfarbe passenden Text angehängt werden
 			// Grund: Das Signal wird in einer eigenen Antwort der Engine zurückgegeben
-			htmlNodeText_w = NodeElements[2].outerHTML;
-			htmlNodeText_b = NodeElements[3].outerHTML;
 			if (Zug.ZugFarbe == WEISSAMZUG) {
-				htmlNodeText_w = htmlNodeText_w.replace("</span>", MATT + "</span>");
+				htmlText_MoveW		= htmlText_MoveW.replace("</span>", MATT + "</span>");
+				htmlText_CommentW	= Zug.Hinweistext != "" ? '<div class="Comment' + WHITEPOSTFIX + '" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			} else {
-				htmlNodeText_b = htmlNodeText_b.replace("</span>", MATT + "</span>");
+				htmlText_MoveB		= htmlText_MoveB.replace("</span>", MATT + "</span>");
+				htmlText_CommentB	= Zug.Hinweistext != "" ? '<div class="Comment' + Postfix + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			}
 			break;
-		case MOVEMODE_MOVE:
+		case MOVEMODE_MOVE:	// Zug, Tooltip und Kommentar einfach komplett anzeigen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
-				htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Zug.CurMoveId + WHITEPOSTFIX + "' " +
-					tooltip + jumpTo + ">" + Situation.Text_w + "</span>";
-				htmlNodeText_b = NodeElements[3].outerHTML;
+				htmlText_MoveW = "<span class='movewhite currentmovemarker' id='" + Zug.CurMoveId + WHITEPOSTFIX + "' " +	tooltip + jumpTo + ">" + Situation.Text_w + "</span>";
+				htmlText_CommentW = Zug.Hinweistext != "" ? '<div class="Comment' + WHITEPOSTFIX + '" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			} else {
-				htmlNodeText_b = "<span class='moveblack currentmovemarker' id='" + Zug.CurMoveId + BLACKPOSTFIX + "' " +
-					tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
-				htmlNodeText_w = NodeElements[2].outerHTML;
+				htmlText_MoveB = "<span class='moveblack currentmovemarker' id='" + Zug.CurMoveId + BLACKPOSTFIX + "' " +	tooltip + jumpTo + ">" + Situation.Text_b + "</span>";
+				htmlText_CommentB = Zug.Hinweistext != "" ? '<div class="Comment' + BLACKPOSTFIX + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			}
 			break;
 		default:
 			break;
 	}
 
-	let changetext = "<div>" + htmlText_Zugnr + htmlNodeText_w + htmlNodeText_b + SchonDaKommentar + NeuKommentar + "</div>";
+	// Die Teile konkatenieren und dann in dem Baum zurückschreiben
+	let changetext = "<div>" + htmlText_Zugnr + htmlText_MoveW + htmlText_MoveB + htmlText_CommentW + htmlText_CommentB + "</div>";
 	$('#' + TreeContainer).jstree().rename_node(changenode, changetext);
 
 }

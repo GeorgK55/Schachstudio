@@ -555,6 +555,8 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("{") == 0) {
 
 			getKommentar(Challenge, 0);
+			
+			Importdaten.PGN_Index--; // zum nächsten Kommentar
 
 		} else if (Importdaten.PGN[Importdaten.PGN_Index].indexOf("$") == 0) {
 
@@ -653,10 +655,11 @@ function executeRochade(Zugdaten) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTION
 // Für jeden Kommentar
 function getKommentar(callingclass, offset) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
+	// Es können mehrere Kommentare hintereinander vorkommen, deshalb while
 	while (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] == '{') {
 
 		// Textkommentar oder Markierungskommentar
-		Importdaten.PGN_Index++; // die öffende geschweifte Klammer ist jetzt schon verarbeitet
+		Importdaten.PGN_Index++; // die öffnende geschweifte Klammer ist jetzt schon verarbeitet
 
 		if (Importdaten.PGN_Index < Importdaten.PGN.length && Importdaten.PGN[Importdaten.PGN_Index + offset] == '[') { // Markierungskommentar
 
@@ -694,10 +697,10 @@ function getKommentar(callingclass, offset) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEM
 
 		} else { // Textkommentar
 
-			while (Importdaten.PGN[Importdaten.PGN_Index + offset].indexOf('}') < 0) {
+			do {
 				callingclass.Hinweistext +=  Importdaten.PGN[Importdaten.PGN_Index + offset] + ' ';
 				Importdaten.PGN_Index++;
-			}
+			} while (Importdaten.PGN[Importdaten.PGN_Index + offset].indexOf('}') < 0)
 			callingclass.Hinweistext = callingclass.Hinweistext.trim();
 
 		}
@@ -705,6 +708,7 @@ function getKommentar(callingclass, offset) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEM
 		Importdaten.PGN_Index++; // zum nächsten Kommentar
 
 	}
+
 }
 
 // Sammelt alle mit $ startenden folgenden Elemente in einem String
