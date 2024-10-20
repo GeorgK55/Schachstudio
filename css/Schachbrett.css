@@ -22,8 +22,8 @@
 
 .variantezeiger {   font-weight: 900;   text-align: center; }
 
-.variantemarker img			{	height: 3vh;	}
-.zugergebnismarker img	{	height: 3vh;	}
+.movenotesmarker img			{	height: 3vh;	}
+.movenotesresultmarker img	{	height: 3vh;	}
 
 .xbtooltip {
 	display: none;

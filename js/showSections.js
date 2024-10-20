@@ -193,6 +193,7 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_F
 
 	$('#importchessboard').empty().removeClass('noClick');
 	$('#challengechessboard').empty().removeClass('noClick');
+	$('#challengechessboard').css('background-color', 'var(--color_movecolormain)');
 
 	$('#logliste').empty();
 	$('#challengetips').empty();
@@ -205,7 +206,7 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_F
 
 	showAid(AIDMODE_INIT);
 
-	$('#variantetextid').removeClass().addClass('centertext');
+	$('#movenotestext').removeClass().addClass('centertext');
 
 	resetmarker();
 }

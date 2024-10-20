@@ -10,42 +10,46 @@ function createInterrupt(Interrupt, result, zugid) {
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION))	console.log('Beginn in ' + getFuncName() + ' mit result: ' + result + ', reason: ' + Interrupt + ' und zugid: ' + zugid );
 
-	$('#variantemarkerresolveid').on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
-	// $('#variantemarkerrejectid').click(		{ reason: Interrupt, zug: zugid }, handleInterruptClick);
+	$('#movenotesresultmarkerid').on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
+	// $('#movenotesrejectid').click(		{ reason: Interrupt, zug: zugid }, handleInterruptClick);
 
-	$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/questionmark.png'/>");
+	$('#movenotesresultmarkerid').html("<img id='moveokId' src='grafiken/weiter.png'/>");
 
 	switch(Interrupt) {
 		case 'PMS':
-			$('#variantemarkerresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
-			// $('#variantemarkerrejectid' ).empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
+			//$('#movenotesresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='movenotesresultmarker'/>");
+			// $('#movenotesrejectid' ).empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='movenotesresultmarker'/>");
 			break;
 		case 'PVS':
-			$('#variantemarkerresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
-			// $('#variantemarkerrejectid' ).empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='zugergebnismarker'/>");
+			//$('#movenotesresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='movenotesresultmarker'/>");
+			// $('#movenotesrejectid' ).empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='movenotesresultmarker'/>");
 			break;
 		case 'PVC':
 			break;
 		case 'PVE':
-			$('#variantemarkerresolveid').empty().html("<img id='varianteendespielerid' src='grafiken/VarianteEndeSpieler.png' class='zugergebnismarker'/>");
-			// $('#variantemarkerrejectid' ).empty().html("<img id='varianteendespielerid' src='grafiken/VarianteEndeSpieler.png' class='zugergebnismarker'/>");
+			//$('#movenotesresolveid').empty().html("<img id='varianteendespielerid' src='grafiken/VarianteEndeSpieler.png' class='movenotesresultmarker'/>");
+			// $('#movenotesrejectid' ).empty().html("<img id='varianteendespielerid' src='grafiken/VarianteEndeSpieler.png' class='movenotesresultmarker'/>");
 			break;
 		case 'CMS':
-			$('#variantemarkerresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
+			//$('#movenotesresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartAufgabe.png' class='movenotesresultmarker'/>");
 			break;
 		case 'CVS':
-			$('#variantemarkerresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
-			// $('#variantemarkerrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteStartAufgabe.png' class='zugergebnismarker'/>");
+			//$('#movenotesresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteStartAufgabe.png' class='movenotesresultmarker'/>");
+			// $('#movenotesrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteStartAufgabe.png' class='movenotesresultmarker'/>");
 			break;
 		case 'CVC':
 			break;
 		case 'CVE':
-			$('#variantemarkerresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='zugergebnismarker'/>");
-			// $('#variantemarkerrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='zugergebnismarker'/>");
+			//$('#movenotesresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='movenotesresultmarker'/>");
+			// $('#movenotesrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='movenotesresultmarker'/>");
 			break;
-	}
+		case 'SVG':
+			//$('#movenotesresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='movenotesresultmarker'/>");
+			// $('#movenotesrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='movenotesresultmarker'/>");
+			break;
+}
 
-	$('#variantetextid').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
+	$('#movenotestext').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
 	$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, getMoveLevel(zugid)));
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
@@ -69,16 +73,19 @@ function handleInterruptClick(clickevent) {
 
 	switch (clickevent.data.reason) {
 		case 'PMS':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'PVS':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'PVC':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'CVE':
 		case 'PVE':
@@ -144,19 +151,29 @@ function handleInterruptClick(clickevent) {
 			}
 
 			//PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'CMS':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
 			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'CVS':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
 			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'CVC':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
 			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
+			break;
+		case 'SVG':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('finishDraw.resolve');
+			//finishDraw.resolve();
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
+			PlayerMoveVariantenResult.resolve( clickevent.data );
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'XXX':
 			// Das deferred ist hier schon gelaufen.
@@ -199,16 +216,18 @@ function handleInterruptClick(clickevent) {
 
 			}
 
-			$('#variantetextid').html("<span>&nbsp</span>");
+			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 	}
-	$('#variantemarkerresolveid').off();
-	//$('#variantemarkerrejectid').off();
+	
+	$('#movenotesresultmarkerid').empty().off();
+	//$('#movenotesresolveid').off();
+	//$('#movenotesrejectid').off();
 
 	$('#challengechessboard').removeClass('noClick');
 }
 
-// Nur, damit dann was passiert
-function handleZugergebnisClick() {
-	alert('handleZugergebnisClick');
-}
+// // Nur, damit dann was passiert
+// function handleZugergebnisClick() {
+// 	alert('handleZugergebnisClick');
+// }

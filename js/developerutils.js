@@ -11,13 +11,13 @@ function showChallengeMovesShort() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTION
 
 	for(i = 0; i < ChallengeMoves.length; i++) {
 		ChallengeMoveShort.push({
-			//Id:						ChallengeMoves[i].Id,
+			Id:						ChallengeMoves[i].Id,
 			CurMoveId:		ChallengeMoves[i].CurMoveId,
 			PreMoveId:		ChallengeMoves[i].PreMoveId,
 			ZugOriginal:	ChallengeMoves[i].ZugOriginal,
-			//ZugLevel:			ChallengeMoves[i].ZugLevel,
-			//MoveState: 		ChallengeMoves[i].MoveState,
-			//MoveNode:			ChallengeMoves[i].MoveNode
+			ZugLevel:			ChallengeMoves[i].ZugLevel,
+			MoveState: 		ChallengeMoves[i].MoveState,
+			MoveNode:			ChallengeMoves[i].MoveNode
 		});
 	}
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.table(ChallengeMoveShort);

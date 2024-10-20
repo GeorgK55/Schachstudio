@@ -267,14 +267,14 @@
 						</ul>
 					</fieldset>
 					<div id="challengeboardandnotation" class="gc-challengeboardandnotation">
-						<div id="challengevarianten" class="gc-challengevarianten">
-							<div id="variantetextid" class="centertext"></div>
-							<!-- <div id="variantemarkerid" class="variantemarker" onclick="handleVarianteClick()"></div> -->
-							<div id="variantemarkerrejectid" class="variantemarker"></div>
-							<div id="variantemarkerresolveid" class="variantemarker"></div>
-							<div id="zugergebnismarkerid" class="zugergebnismarker" onclick="handleZugergebnisClick()"></div>
+						<div id="movenotes" class="gc-movenotes">
+							<div id="movenotestext" class="centertext"></div>
+							<!-- <div id="movenotesmarkerid" class="movenotesmarker" onclick="handleVarianteClick()"></div> -->
+							<div id="movenotesrejectid" class="movenotesmarker"></div>
+							<div id="movenotesresolveid" class="movenotesmarker"></div>
+							<div id="movenotesresultmarkerid" class="movenotesresultmarker"></div>
 						</div>
-						<div id="challengechessboard" class="cb_challenge variantemain svgboard">
+						<div id="challengechessboard" class="cb_challenge svgboard">
 						</div> 
 						<div id="challengechesstips" class="gc-challengechesstips">
 							<div id="challengezugmarkerid" class="challengezugmarker"></div>

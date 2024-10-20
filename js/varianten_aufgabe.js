@@ -17,6 +17,7 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 		case MOVERESULT_NODESCENDENTS:
 		case MOVERESULT_NOCOLORMOVES:
 			showjstreeimportant('challengenotation');
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
 			ChallengeMoveVariantenResult.reject({ result: MC_challenge.result, reason: Stellungsdaten.ZugFarbe, moveid: Stellungsdaten.PreMoveId });
 			break;
 		// case MOVERESULT_VARIANTEMOVE: // kann es hier nicht geben
@@ -66,7 +67,7 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 
 				// Notieren
 				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
-				// Hier noch die Farbanzeige in variantetextid aktualisieren?
+				// Hier noch die Farbanzeige in movenotestext aktualisieren?
 
 				// Verwalten
 				setMoveState(MC_challenge.selectedmove.CurMoveId, MOVESTATE_MOVED);
@@ -82,8 +83,9 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 
 				} else {
 					// Die Anzeige:
-					$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/moveok.png'/>");
+					$('#movenotesresultmarkerid').html("<img id='moveokId' src='grafiken/moveok.png'/>");
 					// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
+					if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.resolve');
 					ChallengeMoveVariantenResult.resolve({ result: MOVERESULT_MAINMOVEOHNE, reason: "Ohne Interrupt", zug: MC_challenge.selectedmove.CurMoveId });
 
 				}
@@ -92,6 +94,7 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 
 			break;
 		default:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
 			ChallengeMoveVariantenResult.reject({ result: 'Fehler: Moveresult Aufgabe nicht erlaubt', reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;
 	}

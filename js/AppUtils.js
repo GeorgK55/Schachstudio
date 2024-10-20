@@ -78,8 +78,7 @@ function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 	}
 }
 
-function showDraw(drawarray) {
-
+function showDraw(drawarray) { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
 	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
@@ -87,7 +86,7 @@ function showDraw(drawarray) {
 	const startmitte				= Math.round($( "#challengechessboard" ).width() / 20);
 
 	drawarray.forEach(function(svgitem) {
-		console.log(svgitem);
+
 		let sd = new Csvgdata();
 		let itemparts = svgitem.split('');
 
@@ -142,22 +141,30 @@ function showDraw(drawarray) {
 
 	})
 
+	// if(drawarray.length > 0 /* && Challenge.AmZug == Stellungsdaten.ZugFarbe */ ) {
+	// 	createInterrupt('SVG', drawarray, Stellungsdaten.CurMoveId);
+	// } else {
+	// 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PromotionAnswer.resolve');
+	// 	finishDraw.resolve();
+	// }
+
+	// return finishDraw.promise();
 }
 
 function resetmarker() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	$('#variantetextid').empty();
-	// $('#variantemarkerrejectid').empty();
-	$('#variantemarkerresolveid').empty();
-	$('#zugergebnismarkerid').empty();
-	$('#variantemarkerid').empty();
+	$('#movenotestext').empty();
+	// $('#movenotesrejectid').empty();
+	$('#movenotesresolveid').empty();
+	$('#movenotesresultmarkerid').empty();
+	$('#movenotesmarkerid').empty();
 
 }
 
 function showNotAcceptedMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	$("[data-square=" + T_Zuege.ZugVon + "]").children().effect("shake");
-	$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/fehler.png'/>");
+	$('#movenotesresultmarkerid').html("<img id='moveokId' src='grafiken/fehler.png'/>");
 }
 
 function addBoardFunctions(BoardId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());

@@ -52,6 +52,7 @@ CREATE TABLE T_Aufgaben (
     Hinweispfeil          varchar(64)   DEFAULT NULL,
     Quelle								varchar(64)   DEFAULT NULL,
     Quelledetail					varchar(512)  DEFAULT NULL,
+    youtubevideo					varchar(512)  DEFAULT NULL,
 		Annotator							varchar(64)   DEFAULT NULL,
 		WeissName							varchar(64)   DEFAULT NULL,
 		SchwarzName						varchar(64)   DEFAULT NULL,
@@ -149,7 +150,7 @@ CREATE TABLE T_SystemValues (
     PRIMARY KEY (Id)
 );
 
-INSERT INTO T_SystemValues (SystemKey, SystemValue) VALUES ('Lastupdate', '25.5.2022');
+INSERT INTO T_SystemValues (SystemKey, SystemValue) VALUES ('Lastupdate', '27.9.2024');
 INSERT INTO T_SystemValues (SystemKey, SystemValue) VALUES ('VisitorCounter', '100');
 
 CREATE TABLE T_NAG (

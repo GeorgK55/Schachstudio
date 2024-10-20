@@ -21,6 +21,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 		// case MOVERESULT_NOCOLORMOVES: kann es das hier geben??? Im determine.... ist ein alert
 		case MOVERESULT_NODESCENDENTS:
 			showjstreeimportant('challengenotation');
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.reject');
 			PlayerMoveVariantenResult.reject({	result: MC_player.result, reason: "", moveid: T_Zuege.CurMoveId	});
 			break;
 		case MOVERESULT_VARIANTEMOVE:
@@ -65,9 +66,12 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 			// Notieren, wenn es kein aus dem Stack geholter Zug ist
 			if(getMoveState(MC_player.selectedmove.CurMoveId) != MOVESTATE_STACKED) {
 				NotiereZug('challengenotation', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
-			} else {
-				$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 			}
+			// } else {
+			// 	$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
+			// }
+			// Die Rahmenfarbe des Brettes immer aktualisieren
+			$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 
 			// Ziehen
 			ZieheZug(MC_player.selectedmove, ANIMATIONSPEED_ZERO);
@@ -87,10 +91,15 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 			} else {
 
 				// Die Anzeige:
-				$('#zugergebnismarkerid').html("<img id='moveokId' src='grafiken/moveok.png'/>");
+				$('#movenotesresultmarkerid').html("<img id='moveokId' src='grafiken/moveok.png'/>");
 
-				// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
-				PlayerMoveVariantenResult.resolve({ result: MC_player.result, reason: "Ohne Interrupt", moveid: MC_player.selectedmove.CurMoveId });
+				if(MC_player.selectedmove.Hinweiskreis != '' || MC_player.selectedmove.Hinweispfeil != '') {
+					createInterrupt('SVG', MC_player.result, MC_player.selectedmove.CurMoveId);
+				} else {
+					// Hier ist kein Interrupt nötig. resolve löst per then die Behandlung des Folgezugs aus.
+					if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
+					PlayerMoveVariantenResult.resolve({ result: MC_player.result, reason: "Ohne Interrupt", moveid: MC_player.selectedmove.CurMoveId });
+				}
 
 			}
 
@@ -111,6 +120,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 
 			break;
 		default:
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.reject');
 			PlayerMoveVariantenResult.reject({ result: 'Fehler: Moveresult Spieler nicht erlaubt', reason: "", moveid: Stellungsdaten.PreMoveId });
 			break;
 	}

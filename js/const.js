@@ -76,6 +76,7 @@ const LOGLEVEL_IMPORTANT	= '100';
 const LOGTHEME_NOTHING				= '';
 const LOGTHEME_DATA						= 'data';
 const LOGTHEME_SITUATION			= 'situation';
+const LOGTHEME_PROMISES				= 'promises';
 const LOGTHEME_FUNCTIONBEGINN = 'begin';
 const LOGTHEME_ENGINEDIALOG		= 'engineanswer';
 

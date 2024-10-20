@@ -14,5 +14,6 @@ Variantentexte = {
 	CVS : "Der Gegner spielt eine Variante",
 	CVC : "",
 	CVE : "Die Variante ist beendet",
+	SVG	: "Beachte die Markierungen",
 
 }

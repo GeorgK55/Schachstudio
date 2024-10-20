@@ -686,9 +686,9 @@ body {
     padding-left: 0.5vw;
 }
 
-.variantemain {	background-color: var(--color_movecolormain);  height:100% }
+/* .variantemain {	background-color: var(--color_movecolormain);  height:100% }
 .varianteeven {	background-color: var(--color_movecoloreven);  height:100% }
-.varianteodd  {	background-color: var(--color_movecolorodd);   height:100% }
+.varianteodd  {	background-color: var(--color_movecolorodd);   height:100% } */
 
 .svgcolormain {	stroke: var(--color_movecolormain);    fill: var(--color_movecolormain);  }
 
@@ -731,12 +731,12 @@ body {
     display: grid;
     grid-template-columns: min-content 10fr;
     grid-template-rows: min-content min-content min-content min-content;
-    grid-template-areas: "challengevariantenarea schachtips" "challengeboard notation" "zugpfeile aufgabehinweise" "pgn aufgabehinweise";
+    grid-template-areas: "movenotesarea schachtips" "challengeboard notation" "zugpfeile aufgabehinweise" "pgn aufgabehinweise";
     margin: 1vh 1vw;
 }
 
-.gc-challengevarianten {
-	grid-area: challengevariantenarea;
+.gc-movenotes {
+	grid-area: movenotesarea;
 	display: grid;
 	grid-template-columns: 15fr 1fr 1fr 1fr;
 	align-items: center;

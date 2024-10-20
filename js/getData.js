@@ -186,6 +186,7 @@ function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 				CurMove: Importdaten.CurMoveId
 			});
 
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ImportboardFinished.resolve');
 			ImportboardFinished.resolve();
 			ImportboardFinished.promise();
 

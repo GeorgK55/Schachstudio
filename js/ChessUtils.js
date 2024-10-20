@@ -88,6 +88,7 @@ function checkPromotion() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 		});
 	} else {
 		T_Zuege.ZugUmwandlung = "";
+		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PromotionAnswer.resolve');
 		PromotionAnswer.resolve();
 	}
 
@@ -97,6 +98,7 @@ function checkPromotion() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 function setPromotionPiece(Piece) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	T_Zuege.ZugUmwandlung = Piece;
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PromotionAnswer.resolve');
 	PromotionAnswer.resolve();
 	PromotionDialog.dialog('close');
 }
@@ -364,7 +366,7 @@ function finishChallenge(Endetext) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTION
 	showChallengeTip('Bravo. ' + Endetext, 'VeryImportantText');
 	removeMouseBoardFunctions(HTMLBRETTNAME_SPIELEN);
 	removeNotationMarker('challengenotation');
-	$('#variantetextid').removeClass().addClass('centertext');
+	$('#movenotestext').removeClass().addClass('centertext');
 
 }
 
@@ -465,9 +467,11 @@ function animateMove(objZug, Animationspeed) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEM
 			$('[data-square="' + objZug.ZugVon + '"] :first-child').addClass('svgmoveme')
 			$('[data-square="' + objZug.ZugVon + '"] :first-child').on("animationend", {	von: objZug.ZugVon, nach: objZug.ZugNach }, terminateAnimation );
 		} else {
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('AnimationFinished.resolve');
 			AnimationFinished.resolve();
 		}
 	} else {
+		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('AnimationFinished.resolve');
 		AnimationFinished.resolve();
 	}
 
@@ -478,6 +482,7 @@ function terminateAnimation(cleardata) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNC
 
 	$('#' + cleardata.data.von).empty();	// Schon hier, damit die Figur nicht noch mal kurz am alten Platz aufblitzt
 
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('AnimationFinished.resolve');
 	AnimationFinished.resolve();
 
 }
@@ -494,6 +499,7 @@ function processMove0(objZug, BoardPräfix) {
 	$('#' + BoardPräfix + objZug.ZugNach).empty().append('<span data-figur="' + figur +  '_' + objZug.ZugNach + '">' + eval('FIGUREN.' + figur) + '</span>');
 
 	showAid(AIDMODE_INIT);
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ZugAnimation.resolve');
 	ZugAnimation.resolve();
 
 }
@@ -516,8 +522,13 @@ function processMove(toClear, toPlace, toDraw) {	if(logMe(LOGLEVEL_SLIGHT, LOGTH
 
 	});
 
-	showDraw(toDraw);
 	showAid(AIDMODE_INIT);
+	showDraw(toDraw);
+	// .then(function () {
+	// 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ZugAnimation.resolve');
+	// 	ZugAnimation.resolve();
+	// });
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('ZugAnimation.resolve');
 	ZugAnimation.resolve();
 
 }

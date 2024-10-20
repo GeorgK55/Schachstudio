@@ -70,12 +70,19 @@ function prepareChallengeImport() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONB
 
 	$('#ul_importaufgaben').empty();
 	for (i = 0; i < GlobalImportedPGN.length; i++) {
+		let newitem = '';
 		let aufgabetext = GlobalImportedPGN[i].match(r_Event);
-		//let aufgabetext = /Event "([^\"]*)/.exec(GlobalImportedPGN[i])[1];
-		if (aufgabetext != null) {
-			let newitem = '<li id="importedpgn_' + i + '">' + aufgabetext.groups.kapitel + '</li>';
-			$(newitem).appendTo('#ul_importaufgaben');
+
+		if(aufgabetext == null) {
+			newitem = 'Angabe fehlt';
+		} else {
+			if (aufgabetext.groups.kapitel != null) {
+				newitem = '<li id="importedpgn_' + i + '">' + aufgabetext.groups.kapitel + '</li>';
+			} else {
+				newitem = '<li id="importedpgn_' + i + '">' + aufgabetext.groups.event + '</li>';
+			}
 		}
+		$(newitem).appendTo('#ul_importaufgaben');
 	}
 
 	$("#ul_importaufgaben").selectable({
@@ -208,101 +215,6 @@ function notifyChallengeDetails() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONB
 	$("#amzugimport").val(Challenge.AmZug);
 
 }
-
-// Aus den Importdaten werden die die Aufgabe beschreibenden Daten extrahiert und in die Oberfläche übertragen
-// function scanChallengeMetaData0(Importtext) {
-
-// 	$('#ul_importaufgabedetails input').val('');
-
-// 	Importdaten = new CImportdaten();
-// 	T_Aufgabe		= new CAufgabe();
-
-// 	T_Aufgabe.PGN = Importtext;
-
-// 	// Alle regex maskieren, da sonst die Fehlermeldung "groups für null" kommt
-
-// 	// Dieser Ausdruck erkennt Standardlichesstexte (": " zwischen Studie und Kapitel)
-// 	let m_Aufgabetext		= Importtext.match(r_Event);
-
-// 	if (m_Aufgabetext == null) {
-// 		T_Aufgabe.Kurztext = "Fehlt";
-// 		$('#kurztextimport').val("Fehlt");
-// 		// Langtext ist optional und nullable
-// 	} else {
-// 		// Wenn der "lichess-Doppelpunkt" fehlt, steht der Kurztext in der Gruppe event, sonst in den Gruppen Studie und Kapitel
-// 		if(m_Aufgabetext.groups.event == null) {
-// 			T_Aufgabe.Kurztext = m_Aufgabetext.groups.kapitel;
-// 			$('#kurztextimport').val(m_Aufgabetext.groups.kapitel);
-// 			T_Aufgabe.Langtext = m_Aufgabetext.groups.studie;
-// 			$('#langtextimport').val(m_Aufgabetext.groups.studie);
-// 		} else {
-// 			T_Aufgabe.Kurztext = m_Aufgabetext.groups.event;
-// 			$('#kurztextimport').val(m_Aufgabetext.groups.event);
-// 		}
-// 	}
-
-// 	let m_Quelle = (/(\[Site \")(?<site>.*)(\"\])/).exec(Importtext);
-// 	if (m_Quelle != null) {
-// 		T_Aufgabe.Quelle = m_Quelle.groups.site;
-// 		$('#quelleimport').val(m_Quelle.groups.site);
-// 	}
-
-// 	let m_Annotatortext	= Importtext.match(r_Annotator);
-// 	if (m_Annotatortext != null) {
-// 		T_Aufgabe.Annotator = m_Annotatortext.groups.annotatortext;
-// 		$('#annotatortextimport').val(m_Annotatortext.groups.annotatortext);
-// 	}
-
-// 	let m_Weiss = (/(\[White \")(?<weissname>.*)(\"\])/).exec(Importtext);
-// 	if (m_Weiss != null) {
-// 		T_Aufgabe.WeissName = m_Weiss.groups.weissname;
-// 		$('#weissnameimport').val(m_Weiss.groups.weissname);
-// 	}
-
-// 	let m_Schwarz = (/(\[Black \")(?<schwarzname>.*)(\"\])/).exec(Importtext);
-// 	if (m_Schwarz != null) {
-// 		T_Aufgabe.SchwarzName = m_Schwarz.groups.schwarzname;
-// 		$('#schwarznameimport').val(m_Schwarz.groups.schwarzname);
-// 	}
-
-// 	let m_Datum = (/(\[UTCDate \")(?<datum>.*)(\"\])/).exec(Importtext);
-// 	if (m_Datum != null) {
-// 		T_Aufgabe.Datum = m_Datum.groups.datum;
-// 		$('#datumimport').val(m_Datum.groups.datum);
-// 	}
-
-// 	T_Aufgabe.Quelledetail	= "";
-// 	T_Aufgabe.Scope					= "";
-// 	T_Aufgabe.Skill					= "";
-
-// 	// Fritz exportiert bei Partieanfang kein FEN. Deshalb erst mal so prüfen
-
-// 	let m_FEN_Exist = (/\[FEN/g).exec(Importtext);
-
-// 	if (m_FEN_Exist == null) {
-
-// 		T_Aufgabe.FEN = FEN_PARTIEANFANG;
-// 		$('#fenimport').val(FEN_PARTIEANFANG);
-// 		T_Aufgabe.AmZug = WEISSAMZUG;
-// 		$("#amzugimport").val(WEISSAMZUG);
-
-// 	} else {
-
-// 		let m_FEN = (/(\[FEN \")(?<fen>.*)(\"\])/).exec(Importtext);
-// 		T_Aufgabe.FEN = m_FEN.groups.fen;
-// 		$('#fenimport').val(m_FEN.groups.fen);
-// 			$("#amzugimport").val(WEISSAMZUG);
-// 		if (m_FEN.groups.fen.includes("w")) { // laut Spezifikation ist es in klein
-// 			T_Aufgabe.AmZug = WEISSAMZUG;
-// 			$("#amzugimport").val(WEISSAMZUG);
-// 		} else {
-// 			T_Aufgabe.AmZug = SCHWARZAMZUG;
-// 			$("#amzugimport").val(SCHWARZAMZUG);
-// 		}
-
-// 	}
-
-// }
 
 // Die Zugangaben sind für ein angenehmes Lesen optimiert (Zeilenumbrüche, mal mit mal ohne Leerzeichen usw.)
 // Hier werden alle später mal relevanten Teile voneinander getrennt und die optischen Optimierungen entfernt. 
@@ -585,6 +497,7 @@ function validateSingleMove() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 		});
 
 		//$( "#messageline" ).hide( "fade", 10000,  );
+		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('Zugpruefung.resolve');
 		Zugpruefung.resolve();
 		//return Zugpruefung.promise();
 	}

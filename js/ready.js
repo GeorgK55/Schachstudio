@@ -4,9 +4,10 @@ $(document).ready(function () {
 	curLoglevel = LOGLEVEL_SLIGHT;
 	//curLoglevel = LOGLEVEL_NICE;
 	//curLoglevel = LOGLEVEL_IMPORTANT;
-	curLogthemes	= [LOGTHEME_DATA, LOGTHEME_SITUATION, LOGTHEME_FUNCTIONBEGINN, LOGTHEME_ENGINEDIALOG];
+	//curLogthemes	= [LOGTHEME_DATA, LOGTHEME_SITUATION, LOGTHEME_FUNCTIONBEGINN, LOGTHEME_ENGINEDIALOG];
+	curLogthemes	= [LOGTHEME_SITUATION, LOGTHEME_FUNCTIONBEGINN];
 	//curLogthemes	= [LOGTHEME_DATA]; 
-	//curLogthemes	= [LOGTHEME_FUNCTIONBEGINN, LOGTHEME_ENGINEDIALOG];
+	//curLogthemes	= [LOGTHEME_FUNCTIONBEGINN, LOGTHEME_PROMISES];
 	//curLogthemes		= [];
 
 	TriggerMoveToStackCounter = 0; // Ohne Funktion, nur zwecks Debug
