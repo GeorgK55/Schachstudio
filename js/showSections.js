@@ -306,7 +306,6 @@ function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTI
 	T_Zuege					= new CZuege();
 	Stellungsdaten	= new CStellungsdaten();
 
-	//initializeSelectionEnvironment();
 	getChallengeData(ChallengeID)	// holt die eine Zeile aus T_Aufgaben und versorgt T_Aufgabe und Stellungsdaten
 		.then(function () { getChallengeBoard(); })
 		.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) {
@@ -316,7 +315,6 @@ function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTI
 													T_Zuege.ZugFarbe	= Challenge.AmZug;
 												}
 											})
-		//.then(function () {	initializeSelectionEnvironment(); })
 		.then(function () { initializeNotationtree(); });
 
 }
@@ -337,11 +335,11 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 	scanPGN(Kapitel);
 	notifyChallengeDetails();
 	normalizePGNMoves(Kapitel);
-	// Challenge = { ...Importdaten };
-	// Challenge.FEN = T_Aufgabe.FEN;
 
 	$('#kurztextspiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
 	$('#langtextspiel').val(Challenge.Langtext);
+	$('#youtubespielanchorid').append(Challenge.Youtubevideoname);
+	$("#youtubespielanchorid").attr("href", "http://www.google.com/");
 	// $('#quellespiel').val(Challenge.Quelle);
 	// $('#quelledetailspiel').val(Challenge.Quelledetail);
 	// $('#scopespiel').val(Challenge.Scope); 
@@ -351,7 +349,6 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 	// $('#fenspiel').val(Challenge.FEN);
 	$('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
 
-	//initializeSelectionEnvironment();
 	getImportBoard()
 		.then(function () { ZuegePruefen(NOTATIONMODE_HIDDEN)
 													.then(function () { getChallengeBoard(); })
@@ -365,23 +362,10 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 													.then(function () { completeMoves(T_Zuege, ChallengeMoves); }); 
 		})
 
-	//console.log(Kapitel);
-
-
-	// getChallengeData(ChallengeID)
-	// 	.then(function () { getChallengeBoard(); })
-	// 	.then(function () { if(GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEOHNE || GlobalSpielinteraktion == SPIELINTERAKTION_AUFGABEMIT) { getChallengeMoves(ChallengeID, MitVarianten); } })
-	// 	.then(function () {	initializeSelectionEnvironment(); })
-	// 	.then(function () { initializeNotationtree(); });
-
 }
 
 function AufgabenAnzeigen() {
 
-	// $('#kapiteldetails').addClass( "hideMe" );
-	// $('#aufgabendetails').removeClass( "hideMe" );
-	// $('#ul_aufgabenliste').removeClass( "hideMe" );
-	
 	$("[id^='s_']").hide();
 	$("[id^='s1_']").hide();
 	$("[id^='s2_']").show();
@@ -408,14 +392,3 @@ function AufgabenAnzeigen() {
 			break;
 	}
 }
-// // Alternative zur eigenen Darstellung: hier wird lichess in einem frame eingeblendet
-// function showlichess(ChallengeID, lichessdata) {
-
-// 	$("[id^='s_']").hide();
-// 	$('#s_lichess').show();
-
-// 	//<iframe width=600 height=371 src="https://lichess.org/study/embed/xgTQJ6HF/04tEMyPj#0" frameborder=0></iframe>
-// 	//$("#iframeframe").empty().append("<iframe width=600 height=371 src='https://lichess.org/study/embed/" + lichessdata + "' frameborder=0></iframe>");
-// 	$("#iframeframe").empty().append("<iframe width=600 height=371 src='https://lichess.org/study/embed/E06MI1XV/Cv4blOr1' allowtransparency='true' frameborder=0></iframe>");
-
-// }

@@ -5,19 +5,7 @@ class CImportdaten {
 		this.PGN 							=	[]; // Alle Teile der Datei; an Leerzeichen aufgeteilt
 		this.PGN_Index 				=	0;	// integer; der Zähler in der do while
 		this.ZugNummer				=	0;	// aus dem PGN-String
-		// this.ZugLevel					=	0;
-		// this.ZugFarbe					=	"";
-		// this.CreateNewNode		=	true;
-		// this.PreNodeId				=	NODEPRÄFIX + '0';	// der Vorgängerknotenname im html-Tree; kann parent oder sibling sein
-		// this.CurNodeId				=	NODEPRÄFIX + '0';	// der aktuelle Knotenname im html-Tree
-		// this.PreMoveId				=	MOVEPRÄFIX + '0'; // Id des Vorgängerzugs; kann gleiche Ebene oder kleinere Ebene sein
-		// this.CurMoveId				=	MOVEPRÄFIX + '0'; // MOVEPRÄFIX + PGN_Index; sind also nicht aufsteigend komplett
 		this.PreFEN						=	"";	// Die FEN, die zu diesem Zug geführt hat
-		// this.FEN							=	"";	// Die FEN nachdem dieser Zug ausgeführt wurde
-		// this.Text_w						=	DEFAULTMOVE_W;
-		// this.Text_b						=	DEFAULTMOVE_B;
-		// this.VarianteCounter	=	0;
-		// this.VarianteColor		= [0, 0, 0, 0, 0, 0, 0, 0] 
 		this.ZugStack					=	[];
 	}
 };
@@ -76,6 +64,8 @@ class CChallenge  {
 		this.Hinweispfeil					= '';	// Pfeilmarkierung vor dem ersten Zug
 		this.Quelle								=	"";	// Eine im Import generierte Zeichenkette: 'lichess' oder 'import' Später mal ein Fremdschlüssel zu T_Quellen
 		this.Quelledetail					=	"";	// Die Fundstelle in der Quelle, bei lichess leer. 
+		this.youtubevideoname			= ""; // Der Name zu einem eventuellen Youtube-Video. Muss manuell eingetragen werden
+		this.youtubevideolink			= ""; // Der Link zu einem eventuellen Youtube-Video. Muss manuell eingetragen werden
 		this.Annotator						=	"";
 		this.WeissName						=	"";
 		this.SchwarzName					=	"";

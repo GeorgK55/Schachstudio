@@ -106,6 +106,8 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 
 		$('#kurztextspiel').val(Challenge.Kurztext);
 		$('#langtextspiel').val(Challenge.Langtext);
+		$('#youtubespielanchorid').append(Challenge.Youtubevideoname);
+		$("#youtubespielanchorid").attr("href", Challenge.Youtubevideolink);
 		// $('#quellespiel').val(Challenge.Quelle);
 		// $('#quelledetailspiel').val(Challenge.Quelledetail);
 		// $('#scopespiel').val(Challenge.Scope);
@@ -193,8 +195,6 @@ function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 		}).fail(function (jqXHR, textStatus, errorThrown) {
 			AjaxError(jqXHR, textStatus, errorThrown);
 		});
-
-		// return ImportboardFinished.promise();
 
 }
 

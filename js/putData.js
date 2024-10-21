@@ -16,15 +16,6 @@ function ThemaSpeichern(KnotenObj, NeuerName) {
 
 function AufgabeSpeichern() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	// if ($('#quelleimport').val().includes("https://lichess.org/study/")) {
-	// 	let quelledetails	= $('#quelleimport').val().split("/");
-	// 	lichess_studie		= quelledetails[4];
-	// 	lichess_kapitel		= quelledetails[5];
-	// } else {
-	// 	lichess_studie	= "";
-	// 	lichess_kapitel	= "";
-	// }
-
 	$.post({
 		url: 			"php/put_dbdata.php",
 		dataType: "json",
@@ -37,6 +28,8 @@ function AufgabeSpeichern() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)
 						Hinweispfeil: 			Challenge.Hinweispfeil,
 						Quelle: 						Challenge.Quelle,
 						Quelledetail:				$('#quelledetailimport').val(),
+						Youtubename:				$('#youtubeimportname').val(),
+						Youtubelink:				$('#youtubeimportlink').val(),
 						Annotator:					Challenge.Annotator,
 						WeissName:					$('#weissnameimport').val(),
 						SchwarzName:				$('#schwarznameimport').val(),

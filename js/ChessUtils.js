@@ -436,12 +436,6 @@ function prepareMove(objZug, toClear, toPlace, toDraw) {	if(logMe(LOGLEVEL_SLIGH
 
 	}
 
-	// Zeichnen ist von Rochade und Farbe unabhängig
-	//toDraw = (objZug.Hinweiskreis + ',' + objZug.Hinweispfeil).split(',');
-
-	// (objZug.Hinweiskreis + ',' + objZug.Hinweispfeil).split(',').filter(i => i).forEach(function(item) {
-	// 	toDraw.push(item);
-	// })
 	determineannotations(objZug.Hinweiskreis, objZug.Hinweispfeil, toDraw);
 }
 
@@ -513,21 +507,12 @@ function processMove(toClear, toPlace, toDraw) {	if(logMe(LOGLEVEL_SLIGHT, LOGTH
 		$('[data-square="' + ziel.feldname + '"]').empty();
 
 		adjustPiece(ziel);
-		// zielspan = document.createElement("span");
-		// //zielspan.id = ziel.figurname + '_' + ziel.feldname;
-		// zielspan.setAttribute("data-figur", ziel.figurname + '_' + ziel.feldname);
-		// zielspan.innerHTML = FIGUREN[ziel.figurname];
-
-		// document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);
 
 	});
 
 	showAid(AIDMODE_INIT);
 	showDraw(toDraw);
-	// .then(function () {
-	// 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ZugAnimation.resolve');
-	// 	ZugAnimation.resolve();
-	// });
+
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('ZugAnimation.resolve');
 	ZugAnimation.resolve();
 
@@ -536,12 +521,9 @@ function processMove(toClear, toPlace, toDraw) {	if(logMe(LOGLEVEL_SLIGHT, LOGTH
 function adjustPiece(ziel) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	zielspan = document.createElement("span");
-	//zielspan.id = ziel.figurname + '_' + ziel.feldname;
 	zielspan.setAttribute("data-piece", ziel.figurname);
 	zielspan.innerHTML = FIGUREN[ziel.figurname];
 
-	//$('[data-square]').appendChild(zielspan);
 	document.querySelector('div[data-square="' + ziel.feldname + '"]').appendChild(zielspan);
-	//document.getElementById(BoardPräfix + ziel.feldname).appendChild(zielspan);
 
 }

@@ -86,6 +86,8 @@ if($DesiredFunction == 'AufgabeSpeichern') {
   $Hinweispfeil				= $_POST['Hinweispfeil'];
   $Quelle							= $_POST['Quelle'];
   $Quelledetail				= $_POST['Quelledetail'];
+  $Youtubename				= $_POST['Youtubename'];
+  $Youtubelink				= $_POST['Youtubelink'];
 	$Annotator					= $_POST['Annotator'];
 	$WeissName					= $_POST['WeissName'];
 	$SchwarzName				= $_POST['SchwarzName'];
@@ -99,9 +101,9 @@ if($DesiredFunction == 'AufgabeSpeichern') {
   $lichess_kapitel_id	= $_POST['lichess_kapitel_id'];
   $pgn								= $_POST['pgn'];
 
-  $commandtext = "INSERT INTO T_Aufgaben (Kurztext, Langtext, Hinweistext, Hinweiskreis, Hinweispfeil, Quelle, Quelledetail, Annotator, WeissName, SchwarzName, Ab, Datum, AmZug, FEN, Scope, Skill, lichess_studie_id, lichess_kapitel_id, PGN) VALUES (:Kurztext, :Langtext, :Hinweistext, :Hinweiskreis, :Hinweispfeil, :Quelle, :Quelledetail, :Annotator, :WeissName, :SchwarzName, :Ab, :Datum, :AmZug, :FEN, :Scope, :Skill, :lichess_studie_id, :lichess_kapitel_id, :PGN)";
+  $commandtext = "INSERT INTO T_Aufgaben (Kurztext, Langtext, Hinweistext, Hinweiskreis, Hinweispfeil, Quelle, Quelledetail, Youtubevideoname, Youtubevideolink, Annotator, WeissName, SchwarzName, Ab, Datum, AmZug, FEN, Scope, Skill, lichess_studie_id, lichess_kapitel_id, PGN) VALUES (:Kurztext, :Langtext, :Hinweistext, :Hinweiskreis, :Hinweispfeil, :Quelle, :Quelledetail, :Youtubename, :Youtubelink, :Annotator, :WeissName, :SchwarzName, :Ab, :Datum, :AmZug, :FEN, :Scope, :Skill, :lichess_studie_id, :lichess_kapitel_id, :PGN)";
 
-  $paramsarray = array(':Kurztext' => $Kurztext, ':Langtext' => $Langtext, ':Hinweistext' => $Hinweistext, ':Hinweiskreis' => $Hinweiskreis, ':Hinweispfeil' => $Hinweispfeil, ':Quelle' => $Quelle, ':Quelledetail' => $Quelledetail, ':Annotator' => $Annotator, ':WeissName' => $WeissName, ':SchwarzName' => $SchwarzName, ':Ab' => $Ab, ':Datum' => $Datum, ':AmZug' => $AmZug, ':FEN' => $FEN, ':Scope' => $Scope, ':Skill' => $Skill, ':lichess_studie_id' => $lichess_studie_id, ':lichess_kapitel_id' => $lichess_kapitel_id, ':PGN' => $pgn);
+  $paramsarray = array(':Kurztext' => $Kurztext, ':Langtext' => $Langtext, ':Hinweistext' => $Hinweistext, ':Hinweiskreis' => $Hinweiskreis, ':Hinweispfeil' => $Hinweispfeil, ':Quelle' => $Quelle, ':Quelledetail' => $Quelledetail, ':Youtubename' => $Youtubename, ':Youtubelink' => $Youtubelink, ':Annotator' => $Annotator, ':WeissName' => $WeissName, ':SchwarzName' => $SchwarzName, ':Ab' => $Ab, ':Datum' => $Datum, ':AmZug' => $AmZug, ':FEN' => $FEN, ':Scope' => $Scope, ':Skill' => $Skill, ':lichess_studie_id' => $lichess_studie_id, ':lichess_kapitel_id' => $lichess_kapitel_id, ':PGN' => $pgn);
 
 	processpdo($commandtext, $paramsarray, $responsearray);
 

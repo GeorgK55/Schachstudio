@@ -127,8 +127,6 @@ function showDraw(drawarray) { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN
 
 			const markercircle = document.createElementNS('http://www.w3.org/2000/svg','circle');
 
-			//<circle cx="170" cy="200" r="160" fill="ivory" stroke="orange" />
-
 			markercircle.setAttribute("id", "annocircle_" + svgitem)
 			markercircle.setAttribute("cx", sd.startfile);
 			markercircle.setAttribute("cy", sd.startrank);
@@ -141,14 +139,6 @@ function showDraw(drawarray) { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN
 
 	})
 
-	// if(drawarray.length > 0 /* && Challenge.AmZug == Stellungsdaten.ZugFarbe */ ) {
-	// 	createInterrupt('SVG', drawarray, Stellungsdaten.CurMoveId);
-	// } else {
-	// 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PromotionAnswer.resolve');
-	// 	finishDraw.resolve();
-	// }
-
-	// return finishDraw.promise();
 }
 
 function resetmarker() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());

@@ -208,18 +208,20 @@
 						<fieldset id="f_importaufgabedaten" class="f_importaufgabedaten">
 							<legend>Die gewählte Aufgabe</legend>
 							<ul id="ul_importaufgabedetails">
-								<li><label for="kurztextimport">Kurztext</label>					<input type="text" 	name="Kurztext"				id = "kurztextimport">								</li>
-								<li><label for="langtextimport">Langtext</label>					<input type="text" 	name="Langtext"				id = "langtextimport">								</li>
-								<li><label for="datumimport">Datum</label>								<input type="text" 	name="Datum"					id = "datumimport"					disabled>	</li>
-								<li><label for="quelleimport">Quelle</label>							<input type="text" 	name="Quelle"					id = "quelleimport"					disabled>	</li>
-								<li><label for="annotatortextimport">Annotator</label>		<input type="text" 	name="Annotatortext"	id = "annotatortextimport"	disabled>	</li>
-								<li><label for="weissnameimport">Weiß</label>							<input type="text" 	name="WeissName"			id = "weissnameimport">								</li>
-								<li><label for="schwarznameimport">Schwarz</label>				<input type="text" 	name="SchwarzName"		id = "schwarznameimport">							</li>
+								<li><label for="kurztextimport">Kurztext</label>					<input type="text" 	name="Kurztext"					id = "kurztextimport">									</li>
+								<li><label for="langtextimport">Langtext</label>					<input type="text" 	name="Langtext"					id = "langtextimport">									</li>
+								<li><label for="datumimport">Datum</label>								<input type="text" 	name="Datum"						id = "datumimport"						disabled>	</li>
+								<li><label for="quelleimport">Quelle</label>							<input type="text" 	name="Quelle"						id = "quelleimport"						disabled>	</li>
+								<li><label for="youtubeimportname">Youtubename</label>		<input type="text" 	name="youtubename"			id = "youtubeimportname">								</li>
+								<li><label for="youtubeimportlink">Youtubelink</label>		<input type="text" 	name="youtubelink"			id = "youtubeimportlink">								</li>
+								<li><label for="pgnannotatortextimport">Annotator</label>	<input type="text" 	name="pgnannotatortext"	id = "pgnannotatortextimport"	disabled>	</li>
+								<li><label for="weissnameimport">Weiß</label>							<input type="text" 	name="WeissName"				id = "weissnameimport">									</li>
+								<li><label for="schwarznameimport">Schwarz</label>				<input type="text" 	name="SchwarzName"			id = "schwarznameimport">								</li>
 								<!-- <li><label for="quelledetailimport">Importdetails</label>	<input type="text"	name="Quelledetail"		id = "quelledetailimport">	</li> -->
-								<li><label for="amzugimport">Am Zug</label>								<input type="text"	name="amzug"					id = "amzugimport"					disabled>	</li>
-								<li><label for="fenimport">FEN</label>										<input type="text"	name="fenimport"			id = "fenimport"						disabled>	</li>
-								<li><label for="scopeimport">Scope</label>								<input type="text" 	name="Scope"					id = "scopeimport">										</li>
-								<li><label for="skillimport">Skill</label>								<input type="text"	name="skillimport"		id = "skillimport">										</li>
+								<li><label for="amzugimport">Am Zug</label>								<input type="text"	name="amzug"						id = "amzugimport"						disabled>	</li>
+								<li><label for="fenimport">FEN</label>										<input type="text"	name="fenimport"				id = "fenimport"							disabled>	</li>
+								<li><label for="scopeimport">Scope</label>								<input type="text" 	name="Scope"						id = "scopeimport">											</li>
+								<li><label for="skillimport">Skill</label>								<input type="text"	name="skillimport"			id = "skillimport">											</li>
 							</ul>
 						</fieldset>
 						<div id="importaufgabePGN" class="gc-importaufgabepgn">
@@ -256,7 +258,9 @@
 						<legend>Details der Aufgabe</legend>
 						<ul>
 						<li><label for="kurztextspiel">Aufgabe oder Kapitel</label>	<input type="text"	name="Kurztext"	id = "kurztextspiel"	disabled>	</li>
-						<li><label for="langtextspiel">Datei oder Studie</label>							<input type="text"	name="Langtext"	id = "langtextspiel"	disabled>	</li>	
+						<li><label for="langtextspiel">Datei oder Studie</label>		<input type="text"	name="Langtext"	id = "langtextspiel"	disabled>	</li>	
+						<!-- <li><label for="youtubespiel">Youtubevideo</label>			<input type="text"	name="youtube"	id = "youtubespiel"		disabled>	</li>	 -->
+						<li><label for="youtubespielancorid">Youtubevideo</label>			<a id="youtubespielanchorid" target="_blank"></a>	</li>	
 						<!-- <li><label for="quellespiel">Quelle</label>			<input type="text" name="Quelle"		id = "quellespiel"		disabled>	</li> -->
 						<!-- <li><label for="quelledetailspiel">Quelledetail</label>	<input type="text"	name="Quelledetail"	id = "quelledetailspiel"	disabled>	</li>	-->
 						<!-- <li><label for="scopespiel">Scope</label>								<input type="text"	name="Scope"				id = "scopespiel"					disabled>	</li> -->

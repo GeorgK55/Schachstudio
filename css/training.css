@@ -27,20 +27,6 @@
     --color_movecoloreven_5: #e6c300;	/* YellowGreen 40% */
     --color_movecoloreven_6: #b39800;	/* YellowGreen 30% */
 
-    /* --color_movecolormain: #FFDEAD;    /* NavajoWhite */
-    /* --color_movecolorodd: #87CEFA;	/* LightSkyBlue bei w3schools und dann shades gewählt */
-    /* --color_movecolorodd_1: blue;	/* LightSkyBlue */
-    /* --color_movecolorodd_2: red;	/* LightSkyBlue */
-    /* --color_movecolorodd_3: yellow;	/* LightSkyBlue */
-    /* --color_movecolorodd_4: #0a9bf5;	/* LightSkyBlue */
-    /* --color_movecolorodd_5: #087cc4;	/* LightSkyBlue */
-    /* --color_movecoloreven: #9ACD32;	/* YellowGreen bei w3schools und dann shades gewählt */
-    /* --color_movecoloreven_1: green;	/* YellowGreen */
-    /* --color_movecoloreven_2: pink;	/* YellowGreen */
-    /* --color_movecoloreven_3: brown;	/* YellowGreen */
-    /* --color_movecoloreven_4: #5c7b1e;	/* YellowGreen */
-    /* --color_movecoloreven_5: #3d5214;	/* YellowGreen */
-
     --color_aidpath: #FF4500;          /* OrangeRed  */
 
     --color_anno_r: red;
@@ -685,10 +671,6 @@ body {
     display: inline-block;
     padding-left: 0.5vw;
 }
-
-/* .variantemain {	background-color: var(--color_movecolormain);  height:100% }
-.varianteeven {	background-color: var(--color_movecoloreven);  height:100% }
-.varianteodd  {	background-color: var(--color_movecolorodd);   height:100% } */
 
 .svgcolormain {	stroke: var(--color_movecolormain);    fill: var(--color_movecolormain);  }
 

@@ -150,9 +150,9 @@ function scanPGN(PGNText) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 		}
 	}
 
-	let m_Annotatortext	= PGNText.match(r_Annotator);
-	if (m_Annotatortext != null) {
-		Challenge.Annotator = m_Annotatortext.groups.annotatortext.includes('lichess') ? m_Annotatortext.groups.annotatortext.split('/').slice(-1)[0]:  m_Annotatortext.groups.annotatortext;
+	let m_pgnannotatortext	= PGNText.match(r_Annotator);
+	if (m_pgnannotatortext != null) {
+		Challenge.Annotator = m_pgnannotatortext.groups.pgnannotatortext.includes('lichess') ? m_pgnannotatortext.groups.pgnannotatortext.split('/').slice(-1)[0]:  m_pgnannotatortext.groups.pgnannotatortext;
 	}
 
 	let m_Weiss = (/(\[White \")(?<weissname>.*)(\"\])/).exec(PGNText);
@@ -207,7 +207,7 @@ function notifyChallengeDetails() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONB
 	$('#kurztextimport').val(Challenge.Kurztext);
 	$('#langtextimport').val(Challenge.Langtext);
 	$('#quelleimport').val(Challenge.Quelle);
-	$('#annotatortextimport').val(Challenge.Annotator);
+	$('#pgnannotatortextimport').val(Challenge.Annotator);
 	$('#weissnameimport').val(Challenge.WeissName);
 	$('#schwarznameimport').val(Challenge.SchwarzName);
 	$('#datumimport').val(Challenge.Datum);

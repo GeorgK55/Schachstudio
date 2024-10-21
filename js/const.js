@@ -131,10 +131,9 @@ const BENUTZERROLLE_ENTWICKLER	= 'entwickler';
 
 
 // Eventangaben im pgn. Lichess-Standard berücksichtigt
-//const r_Event = new RegExp("(\[Event \")(?<event1>.*)(: ?)(?<event2>.*)?([\"])", "mg");
 const r_Event = new RegExp("(\\[Event \")(?<studie>.*)(: ?)(?<kapitel>.*)?([\"])|(\\[Event \")(?<event>.*)([\"])", "m");
 
-const r_Annotator = new RegExp("(\\[Annotator \")(?<annotatortext>.*)(\")", "m");
+const r_Annotator = new RegExp("(\\[Annotator \")(?<pgnannotatortext>.*)(\")", "m");
 
 // Alle durch Blanks getrennte Zeichenketten erkennen
 const MATCH_MOVES = "(\n\n[\\s\\S]*)|(\r\n\r\n[\\s\\S]*)|(\n\r\n\r[\\s\\S]*)";
