@@ -106,7 +106,7 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 
 		$('#kurztextspiel').val(Challenge.Kurztext);
 		$('#langtextspiel').val(Challenge.Langtext);
-		$('#youtubespielanchorid').append(Challenge.Youtubevideoname);
+		$('#youtubespielanchorid').text(Challenge.Youtubevideoname);
 		$("#youtubespielanchorid").attr("href", Challenge.Youtubevideolink);
 		// $('#quellespiel').val(Challenge.Quelle);
 		// $('#quelledetailspiel').val(Challenge.Quelledetail);

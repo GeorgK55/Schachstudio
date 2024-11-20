@@ -12,7 +12,7 @@
 
 	<meta charset="utf-8">
 	<meta name="description"	content="Schach Aufgabenanalyse mit Varianten">
-	<meta name="keywords"			content="Schach, JUgend, Verein, Training, Tönning, Nordfriesland, Stellungen, Variantenanalyse">
+	<meta name="keywords"			content="Schach, Jugend, Verein, Training, Tönning, Nordfriesland, Stellungen, Variantenanalyse">
 	<meta name="viewport"			content="width=device-width, initial-scale=1.0">
 	<meta name="author" 			content="Georg Klepp">
 
@@ -273,9 +273,9 @@
 					<div id="challengeboardandnotation" class="gc-challengeboardandnotation">
 						<div id="movenotes" class="gc-movenotes">
 							<div id="movenotestext" class="centertext"></div>
-							<!-- <div id="movenotesmarkerid" class="movenotesmarker" onclick="handleVarianteClick()"></div> -->
+							<!-- <div id="movenotesmarkerid" class="movenotesmarker" onclick="handleVarianteClick()"></div>
 							<div id="movenotesrejectid" class="movenotesmarker"></div>
-							<div id="movenotesresolveid" class="movenotesmarker"></div>
+							<div id="movenotesresolveid" class="movenotesmarker"></div> -->
 							<div id="movenotesresultmarkerid" class="movenotesresultmarker"></div>
 						</div>
 						<div id="challengechessboard" class="cb_challenge svgboard">

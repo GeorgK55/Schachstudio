@@ -333,10 +333,9 @@ body {
     padding: 0.5vh;
 }
 
-.ImportantLeftText {
+.ImportantLeftTextBlack {
     font-size: var(--dynfontsize20);
     font-weight: bold;
-    color: #874312;
     margin-left: 5vw;
     padding: 0.5vh;
 }
@@ -427,11 +426,11 @@ body {
 }
 
 #l-aufgabeohne::after {
-    content: "Ohne Variantenanalyse";
+    content: "Ohne Varianten";
 }
 
 #l-aufgabemit::after {
-    content: "Mit Variantenanalyse";
+    content: "Mit Varianten";
 }
 
 .interessetext::after {
@@ -690,15 +689,15 @@ body {
 
 .svgcoloraid  {	stroke: var(--color_aidpath);           fill: var(--color_aidpath);	        opacity: .6;   }
 
-.svgcolorannoarrow_r {   stroke:red;     fill:red;       }
-.svgcolorannoarrow_b {   stroke:blue;    fill:blue;      }
-.svgcolorannoarrow_y {   stroke:yellow;  fill:yellow;    }
-.svgcolorannoarrow_g {   stroke:green;   fill:green;     }
+.svgcolorannoarrow_r {   stroke:FireBrick;      fill:FireBrick;     opacity: .6;   }
+.svgcolorannoarrow_b {   stroke:RoyalBlue;      fill:RoyalBlue;     opacity: .6;   }
+.svgcolorannoarrow_y {   stroke:Gold;           fill:Gold;          opacity: .6;   }
+.svgcolorannoarrow_g {   stroke:ForestGreen;    fill:ForestGreen;   opacity: .6;   }
 
-.svgcolorannocircle_r {   stroke:red;       stroke-width: 4; fill: none;       }
-.svgcolorannocircle_b {   stroke:blue;      stroke-width: 4; fill: none;      }
-.svgcolorannocircle_y {   stroke:yellow;    stroke-width: 4; fill: none;    }
-.svgcolorannocircle_g {   stroke:green;     stroke-width: 4; fill: none;     }
+.svgcolorannocircle_r {   stroke:FireBrick;     stroke-width: 4; fill: none;    opacity: .6;    }
+.svgcolorannocircle_b {   stroke:RoyalBlue;     stroke-width: 4; fill: none;    opacity: .6;    }
+.svgcolorannocircle_y {   stroke:Gold;          stroke-width: 4; fill: none;    opacity: .6;    }
+.svgcolorannocircle_g {   stroke:ForestGreen;   stroke-width: 4; fill: none;    opacity: .6;    }
 
 #f_spielenaufgabedetails {
     margin: 1vh 1vw;
@@ -720,7 +719,7 @@ body {
 .gc-movenotes {
 	grid-area: movenotesarea;
 	display: grid;
-	grid-template-columns: 15fr 1fr 1fr 1fr;
+	grid-template-columns: 15fr /* 1fr 1fr*/ 1fr;
 	align-items: center;
 }
 
@@ -906,11 +905,24 @@ li input[type="text"] {
     padding: 5px 15px;
     margin: 1vh;
     font-family: "comic sans ms";
-    width: 80%;
     /* font-size: 1.5em; */
 }
 
 .uebungenbutton:hover {
+    background: #0700cf;
+    background: linear-gradient(to top, #8a8a8a, #d4d4d4);
+}
+
+.weiterbutton {
+    background: linear-gradient(to top, #d4d4d4, #8a8a8a);
+    border-radius: 19px;
+    border: 1px solid #3866a3;
+    padding: 5px 15px;
+    font-family: "comic sans ms";
+    margin-right: 2vw;
+}
+
+.weiterbutton:hover {
     background: #0700cf;
     background: linear-gradient(to top, #8a8a8a, #d4d4d4);
 }

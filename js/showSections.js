@@ -315,7 +315,12 @@ function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTI
 													T_Zuege.ZugFarbe	= Challenge.AmZug;
 												}
 											})
-		.then(function () { initializeNotationtree(); });
+		.then(function () { 
+			initializeNotationtree(); 
+			let drawarray		= [];
+			determineannotations(Challenge.Hinweiskreis, Challenge.Hinweispfeil, drawarray);
+			showDraw(drawarray);
+		});
 
 }
 
@@ -338,7 +343,7 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 
 	$('#kurztextspiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
 	$('#langtextspiel').val(Challenge.Langtext);
-	$('#youtubespielanchorid').append(Challenge.Youtubevideoname);
+	$('#youtubespielanchorid').text(Challenge.Youtubevideoname);
 	$("#youtubespielanchorid").attr("href", "http://www.google.com/");
 	// $('#quellespiel').val(Challenge.Quelle);
 	// $('#quelledetailspiel').val(Challenge.Quelledetail);

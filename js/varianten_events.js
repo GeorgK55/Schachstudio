@@ -47,9 +47,18 @@ function createInterrupt(Interrupt, result, zugid) {
 			//$('#movenotesresolveid').empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='movenotesresultmarker'/>");
 			// $('#movenotesrejectid' ).empty().html("<img id='varianteendeaufgabeid' src='grafiken/VarianteEndeAufgabe.png' class='movenotesresultmarker'/>");
 			break;
-}
+	}
 
-	$('#movenotestext').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
+	//$('#movenotestext').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
+
+	var weiterbutton=$('<input/>').attr({
+		type: "button",
+		id: "weiterbuttonid",
+		class: "weiterbutton",
+		value: Variantentexte[Interrupt]
+	}); 
+	$('#movenotestext').empty().append(weiterbutton[0]).on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
+
 	$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, getMoveLevel(zugid)));
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)

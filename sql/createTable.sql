@@ -129,8 +129,14 @@ INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 3, 'Durch
 INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 3, 'Bauernendspiele');
 INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 3, 'Quadratregel');
 INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 4, 'Varianten');
+INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 4, 'Quellen');
 INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 13, 'Gegner');
 INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 13, 'Spieler');
+INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 14, 'Bernd Rosen');
+INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 14, 'J Heinemann');
+INSERT INTO T_Themen (Id, Level, Parent, Thematext) VALUES (NULL, '1', 14, 'Rafael Kloth');
+
+
 # ALTER TABLE `T_Themen` CHANGE `Id` `Id` INT(11) NOT NULL AUTO_INCREMENT;
 
 CREATE TABLE T_ThemenAufgaben (
