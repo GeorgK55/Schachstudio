@@ -35,8 +35,8 @@
 #challengenotation	a	{ white-space:normal !important; height: auto; padding:1px 2px; }
 #importtreenotationid			a	{ white-space:normal !important; height: auto; padding:1px 2px; }
 
-.Comment_w {  background-color:white;       }
-.Comment_b {  background-color:Gainsboro;   }
+.Comment_w {  width: 90%;	background-color:white;       }
+.Comment_b {  width: 90%;	background-color:Gainsboro;   }
 
 .erstehilfe {   animation: ZeigeErsteHilfe 1s ease 0s 2 normal forwards;   }
 

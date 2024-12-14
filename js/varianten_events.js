@@ -59,11 +59,11 @@ function createInterrupt(Interrupt, result, zugid) {
 	}); 
 	$('#movenotestext').empty().append(weiterbutton[0]).on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
 
-	$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, getMoveLevel(zugid)));
+	$('#challengeboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, getMoveLevel(zugid)));
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
 
-	$('#challengechessboard').addClass('noClick');
+	$('#challengeboard').addClass('noClick');
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('events generiert' );
 
@@ -233,7 +233,7 @@ function handleInterruptClick(clickevent) {
 	//$('#movenotesresolveid').off();
 	//$('#movenotesrejectid').off();
 
-	$('#challengechessboard').removeClass('noClick');
+	$('#challengeboard').removeClass('noClick');
 }
 
 // // Nur, damit dann was passiert

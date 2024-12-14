@@ -68,10 +68,10 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 				NotiereZug('challengenotation', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
 			}
 			// } else {
-			// 	$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
+			// 	$('#challengeboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 			// }
 			// Die Rahmenfarbe des Brettes immer aktualisieren
-			$('#challengechessboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
+			$('#challengeboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 
 			// Ziehen
 			ZieheZug(MC_player.selectedmove, ANIMATIONSPEED_ZERO);

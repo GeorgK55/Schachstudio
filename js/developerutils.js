@@ -2,7 +2,7 @@
 // Nur als Muster. Liefert alle Knoten!!!
 //$('#challengenotation').jstree(true).get_json('#', { flat: true })
 //$('#importtreenotationid').jstree(true).get_json('#', { flat: true })
-
+//$('#themenlistetree').jstree(true).get_json('#', { flat: true })
 
 // Nur zur besseren Lesbarkeit beim debuggen
 function showChallengeMovesShort() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());

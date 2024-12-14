@@ -64,7 +64,7 @@ function prepareChallengeImport() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONB
 	$('#ul_importaufgaben').removeClass( "hideMe" );
 	$('#f_importaufgabedaten').addClass( "hideMe" );
 	$('#importaufgabePGN').children().addClass( "hideMe" );
-	$('#importchessboard').addClass( "hideMe" );
+	$('#importboard').addClass( "hideMe" );
 	$('#importTreeNotationWrapperId').addClass( "hideMe" );
 	$('#importactionbuttons').addClass( "hideMe" );
 
@@ -93,7 +93,7 @@ function prepareChallengeImport() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONB
 			$('#importaufgabePGN').removeClass( "hideMe" );
 			$('#importaufgabelabel').removeClass( "hideMe" );
 			$('#importaufgabetext').removeClass( "hideMe" );
-			$('#importchessboard').removeClass( "hideMe" );
+			$('#importboard').removeClass( "hideMe" );
 			$('#importTreeNotationWrapperId').removeClass( "hideMe" ).empty();
 			$('#importactionbuttons').removeClass( "hideMe" );
 
@@ -532,10 +532,10 @@ function executeMove(Zugdaten) { 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEG
 		if(SingleMove.ZugStart == "") { // ohne Startangeben
 			Kandidaten = $("[data-piece=" + CurFigur + "]");
 		} else if($.isNumeric(SingleMove.ZugStart)) { // dann ist es rank als Startangabe
-			//Kandidaten = document.getElementById("importchessboard").querySelectorAll('[data-square$="' + SingleMove.ZugStart + '"]').querySelectorAll('[data-piece="' + CurFigur + '"]');
+			//Kandidaten = document.getElementById("importboard").querySelectorAll('[data-square$="' + SingleMove.ZugStart + '"]').querySelectorAll('[data-piece="' + CurFigur + '"]');
 			Kandidaten = $("[data-square$='" + Zugdaten.groups.mitrank + "']").find('[data-piece="' + CurFigur + '"]');
 		} else { // dann ist es file ls Startangabe
-			//Kandidaten = document.getElementById("importchessboard").querySelectorAll('[data-square^="' + SingleMove.ZugStart + '"]').querySelectorAll('[data-piece="' + CurFigur + '"]');
+			//Kandidaten = document.getElementById("importboard").querySelectorAll('[data-square^="' + SingleMove.ZugStart + '"]').querySelectorAll('[data-piece="' + CurFigur + '"]');
 			Kandidaten = $("[data-square^='" + Zugdaten.groups.mitfile + "']").find('[data-piece="' + CurFigur + '"]');
 		}
 	}

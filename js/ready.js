@@ -36,15 +36,28 @@ $(document).ready(function () {
 		FullscreenDialog();
 	}
 
-	$("input[type=radio][name=AufgabenFilterAlle]").on("click", function () {
+	$("input[type=radio][name=themenaufgabenfilter]").on("click", function () {
 		switch ($(this).val()) {
-			case "Selektion":
-				getChallenges([]);
+			case "alle":
+				getChallenges([]); // [] bedeutet hole alle Aufgaben
 				break;
-			case "Alle":
-				getChallenges($("#themenlistetree").jstree(true).get_selected());
+			case "nuraufgaben": // Nur Aufgaben zu den ausgewählten Themen anzeigen
+				let selectedthemes = $("#themenlistetree").jstree(true).get_selected();
+				if(selectedthemes.length == 0) {
+					alert('Bitte zuerst mindesten ein Thema auswählen');
+				} else {
+					getChallenges(selectedthemes);
+				}
 				break;
-		}
+			case "nurthemen": // Alle Themen, in denen die einzige! ausgewählte Aufgabe enthalten ist, markieren
+
+				if ($("#ul_aufgabenliste li.ui-selected").length == 0) {
+					alert("Bitte vorher eine Aufgabe auswählen");
+				} else {
+					getChallengeThemes($("#ul_aufgabenliste li.ui-selected")[0].id);
+				}
+				break;
+			}
 	});
 
 	$("#btn-themaneu").prop("disabled", true);

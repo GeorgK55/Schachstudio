@@ -54,6 +54,7 @@ function getThemes() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) conso
 	});
 }
 
+// ThemaId ist ein array mit den Id der ausgwählten Themen. Bei [] werden alle Aufgaben zurückgegeben
 function getChallenges(ThemaId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('getChallenges mit ThemaID: "' + ThemaId + '"');
@@ -152,8 +153,8 @@ function getChallengeBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN
 	return $.get({
 			url:	"html/" + BrettName
 		}).done(function (data) {
-			$("#importchessboard").empty();
-			$("#challengechessboard").html(data);
+			$("#importboard").empty(); // ############################ noch ändern
+			$("#squareschallengeboard").html(data);
 			addBoardFunctions(HTMLBRETTNAME_SPIELEN);
 			StellungAufbauen(Challenge.FEN);
 			if(Challenge.AmZug == WEISSAMZUG) $('#challengezugmarkerid').html(ZUGMARKERWEISS);
@@ -172,8 +173,8 @@ function getImportBoard() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 
 	return $.get("html/" + BrettName)
 		.done(function (data) {
-			$("#challengechessboard").empty();
-			$("#importchessboard").html(data);
+			$("#squareschallengeboard").empty();
+			$("#importboard").html(data);
 			StellungAufbauen(Challenge.FEN);
 
 			GlobalActionContext = AC_CHALLENGEIMPORT;
@@ -233,6 +234,35 @@ function getNAGList() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) cons
 
 		NAGresult = responseData['ergebnisdaten'];
 		if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_DATA)) console.log(NAGresult);
+
+	}).fail(function (jqXHR, textStatus, errorThrown) {
+		AjaxError(jqXHR, textStatus, errorThrown);
+	});
+
+}
+
+// Alle ThemenId zu einer ChallengeId holen
+function getChallengeThemes(ChallengeId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	$.get({
+		url:			"php/get_dbdata.php",
+		data:			{ dataContext: "ThemeIds", challengeid: ChallengeId },
+		dataType:	"json"
+	}).done(function (responseData) {
+
+		responseData['ergebnisdaten'].forEach(function (item) {
+			console.log(item.Themen_ID);
+
+			// $('#themenlistetree').jstree(true).get_json('#', { flat: true })
+
+			// TH_1_anchor addclass
+
+			let themenode = $('#themenlistetree').jstree(true).get_node('TH_' + item.Themen_ID);
+			let themenodetext = themenode.text;
+			//$('#themenlistetree').jstree().rename_node('TH_' + item.Themen_ID, themenodetext + ' XXXXX');
+			$('#themenlistetree').jstree().select_node('TH_' + item.Themen_ID);
+			//$('#TH_' + item.Themen_ID + '_anchor').addClass('kursivbold');
+		});
 
 	}).fail(function (jqXHR, textStatus, errorThrown) {
 		AjaxError(jqXHR, textStatus, errorThrown);

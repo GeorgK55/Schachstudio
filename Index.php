@@ -91,14 +91,14 @@
 						<div id="themenlistetree"></div>
 						<div class="trainerfeatures hideMe">
 							<div id="themenlistebuttons">
-								<button id="btn-themaneu"				type="button" onclick="NeuesThema()"		class="uebungenbutton"></button>
+								<button id="btn-themaneu"				type="button" onclick="NeuesThema()"		class="trainerbutton"></button>
 								<br>
-								<button id="btn-themaentfernen" type="button" onclick="EntferneThema()"	class="uebungenbutton"></button>
+								<button id="btn-themaentfernen" type="button" onclick="EntferneThema()"	class="trainerbutton"></button>
 							</div>
 						</div>
 						<div class="developerfeatures hideMe">
-							<button	type="button" onclick="showEnginedialog()"	class="uebungenbutton">Enginedialog</button>
-							<button type="button" onclick="Aufgabenstatistik()"	class="uebungenbutton">Aufgaben aus allen Dateien</button>
+							<button	type="button" onclick="showEnginedialog()"	class="entwicklerbutton">Enginedialog</button>
+							<button type="button" onclick="Aufgabenstatistik()"	class="entwicklerbutton">Aufgaben aus allen Dateien</button>
 						</div>
 					</div>
 				</section>
@@ -132,22 +132,23 @@
 							</div>
 							<div id="aufgabenselektion">
 								<div id="zeigeauswahl">
-									<input type="radio" id="r-zeigealle" 			name="AufgabenFilterAlle"	value="Selektion" checked>													<label for="r-zeigealle">Alle Aufgaben anzeigen</label><br>
-									<input type="radio" id="r-zeigeaufgaben"	name="AufgabenFilterAlle"	value="Alle">																				<label for="r-zeigeaufgaben">Aufgaben nur zur Themenauswahl anzeigen</label>
+									<input type="radio" id="r-zeigealle" 			name="themenaufgabenfilter"	value="alle" checked>	<label for="r-zeigealle">Alle Aufgaben anzeigen</label><br>
+									<input type="radio" id="r-zeigeaufgaben"	name="themenaufgabenfilter"	value="nuraufgaben">	<label for="r-zeigeaufgaben">Nur Aufgaben zur Themenauswahl anzeigen</label><br>
+									<input type="radio" id="r-zeigethemen"		name="themenaufgabenfilter"	value="nurthemen">		<label for="r-zeigethemen">Alle Themen zur Aufgabe markieren</label>
 								</div>
 							</div>
 							<!-- <div id="filterauswahl">
-									<input type="radio" id="r-zeigefilter"		name="AufgabenFilterAlle"	value="Filter"  class="entwicklerfeatures">	<label for="r-zeigefilter">Geplant: Aufgaben nur zum Filter anzeigen</label>
+									<input type="radio" id="r-zeigefilter"		name="themenaufgabenfilter"	value="Filter"  class="entwicklerfeatures">	<label for="r-zeigefilter">Geplant: Aufgaben nur zum Filter anzeigen</label>
 								<button id="btn-aufgabefilter" type="button" onclick="Aufgabeauswahl()" disabled>Aufgabenfilter</button>
 							</div> -->
 							<div id="aufgabelistebuttons">
-								<button id="btn-kapitelliste"	type="button" onclick="KapitelAnzeigen()"				class="uebungenbutton"></button>
+								<button id="btn-kapitelliste"	type="button" onclick="KapitelAnzeigen()"				class="playerbutton"></button>
 							</div>
 							<div class="trainerfeatures hideMe">
-								<button id="btn-import"						type="button" onclick="showImport()"			class="uebungenbutton"></button>
-								<button id="btn-verbindeaufgabe"	type="button" onclick="VerbindeAufgabe()"	class="uebungenbutton"></button>
-								<button id="btn-trenneaufgabe" 		type="button" onclick="TrenneAufgabe()"		class="uebungenbutton"></button>
-								<button id="btn-entferneaufgabe" 	type="button" onclick="EntferneAufgabe()"	class="uebungenbutton"></button>
+								<button id="btn-import"						type="button" onclick="showImport()"			class="trainerbutton"></button>
+								<button id="btn-verbindeaufgabe"	type="button" onclick="VerbindeAufgabe()"	class="trainerbutton"></button>
+								<button id="btn-trenneaufgabe" 		type="button" onclick="TrenneAufgabe()"		class="trainerbutton"></button>
+								<button id="btn-entferneaufgabe" 	type="button" onclick="EntferneAufgabe()"	class="trainerbutton"></button>
 							</div>
 						</div>
 						<div id="kapiteldetails" class="gc-kapiteldetails hideMe">
@@ -155,7 +156,7 @@
 							<ul id="ul_kapitelliste" class="scrollme"></ul>
 							</div>
 							<div id="kapitellistebuttons">
-								<button id="btn-aufgabenliste"	type="button" onclick="AufgabenAnzeigen()"	class="uebungenbutton"></button>
+								<button id="btn-aufgabenliste"	type="button" onclick="AufgabenAnzeigen()"	class="playerbutton"></button>
 							</div>
 						</div>
 					</div>
@@ -174,18 +175,18 @@
 							<a class="video_spielertext1 inactiveanchor" target="_blank" href="https://youtu.be/sMGFUEhRQM8">Erklärungen<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<a class="video_spielertext2 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Musterlösungen<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<a class="video_spielertext3 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Vergleich mit lichess.org<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
-							<button class="spielerweiter uebungenbutton" id="btn-spieler" type="button" onclick="showSpielerinfo()"></button>
+							<button class="spielerweiter applicationbutton" id="btn-spieler" type="button" onclick="showSpielerinfo()"></button>
 						</div>
 						<div class="usertypearea gc-trainer">
 							<div class="leftmepad5vh trainertext"></div>
 							<a class="video_trainertext1 inactiveanchor" target="_blank" href="https://youtu.be/3LIYBxYjlpk">Aufgaben importieren <img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<a class="video_trainertext2 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Themen und Aufgaben verwalten<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
-							<button class="trainerweiter uebungenbutton" id="btn-trainer" type="button" onclick="showTrainerinfo()"></button>
+							<button class="trainerweiter applicationbutton" id="btn-trainer" type="button" onclick="showTrainerinfo()"></button>
 						</div>
 						<div class="usertypearea gc-entwickler">
 							<div class="leftmepad5vh entwicklertext"></div>
 							<a class="inactiveanchor" target="_blank" href="https://youtu.be/sOCT6bayKUg">Programmierung<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
-							<button class="entwicklerweiter uebungenbutton" id="btn-entwickler" type="button" onclick="showEntwicklerinfo()"></button>
+							<button class="entwicklerweiter applicationbutton" id="btn-entwickler" type="button" onclick="showEntwicklerinfo()"></button>
 						</div>
 						<div class="usertypearea gc-willkommentip">
 							<img src="grafiken/idee.png" class="willkommentipicon" alt="">
@@ -199,8 +200,8 @@
 					<div id="importarea" class="gc-importarea">
 						<div id="importselectarea" class="importselectarea">
 							<div id="importselectbuttons">
-								<button type="button" onclick="DatenBereitstellen_Datei()"						class="uebungenbutton">Aus Datei (*.pgn)<br>übernehmen</button>
-								<button type="button" onclick="DatenBereitstellen_Lichess('import')"	class="uebungenbutton">Direkt aus lichess<br>übernehmen</button>
+								<button type="button" onclick="DatenBereitstellen_Datei()"						class="trainerbutton">Aus Datei (*.pgn)<br>übernehmen</button>
+								<button type="button" onclick="DatenBereitstellen_Lichess('import')"	class="trainerbutton">Direkt aus lichess<br>übernehmen</button>
 							</div>
 							<div id="importselectfilename"></div>
 						</div>
@@ -228,27 +229,13 @@
 							<label id="importaufgabelabel" for="importaufgabetext">Text der Aufgabe</label>
 							<textarea id="importaufgabetext"></textarea>
 						</div>
-						<div id="importchessboard" class="cb_import">
+						<div id="importboard" class="cb_import">
 						</div>
 						<div id="importTreeNotationWrapperId" class="importtreenotationwrapper">
 						</div>
 						<div id="importactionbuttons" class="importactionbuttons">
-							<button type="button" onclick="ZuegePruefen('Notationvisible')"			class="uebungenbutton">Züge prüfen</button>
-							<button type="button" onclick="AufgabeSpeichern()"	class="uebungenbutton">Aufgabe speichern</button>
-						</div>
-					</div>
-				</section>
-				<section id="s_kapitel" class="gc-kapitel">
-					<header id="h_kapitel" class="ImportantCenterText importantbackgroundcolor">Kapitel spielen</header>
-					<div id="kapitelarea" class="gc-kapitelarea">
-						<img src="grafiken/lichesslogo.png" alt="" class="dialogfigur lichesslogo">
-						<div class="dialogtext lichessuserarea">
-							<label for="lichessuser">Bitte die Benutzerkennung eintragen</label>
-							<input type="text" name="lichessuser" id = "lichessuser">
-						</div>
-						<button type="button" onclick="studieauswahl('kapitel')"						class="uebungenbutton studienbutton">Studien anzeigen</button>
-						<div id='studienanzeige' class="studienanzeigeliste">
-							<ul id='studienliste' class='scrollme hideMe'></ul>
+							<button type="button" onclick="ZuegePruefen('Notationvisible')"			class="trainerbutton">Züge prüfen</button>
+							<button type="button" onclick="AufgabeSpeichern()"	class="trainerbutton">Aufgabe speichern</button>
 						</div>
 					</div>
 				</section>
@@ -270,7 +257,7 @@
 						<!-- <li><label for="pgntextspiel">PGN:</label>								<textarea						name="PGNText"			id = "pgntextspiel"				disabled>	</textarea>	</li> -->
 						</ul>
 					</fieldset>
-					<div id="challengeboardandnotation" class="gc-challengeboardandnotation">
+					<div id="challengechessboardandnotation" class="gc-challengechessboardandnotation">
 						<div id="movenotes" class="gc-movenotes">
 							<div id="movenotestext" class="centertext"></div>
 							<!-- <div id="movenotesmarkerid" class="movenotesmarker" onclick="handleVarianteClick()"></div>
@@ -278,8 +265,42 @@
 							<div id="movenotesresolveid" class="movenotesmarker"></div> -->
 							<div id="movenotesresultmarkerid" class="movenotesresultmarker"></div>
 						</div>
-						<div id="challengechessboard" class="cb_challenge svgboard">
-						</div> 
+						<div id="challengeboard" class="cb_challenge svgboard">
+							<div id="svgchallengeboard">
+								<svg id="svghilfe" class="svghilfecontainer svgcoloraid">
+									<defs id="svghilfedefs">
+										<marker id="aidgoalarrow" orient="auto" markerWidth="4" markerHeight="4" refX="2" refY="2">
+											<path id="aidgoalarrowpath" d="M0,0 V4 L2,2 Z"/>
+										</marker>
+									</defs>
+								</svg>
+								<svg id="svganno" class="svgannocontainer">
+									<defs id="svgannodefs">
+										<marker id="svgannogoalarrow_r" orient="auto" markerWidth="4" markerHeight="4" refX="2" refY="2">
+											<path d="M0,0 V4 L2,2 Z" class="svgcolorannoarrow_r"/>
+										</marker>
+										<marker id="svgannogoalarrow_b" orient="auto" markerWidth="4" markerHeight="4" refX="2" refY="2">
+											<path d="M0,0 V4 L2,2 Z" class="svgcolorannoarrow_b"/>
+										</marker>
+										<marker id="svgannogoalarrow_y" orient="auto" markerWidth="4" markerHeight="4" refX="2" refY="2">
+											<path d="M0,0 V4 L2,2 Z" class="svgcolorannoarrow_y"/>
+										</marker>
+										<marker id="svgannogoalarrow_g" orient="auto" markerWidth="4" markerHeight="4" refX="2" refY="2">
+											<path d="M0,0 V4 L2,2 Z" class="svgcolorannoarrow_g"/>
+										</marker>
+									</defs>
+								</svg>
+								<svg id="svgvarianten" class="svgvariantencontainer">
+									<defs id="svgvariantendefs">
+										<marker id="goalarrow" orient="auto" markerWidth="4" markerHeight="4" refX="2" refY="2">
+											<path id="goalarrowpath" d="M0,0 V4 L2,2 Z"/>
+										</marker>
+									</defs>
+								</svg>
+							</div>
+							<div id="squareschallengeboard">							
+							</div>
+						</div>
 						<div id="challengechesstips" class="gc-challengechesstips">
 							<div id="challengezugmarkerid" class="challengezugmarker"></div>
 							<div id="aidicon"></div>
@@ -297,6 +318,20 @@
 						<div class="trainerfeatures hideMe pgn">
 							<!-- <label for="pgntextspiel">PGN:</label> -->
 							<textarea name="PGNText" id = "pgntextspiel" rows="5" disabled> </textarea>
+						</div>
+					</div>
+				</section>
+				<section id="s_kapitel" class="gc-kapitel">
+					<header id="h_kapitel" class="ImportantCenterText importantbackgroundcolor">Kapitel spielen</header>
+					<div id="kapitelarea" class="gc-kapitelarea">
+						<img src="grafiken/lichesslogo.png" alt="" class="dialogfigur lichesslogo">
+						<div class="dialogtext lichessuserarea">
+							<label for="lichessuser">Bitte die Benutzerkennung eintragen</label>
+							<input type="text" name="lichessuser" id = "lichessuser">
+						</div>
+						<button type="button" onclick="studieauswahl('kapitel')"						class="playerbutton studienbutton">Studien anzeigen</button>
+						<div id='studienanzeige' class="studienanzeigeliste">
+							<ul id='studienliste' class='scrollme hideMe'></ul>
 						</div>
 					</div>
 				</section>
@@ -359,7 +394,7 @@
 			<span id="visitorcounterspan"></span>
 			<button id="btn-messageshistory"	type="button" onclick="showMessageHistory()"	>Nachrichtenhistorie</button>
 			<span id="messageline"><span id="messagetext"></span></span>
-			<span>&copy; Georg Klepp 2022</span>
+			<span>&copy; Georg Klepp 2024</span>
 		</div>
 		<div class="hiddendialog">
 			<div id="nodetext"></div>

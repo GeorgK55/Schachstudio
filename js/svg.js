@@ -6,6 +6,7 @@
 // refY: verschiebt den Pfeil auf der Linie nach rechts (Werte kleiner) oder nach links (Werte größer)
 //
 
+// Wird ab jetzt (Dezember 2024) direkt in html abgelegt
 // Die beiden svg-Elemente in html an die richtige Stelle einbinden
 function addSVGBoardFunctions() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
@@ -13,7 +14,7 @@ function addSVGBoardFunctions() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEG
 	const svgbase = document.createElementNS('http://www.w3.org/2000/svg','svg');	
   svgbase.setAttribute('id', 'svgvarianten');
 	svgbase.setAttribute('class', 'svgvariantencontainer');
-	document.getElementById('challengechessboard').prepend(svgbase);
+	document.getElementById('svgchallengeboard').prepend(svgbase);
 
 	// Wiederkehrende Elemente in defs anlegen.defs bekommt nur einen id als Attribut
 	const svgdefstag = document.createElementNS('http://www.w3.org/2000/svg','defs');
@@ -43,8 +44,8 @@ function addVariantePath(zugid) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEG
 
 	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
 	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
-	const currentFieldSize	= Math.round($( "#challengechessboard" ).width() / 10);
-	const startmitte				= Math.round($( "#challengechessboard" ).width() / 20);
+	const currentFieldSize	= Math.round($( "#challengeboard" ).width() / 10);
+	const startmitte				= Math.round($( "#challengeboard" ).width() / 20);
 
 	const path1 = document.createElementNS('http://www.w3.org/2000/svg','path');
 
@@ -86,8 +87,8 @@ function addAidPath(zug) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) c
 
 	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
 	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
-	const currentFieldSize	= Math.round($( "#challengechessboard" ).width() / 10);
-	const startmitte				= Math.round($( "#challengechessboard" ).width() / 20);
+	const currentFieldSize	= Math.round($( "#challengeboard" ).width() / 10);
+	const startmitte				= Math.round($( "#challengeboard" ).width() / 20);
 
 	const aidpath1 = document.createElementNS('http://www.w3.org/2000/svg','path');
 
@@ -175,8 +176,8 @@ function addMoveAnimationStyle(boarddirection, stockfishmove, speed) {	if(logMe(
 
 // 	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
 // 	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
-// 	const currentFieldSize	= Math.round($( "#challengechessboard" ).width() / 10);
-// 	const startmitte				= Math.round($( "#challengechessboard" ).width() / 20);
+// 	const currentFieldSize	= Math.round($( "#challengeboard" ).width() / 10);
+// 	const startmitte				= Math.round($( "#challengeboard" ).width() / 20);
 
 // 	const aidpath1 = document.createElementNS('http://www.w3.org/2000/svg','path');
 

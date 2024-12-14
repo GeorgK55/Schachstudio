@@ -82,8 +82,11 @@ function showDraw(drawarray) { if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN
 
 	// svg möchte Längenangaben vorrangig in Pixel haben. em, rem, ... sind auch erlaubt aber vh und vw (noch) nicht
 	// Hier wird die exakte Größe eines Feldes des Schachbretts berechnet. 10 weil ja die Koordinaten noch dazukommen.
-	const currentFieldSize	= Math.round($( "#challengechessboard" ).width() / 10);
-	const startmitte				= Math.round($( "#challengechessboard" ).width() / 20);
+	const currentFieldSize	= Math.round($( "#challengeboard" ).width() / 10);
+	const startmitte				= Math.round($( "#challengeboard" ).width() / 20);
+
+	$('#svganno > path').remove();
+	$('#svganno > circle').remove();
 
 	drawarray.forEach(function(svgitem) {
 
@@ -161,7 +164,7 @@ function addBoardFunctions(BoardId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIO
 
 	addMouseBoardFunctions();
 	addTouchBoardFunctions();
-	addSVGBoardFunctions(); 
+	// addSVGBoardFunctions(); // wird per html definiert
 
 }
 

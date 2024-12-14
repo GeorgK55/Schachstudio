@@ -87,6 +87,24 @@ if($DesiredFunction == 'Challenges') {
 }
 
 //===========================================================================
+if($DesiredFunction == 'ThemeIds') {
+
+	$AufgabeId = $_GET['challengeid'];
+	
+	$commandtext = "SELECT distinct Themen_ID FROM V_ThemenAufgaben where Aufgaben_ID = " . $AufgabeId;
+ 	$paramsarray = array();
+
+	processpdo($commandtext, $paramsarray, $responsearray);
+
+	if($responsearray["ergebnisflag"]) {
+
+		$responsearray["ergebnistext"]	= $responsearray["zeilenanzahl"] . " Themen gefunden";
+
+	}
+  echo json_encode($responsearray);
+}
+
+//===========================================================================
 if($DesiredFunction == 'Aufgabedaten') {
 
   $AufgabeID = $_GET['AufgabeID'];

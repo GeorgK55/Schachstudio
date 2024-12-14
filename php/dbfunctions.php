@@ -7,7 +7,7 @@
 
 function processpdo( $pdocommand, $pdoexecutearray, & $pdoresponsearray) {
 
-	include ('dbaccount.php');
+	include ('phpdbaccount.php');
 
 	$errorresponsearray = [
 		"ergebnisflag"	=> "",
@@ -65,7 +65,7 @@ function processpdo( $pdocommand, $pdoexecutearray, & $pdoresponsearray) {
 
 function processpdo_Zugliste( $pdocommand,  $pdoparams, & $pdoresponsearray) {
 
-	include ('dbaccount.php');
+	include ('phpdbaccount.php');
 
 	try {
 		$pdo = new PDO("mysql:host=$host_name; dbname=$database;", $user_name, $password);

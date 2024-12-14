@@ -51,7 +51,7 @@ function KapitelAnzeigen() {
 	$('#kapiteldetails').show();
 	$('#aufgabendetails').hide();
 
-	$('#challengechessboard').removeClass('noClick');
+	$('#squareschallengeboard').removeClass('noClick');
 
 }
 

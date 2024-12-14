@@ -175,7 +175,7 @@ function showImport() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) cons
 	$('#ul_importaufgaben').addClass( "hideMe" );
 	$('#f_importaufgabedaten').addClass( "hideMe" );
 	$('#importaufgabePGN').children().addClass( "hideMe" );
-	$('#importchessboard').addClass( "hideMe" );
+	$('#importboard').addClass( "hideMe" );
 	$('#importTreeNotationWrapperId').addClass( "hideMe" );
 	$('#importactionbuttons').addClass( "hideMe" );
 
@@ -191,9 +191,9 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_F
 	$("[id^='s_']").hide();
 	$('#s_spielen').show();
 
-	$('#importchessboard').empty().removeClass('noClick');
-	$('#challengechessboard').empty().removeClass('noClick');
-	$('#challengechessboard').css('background-color', 'var(--color_movecolormain)');
+	$('#importboard').empty().removeClass('noClick');
+	$('#squareschallengeboard').empty().removeClass('noClick');
+	$('#squareschallengeboard').css('background-color', 'var(--color_movecolormain)');
 
 	$('#logliste').empty();
 	$('#challengetips').empty();
@@ -378,7 +378,7 @@ function AufgabenAnzeigen() {
 	$('#kapiteldetails').hide();
 	$('#aufgabendetails').show();
 
-	$('#challengechessboard').removeClass('noClick');
+	$('#squareschallengeboard').removeClass('noClick');
 
 	switch (Benutzerrolle) {
 		case BENUTZERROLLE_SPIELER:

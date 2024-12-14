@@ -708,7 +708,7 @@ body {
     margin: 1vh 1vw;
 }
 
-.gc-challengeboardandnotation {
+.gc-challengechessboardandnotation {
     display: grid;
     grid-template-columns: min-content 10fr;
     grid-template-rows: min-content min-content min-content min-content;
@@ -897,20 +897,58 @@ li input[type="text"] {
     box-shadow: 0 0 10px 0 #f7df04 inset, 0 0 10px 4px #fbff04;
 }
 
-.uebungenbutton {
-    /* background: #63B8EE; */
-    background: linear-gradient(to top, #d4d4d4, #8a8a8a);
+.applicationbutton {
+    background: linear-gradient(180deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(156,156,156,1) 100%);
     border-radius: 19px;
     border: 1px solid #3866a3;
     padding: 5px 15px;
     margin: 1vh;
     font-family: "comic sans ms";
-    /* font-size: 1.5em; */
+	width: 80%;
+}
+.playerbutton {
+    background: linear-gradient(180deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(255,200,0,1) 100%);
+    border-radius: 19px;
+    border: 1px solid #3866a3;
+    padding: 5px 15px;
+    margin: 1vh;
+    font-family: "comic sans ms";
+	width: 80%;
 }
 
-.uebungenbutton:hover {
-    background: #0700cf;
-    background: linear-gradient(to top, #8a8a8a, #d4d4d4);
+.trainerbutton {
+    background: linear-gradient(180deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(0,224,255,1) 100%);
+    border-radius: 19px;
+    border: 1px solid #3866a3;
+    padding: 5px 15px;
+    margin: 1vh;
+    font-family: "comic sans ms";
+	width: 80%;
+}
+.entwicklerbutton {
+    background: linear-gradient(180deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(255,100,0,1) 100%);
+    border-radius: 19px;
+    border: 1px solid #3866a3;
+    padding: 5px 15px;
+    margin: 1vh;
+    font-family: "comic sans ms";
+	width: 80%;
+}
+
+.applicationbutton:hover {
+    background: linear-gradient(0deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(156,156,156,1) 100%);
+}
+
+.playerbutton:hover {
+    background: linear-gradient(0deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(255,200,0,1) 100%);
+}
+
+.trainerbutton:hover {
+    background: linear-gradient(0deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(0,224,255,1) 100%);
+}
+
+.entwicklerbutton:hover {
+    background: linear-gradient(0deg, rgba(212,212,212,1) 0%, rgba(224,224,224,1) 50%, rgba(255,100,0,1) 100%);
 }
 
 .weiterbutton {
@@ -957,4 +995,9 @@ li input[type="text"] {
     justify-content: center;
     text-align: center;
     height: 100%;
+}
+
+.kursivbold {
+	font-weight: bold;
+	font-style: italic;
 }
