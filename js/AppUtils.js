@@ -40,7 +40,6 @@ function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 			AidMoves = $.grep(ChallengeMoves, function (CM, i) { return CM['PreMoveId'] == Stellungsdaten.CurMoveId &&	(CM['MoveState'] == MOVESTATE_READY || CM['MoveState'] == MOVESTATE_HIDDEN); });
 
 			$.each(AidMoves, function (i, HK) {
-				//$('[data-square="' + HK.ZugVon + '"]').removeClass('erstehilfe');
 				$('[data-square="' + HK.ZugVon + '"]').addClass('erstehilfe');
 				AidTextSet.add(HK.ZugFigur + HK.ZugVon); // Es gibt kein Feld, in dem beide Werte enthalten sind
 			});
@@ -60,8 +59,6 @@ function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 			AidMoves = $.grep(ChallengeMoves, function (CM, i) { return CM['PreMoveId'] == Stellungsdaten.CurMoveId &&	(CM['MoveState'] == MOVESTATE_READY || CM['MoveState'] == MOVESTATE_HIDDEN); });
 
 			$.each(AidMoves, function (i, HK) {
-				//$('[data-square="' + HK.ZugVon + '"]').removeClass('erstehilfe');
-				//$('[data-square="' + HK.ZugVon + '"]').addClass('erstehilfe');
 				AidTextSet.add(HK.ZugLang);
 
 				addAidPath(HK);
@@ -72,8 +69,7 @@ function showAid(aidmode) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 			}
 			$('#aidtext').html(AidText);
 
-
-		break;
+			break;
 
 	}
 }
@@ -300,6 +296,14 @@ function isMoveUsed(MoveId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)
 
 	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
 	return ChallengeMoves[index].MoveNode == null ? false : true;
+
+}
+
+function getMoveNagSingle(MoveId) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+
+	let index = ChallengeMoves.findIndex(m => m.CurMoveId === MoveId);
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SPECIALDATA)) console.log('NAGSingle in ' + MoveId + ' ist ' + ChallengeMoves[index].NAGSingle);
+	return ChallengeMoves[index].NAGSingle;
 
 }
 

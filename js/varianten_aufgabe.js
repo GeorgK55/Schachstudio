@@ -29,7 +29,7 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 			TransferZugNachStellung(Stellungsdaten, MC_challenge.mainmove);
 			// Wenn der Hauptzug schon in die Notation eingetragen ist, jetzt anzeigen. Sonst einfach gleich sichtbar anzeigen
 			if(MC_challenge.mainmove.MoveNode == null) {
-				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.mainmove, MOVEMODE_VARIANTE_MAINHIDDEN); 
+				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.mainmove, MOVEPRESENTATION_VARIANTE_MAINHIDDEN); 
 			} else {
 				Stellungsdaten.CurNodeId = MC_challenge.mainmove.MoveNode;
 				UpdateTreeNodeName('challengenotation', Stellungsdaten, MC_challenge.mainmove);
@@ -41,14 +41,6 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 
 			// In den Stack
 			TriggerMoveToStack(MC_challenge, CHALLENGE);
-
-			// Der Variantenzug:
-			// Stellungsdaten.CreateNewNode = true;
-			// Stellungsdaten.PreMoveId = MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId;
-			// Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
-			// NotiereZug('challengenotation', Stellungsdaten, MC_challenge.variantenmoves[MC_challenge.drawnmoveindex], MOVEMODE_MOVE);
-			// setMoveNode(MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId, Stellungsdaten.CurNodeId); 
-			// setMoveState(MC_challenge.variantenmoves[MC_challenge.drawnmoveindex].CurMoveId, MOVESTATE_MOVED);
 
 			Stellungsdaten.CreateNewNode = true;
 			Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
@@ -66,7 +58,7 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 			ZieheZug(MC_challenge.selectedmove, ANIMATIONSPEED_FAST).then(function() {
 
 				// Notieren
-				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.selectedmove, MOVEMODE_MOVE);
+				NotiereZug('challengenotation', Stellungsdaten, MC_challenge.selectedmove, MOVEPRESENTATION_MOVE);
 				// Hier noch die Farbanzeige in movenotestext aktualisieren?
 
 				// Verwalten
@@ -93,6 +85,7 @@ function processChallengeMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FU
 			});
 
 			break;
+
 		default:
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
 			ChallengeMoveVariantenResult.reject({ result: 'Fehler: Moveresult Aufgabe nicht erlaubt', reason: "", moveid: Stellungsdaten.PreMoveId });

@@ -8,36 +8,36 @@
 
 // Wird ab jetzt (Dezember 2024) direkt in html abgelegt
 // Die beiden svg-Elemente in html an die richtige Stelle einbinden
-function addSVGBoardFunctions() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+// function addSVGBoardFunctions() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
-	// svg mit id und Klasse (wichtig: position ist absolute) versehen und auch wichtig als erstes Kind des chessboards einhängen
-	const svgbase = document.createElementNS('http://www.w3.org/2000/svg','svg');	
-  svgbase.setAttribute('id', 'svgvarianten');
-	svgbase.setAttribute('class', 'svgvariantencontainer');
-	document.getElementById('svgchallengeboard').prepend(svgbase);
+// 	// svg mit id und Klasse (wichtig: position ist absolute) versehen und auch wichtig als erstes Kind des chessboards einhängen
+// 	const svgbase = document.createElementNS('http://www.w3.org/2000/svg','svg');	
+//   svgbase.setAttribute('id', 'svgvarianten');
+// 	svgbase.setAttribute('class', 'svgvariantencontainer');
+// 	document.getElementById('svgchallengeboard').prepend(svgbase);
 
-	// Wiederkehrende Elemente in defs anlegen.defs bekommt nur einen id als Attribut
-	const svgdefstag = document.createElementNS('http://www.w3.org/2000/svg','defs');
-	svgdefstag.setAttribute('id', 'svgvariantendefs');
-	document.getElementById('svgvarianten').append(svgdefstag);
+// 	// Wiederkehrende Elemente in defs anlegen.defs bekommt nur einen id als Attribut
+// 	const svgdefstag = document.createElementNS('http://www.w3.org/2000/svg','defs');
+// 	svgdefstag.setAttribute('id', 'svgvariantendefs');
+// 	document.getElementById('svgvarianten').append(svgdefstag);
 
-	// In defs einen Marker (das ist nur ein Rahmen für das eigentliche Element) anlegen
-	const arrowmarker = document.createElementNS('http://www.w3.org/2000/svg','marker');
-	arrowmarker.setAttribute('id', 						'goalarrow');
-	arrowmarker.setAttribute('orient',				'auto');
-	arrowmarker.setAttribute('markerWidth',		'3');
-	arrowmarker.setAttribute('markerHeight',	'4');
-	arrowmarker.setAttribute('refX', 					'2');
-	arrowmarker.setAttribute('refY',					'2');
-	document.getElementById('svgvarianten').append(arrowmarker);
+// 	// In defs einen Marker (das ist nur ein Rahmen für das eigentliche Element) anlegen
+// 	const arrowmarker = document.createElementNS('http://www.w3.org/2000/svg','marker');
+// 	arrowmarker.setAttribute('id', 						'goalarrow');
+// 	arrowmarker.setAttribute('orient',				'auto');
+// 	arrowmarker.setAttribute('markerWidth',		'3');
+// 	arrowmarker.setAttribute('markerHeight',	'4');
+// 	arrowmarker.setAttribute('refX', 					'2');
+// 	arrowmarker.setAttribute('refY',					'2');
+// 	document.getElementById('svgvarianten').append(arrowmarker);
 
-	// Das Element für den Marker
-	const svgmarkerpath = document.createElementNS('http://www.w3.org/2000/svg','path');
-	svgmarkerpath.setAttribute('id',	'goalarrowpath');
-	svgmarkerpath.setAttribute('d',		'M0,0 V4 L2,2 Z');
-	document.getElementById('goalarrow').append(svgmarkerpath);
+// 	// Das Element für den Marker
+// 	const svgmarkerpath = document.createElementNS('http://www.w3.org/2000/svg','path');
+// 	svgmarkerpath.setAttribute('id',	'goalarrowpath');
+// 	svgmarkerpath.setAttribute('d',		'M0,0 V4 L2,2 Z');
+// 	document.getElementById('goalarrow').append(svgmarkerpath);
 
-}
+// }
 
 // Beim Start einer Variante wird der erste Zug der Variante (der ja auch gezogen wird) mit einem Pfeil gekennzeichnet
 function addVariantePath(zugid) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());

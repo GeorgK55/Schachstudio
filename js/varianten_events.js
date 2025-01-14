@@ -10,11 +10,6 @@ function createInterrupt(Interrupt, result, zugid) {
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION))	console.log('Beginn in ' + getFuncName() + ' mit result: ' + result + ', reason: ' + Interrupt + ' und zugid: ' + zugid );
 
-	$('#movenotesresultmarkerid').on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
-	// $('#movenotesrejectid').click(		{ reason: Interrupt, zug: zugid }, handleInterruptClick);
-
-	$('#movenotesresultmarkerid').html("<img id='moveokId' src='grafiken/weiter.png'/>");
-
 	switch(Interrupt) {
 		case 'PMS':
 			//$('#movenotesresolveid').empty().html("<img id='variantestartspielerId' src='grafiken/VarianteStartSpieler.png' class='movenotesresultmarker'/>");
@@ -49,21 +44,28 @@ function createInterrupt(Interrupt, result, zugid) {
 			break;
 	}
 
-	//$('#movenotestext').empty().append('<span>' + Variantentexte[Interrupt] + '</span>');
+	// var weiterbutton=$('<button/>').attr({
+	// 	//type:		"button",
+	// 	id:			"weiterbuttonid",
+	// 	class:	"weiterbutton",
+	// 	text:	Variantentexte[Interrupt]
+	// });
 
-	var weiterbutton=$('<input/>').attr({
-		type: "button",
-		id: "weiterbuttonid",
-		class: "weiterbutton",
-		value: Variantentexte[Interrupt]
-	}); 
-	$('#movenotestext').empty().append(weiterbutton[0]).on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
+	var weiterbutton = document.createElement("button");
+	weiterbutton.id = 'weiterbutton';
+	weiterbutton.className = 'weiterbutton';
+	weiterbutton.innerHTML = Variantentexte[Interrupt] + appendNAG(Interrupt, zugid);
+
+	$('#movenotestext').empty().append(weiterbutton).on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
+
+	$('#movenotesresultmarkerid').html("<img id='moveokId' src='grafiken/weiter.png'/>");
+	$('#movenotesresultmarkerid').on("click",	{ result: result, reason: Interrupt, moveid: zugid }, handleInterruptClick);
+	// $('#movenotesrejectid').click(		{ reason: Interrupt, zug: zugid }, handleInterruptClick);
 
 	$('#challengeboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, getMoveLevel(zugid)));
+	$('#challengeboard').addClass('noClick');
 
 	if(Interrupt.endsWith('S')) addVariantePath(zugid)
-
-	$('#challengeboard').addClass('noClick');
 
 	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log('events generiert' );
 
@@ -71,30 +73,36 @@ function createInterrupt(Interrupt, result, zugid) {
 
 // Wichtigste Funktion ist, die Promises der einzelnen reason auf resolve oder reject einzustellen
 // Außerdem:
-// - der Anzeigetext des Interrupts entfernen
+// - den Anzeigetext des Interrupts entfernen
 // - die eventhandler entfernen
 // - das Brett wieder für clicks freigeben
+// - die promises zurückgeben
 function handleInterruptClick(clickevent) {
 
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_SITUATION)) console.log('Beginn in ' + getFuncName() + ' mit result: ' + clickevent.data.result + ', reason: ' + clickevent.data.reason + ' und zugid: ' + clickevent.data.moveid );
 
 	$("[id^='variantepath']").remove();
+	
+	$('#movenotesresultmarkerid').empty().off();
+	$('#movenotestext').empty().off();
+
+	//$('#movenotesresolveid').empty().off();
+	//$('#movenotesrejectid').empty().off();
+
+	$('#challengeboard').removeClass('noClick');
 
 	switch (clickevent.data.reason) {
-		case 'PMS':
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
-			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#movenotestext').html("<span>&nbsp</span>");
-			break;
 		case 'PVS':
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
-			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#movenotestext').html("<span>&nbsp</span>");
-			break;
+		case 'PMS':
 		case 'PVC':
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#movenotestext').html("<span>&nbsp</span>");
+			break;
+		case 'CMS':
+		case 'CVS':
+		case 'CVC':
+			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
+			ChallengeMoveVariantenResult.reject( clickevent.data ); 
 			break;
 		case 'CVE':
 		case 'PVE':
@@ -160,29 +168,10 @@ function handleInterruptClick(clickevent) {
 			}
 
 			//PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#movenotestext').html("<span>&nbsp</span>");
-			break;
-		case 'CMS':
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
-			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#movenotestext').html("<span>&nbsp</span>");
-			break;
-		case 'CVS':
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
-			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#movenotestext').html("<span>&nbsp</span>");
-			break;
-		case 'CVC':
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('ChallengeMoveVariantenResult.reject');
-			ChallengeMoveVariantenResult.reject( clickevent.data ); 
-			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'SVG':
-			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('finishDraw.resolve');
-			//finishDraw.resolve();
 			if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_PROMISES)) console.log('PlayerMoveVariantenResult.resolve');
 			PlayerMoveVariantenResult.resolve( clickevent.data );
-			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 		case 'XXX':
 			// Das deferred ist hier schon gelaufen.
@@ -228,14 +217,18 @@ function handleInterruptClick(clickevent) {
 			$('#movenotestext').html("<span>&nbsp</span>");
 			break;
 	}
-	
-	$('#movenotesresultmarkerid').empty().off();
-	//$('#movenotesresolveid').off();
-	//$('#movenotesrejectid').off();
 
-	$('#challengeboard').removeClass('noClick');
 }
 
+function appendNAG(i, id) {
+
+	if (i.endsWith('E')) {
+		let NagSingleValue = getMoveNagSingle(id);
+		let nag = $.grep(NAGresult, function (NN, i) { return NN['DollarIndex'] == NagSingleValue; })[0].html;
+		if(nag != undefined)	return ' mit <span id="variantenendemarker">' + nag + '</span>';
+	}
+	return '';
+}
 // // Nur, damit dann was passiert
 // function handleZugergebnisClick() {
 // 	alert('handleZugergebnisClick');

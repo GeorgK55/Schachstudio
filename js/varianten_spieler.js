@@ -31,7 +31,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 
 			// Notieren
 			TransferZugNachStellung(Stellungsdaten, MC_player.mainmove);
-			let movemode = MC_player.result == MOVERESULT_MAINMOVEMIT ? MOVEMODE_VARIANTE_MAINVISIBLE : MOVEMODE_VARIANTE_MAINHIDDEN;
+			let movemode = MC_player.result == MOVERESULT_MAINMOVEMIT ? MOVEPRESENTATION_VARIANTE_MAINVISIBLE : MOVEPRESENTATION_VARIANTE_MAINHIDDEN;
 			NotiereZug('challengenotation', Stellungsdaten, MC_player.mainmove, movemode); 
 
 			// Verwalten
@@ -42,22 +42,11 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 			// In den Stack
 			TriggerMoveToStack(MC_player, PLAYER);
 
-			// Der Variantenzug:
-			//TransferZugNachStellung(Stellungsdaten, MC_player.variantenmoves[0]); // Genau dieser wurde nicht in den Stack geschrieben
-			//ZieheZug(MC_player.variantenmoves[0], ANIMATIONSPEED_ZERO);
-
 			Stellungsdaten.CreateNewNode = true;
-			//Stellungsdaten.PreMoveId = MC_player.selectedmove.CurMoveId;
 			Stellungsdaten.PreNodeId = Stellungsdaten.CurNodeId;
 
 			Stellungsdaten.VarianteCounter++;
 			Stellungsdaten.VarianteColor[MC_player.selectedmove.ZugLevel]++;
-			//NotiereZug('challengenotation', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
-			//setMoveNode(MC_player.selectedmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen
-			//setMoveState(MC_player.selectedmove.CurMoveId, MOVESTATE_MOVED);
-
-			//let InterruptType =  MC_player.result == MOVERESULT_MAINMOVEMIT ? 'PMS' : 'PVS';
-			//createInterrupt(InterruptType, MC_player.result, MC_player.variantenmoves[0].CurMoveId);
 
 		case MOVERESULT_MAINMOVEOHNE:
 
@@ -65,11 +54,9 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 
 			// Notieren, wenn es kein aus dem Stack geholter Zug ist
 			if(getMoveState(MC_player.selectedmove.CurMoveId) != MOVESTATE_STACKED) {
-				NotiereZug('challengenotation', Stellungsdaten, MC_player.selectedmove, MOVEMODE_MOVE);
+				NotiereZug('challengenotation', Stellungsdaten, MC_player.selectedmove, MOVEPRESENTATION_MOVE);
 			}
-			// } else {
-			// 	$('#challengeboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
-			// }
+			
 			// Die Rahmenfarbe des Brettes immer aktualisieren
 			$('#challengeboard').css('background-color', getVarianteLevelColorVar(Stellungsdaten, MC_player.selectedmove.ZugLevel));
 
@@ -109,7 +96,7 @@ function processPlayerMoveVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCT
 
 			// Hauptzug zuerst: Diesen nur Notieren, Verwalten und in den Stack
 			TransferZugNachStellung(Stellungsdaten, MC_player.mainmove);
-			NotiereZug('challengenotation', Stellungsdaten, MC_player.mainmove, MOVEMODE_VARIANTE_MAINHIDDEN); 
+			NotiereZug('challengenotation', Stellungsdaten, MC_player.mainmove, MOVEPRESENTATION_VARIANTE_MAINHIDDEN); 
 
 			setMoveState(MC_player.mainmove.CurMoveId, MOVESTATE_VISIBLE);
 			setMoveNode(MC_player.mainmove.CurMoveId, Stellungsdaten.CurNodeId); // CurNodeId wurde in NewTreeNode eingetragen

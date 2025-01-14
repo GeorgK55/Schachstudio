@@ -121,6 +121,7 @@ function studieauswahl(context) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEG
 					if(r.length > 0) {
 						lichessliste = r.split('\n').filter(i => i);
 						showstudylist(lichessliste, context);
+						$('<p>In lichess gefundene Studien: ' + lichessliste.length + '</p>').appendTo('#messageliste'); 
 					} else {
 						if(context == 'kapitel') {
 							$("#studienliste").empty(); 

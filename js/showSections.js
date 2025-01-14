@@ -192,8 +192,14 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_F
 	$('#s_spielen').show();
 
 	$('#importboard').empty().removeClass('noClick');
-	$('#squareschallengeboard').empty().removeClass('noClick');
-	$('#squareschallengeboard').css('background-color', 'var(--color_movecolormain)');
+	$('#squareschallengeboard').empty();
+	$('#challengeboard').css('background-color', 'var(--color_movecolormain)');
+	$('#challengeboard').removeClass('noClick');
+
+	$('#svghilfe > path').remove();
+	$('#svgvarianten > path').remove();
+	$('#svganno > path').remove();
+	$('#svganno > circle').remove();
 
 	$('#logliste').empty();
 	$('#challengetips').empty();
@@ -363,6 +369,9 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 														Stellungsdaten = new CStellungsdaten();
 														Stellungsdaten.CreateNewNode = true;
 														Stellungsdaten.FEN = Challenge.FEN;
+														let drawarray		= [];
+														determineannotations(Challenge.Hinweiskreis, Challenge.Hinweispfeil, drawarray);
+														showDraw(drawarray);
 													})
 													.then(function () { completeMoves(T_Zuege, ChallengeMoves); }); 
 		})

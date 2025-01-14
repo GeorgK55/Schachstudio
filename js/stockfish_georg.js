@@ -135,7 +135,7 @@ function TheIndexGeorgFunction() {
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
 
-									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 
 									GlobalActionStep = AS_CHECKPOSITIONPLAYERMOVEFINISHED;
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -209,7 +209,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
-									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 
 									Stellungsdaten.CurNodeId = NODEPRÄFIX + T_Zuege.CurMoveIndex;
 									Stellungsdaten.CurMoveId = T_Zuege.CurMoveId;
@@ -221,7 +221,7 @@ function TheIndexGeorgFunction() {
 								} else { // == (none) kommt mindestens (wahrscheinlich aber nur) bei matt
 									T_Zuege.ZugZeichen = MATT;
 									T_Zuege.ZugFarbe = Stellungsdaten.ZugFarbe;
-									UpdateTreeNode('challengenotation', MOVEMODE_MATTSIGN, Stellungsdaten, T_Zuege, false, false);
+									UpdateTreeNode('challengenotation', MOVEPRESENTATION_MATTSIGN, Stellungsdaten, T_Zuege, false, false);
 									GlobalActionStep = AS_MOVECYCLEABORTED;
 									finishChallenge('Gut gemacht');
 								}
@@ -330,21 +330,21 @@ function TheIndexGeorgFunction() {
 
 							let m_EnginesBest = (r_bestmove).exec(line); // Hier ist der Zug ja nicht bekannt, deshalb kein match auf den Zug
 
-							let BetterEngineMoveFlag; // Da stimmt was nicht. Doppelt? Zwei Variablen?
 							if (m_EnginesBest != null) { // Dann hat die Engine diesen Zug abschließend untersucht
 
 								if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(PlayerScores.join() + '\n' + EngineScores.join() + '\n' + m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung);
 								if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) console.log(JSON.stringify(T_Zuege));
 
+								// der score wird nicht mehr berücksichtigt, weil wdl neu dazugekommen ist
 								let maxPlayerScore = Math.max.apply(null, PlayerScores);
 								let maxEngineScore = Math.max.apply(null, EngineScores);
 								let ScoreDiff = maxEngineScore - maxPlayerScore;
-								BetterEngineMoveFlag = ScoreDiff > CentiPawnsMoveDifference ? true : false;
+								//let BetterEngineMoveFlag = maxEngineScore > maxPlayerScore + CentiPawnsMoveDifference;
+
 
 								let lastPlayerwdl = parseInt(Playerwdl.slice(-1)[0].wdl_w);
 								let lastEnginewdl = parseInt(Enginewdl.slice(-1)[0].wdl_w);
-								let wdlDiff = lastEnginewdl - lastPlayerwdl;
-								BetterEngineMoveFlag = wdlDiff > wdlDifference ? true : false;
+								let BetterEngineMoveFlag = lastEnginewdl > lastPlayerwdl + wdlDifference;
 
 								let RatingSpielerzug_vergleich = T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung.toLowerCase();
 								let Enginezug_vergleich = m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung;
@@ -372,7 +372,7 @@ function TheIndexGeorgFunction() {
 											'Den stärkeren Zug anzeigen': {
 												click: function () {
 													$('#zugvorschlag').empty().append('<span>' + getMoveNotations(T_Zuege.FEN, m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach, "kurz") + '</span>');
-													$('#zugbewertung').empty().append('<span>(ist um ' + diff + ' cp	stärker)</span>');
+													$('#zugbewertung').empty().append('<span>(ist um ' + ScoreDiff + ' cp	stärker)</span>');
 
 													// Anhand der Beschriftung des Knopfes wird entschieden
 													if ($('.ui-button:contains(Den stärkeren Zug anzeigen)').length == 1) {
@@ -390,7 +390,7 @@ function TheIndexGeorgFunction() {
 
 														TransferZugNachStellung(Stellungsdaten, T_Zuege);
 														ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
-														NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+														NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 
 														GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
 														postit('position fen ' + T_Zuege.FEN + " moves " + m_EnginesBest.groups.movevon + m_EnginesBest.groups.movenach + m_EnginesBest.groups.umwandlung);
@@ -407,7 +407,7 @@ function TheIndexGeorgFunction() {
 
 													TransferZugNachStellung(Stellungsdaten, T_Zuege);
 													ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
-													NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+													NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 
 													GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
 													postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -434,7 +434,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
-									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGPLAYERMOVE;
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -486,7 +486,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
-									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 
 									GlobalActionStep = AS_FINISHRATINGENGINEMOVE;
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
@@ -497,7 +497,7 @@ function TheIndexGeorgFunction() {
 									T_Zuege.ZugZeichen = MATT;
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									// ZieheZug fehlt noch ?
-									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 									finishChallenge('Gut gemacht');
 								}
 							} else {
@@ -573,7 +573,7 @@ function TheIndexGeorgFunction() {
 
 									TransferZugNachStellung(Stellungsdaten, T_Zuege);
 									ZieheZug(T_Zuege, ANIMATIONSPEED_ZERO);
-									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEMODE_MOVE);
+									NotiereZug('challengenotation', Stellungsdaten, T_Zuege, MOVEPRESENTATION_MOVE);
 
 									postit('position fen ' + T_Zuege.FEN + " moves " + T_Zuege.ZugVon + T_Zuege.ZugNach + T_Zuege.ZugUmwandlung);
 

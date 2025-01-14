@@ -1,8 +1,8 @@
 // Neue Zeile mit den Stellungsdaten in der Notationsliste anlegen
 // TreeContainer: der tagname des html-elements
-// Mode: alle MOVEMODE_... berücksichtigen
+// Presentation: alle MOVEPRESENTATION_... berücksichtigen
 // Situation: die Stellungsdaten. Nur CurNodeId wird geändert, Rest bleibt
-function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+function NewTreeNode(TreeContainer, Presentation, Situation, Zug, TooltipFlag, jumpToFlag) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	removeNotationMarker(TreeContainer);
 
@@ -23,8 +23,8 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 
 	let htmlKommentar = "";
 
-	switch(Mode) {
-		case MOVEMODE_VARIANTE_MAINVISIBLE:	// Variantezeiger, Zug und Kommentar eintragen
+	switch(Presentation) {
+		case MOVEPRESENTATION_VARIANTE_MAINVISIBLE:	// Variantezeiger, Zug und Kommentar eintragen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
 				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + Situation.Text_w + "</span>";
@@ -35,7 +35,7 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + BLACKPOSTFIX + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
 				}
 			break;
-		case MOVEMODE_VARIANTE_MAINHIDDEN:	// Variantezeiger, Zugdefault und Kommentar verborgen eintragen
+		case MOVEPRESENTATION_VARIANTE_MAINHIDDEN:	// Variantezeiger, Zugdefault und Kommentar verborgen eintragen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
 				htmlNodeText_w = "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + DEFAULTMOVE_W + "</span>";
@@ -46,7 +46,7 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 				if (Zug.Hinweistext != "") { htmlKommentar = '<div class="Comment' + BLACKPOSTFIX + ' hideMe" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>'; }
 			}
 			break;
-		case MOVEMODE_MOVE:
+		case MOVEPRESENTATION_MOVE:
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlNodeText_w = "<span class='movewhite currentmovemarker' id='" + Situation.CurMoveId + WHITEPOSTFIX + "' " + tooltip + jumpTo +">" + Situation.Text_w + "</span>";
 				htmlNodeText_b = "<span class='moveblack' id='" + Situation.CurMoveId + BLACKPOSTFIX + "'>" + Situation.Text_b + "</span>";
@@ -78,7 +78,7 @@ function NewTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFla
 // Ein Knoten kann nur einen Texttag enthalten. Also den Knoten holen, die schon vorhandenen Daten
 // aufteilen und durch die neuen Teile ergänzen und dann wieder konkatnieren und wegschreiben
 // Änderungen gibt es nur am Knotentext, sonst nirgendwo.
-function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpToFlag) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
+function UpdateTreeNode(TreeContainer, Presentation, Situation, Zug, TooltipFlag, jumpToFlag) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
 
 	removeNotationMarker(TreeContainer);
 
@@ -107,8 +107,8 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 	let htmlText_CommentW = document.getElementById("nodetext").querySelector(".Comment" + WHITEPOSTFIX) != null ? document.getElementById("nodetext").querySelector(".Comment" + WHITEPOSTFIX).outerHTML : "";
 	let htmlText_CommentB = document.getElementById("nodetext").querySelector(".Comment" + BLACKPOSTFIX) != null ? document.getElementById("nodetext").querySelector(".Comment" + BLACKPOSTFIX).outerHTML : "";
 
-	switch(Mode) {
-		case MOVEMODE_VARIANTE_MAINHIDDEN: // Variantezeiger und Kommentaar versteckt
+	switch(Presentation) {
+		case MOVEPRESENTATION_VARIANTE_MAINHIDDEN: // Variantezeiger und Kommentaar versteckt
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlText_MoveW		= "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + "</span>";
 				htmlText_CommentW = Zug.Hinweistext != "" ? '<div class="Comment' + WHITEPOSTFIX + ' hideMe" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
@@ -117,7 +117,7 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 				htmlText_CommentB	= Zug.Hinweistext != "" ? '<div class="Comment' + BLACKPOSTFIX + ' hideMe" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			}
 			break;
-		case MOVEMODE_VARIANTE_MAINVISIBLE:	// Variantezeiger und Kommentar anzeigen
+		case MOVEPRESENTATION_VARIANTE_MAINVISIBLE:	// Variantezeiger und Kommentar anzeigen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlText_MoveW		= "<span class='movewhite variantezeiger' id='" + Zug.CurMoveId + WHITEPOSTFIX + "'>" + VARIANTEZEIGER + Zug.ZugKurz + "</span>";
 				htmlText_CommentW	= Zug.Hinweistext != "" ? '<div class="Comment' + WHITEPOSTFIX + '" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
@@ -126,7 +126,7 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 				htmlText_CommentB	= Zug.Hinweistext != "" ? '<div class="Comment' + BLACKPOSTFIX + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 				}
 			break;
-		case MOVEMODE_MATTSIGN:
+		case MOVEPRESENTATION_MATTSIGN:
 			// Das Zeichen soll einfach an den zur Zugfarbe passenden Text angehängt werden
 			// Grund: Das Signal wird in einer eigenen Antwort der Engine zurückgegeben
 			if (Zug.ZugFarbe == WEISSAMZUG) {
@@ -137,7 +137,7 @@ function UpdateTreeNode(TreeContainer, Mode, Situation, Zug, TooltipFlag, jumpTo
 				htmlText_CommentB	= Zug.Hinweistext != "" ? '<div class="Comment' + Postfix + '" id="C_' + Situation.CurMoveId + BLACKPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";
 			}
 			break;
-		case MOVEMODE_MOVE:	// Zug, Tooltip und Kommentar einfach komplett anzeigen
+		case MOVEPRESENTATION_MOVE:	// Zug, Tooltip und Kommentar einfach komplett anzeigen
 			if (Zug.ZugFarbe == WEISSAMZUG) {
 				htmlText_MoveW = "<span class='movewhite currentmovemarker' id='" + Zug.CurMoveId + WHITEPOSTFIX + "' " +	tooltip + jumpTo + ">" + Situation.Text_w + "</span>";
 				htmlText_CommentW = Zug.Hinweistext != "" ? '<div class="Comment' + WHITEPOSTFIX + '" id="C_' + Situation.CurMoveId + WHITEPOSTFIX + '">' + Zug.Hinweistext + '</div>' : "";

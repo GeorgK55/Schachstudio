@@ -6,7 +6,7 @@ function spieleVarianten() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN))
 
 	if(logMe(LOGLEVEL_IMPORTANT, LOGTHEME_DATA)) console.log(Stellungsdaten);
 
-	showChallengeMovesShort();
+	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_SITUATION)) showChallengeMovesShort();
 
 	processPlayerMoveVarianten().then(function (PlayerMoveResolveResult) {
 

@@ -53,8 +53,14 @@
 	}
 }
 
-.currentmovemarker::after {	content: " \25C6";	}
+.currentmovemarker::after {	content: " \25C6";	color:red;	}
 .formermovemarker::after 	{	content: none;			}
+
+#variantenendemarker {
+	font-family: 'Arial Black';
+	color: red;
+	font-weight: bold;
+}
 
 .noClick {
 	pointer-events: none;

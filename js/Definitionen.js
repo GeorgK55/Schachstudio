@@ -143,9 +143,9 @@ ZUGNOTATION 		= { K :"K", Q :"D", D :"D", R :"T", T :"T", B :"L", L :"L", N :"S"
 PlayerScores = [];
 EngineScores = [];
 
-wdlDifference							= 100; 	// wird in Promille gerechnet
-CentiPawnsMoveDifference	= 60;
-Suchtiefe									= 10;
+wdlDifference							= 40; // wird in Promille gerechnet
+CentiPawnsMoveDifference	= 40;
+Suchtiefe									= 4;
 MultiPV										= 1;
 
 // Werden während der gesamten Laufzet für selekt in der Aufgabenliste benötigt

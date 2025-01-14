@@ -51,11 +51,11 @@ const MOVESTATE_VISIBLE	= "V";
 const MOVESTATE_HIDDEN	= "H";
 const MOVESTATE_IGNORED	= "I";
 
-//const MOVEMODE_DEFAULT							= 'default';
-const MOVEMODE_MOVE									= 'move';
-const MOVEMODE_VARIANTE_MAINHIDDEN	= 'VarianteSignMainHidden';
-const MOVEMODE_VARIANTE_MAINVISIBLE	= 'VarianteSignMainvisible';
-const MOVEMODE_MATTSIGN							= 'MattSign';
+//const MOVEPRESENTATION_DEFAULT							= 'default';
+const MOVEPRESENTATION_MOVE									= 'move';
+const MOVEPRESENTATION_VARIANTE_MAINHIDDEN	= 'VarianteSignMainHidden';
+const MOVEPRESENTATION_VARIANTE_MAINVISIBLE	= 'VarianteSignMainvisible';
+const MOVEPRESENTATION_MATTSIGN							= 'MattSign';
 
 const MOVERESULT_ERROR						= 'Situations- oder Datenfehler';
 const MOVERESULT_UNKNOWNMOVE			= 'UnknownMove';
@@ -73,12 +73,14 @@ const LOGLEVEL_SLIGHT			= '0';
 const LOGLEVEL_NICE				= '10';
 const LOGLEVEL_IMPORTANT	= '100';
 
-const LOGTHEME_NOTHING				= '';
-const LOGTHEME_DATA						= 'data';
-const LOGTHEME_SITUATION			= 'situation';
-const LOGTHEME_PROMISES				= 'promises';
-const LOGTHEME_FUNCTIONBEGINN = 'begin';
-const LOGTHEME_ENGINEDIALOG		= 'engineanswer';
+const LOGTHEME_NOTHING					= '';
+const LOGTHEME_DATA							= 'data';
+const LOGTHEME_SPECIALDATA			= 'specialdata';
+const LOGTHEME_SITUATION				= 'situation';
+const LOGTHEME_SPECIALSITUATION	= 'specialsituation';
+const LOGTHEME_PROMISES					= 'promises';
+const LOGTHEME_FUNCTIONBEGINN 	= 'begin';
+const LOGTHEME_ENGINEDIALOG			= 'engineanswer';
 
 const PLAYER		= "spieler";
 const CHALLENGE	= "challenge";
