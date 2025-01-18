@@ -114,7 +114,7 @@ body {
 .gc-situationenanzeige {
     display: grid;
     overflow: hidden;
-    grid-template-rows: min-content min-content 1fr;
+    grid-template-rows: min-content min-content min-content;
 }
 
 .gc-willkommen {
@@ -169,7 +169,7 @@ body {
 
 .gc-aufgabendetails {
     display: grid;
-    grid-template-rows: min-content min-content min-content;
+    grid-template-rows: min-content min-content min-content min-content;
     /* grid-template-rows: 1fr 5fr 1fr 1fr;
 	margin: 1vh 2vw; */
     grid-row-gap: 1vh;
@@ -184,7 +184,7 @@ body {
 .scrollme {
     touch-action: initial;
     overflow: auto;
-    height: 38vh;
+    height: 30vh;
 }
 
 .gc-usertypes {
@@ -701,11 +701,27 @@ body {
 .svgcolorannocircle_y {   stroke:Gold;          stroke-width: 4; fill: none;    opacity: .6;    }
 .svgcolorannocircle_g {   stroke:ForestGreen;   stroke-width: 4; fill: none;    opacity: .6;    }
 
-#f_spielenaufgabedetails {
+#f_spielendetails {
     margin: 1vh 1vw;
     padding-left: 2vw;
+    padding-right: 1vw;
 }
 
+.gc-spielendetails {
+	display: grid;
+	grid-template-columns: 1fr 6fr;
+	grid-template-rows: min-content min-content;
+	align-items: center;
+}
+
+.div1 { grid-area: 1 / 1 / 2 / 2; }
+.div2 { grid-area: 1 / 2 / 2 / 3; }
+.div3 { grid-area: 2 / 1 / 3 / 2; }
+.div4 { grid-area: 2 / 2 / 3 / 3; }
+
+#spielendetails input{
+	width: 100%;
+}
 #BrettUndMarker {
     margin: 1vh 1vw;
 }
@@ -764,7 +780,7 @@ body {
     grid-gap: 3vh;
 }
 
-.gc-kapitelarea {
+.gc-kapitelareaxxx {
     display: grid;
     grid-template-rows: min-content min-content;
     grid-template-columns: 5fr 30fr 30fr;
@@ -772,6 +788,18 @@ body {
     grid-gap: 3vh;
     align-items: center;
 }
+
+.gc-lichessspielarea {
+	display: grid;
+	grid-template-columns: 1fr 10fr;
+	grid-template-rows: min-content min-content;
+	grid-column-gap: 0.5vw;
+	grid-row-gap: 0.5vh;
+	margin: 1vh 1vw;
+}
+.lichessspiellogo { grid-area: 1 / 1 / 2 / 2; }
+.lichessspieluser { grid-area: 1 / 2 / 2 / 3; }
+.lichessspielstudien { grid-area: 2 / 1 / 3 / 3; }
 
 .gc-enginekommandos {
     display: grid;
@@ -841,6 +869,10 @@ body {
 
 .studienanzeigeliste    {
     grid-area: 2 / 1 / 3 / 2;
+}
+
+#lichessusertext {
+	width:50%;
 }
 
 /* fieldset {

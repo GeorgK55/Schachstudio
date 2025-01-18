@@ -28,6 +28,7 @@ function AufgabeSpeichern() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)
 						Hinweispfeil: 			Challenge.Hinweispfeil,
 						Quelle: 						Challenge.Quelle,
 						Quelledetail:				$('#quelledetailimport').val(),
+						Youtubekanal:				$('#youtubeimportkanal').val(),
 						Youtubename:				$('#youtubeimportname').val(),
 						Youtubelink:				$('#youtubeimportlink').val(),
 						Annotator:					Challenge.Annotator,
@@ -38,6 +39,7 @@ function AufgabeSpeichern() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)
 						FEN: 								Challenge.FEN,
 						Scope: 							$('#scopeimport').val(),
 						Skill: 							$('#skillimport').val(),
+						lichess_owner:			$('#lichess_owner').val(),
 						lichess_studie_id:	Challenge.lichess_studie_id,
 						lichess_kapitel_id:	Challenge.lichess_kapitel_id,
 						pgn: 								Challenge.PGN

@@ -52,6 +52,7 @@ CREATE TABLE T_Aufgaben (
     Hinweispfeil          varchar(64)   DEFAULT NULL,
     Quelle								varchar(64)   DEFAULT NULL,
     Quelledetail					varchar(512)  DEFAULT NULL,
+    Youtubekanalname			varchar(64)   DEFAULT NULL,
     Youtubevideoname			varchar(512)  DEFAULT NULL,
     Youtubevideolink			varchar(512)  DEFAULT NULL,
 		Annotator							varchar(64)   DEFAULT NULL,
@@ -63,6 +64,7 @@ CREATE TABLE T_Aufgaben (
     FEN										varchar(128)  NOT NULL,
     Scope									varchar(16)   DEFAULT NULL,
     Skill									varchar(16)   DEFAULT NULL,
+    lichess_owner					varchar(32)   DEFAULT NULL,
     lichess_studie_id			varchar(32)   DEFAULT NULL,
     lichess_kapitel_id		varchar(32)   DEFAULT NULL,
     PGN										varchar(8192) NOT NULL,
@@ -275,3 +277,16 @@ CREATE VIEW V_ZuegeWichtig
     Hinweiskreis,
     Hinweispfeil
 FROM T_Zuege;
+
+DROP VIEW IF EXISTS V_AufgabenManuelleSpalten;
+CREATE VIEW V_AufgabenManuelleSpalten
+	AS SELECT	Id,
+		Kurztext,
+		Youtubekanalname,
+		Youtubevideoname,
+		Youtubevideolink,
+		lichess_owner
+FROM   T_Aufgaben 
+
+create table temp_table_AufgabenManuelleSpalten 
+select * from V_AufgabenManuelleSpalten

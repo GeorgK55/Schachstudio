@@ -64,6 +64,7 @@ class CChallenge  {
 		this.Hinweispfeil					= '';	// Pfeilmarkierung vor dem ersten Zug
 		this.Quelle								=	"";	// Eine im Import generierte Zeichenkette: 'lichess' oder 'import' Später mal ein Fremdschlüssel zu T_Quellen
 		this.Quelledetail					=	"";	// Die Fundstelle in der Quelle, bei lichess leer. 
+		this.youtubekanalname			= ""; // Der Name zu einem eventuellen Youtubekanal. Muss manuell eingetragen werden
 		this.youtubevideoname			= ""; // Der Name zu einem eventuellen Youtube-Video. Muss manuell eingetragen werden
 		this.youtubevideolink			= ""; // Der Link zu einem eventuellen Youtube-Video. Muss manuell eingetragen werden
 		this.Annotator						=	"";
@@ -75,6 +76,7 @@ class CChallenge  {
 		this.FEN									=	"";
 		this.Scope								=	"";
 		this.Skill 		 						=	"";
+		this.lichess_owner				=	"";
 		this.lichess_studie_id		=	"";
 		this.lichess_kapitel_id		=	"";
 		this.PGN									=	"";

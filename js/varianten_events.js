@@ -222,12 +222,16 @@ function handleInterruptClick(clickevent) {
 
 function appendNAG(i, id) {
 
+	nagresult = '';
+
 	if (i.endsWith('E')) {
 		let NagSingleValue = getMoveNagSingle(id);
-		let nag = $.grep(NAGresult, function (NN, i) { return NN['DollarIndex'] == NagSingleValue; })[0].html;
-		if(nag != undefined)	return ' mit <span id="variantenendemarker">' + nag + '</span>';
+		if(NagSingleValue != '') {
+			let nag = $.grep(NAGresult, function (NN, i) { return NN['DollarIndex'] == NagSingleValue; })[0].html;
+			if(nag != undefined)	nagresult = ' mit <span id="variantenendemarker">' + nag + '</span>';
+		}
 	}
-	return '';
+	return nagresult;
 }
 // // Nur, damit dann was passiert
 // function handleZugergebnisClick() {

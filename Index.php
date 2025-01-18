@@ -213,8 +213,10 @@
 								<li><label for="langtextimport">Langtext</label>					<input type="text" 	name="Langtext"					id = "langtextimport">									</li>
 								<li><label for="datumimport">Datum</label>								<input type="text" 	name="Datum"						id = "datumimport"						disabled>	</li>
 								<li><label for="quelleimport">Quelle</label>							<input type="text" 	name="Quelle"						id = "quelleimport"						disabled>	</li>
+								<li><label for="youtubeimportkanal">Youtubekanal</label>	<input type="text" 	name="youtubekanal"			id = "youtubeimportkanal">							</li>
 								<li><label for="youtubeimportname">Youtubename</label>		<input type="text" 	name="youtubename"			id = "youtubeimportname">								</li>
 								<li><label for="youtubeimportlink">Youtubelink</label>		<input type="text" 	name="youtubelink"			id = "youtubeimportlink">								</li>
+								<li><label for="lichess_owner">lichess Owner</label>			<input type="text" 	name="lichess_owner"		id = "lichess_owner">										</li>
 								<li><label for="pgnannotatortextimport">Annotator</label>	<input type="text" 	name="pgnannotatortext"	id = "pgnannotatortextimport"	disabled>	</li>
 								<li><label for="weissnameimport">Weiß</label>							<input type="text" 	name="WeissName"				id = "weissnameimport">									</li>
 								<li><label for="schwarznameimport">Schwarz</label>				<input type="text" 	name="SchwarzName"			id = "schwarznameimport">								</li>
@@ -241,21 +243,33 @@
 				</section>
 				<section id="s_spielen" class="gc-spielen">
 					<header id="h_spielen" class="ImportantCenterText importantbackgroundcolor">Aufgabe spielen</header>
-					<fieldset id="f_spielenaufgabedetails">
-						<legend>Details der Aufgabe</legend>
-						<ul>
-						<li><label for="kurztextspiel">Aufgabe oder Kapitel</label>	<input type="text"	name="Kurztext"	id = "kurztextspiel"	disabled>	</li>
-						<li><label for="langtextspiel">Datei oder Studie</label>		<input type="text"	name="Langtext"	id = "langtextspiel"	disabled>	</li>	
-						<!-- <li><label for="youtubespiel">Youtubevideo</label>			<input type="text"	name="youtube"	id = "youtubespiel"		disabled>	</li>	 -->
-						<li><label for="youtubespielancorid">Youtubevideo</label>			<a id="youtubespielanchorid" target="_blank"></a>	</li>	
+					<fieldset id="f_spielendetails">
+						<legend id="l_spielendetails"></legend>
+						<div id='spielendetails' class='gc-spielendetails'>
+							<div class="div1">Quelle</div>
+							<div class="div2">
+								<input type="text"	name="Owner"	id = "lichessowner"	disabled>
+								<input type="text"	name="Langtext"	id = "langtextspiel"	disabled>
+							</div>
+							<div class="div3">Youtube</div>
+							<div class="div4">
+							<input type="text"	name="Kanal"	id = "youtubespielkanal"	disabled>
+							<a id="youtubespielanchorid" target="_blank"></a>	
+							</div>
+						</div>
+						<!-- <ul>
+						<li><label for="kurztextspiel">Aufgabe oder Kapitel</label>		</li>
+						<li><label for="langtextspiel">Datei oder Studie</label>			</li>	
+						<li><label for="youtubespiel">Youtubevideo</label>			<input type="text"	name="youtube"	id = "youtubespiel"		disabled>	</li>
+						<li><label for="youtubespielancorid">Youtubevideo</label>			</li>	 -->	
 						<!-- <li><label for="quellespiel">Quelle</label>			<input type="text" name="Quelle"		id = "quellespiel"		disabled>	</li> -->
 						<!-- <li><label for="quelledetailspiel">Quelledetail</label>	<input type="text"	name="Quelledetail"	id = "quelledetailspiel"	disabled>	</li>	-->
 						<!-- <li><label for="scopespiel">Scope</label>								<input type="text"	name="Scope"				id = "scopespiel"					disabled>	</li> -->
 						<!-- <li><label for="amzugspiel">Am Zug</label>								<input type="text"	name="AmZug"				id = "amzugspiel"					disabled>	</li> -->
 						<!-- <li><label for="skillspiel">Skill</label>								<input type="text"	name="skillspiel" 	id = "skillspiel"					disabled>	</li> -->
 						<!-- <li><label for="fenspiel">FEN</label>										<input type="text"	name="fenspiel"			id = "fenspiel"						disabled>	</li> -->
-						<!-- <li><label for="pgntextspiel">PGN:</label>								<textarea						name="PGNText"			id = "pgntextspiel"				disabled>	</textarea>	</li> -->
-						</ul>
+						<!-- <li><label for="pgntextspiel">PGN:</label>								<textarea						name="PGNText"			id = "pgntextspiel"				disabled>	</textarea>	</li>
+						</ul> -->
 					</fieldset>
 					<div id="challengechessboardandnotation" class="gc-challengechessboardandnotation">
 						<div id="movenotes" class="gc-movenotes">
@@ -323,14 +337,20 @@
 				</section>
 				<section id="s_kapitel" class="gc-kapitel">
 					<header id="h_kapitel" class="ImportantCenterText importantbackgroundcolor">Kapitel spielen</header>
-					<div id="kapitelarea" class="gc-kapitelarea">
-						<img src="grafiken/lichesslogo.png" alt="" class="dialogfigur lichesslogo">
-						<div class="dialogtext lichessuserarea">
-							<label for="lichessuser">Bitte die Benutzerkennung eintragen</label>
-							<input type="text" name="lichessuser" id = "lichessuser">
+					<div class="gc-lichessspielarea">
+						<div class="lichessspiellogo">
+							<img src="grafiken/lichesslogo.png" alt="" class="dialogfigur">
 						</div>
-						<button type="button" onclick="studieauswahl('kapitel')"						class="playerbutton studienbutton">Studien anzeigen</button>
-						<div id='studienanzeige' class="studienanzeigeliste">
+						<div class="dialogtext lichessspieluser">
+							<label for="lichessuser">Die Benutzerkennung eintragen</label>
+							<input type="text" name="lichessuser" id = "lichessusertext" onclick="togglestudylist()">
+							<button type="button" onclick="studieauswahl('kapitel')"	class="playerbutton studienbutton">Studien anzeigen</button>
+						</div>
+						<div class="lichessspielstudien">
+							<div id="lichessbenutzerhinweis">
+								<p>Benutzerkennungen findet man in lichess in den Studienlisten. Beispiel:</p>
+								<img src="grafiken/lichessbenutzerstudien.png" alt="" class="dialogfigur">							
+							</div>
 							<ul id='studienliste' class='scrollme hideMe'></ul>
 						</div>
 					</div>
@@ -489,7 +509,7 @@
 			<div id="dialog-lichessuser" 						class="hiddendialog gc-LichessImport">
 				<img src="grafiken/lichesslogo.png" alt="" class="dialogfigur">
 				<div class="dialogtext">
-					<label for="lichessdialoguser">Bitte die Benutzerkennung eintragen</label>
+					<label for="lichessdialoguser">Hier die Benutzerkennung eintragen</label>
 					<input type="text" name="lichessdialoguser" id = "lichessdialoguser">
 				</div>
 				<div id='dialogstudienanzeige'>

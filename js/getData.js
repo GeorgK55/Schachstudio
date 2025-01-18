@@ -105,8 +105,10 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 
 		Challenge = responseData['ergebnisdaten'][0]; // Ist ja ein einfaches Objekt
 
-		$('#kurztextspiel').val(Challenge.Kurztext);
+		document.getElementById('l_spielendetails').innerHTML = (Challenge.Kurztext);
+		$('#lichessowner').val(Challenge.lichess_owner); 
 		$('#langtextspiel').val(Challenge.Langtext);
+		$('#youtubespielkanal').val(Challenge.Youtubekanalname);
 		$('#youtubespielanchorid').text(Challenge.Youtubevideoname);
 		$("#youtubespielanchorid").attr("href", Challenge.Youtubevideolink);
 		// $('#quellespiel').val(Challenge.Quelle);
