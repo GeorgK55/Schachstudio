@@ -1,23 +1,17 @@
 @media screen and (orientation: landscape) and (max-width: 1200px) {
 
-  body {
+  /* body {
     overflow-y: auto;
-  }
-
-  .gc-mitte {
-    grid-template-columns: 10fr 15fr 20fr;
-  }
-
-  /* .gc-mitte_themen {
-    grid-area: Themen;
-  }
-  .gc-mitte_situationen {
-    grid-area: Aufgaben;
-  }
-  .gc-mitte_aktionen {
-    grid-area: Aktionen;
   } */
 
+  .gc-mitte {
+    grid-template-columns: 10fr 20fr 30fr;
+  }
+
+	.mediadisplay{
+		color:transparent;
+	}
+	
   .video_interessetext1::before {
     content: "Variantenstudio ?" ;
   }
@@ -25,7 +19,7 @@
   .gc-spieler {
     display: grid;
     grid-template-columns: 10fr 40fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-rows: min-content min-content min-content min-content;
     align-items: center;
     justify-items: center;
     grid-template-areas: "Text V1" "Text V2" "Text V3" "Text Weiter";
@@ -35,7 +29,7 @@
   .gc-trainer {
     display: grid;
     grid-template-columns: 10fr 40fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: min-content min-content min-content;
     align-items: center;
     justify-items: center;
     grid-template-areas: "Text V1" "Text V2" "Text Weiter";
@@ -160,4 +154,9 @@
     width: 80%;
     margin: 1vh auto;
   }
+
+	#f_spielendetails {
+		display: none;
+	}
 }
+ 

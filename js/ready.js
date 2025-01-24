@@ -92,26 +92,31 @@ $(document).ready(function () {
 });
 
 function FullscreenDialog() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
-	FrageFullscreenDialog = $("#dialog_fragefullscreen").dialog({
-		title: "Zum Training",
-		modal: true,
-		draggable: false,
-		resizable: false,
-		//position: { my: "left top", at: "left top", of: "#h_spielen" },
-		show: "blind",
-		hide: "blind",
-		height: 350,
-		width: 250,
-		buttons: {
-			Ja: function () {
-				openFullscreen();
-				$(this).dialog("close");
+
+	if(navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPhone')) {
+		alert('Das Variantenstudio ist für Querformat optimiert');
+	} else {
+		FrageFullscreenDialog = $("#dialog_fragefullscreen").dialog({
+			title: "Zum Training",
+			modal: true,
+			draggable: false,
+			resizable: false,
+			//position: { my: "left top", at: "left top", of: "#h_spielen" },
+			show: "blind",
+			hide: "blind",
+			height: 350,
+			width: 250,
+			buttons: {
+				Ja: function () {
+					openFullscreen();
+					$(this).dialog("close");
+				},
+				Nein: function () {
+					$(this).dialog("close");
+				},
 			},
-			Nein: function () {
-				$(this).dialog("close");
-			},
-		},
-	});
+		});
+	}
 }
 
 function openFullscreen() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());

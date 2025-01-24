@@ -246,13 +246,15 @@
 					<fieldset id="f_spielendetails">
 						<legend id="l_spielendetails"></legend>
 						<div id='spielendetails' class='gc-spielendetails'>
-							<div class="div1">Quelle</div>
-							<div class="div2">
+							<div class="div1">Quelle<br>(lichess)</div>
+							<div class="div2">Benutzer<br>Studie</div>
+							<div class="div3">
 								<input type="text"	name="Owner"	id = "lichessowner"	disabled>
 								<input type="text"	name="Langtext"	id = "langtextspiel"	disabled>
 							</div>
-							<div class="div3">Youtube</div>
-							<div class="div4">
+							<div class="div4">Youtube</div>
+							<div class="div5">Kanal<br>Video</div>
+							<div class="div6">
 							<input type="text"	name="Kanal"	id = "youtubespielkanal"	disabled>
 							<a id="youtubespielanchorid" target="_blank"></a>	
 							</div>

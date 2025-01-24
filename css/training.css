@@ -471,6 +471,10 @@ body {
     display: none;
 }
 
+.mediadisplay{
+	color:revert;
+}
+
 #visitorcounterspan {
     float: left;
     margin-left: 5vw;
@@ -709,15 +713,19 @@ body {
 
 .gc-spielendetails {
 	display: grid;
-	grid-template-columns: 1fr 6fr;
-	grid-template-rows: min-content min-content;
+	grid-template-columns: min-content min-content 4fr;
+	grid-template-rows: min-content min-content min-content;
+	grid-column-gap: 2vw;
+	grid-row-gap: 1vh;
 	align-items: center;
 }
 
 .div1 { grid-area: 1 / 1 / 2 / 2; }
 .div2 { grid-area: 1 / 2 / 2 / 3; }
-.div3 { grid-area: 2 / 1 / 3 / 2; }
-.div4 { grid-area: 2 / 2 / 3 / 3; }
+.div3 { grid-area: 1 / 3 / 2 / 4; }
+.div4 { grid-area: 2 / 1 / 3 / 2; }
+.div5 { grid-area: 2 / 2 / 3 / 3; }
+.div6 { grid-area: 2 / 3 / 3 / 4; }
 
 #spielendetails input{
 	width: 100%;
