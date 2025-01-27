@@ -129,6 +129,8 @@ function scanPGN(PGNText) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) 
 	// Dieser Ausdruck erkennt Standardlichesstexte (": " zwischen Studie und Kapitel)
 	let m_Aufgabetext		= PGNText.match(r_Event);
 
+	Challenge.lichess_owner = $('#lichessusertext').val()
+
 	if (m_Aufgabetext == null) {
 		Challenge.Kurztext = "Fehlt";
 	} else {

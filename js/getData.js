@@ -108,6 +108,8 @@ function getChallengeData(ID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGIN
 		document.getElementById('l_spielendetails').innerHTML = (Challenge.Kurztext);
 		$('#lichessowner').val(Challenge.lichess_owner); 
 		$('#langtextspiel').val(Challenge.Langtext);
+		$('#lichesskapitelanchorid').text(Challenge.Langtext);
+		$("#lichesskapitelanchorid").attr("href", "https://lichess.org/study/" + Challenge.lichess_studie_id + "/" + Challenge.lichess_kapitel_id);
 		$('#youtubespielkanal').val(Challenge.Youtubekanalname);
 		$('#youtubespielanchorid').text(Challenge.Youtubevideoname);
 		$("#youtubespielanchorid").attr("href", Challenge.Youtubevideolink);

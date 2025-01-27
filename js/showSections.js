@@ -215,6 +215,7 @@ function initializeSelectionEnvironment() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_F
 	$('#movenotestext').removeClass().addClass('centertext');
 
 	resetmarker();
+	
 }
 
 function initializeNotationtree() {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBEGINN)) console.log('Beginn in ' + getFuncName());
@@ -326,6 +327,7 @@ function stageChallenge(ChallengeID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTI
 			let drawarray		= [];
 			determineannotations(Challenge.Hinweiskreis, Challenge.Hinweispfeil, drawarray);
 			showDraw(drawarray);
+			$('<p>' + Challenge.Kurztext + ' ausgewählt' + '</p>').appendTo('#messageliste');
 		});
 
 }
@@ -347,10 +349,15 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 	notifyChallengeDetails();
 	normalizePGNMoves(Kapitel);
 
-	$('#kurztextspiel').val(Challenge.Kurztext == null ? "" : Challenge.Kurztext);
+	let kapitelkurztext = Challenge.Kurztext == null ? "" : Challenge.Kurztext;
+	document.getElementById('l_spielendetails').innerHTML = kapitelkurztext;
+
+	$('#lichessowner').val(Challenge.lichess_owner); 
 	$('#langtextspiel').val(Challenge.Langtext);
-	$('#youtubespielanchorid').text(Challenge.Youtubevideoname);
-	$("#youtubespielanchorid").attr("href", "http://www.google.com/");
+	$('#lichesskapitelanchorid').text(Challenge.Langtext);
+	$("#lichesskapitelanchorid").attr("href", "https://lichess.org/study/" + Challenge.lichess_studie_id + "/" + Challenge.lichess_kapitel_id);
+//$('#youtubespielanchorid').text(Challenge.Youtubevideoname);
+	//$("#youtubespielanchorid").attr("href", "http://www.google.com/");
 	// $('#quellespiel').val(Challenge.Quelle);
 	// $('#quelledetailspiel').val(Challenge.Quelledetail);
 	// $('#scopespiel').val(Challenge.Scope); 
@@ -359,6 +366,8 @@ function stageKapitel(KapitelID) {	if(logMe(LOGLEVEL_SLIGHT, LOGTHEME_FUNCTIONBE
 	// $('#amzugspiel').val(Challenge.AmZug);
 	// $('#fenspiel').val(Challenge.FEN);
 	$('#pgntextspiel').val(Challenge.PGN.split("\n\n")[1]);
+
+	$('<p>' + Challenge.Kurztext + ' ausgewählt' + '</p>').appendTo('#messageliste');
 
 	getImportBoard()
 		.then(function () { ZuegePruefen(NOTATIONMODE_HIDDEN)

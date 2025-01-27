@@ -197,22 +197,34 @@ body {
 
 .gc-interesse {
     display: grid;
-    grid-template-columns: 10fr 20fr 10fr;
+    grid-template-columns: 10fr 20fr;
+    grid-template-rows: 1fr 1fr;
     align-items: center;
     justify-items: center;
+    grid-template-areas: "Text V1" "Text V2";
     padding: 1vh;
 }
 .video_interessetext1::before {
     content: "Variantenstudio was ist das ";
 }
+.interessetext {
+	grid-area: Text;
+}
+
+.video_interessetext1 {
+	grid-area: V1;
+}
+.video_interessetext2 {
+	grid-area: V2;
+}
 
 .gc-spieler {
     display: grid;
     grid-template-columns: 10fr 20fr 20fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     align-items: center;
     justify-items: center;
-    grid-template-areas: "Text V1 Weiter" "Text V2 Weiter" "Text V3 Weiter";
+    grid-template-areas: "Text V1 Weiter" "Text V2 Weiter";
     padding: 1vh;
 }
 
@@ -220,16 +232,11 @@ body {
     grid-area: Text;
 }
 
-
 .video_spielertext1 {
     grid-area: V1;
 }
 .video_spielertext2 {
     grid-area: V2;
-}
-
-.video_spielertext3 {
-    grid-area: V3;
 }
 
 .spielerweiter {
@@ -729,6 +736,7 @@ body {
 
 #spielendetails input{
 	width: 100%;
+	font-size: var(--dynfontsize20);
 }
 #BrettUndMarker {
     margin: 1vh 1vw;
@@ -881,6 +889,7 @@ body {
 
 #lichessusertext {
 	width:50%;
+	font-size: var(--dynfontsize20);
 }
 
 /* fieldset {

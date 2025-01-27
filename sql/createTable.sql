@@ -282,10 +282,16 @@ DROP VIEW IF EXISTS V_AufgabenManuelleSpalten;
 CREATE VIEW V_AufgabenManuelleSpalten
 	AS SELECT	Id,
 		Kurztext,
+    Langtext,
+    Quelle,
+    Quelledetail,
 		Youtubekanalname,
 		Youtubevideoname,
 		Youtubevideolink,
-		lichess_owner
+    Annotator,
+		lichess_owner,
+    lichess_studie_id,
+    lichess_kapitel_id
 FROM   T_Aufgaben 
 
 create table temp_table_AufgabenManuelleSpalten 

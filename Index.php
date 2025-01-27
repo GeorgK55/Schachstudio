@@ -55,7 +55,7 @@
 	<script src="js/stockfish_common.js"></script>
 	<script src="js/stockfish_georg.js"></script>
 	<script src="js/lichess.js"></script>
-	<script src="js/accounts.js"></script>
+	<!-- <script src="js/accounts.js"></script> -->
 
 	<link rel="apple-touch-icon" 			sizes="57x57" 	href="favicons/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" 			sizes="60x60" 	href="favicons/apple-icon-60x60.png">
@@ -169,12 +169,12 @@
 						<div class="usertypearea gc-interesse">
 							<div class="padmeleft2vw interessetext"></div>
 							<a class="video_interessetext1 inactiveanchor" target="_blank" href="https://youtu.be/I6xg-D_4blM"><img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
+							<a class="video_interessetext2 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Eine Musterlösung<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 						</div>
 						<div class="usertypearea gc-spieler">
 							<div class="spielertext leftmepad5vh"></div>
 							<a class="video_spielertext1 inactiveanchor" target="_blank" href="https://youtu.be/sMGFUEhRQM8">Erklärungen<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
-							<a class="video_spielertext2 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Musterlösungen<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
-							<a class="video_spielertext3 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Vergleich mit lichess.org<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
+							<a class="video_spielertext2 inactiveanchor" target="_blank" href="https://youtu.be/7UtvrRqZ9nI">Vergleich mit lichess.org<img src="grafiken/youtube_icon_65487.png" alt="" class="youtubelink"></a>
 							<button class="spielerweiter applicationbutton" id="btn-spieler" type="button" onclick="showSpielerinfo()"></button>
 						</div>
 						<div class="usertypearea gc-trainer">
@@ -250,7 +250,8 @@
 							<div class="div2">Benutzer<br>Studie</div>
 							<div class="div3">
 								<input type="text"	name="Owner"	id = "lichessowner"	disabled>
-								<input type="text"	name="Langtext"	id = "langtextspiel"	disabled>
+								<!-- <input type="text"	name="Langtext"	id = "langtextspiel"	disabled> -->
+								<a id="lichesskapitelanchorid" target="_blank"></a>	
 							</div>
 							<div class="div4">Youtube</div>
 							<div class="div5">Kanal<br>Video</div>
